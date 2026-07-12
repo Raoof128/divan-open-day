@@ -1,0 +1,14 @@
+.git
+.github
+.worktrees
+.superpowers
+.env
+.env.*
+node_modules
+dist
+coverage
+playwright-report
+test-results
+*.log
+.DS_Store
+docs/evidence/runtime
