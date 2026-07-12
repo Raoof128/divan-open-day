@@ -2,6 +2,34 @@ import { describe, expect, it } from 'vitest';
 
 import { registryBundleSchema } from '../../src/lib/content/registrySchemas';
 
+type RegistryBundleFixture = ReturnType<typeof makeRegistryBundle>;
+
+function replaceAsset(
+  bundle: RegistryBundleFixture,
+  asset: Record<string, unknown>,
+): void {
+  (bundle.assets as { assets: unknown[] }).assets = [asset];
+}
+
+function makeAsset(
+  kind: 'audio' | 'font' | 'icon' | 'image' | 'ornament',
+  path: string,
+  mimeType: string,
+): Record<string, unknown> {
+  return {
+    id: `test-${kind}-asset`,
+    status: 'active',
+    kind,
+    path,
+    mime_type: mimeType,
+    sha256: '1'.repeat(64),
+    bytes: 1_024,
+    permission_record_id: `test-${kind}-permission`,
+    performer_id: kind === 'audio' ? 'test-performer' : null,
+    duration_seconds: kind === 'audio' ? 30 : null,
+  };
+}
+
 function makeRegistryBundle() {
   return {
     editions: {
@@ -135,6 +163,51 @@ describe('registryBundleSchema', () => {
     expect(registryBundleSchema.safeParse(invalidTerritory).success).toBe(false);
   });
 
+  it.each([
+    ['a subset', ['website_display']],
+    [
+      'a duplicate in place of a required use',
+      [
+        'website_display',
+        'website_display',
+        'event_print',
+        'archival_hosting',
+      ],
+    ],
+  ])('rejects permitted uses containing %s', (_description, permittedUses) => {
+    const bundle = makeRegistryBundle();
+    const permission = bundle.permissions.permissions[0];
+    if (permission !== undefined) {
+      permission.permitted_uses = permittedUses;
+    }
+
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+  });
+
+  it.each([
+    ['unassigned alpha-2 code', ['ZZ']],
+    ['worldwide mixed with a country', ['worldwide', 'AU']],
+    ['duplicate country codes', ['AU', 'AU']],
+  ])('rejects territories containing %s', (_description, territories) => {
+    const bundle = makeRegistryBundle();
+    const permission = bundle.permissions.permissions[0];
+    if (permission !== undefined) {
+      permission.territories = territories;
+    }
+
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+  });
+
+  it('accepts worldwide as the sole territory', () => {
+    const bundle = makeRegistryBundle();
+    const permission = bundle.permissions.permissions[0];
+    if (permission !== undefined) {
+      permission.territories = ['worldwide'];
+    }
+
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(true);
+  });
+
   it('requires real ISO dates and lowercase SHA-256 digests', () => {
     const invalidApproval = makeRegistryBundle();
     const approval = invalidApproval.approvals.approvals[0];
@@ -156,4 +229,54 @@ describe('registryBundleSchema', () => {
 
     expect(registryBundleSchema.safeParse(invalidAsset).success).toBe(false);
   });
+
+  it.each([
+    ['audio//test-only.mp3'],
+    ['audio/recitations//test-only.mp3'],
+  ])('rejects asset paths with empty segments: %s', (path) => {
+    const bundle = makeRegistryBundle();
+    const asset = bundle.assets.assets[0];
+    if (asset !== undefined) {
+      asset.path = path;
+    }
+
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+  });
+
+  it.each([
+    ['font', 'fonts/test-only.woff2', 'font/woff2'],
+    ['image', 'images/test-only.avif', 'image/avif'],
+    ['image', 'images/test-only.webp', 'image/webp'],
+    ['image', 'images/test-only.png', 'image/png'],
+    ['icon', 'icons/test-only.svg', 'image/svg+xml'],
+    ['ornament', 'icons/test-ornament.svg', 'image/svg+xml'],
+    ['audio', 'audio/test-only.mp3', 'audio/mpeg'],
+    ['audio', 'audio/test-only.ogg', 'audio/ogg'],
+  ] as const)(
+    'accepts a coupled %s asset at %s with %s',
+    (kind, path, mimeType) => {
+      const bundle = makeRegistryBundle();
+      replaceAsset(bundle, makeAsset(kind, path, mimeType));
+
+      expect(registryBundleSchema.safeParse(bundle).success).toBe(true);
+    },
+  );
+
+  it.each([
+    ['font using an image contract', 'font', 'images/test-only.png', 'image/png'],
+    ['image using a font contract', 'image', 'fonts/test-only.woff2', 'font/woff2'],
+    ['raster image declared as SVG', 'image', 'images/test-only.svg', 'image/svg+xml'],
+    ['icon outside the icon root', 'icon', 'images/test-only.svg', 'image/svg+xml'],
+    ['audio outside the audio root', 'audio', 'images/test-only.mp3', 'audio/mpeg'],
+    ['MP3 MIME with an OGG extension', 'audio', 'audio/test-only.ogg', 'audio/mpeg'],
+    ['AVIF MIME with a PNG extension', 'image', 'images/test-only.png', 'image/avif'],
+  ] as const)(
+    'rejects %s',
+    (_description, kind, path, mimeType) => {
+      const bundle = makeRegistryBundle();
+      replaceAsset(bundle, makeAsset(kind, path, mimeType));
+
+      expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+    },
+  );
 });

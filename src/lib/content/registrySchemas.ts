@@ -23,6 +23,264 @@ export const CONTRIBUTOR_ROLES = [
 const IDENTIFIER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/u;
 
+// ISO 3166-1 alpha-2 assigned codes from ISO/TC 46 N1127 (2024-02-29).
+// The sorted static snapshot makes territory-policy changes reviewable in Git.
+const ISO_3166_1_ALPHA_2_CODES = [
+  'AD',
+  'AE',
+  'AF',
+  'AG',
+  'AI',
+  'AL',
+  'AM',
+  'AO',
+  'AQ',
+  'AR',
+  'AS',
+  'AT',
+  'AU',
+  'AW',
+  'AX',
+  'AZ',
+  'BA',
+  'BB',
+  'BD',
+  'BE',
+  'BF',
+  'BG',
+  'BH',
+  'BI',
+  'BJ',
+  'BL',
+  'BM',
+  'BN',
+  'BO',
+  'BQ',
+  'BR',
+  'BS',
+  'BT',
+  'BV',
+  'BW',
+  'BY',
+  'BZ',
+  'CA',
+  'CC',
+  'CD',
+  'CF',
+  'CG',
+  'CH',
+  'CI',
+  'CK',
+  'CL',
+  'CM',
+  'CN',
+  'CO',
+  'CR',
+  'CU',
+  'CV',
+  'CW',
+  'CX',
+  'CY',
+  'CZ',
+  'DE',
+  'DJ',
+  'DK',
+  'DM',
+  'DO',
+  'DZ',
+  'EC',
+  'EE',
+  'EG',
+  'EH',
+  'ER',
+  'ES',
+  'ET',
+  'FI',
+  'FJ',
+  'FK',
+  'FM',
+  'FO',
+  'FR',
+  'GA',
+  'GB',
+  'GD',
+  'GE',
+  'GF',
+  'GG',
+  'GH',
+  'GI',
+  'GL',
+  'GM',
+  'GN',
+  'GP',
+  'GQ',
+  'GR',
+  'GS',
+  'GT',
+  'GU',
+  'GW',
+  'GY',
+  'HK',
+  'HM',
+  'HN',
+  'HR',
+  'HT',
+  'HU',
+  'ID',
+  'IE',
+  'IL',
+  'IM',
+  'IN',
+  'IO',
+  'IQ',
+  'IR',
+  'IS',
+  'IT',
+  'JE',
+  'JM',
+  'JO',
+  'JP',
+  'KE',
+  'KG',
+  'KH',
+  'KI',
+  'KM',
+  'KN',
+  'KP',
+  'KR',
+  'KW',
+  'KY',
+  'KZ',
+  'LA',
+  'LB',
+  'LC',
+  'LI',
+  'LK',
+  'LR',
+  'LS',
+  'LT',
+  'LU',
+  'LV',
+  'LY',
+  'MA',
+  'MC',
+  'MD',
+  'ME',
+  'MF',
+  'MG',
+  'MH',
+  'MK',
+  'ML',
+  'MM',
+  'MN',
+  'MO',
+  'MP',
+  'MQ',
+  'MR',
+  'MS',
+  'MT',
+  'MU',
+  'MV',
+  'MW',
+  'MX',
+  'MY',
+  'MZ',
+  'NA',
+  'NC',
+  'NE',
+  'NF',
+  'NG',
+  'NI',
+  'NL',
+  'NO',
+  'NP',
+  'NR',
+  'NU',
+  'NZ',
+  'OM',
+  'PA',
+  'PE',
+  'PF',
+  'PG',
+  'PH',
+  'PK',
+  'PL',
+  'PM',
+  'PN',
+  'PR',
+  'PS',
+  'PT',
+  'PW',
+  'PY',
+  'QA',
+  'RE',
+  'RO',
+  'RS',
+  'RU',
+  'RW',
+  'SA',
+  'SB',
+  'SC',
+  'SD',
+  'SE',
+  'SG',
+  'SH',
+  'SI',
+  'SJ',
+  'SK',
+  'SL',
+  'SM',
+  'SN',
+  'SO',
+  'SR',
+  'SS',
+  'ST',
+  'SV',
+  'SX',
+  'SY',
+  'SZ',
+  'TC',
+  'TD',
+  'TF',
+  'TG',
+  'TH',
+  'TJ',
+  'TK',
+  'TL',
+  'TM',
+  'TN',
+  'TO',
+  'TR',
+  'TT',
+  'TV',
+  'TW',
+  'TZ',
+  'UA',
+  'UG',
+  'UM',
+  'US',
+  'UY',
+  'UZ',
+  'VA',
+  'VC',
+  'VE',
+  'VG',
+  'VI',
+  'VN',
+  'VU',
+  'WF',
+  'WS',
+  'YE',
+  'YT',
+  'ZA',
+  'ZM',
+  'ZW',
+] as const;
+
+const ISO_3166_1_ALPHA_2_CODE_SET: ReadonlySet<string> = new Set(
+  ISO_3166_1_ALPHA_2_CODES,
+);
+
 const identifierSchema = z
   .string()
   .min(1)
@@ -117,7 +375,13 @@ export const contributorRegistrySchema = z
 
 const territorySchema = z.union([
   z.literal('worldwide'),
-  z.string().regex(/^[A-Z]{2}$/u, 'Territories must be worldwide or ISO alpha-2 codes.'),
+  z
+    .string()
+    .regex(/^[A-Z]{2}$/u, 'Territories must be worldwide or ISO alpha-2 codes.')
+    .refine(
+      (value) => ISO_3166_1_ALPHA_2_CODE_SET.has(value),
+      'Territory must be an assigned ISO 3166-1 alpha-2 code.',
+    ),
 ]);
 
 const permissionRecordSchema = z
@@ -130,16 +394,19 @@ const permissionRecordSchema = z
     evidence_reference: nonBlankText(500),
     permitted_uses: z
       .array(z.enum(PUBLIC_USES))
-      .min(1)
-      .max(PUBLIC_USES.length)
+      .length(PUBLIC_USES.length)
       .refine(hasUniqueStrings, 'Permitted uses cannot contain duplicates.'),
     attribution: nonBlankText(500),
     modification_permitted: z.boolean(),
     territories: z
       .array(territorySchema)
       .min(1)
-      .max(16)
-      .refine(hasUniqueStrings, 'Territories cannot contain duplicates.'),
+      .max(ISO_3166_1_ALPHA_2_CODES.length)
+      .refine(hasUniqueStrings, 'Territories cannot contain duplicates.')
+      .refine(
+        (values) => !values.includes('worldwide') || values.length === 1,
+        'Worldwide must be the only territory when present.',
+      ),
     expires_on: isoDateSchema.nullable(),
   })
   .strict();
@@ -182,7 +449,10 @@ export const approvalRegistrySchema = z
 const safeAssetPathSchema = z
   .string()
   .max(300)
-  .regex(/^(?:audio|images|fonts)\/[A-Za-z0-9._/-]+$/u)
+  .regex(
+    /^(?:audio|fonts|icons|images)\/[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/u,
+    'Asset paths must use an approved root and nonempty path segments.',
+  )
   .refine(
     (value) => value.split('/').every((segment) => segment !== '.' && segment !== '..'),
     'Asset paths cannot traverse directories.',
@@ -210,7 +480,7 @@ const audioAssetSchema = z
 const nonAudioAssetSchema = z
   .object({
     ...assetBaseShape,
-    kind: z.enum(['image', 'font']),
+    kind: z.enum(['font', 'icon', 'image', 'ornament']),
     mime_type: z.enum([
       'image/avif',
       'image/webp',
@@ -228,6 +498,37 @@ const assetRecordSchema = z.discriminatedUnion('kind', [
   nonAudioAssetSchema,
 ]);
 
+function hasMatchingAssetContract(asset: z.infer<typeof assetRecordSchema>): boolean {
+  switch (asset.kind) {
+    case 'audio':
+      return (
+        asset.path.startsWith('audio/') &&
+        ((asset.mime_type === 'audio/mpeg' && asset.path.endsWith('.mp3')) ||
+          (asset.mime_type === 'audio/ogg' && asset.path.endsWith('.ogg')))
+      );
+    case 'font':
+      return (
+        asset.path.startsWith('fonts/') &&
+        asset.mime_type === 'font/woff2' &&
+        asset.path.endsWith('.woff2')
+      );
+    case 'icon':
+    case 'ornament':
+      return (
+        asset.path.startsWith('icons/') &&
+        asset.mime_type === 'image/svg+xml' &&
+        asset.path.endsWith('.svg')
+      );
+    case 'image':
+      return (
+        asset.path.startsWith('images/') &&
+        ((asset.mime_type === 'image/avif' && asset.path.endsWith('.avif')) ||
+          (asset.mime_type === 'image/webp' && asset.path.endsWith('.webp')) ||
+          (asset.mime_type === 'image/png' && asset.path.endsWith('.png')))
+      );
+  }
+}
+
 export const assetRegistrySchema = z
   .object({
     schema_version: z.literal(1),
@@ -237,6 +538,16 @@ export const assetRegistrySchema = z
   .superRefine((registry, context) => {
     addDuplicateIdIssues(registry.assets, (index, message) => {
       context.addIssue({ code: 'custom', path: ['assets', index, 'id'], message });
+    });
+
+    registry.assets.forEach((asset, index) => {
+      if (!hasMatchingAssetContract(asset)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['assets', index],
+          message: 'Asset kind, root, MIME type, and extension must match.',
+        });
+      }
     });
   });
 
