@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { canonicalSha256 } from '../../src/lib/content/canonical';
 import { publicContentItemSchema } from '../../src/lib/content/publicSchema';
-import { REVIEWED_REFLECTION } from './fixtures';
+import { TEST_ONLY_REFLECTION } from './fixtures';
 
 function makePublicPayload() {
   return {
@@ -15,20 +15,26 @@ function makePublicPayload() {
       accent: 'pomegranate',
     },
     source: {
-      workEn: 'TEST ONLY Divan of Hafez',
-      workFa: 'نسخه آزمایشی',
+      workEn: 'TEST ONLY NOT POETRY SOURCE TITLE',
+      workFa: 'TEST ONLY NOT POETRY SOURCE LABEL',
       editionPublicCredit: 'TEST ONLY public edition credit',
       reference: 'TEST-REFERENCE-1',
-      openingHemistichFa: 'آغاز آزمایشی' as string | null,
+      openingHemistichFa: 'TEST ONLY NOT POETRY OPENING IDENTIFIER' as string | null,
     },
     text: {
-      persianLines: ['سطر آزمایشی نخست', 'سطر آزمایشی دوم'],
-      englishLines: ['TEST ONLY first line', 'TEST ONLY second line'],
+      persianLines: [
+        'TEST ONLY NOT POETRY PERSIAN UNIT ONE',
+        'TEST ONLY NOT POETRY PERSIAN UNIT TWO',
+      ],
+      englishLines: [
+        'TEST ONLY NOT TRANSLATION ENGLISH UNIT ONE',
+        'TEST ONLY NOT TRANSLATION ENGLISH UNIT TWO',
+      ],
       alignment: 'line',
     },
     translationClassification: 'society_translation',
     translationCredit: 'TEST ONLY translation credit',
-    reflection: REVIEWED_REFLECTION,
+    reflection: TEST_ONLY_REFLECTION,
     audio: null as {
       assetPath: string;
       mimeType: string;
@@ -100,6 +106,63 @@ describe('publicContentItemSchema', () => {
       expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
     },
   );
+
+  it.each([
+    '*single emphasis*',
+    '_single emphasis_',
+    '[reference label][reference-id]',
+    '[reference-id]: https://example.test/source',
+    'TEST ONLY heading\n===',
+    'TEST ONLY heading\n---',
+    '    TEST ONLY indented code',
+    '```text\nTEST ONLY fenced code\n```',
+    '~~~text\nTEST ONLY fenced code\n~~~',
+    '<!DOCTYPE html>',
+    '<![CDATA[TEST ONLY declaration]]>',
+    '<?xml version="1.0"?>',
+  ])('rejects additional raw markup forms in public text: %s', (unsafeText) => {
+    const payload = makePublicPayload();
+    payload.text.englishLines[0] = unsafeText;
+
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+  });
+
+  it.each(['\u061C', '\u200E', '\u200F'])(
+    'rejects unsafe bidi control U+%s in public text',
+    (unsafeControl) => {
+      const payload = makePublicPayload();
+      payload.text.englishLines[0] = `TEST ONLY${unsafeControl}NOT TRANSLATION`;
+
+      expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+    },
+  );
+
+  it('does not count punctuation-only tokens as public reflection words', () => {
+    const payload = makePublicPayload();
+    const actualWords = Array.from({ length: 44 }, (_, index) => `word${index}`);
+    payload.reflection = [...actualWords, '...', '---', '!!!'].join(' ');
+
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+  });
+
+  it('requires equal Persian and English unit counts for stanza alignment', () => {
+    const payload = makePublicPayload();
+    payload.text.alignment = 'stanza';
+    payload.text.englishLines = ['TEST ONLY NOT TRANSLATION UNIT ONE'];
+
+    const result = publicContentItemSchema.safeParse(withHash(payload));
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.error.issues.some(
+          (issue) =>
+            issue.message ===
+            'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
+        ),
+      ).toBe(true);
+    }
+  });
 
   it('accepts valid local audio metadata', () => {
     const payload = makePublicPayload();

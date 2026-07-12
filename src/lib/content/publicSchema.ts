@@ -10,13 +10,21 @@ import { canonicalSha256 } from './canonical';
 const VISUAL_VARIANTS = ['garden_night', 'lamp_constellation'] as const;
 const ACCENTS = ['pomegranate', 'lapis'] as const;
 const AUDIO_MIME_TYPES = ['audio/mpeg', 'audio/ogg'] as const;
-const HTML_PATTERN = /<(?:!--|\/?[A-Za-z][^>]*>)/u;
+const HTML_PATTERN = /<(?:!--|![A-Za-z]|!\[|\?|\/?[A-Za-z][^>]*>)/u;
 const MARKDOWN_PATTERNS = [
-  /(?:^|\n)\s{0,3}(?:#{1,6}|>|[-+*]|\d+[.)])\s/u,
+  /(?:^|\n)(?:\s{0,3}(?:#{1,6}|>|[-+*]|\d+[.)])\s| {4}\S)/u,
   /!?\[[^\]]*\]\([^)]*\)/u,
+  /!?\[[^\]]+\]\s*\[[^\]]*\]/u,
+  /(?:^|\n)\s{0,3}\[[^\]]+\]:\s*\S/u,
+  /(?:^|\n)[^\n]+\n\s{0,3}(?:=+|-+)\s*(?:\n|$)/u,
+  /(?:^|\n)\s{0,3}(?:`{3,}|~{3,})/u,
+  /(?:^|[^\p{L}\p{N}])\*(?![\s*])(?:[^*\n]*\S)?\*(?!\*)/u,
+  /(?:^|[^\p{L}\p{N}])_(?![\s_])(?:[^_\n]*\S)?_(?![\p{L}\p{N}_])/u,
   /(?:\*\*|__|~~|`)/u,
 ];
-const BIDI_CONTROL_PATTERN = /[\u202A-\u202E\u2066-\u2069]/u;
+const BIDI_CONTROL_PATTERN = /[\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/u;
+const WORD_LIKE_PATTERN =
+  /[\p{L}\p{N}][\p{L}\p{N}\p{M}\u200C\u200D]*(?:['’.-][\p{L}\p{N}][\p{L}\p{N}\p{M}\u200C\u200D]*)*/gu;
 const IDENTIFIER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/u;
 
@@ -41,7 +49,7 @@ function publicText(maximumLength: number) {
 }
 
 function wordCount(value: string): number {
-  return value.trim().split(/\s+/u).filter(Boolean).length;
+  return value.match(WORD_LIKE_PATTERN)?.length ?? 0;
 }
 
 function isSafeAudioPath(value: string): boolean {
@@ -82,14 +90,12 @@ const textSchema = z
   })
   .strict()
   .superRefine((text, context) => {
-    if (
-      text.alignment === 'line' &&
-      text.persianLines.length !== text.englishLines.length
-    ) {
+    if (text.persianLines.length !== text.englishLines.length) {
       context.addIssue({
         code: 'custom',
         path: ['englishLines'],
-        message: 'Line-aligned Persian and English arrays must have equal lengths.',
+        message:
+          'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
       });
     }
   });

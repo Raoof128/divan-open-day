@@ -68,6 +68,14 @@ describe('authoringContentItemSchema', () => {
     expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
   });
 
+  it('does not count punctuation-only tokens as reflection words', () => {
+    const item = makeAuthoringItem();
+    const actualWords = Array.from({ length: 44 }, (_, index) => `word${index}`);
+    item.reflection.english = [...actualWords, '...', '---', '!!!'].join(' ');
+
+    expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
+  });
+
   it.each([
     '<strong>raw HTML</strong>',
     '**raw Markdown**',
@@ -77,6 +85,73 @@ describe('authoringContentItemSchema', () => {
     item.text.english_lines[0] = unsafeText;
 
     expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
+  });
+
+  it.each([
+    '*single emphasis*',
+    '_single emphasis_',
+    '[reference label][reference-id]',
+    '[reference-id]: https://example.test/source',
+    'TEST ONLY heading\n===',
+    'TEST ONLY heading\n---',
+    '    TEST ONLY indented code',
+    '```text\nTEST ONLY fenced code\n```',
+    '~~~text\nTEST ONLY fenced code\n~~~',
+    '<!DOCTYPE html>',
+    '<![CDATA[TEST ONLY declaration]]>',
+    '<?xml version="1.0"?>',
+  ])('rejects additional raw markup forms in authoring text: %s', (unsafeText) => {
+    const item = makeAuthoringItem();
+    item.text.english_lines[0] = unsafeText;
+
+    expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
+  });
+
+  it.each(['\u061C', '\u200E', '\u200F'])(
+    'rejects unsafe bidi control U+%s in authoring text',
+    (unsafeControl) => {
+      const item = makeAuthoringItem();
+      item.text.english_lines[0] = `TEST ONLY${unsafeControl}NOT TRANSLATION`;
+
+      expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
+    },
+  );
+
+  it('requires equal Persian and English unit counts for stanza alignment', () => {
+    const item = makeAuthoringItem();
+    item.text.alignment = 'stanza';
+    item.text.english_lines = ['TEST ONLY NOT TRANSLATION UNIT ONE'];
+
+    const result = authoringContentItemSchema.safeParse(item);
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.error.issues.some(
+          (issue) =>
+            issue.message ===
+            'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
+        ),
+      ).toBe(true);
+    }
+  });
+
+  it('uses conspicuous neutral non-content fixture text', () => {
+    const item = makeAuthoringItem();
+
+    expect(
+      item.text.persian_lines.every(
+        (line) => line.includes('TEST ONLY') && line.includes('NOT POETRY'),
+      ),
+    ).toBe(true);
+    expect(
+      item.text.english_lines.every(
+        (line) => line.includes('TEST ONLY') && line.includes('NOT TRANSLATION'),
+      ),
+    ).toBe(true);
+    expect(item.reflection.english).toContain('TEST ONLY');
+    expect(item.reflection.english).toContain('NOT INTERPRETATION');
+    expect(item.reflection.english).not.toMatch(/garden|desire|symbol|verse/iu);
   });
 
   it('requires every publication use and every review role', () => {

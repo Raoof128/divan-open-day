@@ -1,5 +1,5 @@
-export const REVIEWED_REFLECTION =
-  'This verse holds uncertainty beside hope, allowing both to remain present. Its garden image may suggest patience, attention, and the changing character of desire. Rather than directing a single response, it invites readers to notice what they carry, what they release, and how meaning can deepen through reflection.';
+export const TEST_ONLY_REFLECTION =
+  'TEST ONLY NOT INTERPRETATION. This synthetic fixture exists solely to exercise automated validation of minimum and maximum word counts. It contains neutral labels, ordinary filler terms, and explicit warnings. It is not poetry, not translation, not commentary, not advice, not prediction, and not approved content. No phrase identifies an author, source, culture, belief, event, person, or publication. Delete or replace this fixture before any production build.';
 
 const BASE_AUTHORING_ITEM = {
   id: 'test-only-hafez-selection',
@@ -12,20 +12,26 @@ const BASE_AUTHORING_ITEM = {
     accent: 'pomegranate',
   },
   source: {
-    work_en: 'TEST ONLY Divan of Hafez',
-    work_fa: 'نسخه آزمایشی',
+    work_en: 'TEST ONLY NOT POETRY SOURCE TITLE',
+    work_fa: 'TEST ONLY NOT POETRY SOURCE LABEL',
     edition_id: 'test-edition',
     edition_citation: 'TEST ONLY internal edition citation',
     edition_public_credit: 'TEST ONLY public edition credit',
     reference_type: 'ghazal',
     reference_value: 'TEST-REFERENCE-1',
-    opening_hemistich_fa: 'آغاز آزمایشی' as string | null,
+    opening_hemistich_fa: 'TEST ONLY NOT POETRY OPENING IDENTIFIER' as string | null,
     page_reference: null as string | null,
     source_language: 'fa',
   },
   text: {
-    persian_lines: ['سطر آزمایشی نخست', 'سطر آزمایشی دوم'],
-    english_lines: ['TEST ONLY first line', 'TEST ONLY second line'],
+    persian_lines: [
+      'TEST ONLY NOT POETRY PERSIAN UNIT ONE',
+      'TEST ONLY NOT POETRY PERSIAN UNIT TWO',
+    ],
+    english_lines: [
+      'TEST ONLY NOT TRANSLATION ENGLISH UNIT ONE',
+      'TEST ONLY NOT TRANSLATION ENGLISH UNIT TWO',
+    ],
     alignment: 'line',
   },
   translation: {
@@ -43,7 +49,7 @@ const BASE_AUTHORING_ITEM = {
     moral_rights_notes: 'TEST ONLY private note' as string | null,
   },
   reflection: {
-    english: REVIEWED_REFLECTION,
+    english: TEST_ONLY_REFLECTION,
     reviewer_ids: ['test-cultural-reviewer'],
     disclaimer_profile: 'reflection_not_prediction',
   },

@@ -51,6 +51,16 @@ function serializeCanonical(value: unknown, ancestors: Set<object>): string {
         }
       }
 
+      const enumerableKeys = Object.keys(value);
+      if (
+        enumerableKeys.length !== value.length ||
+        enumerableKeys.some((key, index) => key !== String(index))
+      ) {
+        throw new TypeError(
+          'Canonical JSON does not support extra enumerable array properties.',
+        );
+      }
+
       return `[${value
         .map((entry) => serializeCanonical(entry, ancestors))
         .join(',')}]`;

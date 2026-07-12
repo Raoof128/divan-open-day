@@ -37,4 +37,12 @@ describe('canonical JSON', () => {
     expect(() => canonicalStringify(sparse)).toThrow(/sparse/u);
     expect(() => canonicalStringify(symbolKeyed)).toThrow(/symbol/u);
   });
+
+  it('rejects extra enumerable string properties on arrays', () => {
+    const arrayWithMetadata = Object.assign([1, 2], { metadata: 'private' });
+
+    expect(() => canonicalStringify(arrayWithMetadata)).toThrow(
+      /array.*propert|propert.*array/iu,
+    );
+  });
 });
