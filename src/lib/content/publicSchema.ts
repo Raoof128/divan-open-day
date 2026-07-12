@@ -12,7 +12,8 @@ const ACCENTS = ['pomegranate', 'lapis'] as const;
 const AUDIO_MIME_TYPES = ['audio/mpeg', 'audio/ogg'] as const;
 const HTML_PATTERN = /<(?:!--|![A-Za-z]|!\[|\?|\/?[A-Za-z][^>]*>)/u;
 const MARKDOWN_PATTERNS = [
-  /(?:^|\n)(?:\s{0,3}(?:#{1,6}|>|[-+*]|\d+[.)])\s| {4}\S)/u,
+  /(?:^|\n)(?:\s{0,3}(?:#{1,6}|>|[-+*]|\d+[.)])\s|(?: {4}| {0,3}\t)\S)/u,
+  /(?:^|\n) {0,3}(?:(?:\*[ \t]*){3,}|(?:_[ \t]*){3,}|(?:-[ \t]*){3,})(?:\n|$)/u,
   /!?\[[^\]]*\]\([^)]*\)/u,
   /!?\[[^\]]+\]\s*\[[^\]]*\]/u,
   /(?:^|\n)\s{0,3}\[[^\]]+\]:\s*\S/u,
