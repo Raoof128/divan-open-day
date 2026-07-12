@@ -43,7 +43,7 @@ describe('compileCorpus', () => {
       compiled.items.map((item) => item.id).toSorted(),
     );
     expect(compiled.items[0]?.audio).toMatchObject({
-      assetPath: 'audio/test-only-hafez-01.mp3',
+      assetPath: corpus.assetFiles[0]!.path,
       performerCredit: 'TEST ONLY / SYNTHETIC PERFORMER CREDIT',
     });
   });

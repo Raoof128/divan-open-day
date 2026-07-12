@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 import { z } from 'zod';
 
 import type { PublicContentItem } from '../../contracts/content';
@@ -14,6 +16,15 @@ import { publicContentItemSchema } from './publicSchema';
 const SHA256_PATTERN = /^[a-f0-9]{64}$/u;
 const RELEASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const SAFE_ASSET_PATH_PATTERN = /^[A-Za-z0-9._/-]+$/u;
+const ASSET_MIME_TYPES = [
+  'audio/mpeg',
+  'audio/ogg',
+  'font/woff2',
+  'image/avif',
+  'image/png',
+  'image/svg+xml',
+  'image/webp',
+] as const;
 
 function isSafeLocalAssetPath(value: string): boolean {
   if (
@@ -36,8 +47,9 @@ const releaseAssetSchema = z
     path: z.string().min(1).max(300).refine(isSafeLocalAssetPath, {
       message: 'Asset paths must be safe local paths.',
     }),
+    mimeType: z.enum(ASSET_MIME_TYPES),
     sha256: z.string().regex(SHA256_PATTERN),
-    bytes: z.number().int().nonnegative(),
+    bytes: z.number().int().positive(),
     requiredOffline: z.boolean(),
   })
   .strict()
@@ -48,6 +60,22 @@ const releaseAssetSchema = z
         code: 'custom',
         path: ['path'],
         message: 'Published asset filenames must be content-addressed by SHA-256.',
+      });
+    }
+
+    const validMimePath =
+      (asset.mimeType === 'audio/mpeg' && asset.path.startsWith('audio/') && asset.path.endsWith('.mp3')) ||
+      (asset.mimeType === 'audio/ogg' && asset.path.startsWith('audio/') && asset.path.endsWith('.ogg')) ||
+      (asset.mimeType === 'font/woff2' && asset.path.startsWith('fonts/') && asset.path.endsWith('.woff2')) ||
+      (asset.mimeType === 'image/svg+xml' && asset.path.startsWith('icons/') && asset.path.endsWith('.svg')) ||
+      (asset.mimeType === 'image/avif' && asset.path.startsWith('images/') && asset.path.endsWith('.avif')) ||
+      (asset.mimeType === 'image/webp' && asset.path.startsWith('images/') && asset.path.endsWith('.webp')) ||
+      (asset.mimeType === 'image/png' && asset.path.startsWith('images/') && asset.path.endsWith('.png'));
+    if (!validMimePath) {
+      context.addIssue({
+        code: 'custom',
+        path: ['mimeType'],
+        message: 'Release asset MIME type must match its approved path and extension.',
       });
     }
   });
@@ -154,7 +182,11 @@ export interface CreateReleaseArtifactsInput {
   readonly releaseId: string;
   readonly builtAt: string;
   readonly corpus: CompiledCorpus;
-  readonly assets: readonly ReleaseAsset[];
+  readonly assets: readonly ReleaseAssetSource[];
+}
+
+export interface ReleaseAssetSource extends ReleaseAsset {
+  readonly contents: Uint8Array;
 }
 
 export interface PublicCorpus {
@@ -170,7 +202,7 @@ export interface ReleaseArtifacts {
   readonly contentJson: string;
   readonly assetManifestJson: string;
   readonly releaseJson: string;
-  readonly files: ReadonlyMap<string, string>;
+  readonly files: ReadonlyMap<string, string | Uint8Array>;
 }
 
 function compareCodeUnits(left: string, right: string): number {
@@ -201,13 +233,55 @@ export function createReleaseArtifacts(
     releaseId: input.releaseId,
     items: input.corpus.items,
   });
-  const assets = input.assets
-    .map((asset) => releaseAssetSchema.parse(asset))
-    .toSorted((left, right) => compareCodeUnits(left.path, right.path));
+  const assetSources = input.assets
+    .map((source) => {
+      const asset = releaseAssetSchema.parse({
+        path: source.path,
+        mimeType: source.mimeType,
+        sha256: source.sha256,
+        bytes: source.bytes,
+        requiredOffline: source.requiredOffline,
+      });
+      if (source.contents.byteLength !== asset.bytes) {
+        throw new Error(`Release asset byte count mismatch for ${asset.path}.`);
+      }
+      const digest = createHash('sha256').update(source.contents).digest('hex');
+      if (digest !== asset.sha256) {
+        throw new Error(`Release asset SHA-256 mismatch for ${asset.path}.`);
+      }
+      return { asset, contents: source.contents.slice() };
+    })
+    .toSorted((left, right) => compareCodeUnits(left.asset.path, right.asset.path));
+  const assets = assetSources.map((source) => source.asset);
   const assetManifest: AssetManifest = assetManifestSchema.parse({
     releaseId: input.releaseId,
     assets,
   });
+
+  const publicAudioByPath = new Map<string, string>();
+  for (const item of corpus.items) {
+    if (item.audio === null) {
+      continue;
+    }
+    const previousMime = publicAudioByPath.get(item.audio.assetPath);
+    if (previousMime !== undefined && previousMime !== item.audio.mimeType) {
+      throw new Error(`Compiled audio path ${item.audio.assetPath} has conflicting MIME types.`);
+    }
+    publicAudioByPath.set(item.audio.assetPath, item.audio.mimeType);
+  }
+  for (const [audioPath, mimeType] of publicAudioByPath) {
+    const candidates = assets.filter((asset) => asset.path === audioPath);
+    if (candidates.length !== 1 || candidates[0]?.mimeType !== mimeType) {
+      throw new Error(
+        `Compiled audio ${audioPath} must have exactly one matching manifest asset and file.`,
+      );
+    }
+  }
+  for (const asset of assets) {
+    if (asset.mimeType.startsWith('audio/') && !publicAudioByPath.has(asset.path)) {
+      throw new Error(`Orphan audio manifest asset ${asset.path} is not referenced by the corpus.`);
+    }
+  }
 
   const contentJson = canonicalStringify(corpus);
   const assetManifestJson = canonicalStringify(assetManifest);
@@ -236,10 +310,13 @@ export function createReleaseArtifacts(
     contentJson,
     assetManifestJson,
     releaseJson,
-    files: new Map([
+    files: new Map<string, string | Uint8Array>([
       ['release.json', releaseJson],
       [release.contentPath.slice(1), contentJson],
       [release.assetManifestPath.slice(1), assetManifestJson],
+      ...assetSources.map(
+        (asset) => [asset.asset.path, asset.contents] as const,
+      ),
     ]),
   };
 }

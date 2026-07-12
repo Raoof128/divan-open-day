@@ -1,8 +1,13 @@
+import { createHash } from 'node:crypto';
+
 import { describe, expect, it } from 'vitest';
 
-import type { ReleaseAsset } from '../../src/contracts/release';
 import { compileCorpus } from '../../src/lib/content/compileCorpus';
-import { createReleaseArtifacts } from '../../src/lib/content/release';
+import { registryBundleSchema } from '../../src/lib/content/registrySchemas';
+import {
+  createReleaseArtifacts,
+  type ReleaseAssetSource,
+} from '../../src/lib/content/release';
 import { makeFixtureCorpus } from '../fixtures/content/corpus';
 
 function compileFixture() {
@@ -15,7 +20,43 @@ function compileFixture() {
   });
 }
 
-function createFixtureRelease(assets: readonly ReleaseAsset[] = []) {
+function fixtureAudioSource(): ReleaseAssetSource {
+  const fixture = makeFixtureCorpus();
+  const asset = registryBundleSchema.parse(fixture.registries).assets.assets[0]!;
+  const file = fixture.assetFiles[0]!;
+  if (asset.kind !== 'audio') {
+    throw new Error('TEST ONLY fixture asset must be audio.');
+  }
+  return {
+    path: asset.path,
+    mimeType: asset.mime_type,
+    sha256: asset.sha256,
+    bytes: asset.bytes,
+    requiredOffline: false,
+    contents: file.contents,
+  };
+}
+
+function makeAssetSource(
+  directory: 'images' | 'audio',
+  extension: 'webp' | 'mp3',
+  mimeType: 'image/webp' | 'audio/mpeg',
+  contents: Uint8Array,
+): ReleaseAssetSource {
+  const sha256 = createHash('sha256').update(contents).digest('hex');
+  return {
+    path: `${directory}/asset-${sha256.slice(0, 8)}.${extension}`,
+    mimeType,
+    sha256,
+    bytes: contents.byteLength,
+    requiredOffline: false,
+    contents,
+  };
+}
+
+function createFixtureRelease(
+  assets: readonly ReleaseAssetSource[] = [fixtureAudioSource()],
+) {
   return createReleaseArtifacts({
     profile: 'fixture',
     releaseId: 'test-only-fixture-release',
@@ -26,6 +67,10 @@ function createFixtureRelease(assets: readonly ReleaseAsset[] = []) {
 }
 
 describe('createReleaseArtifacts', () => {
+  it('rejects a release whose compiled audio has no manifest asset and file', () => {
+    expect(() => createFixtureRelease([])).toThrow(/audio|asset|manifest|missing/iu);
+  });
+
   it('produces deterministic canonical hashes and content-addressed paths', () => {
     const first = createFixtureRelease();
     const second = createFixtureRelease();
@@ -55,36 +100,30 @@ describe('createReleaseArtifacts', () => {
   });
 
   it('sorts release assets deterministically', () => {
-    const assets: ReleaseAsset[] = [
-      {
-        path: 'images/b-22222222.webp',
-        sha256: '2'.repeat(64),
-        bytes: 2,
-        requiredOffline: false,
-      },
-      {
-        path: 'images/a-11111111.webp',
-        sha256: '1'.repeat(64),
-        bytes: 1,
-        requiredOffline: true,
-      },
+    const assets: ReleaseAssetSource[] = [
+      makeAssetSource('images', 'webp', 'image/webp', Uint8Array.of(2, 2)),
+      makeAssetSource('images', 'webp', 'image/webp', Uint8Array.of(1)),
+      fixtureAudioSource(),
     ];
 
     const artifacts = createFixtureRelease(assets);
 
-    expect(artifacts.assetManifest.assets.map((asset) => asset.path)).toEqual([
-      'images/a-11111111.webp',
-      'images/b-22222222.webp',
-    ]);
+    expect(artifacts.assetManifest.assets.map((asset) => asset.path)).toEqual(
+      assets.map((asset) => asset.path).toSorted(),
+    );
   });
 
   it('rejects remote, escaping, duplicate, or non-content-addressed assets', () => {
+    const contents = Uint8Array.of(1);
+    const sha256 = createHash('sha256').update(contents).digest('hex');
     const asset = {
       path: 'https://example.test/asset.webp',
-      sha256: '1'.repeat(64),
+      mimeType: 'image/webp',
+      sha256,
       bytes: 1,
       requiredOffline: true,
-    } satisfies ReleaseAsset;
+      contents,
+    } satisfies ReleaseAssetSource;
     expect(() => createFixtureRelease([asset])).toThrow(/asset|local|path/iu);
 
     expect(() =>
@@ -98,6 +137,14 @@ describe('createReleaseArtifacts', () => {
         { ...asset, path: 'images/image.webp' },
       ]),
     ).toThrow(/content-addressed|sha/iu);
+
+    const localAsset = {
+      ...asset,
+      path: `images/image-${sha256.slice(0, 8)}.webp`,
+    };
+    expect(() =>
+      createFixtureRelease([fixtureAudioSource(), localAsset, localAsset]),
+    ).toThrow(/duplicate|asset|path/iu);
   });
 
   it('rejects non-canonical timestamps', () => {

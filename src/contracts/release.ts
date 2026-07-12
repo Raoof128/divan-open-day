@@ -17,6 +17,14 @@ export interface ReleaseDescriptor {
 
 export interface ReleaseAsset {
   readonly path: string;
+  readonly mimeType:
+    | 'audio/mpeg'
+    | 'audio/ogg'
+    | 'font/woff2'
+    | 'image/avif'
+    | 'image/png'
+    | 'image/svg+xml'
+    | 'image/webp';
   readonly sha256: string;
   readonly bytes: number;
   readonly requiredOffline: boolean;

@@ -98,4 +98,6 @@ Production build blocked: no approved production corpus exists in content-privat
 ```
 
 Fixture-only engineering verification uses `pnpm build:fixture`. Its 24 Hafez
-and 16 Rumi records are always marked `productionEligible: false`.
+and 16 Rumi records are always marked `productionEligible: false`; its sole
+audio-shaped asset contains the exact bytes `TEST ONLY - NOT AUDIO` and is not
+an audio recording or production asset.

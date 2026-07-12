@@ -10,8 +10,13 @@ import {
   publicCorpusSchema,
   releaseDescriptorSchema,
 } from '../src/lib/content/release';
+import {
+  derivePrivateSourceValues,
+  loadContentPrivate,
+} from './content/loadContent';
 
 export interface VerifyDistOptions {
+  readonly projectRoot: string;
   readonly distDir: string;
 }
 
@@ -36,9 +41,7 @@ const PRIVATE_KEY_NAMES = new Set([
 const FIXTURE_PATTERN =
   /TEST ONLY|NOT POETRY|NOT TRANSLATION|NOT INTERPRETATION|SYNTHETIC|(?:^|[-_/])fixture(?:[-_/]|$)/iu;
 const REMOTE_URL_PATTERN =
-  /(?:\bhttps?:\/\/|(?:^|[\s("'=])\/\/[A-Za-z0-9])/iu;
-const PRIVATE_VALUE_PATTERN =
-  /(?:^|[/\\])content-private(?:[/\\]|$)|\.ya?ml(?:$|[?#])|permission[_ -]?record|evidence[_ -]?reference/iu;
+  /(?:\b[A-Za-z][A-Za-z0-9+.-]*:\/\/|(?:^|[\s("'=])\/\/[A-Za-z0-9])/iu;
 const MAX_JSON_BYTES = 20_000_000;
 
 function normalizedKey(value: string): string {
@@ -49,6 +52,7 @@ function inspectPublicValue(
   value: unknown,
   sourceName: string,
   fixtureForbidden: boolean,
+  privateValues: ReadonlySet<string>,
   seen: Set<object>,
 ): void {
   if (typeof value === 'string') {
@@ -56,8 +60,8 @@ function inspectPublicValue(
     if (REMOTE_URL_PATTERN.test(trimmed)) {
       throw new Error(`Remote resource URL leaked into ${sourceName}.`);
     }
-    if (PRIVATE_VALUE_PATTERN.test(value)) {
-      throw new Error(`Private authoring value leaked into ${sourceName}.`);
+    if (privateValues.has(value) || privateValues.has(trimmed)) {
+      throw new Error(`Source-derived private authoring value leaked into ${sourceName}.`);
     }
     if (fixtureForbidden && FIXTURE_PATTERN.test(value)) {
       throw new Error(`Fixture sentinel leaked into a production distribution.`);
@@ -73,7 +77,13 @@ function inspectPublicValue(
   try {
     if (Array.isArray(value)) {
       for (const entry of value) {
-        inspectPublicValue(entry, sourceName, fixtureForbidden, seen);
+        inspectPublicValue(
+          entry,
+          sourceName,
+          fixtureForbidden,
+          privateValues,
+          seen,
+        );
       }
       return;
     }
@@ -82,7 +92,13 @@ function inspectPublicValue(
       if (PRIVATE_KEY_NAMES.has(normalizedKey(key))) {
         throw new Error(`Private authoring key ${key} leaked into ${sourceName}.`);
       }
-      inspectPublicValue(entry, sourceName, fixtureForbidden, seen);
+      inspectPublicValue(
+        entry,
+        sourceName,
+        fixtureForbidden,
+        privateValues,
+        seen,
+      );
     }
   } finally {
     seen.delete(value);
@@ -108,7 +124,13 @@ async function readCanonicalJson(
   } catch (error) {
     throw new Error(`Malformed JSON in ${filename}.`, { cause: error });
   }
-  inspectPublicValue(value, filename, fixtureForbidden, new Set<object>());
+  inspectPublicValue(
+    value,
+    filename,
+    fixtureForbidden,
+    new Set<string>(),
+    new Set<object>(),
+  );
   if (canonicalStringify(value) !== raw) {
     throw new Error(`Distribution JSON is not canonical and may be tampered: ${filename}.`);
   }
@@ -174,9 +196,11 @@ async function verifyAssetFiles(
   distRoot: string,
   assets: readonly {
     readonly path: string;
+    readonly mimeType: string;
     readonly sha256: string;
     readonly bytes: number;
   }[],
+  profile: 'fixture' | 'production',
 ): Promise<void> {
   for (const asset of assets) {
     const filename = safeReferencedPath(distRoot, `/${asset.path}`);
@@ -189,13 +213,106 @@ async function verifyAssetFiles(
     if (digest !== asset.sha256) {
       throw new Error(`Asset SHA-256 mismatch for ${asset.path}.`);
     }
+    if (asset.mimeType === 'audio/mpeg' || asset.mimeType === 'audio/ogg') {
+      if (profile === 'fixture') {
+        if (bytes.toString('utf8') !== 'TEST ONLY - NOT AUDIO') {
+          throw new Error(
+            `Fixture audio bytes must use the TEST ONLY - NOT AUDIO sentinel: ${asset.path}.`,
+          );
+        }
+      } else {
+        const isOgg =
+          bytes.byteLength >= 4 &&
+          bytes[0] === 0x4f &&
+          bytes[1] === 0x67 &&
+          bytes[2] === 0x67 &&
+          bytes[3] === 0x53;
+        const isMp3 =
+          (bytes.byteLength >= 3 &&
+            bytes[0] === 0x49 &&
+            bytes[1] === 0x44 &&
+            bytes[2] === 0x33) ||
+          (bytes.byteLength >= 2 &&
+            bytes[0] === 0xff &&
+            (bytes[1]! & 0xe0) === 0xe0);
+        if (
+          (asset.mimeType === 'audio/ogg' && !isOgg) ||
+          (asset.mimeType === 'audio/mpeg' && !isMp3)
+        ) {
+          throw new Error(`Asset MIME signature mismatch for ${asset.path}.`);
+        }
+      }
+    }
+  }
+}
+
+async function loadSourcePrivateValues(
+  projectRoot: string,
+  profile: 'fixture' | 'production',
+): Promise<ReadonlySet<string>> {
+  if (profile === 'fixture') {
+    const { makeFixtureCorpus } = await import('../tests/fixtures/content/corpus');
+    const fixture = makeFixtureCorpus();
+    return derivePrivateSourceValues(fixture.items, fixture.registries);
+  }
+  const loaded = await loadContentPrivate({ projectRoot, profile: 'production' });
+  return loaded.privateValues;
+}
+
+function assertAudioManifestJoin(
+  corpus: {
+    readonly items: readonly {
+      readonly audio: null | {
+        readonly assetPath: string;
+        readonly mimeType: string;
+      };
+    }[];
+  },
+  assets: readonly {
+    readonly path: string;
+    readonly mimeType: string;
+  }[],
+): void {
+  const audioReferences = new Map<string, string>();
+  for (const item of corpus.items) {
+    if (item.audio !== null) {
+      const previousMime = audioReferences.get(item.audio.assetPath);
+      if (previousMime !== undefined && previousMime !== item.audio.mimeType) {
+        throw new Error(
+          `Corpus audio path ${item.audio.assetPath} has conflicting MIME types.`,
+        );
+      }
+      audioReferences.set(item.audio.assetPath, item.audio.mimeType);
+    }
+  }
+
+  for (const [audioPath, mimeType] of audioReferences) {
+    const matches = assets.filter((asset) => asset.path === audioPath);
+    if (matches.length !== 1 || matches[0]?.mimeType !== mimeType) {
+      throw new Error(
+        `Corpus audio ${audioPath} must join exactly one matching manifest entry.`,
+      );
+    }
+  }
+  for (const asset of assets) {
+    if (asset.mimeType.startsWith('audio/') && !audioReferences.has(asset.path)) {
+      throw new Error(`Orphan manifest audio entry ${asset.path}.`);
+    }
   }
 }
 
 export async function verifyDist(
   options: VerifyDistOptions,
 ): Promise<ReleaseDescriptor> {
-  const distRoot = await realpath(path.resolve(options.distDir));
+  const unresolvedDistRoot = path.resolve(options.distDir);
+  const rootStat = await lstat(unresolvedDistRoot);
+  if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
+    throw new Error('Distribution root must be a regular, non-symlink directory.');
+  }
+  const distRoot = await realpath(unresolvedDistRoot);
+  if (distRoot !== unresolvedDistRoot) {
+    throw new Error('Distribution root cannot be reached through a symlink.');
+  }
   const files = await walkDistribution(distRoot);
   assertNoForbiddenFiles(files);
 
@@ -218,6 +335,32 @@ export async function verifyDist(
   const corpus = publicCorpusSchema.parse(rawCorpus);
   const assetManifest = assetManifestSchema.parse(rawAssetManifest);
 
+  const privateValues = await loadSourcePrivateValues(
+    options.projectRoot,
+    release.buildProfile,
+  );
+  inspectPublicValue(
+    rawRelease,
+    'release.json',
+    fixtureForbidden,
+    privateValues,
+    new Set<object>(),
+  );
+  inspectPublicValue(
+    rawCorpus,
+    release.contentPath,
+    fixtureForbidden,
+    privateValues,
+    new Set<object>(),
+  );
+  inspectPublicValue(
+    rawAssetManifest,
+    release.assetManifestPath,
+    fixtureForbidden,
+    privateValues,
+    new Set<object>(),
+  );
+
   if (corpus.releaseId !== release.releaseId || assetManifest.releaseId !== release.releaseId) {
     throw new Error('Release ID mismatch across public release artifacts.');
   }
@@ -238,7 +381,8 @@ export async function verifyDist(
     throw new Error('Release item counts do not match the public corpus.');
   }
 
-  await verifyAssetFiles(distRoot, assetManifest.assets);
+  assertAudioManifestJoin(corpus, assetManifest.assets);
+  await verifyAssetFiles(distRoot, assetManifest.assets, release.buildProfile);
   const expectedFiles = new Set([
     'release.json',
     release.contentPath.slice(1),
@@ -261,7 +405,10 @@ async function main(): Promise<void> {
     throw new Error('Usage: tsx scripts/verify-dist.ts');
   }
   const projectRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
-  const release = await verifyDist({ distDir: path.join(projectRoot, 'dist') });
+  const release = await verifyDist({
+    projectRoot,
+    distDir: path.join(projectRoot, 'dist'),
+  });
   process.stdout.write(
     `Verified ${release.buildProfile} release ${release.releaseId} (${String(release.itemCount)} items).\n`,
   );

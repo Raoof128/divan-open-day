@@ -1,11 +1,18 @@
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { lstat, mkdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { ReleaseDescriptor } from '../src/contracts/release';
-import { compileCorpus } from '../src/lib/content/compileCorpus';
+import type { BuildProfile, ReleaseDescriptor } from '../src/contracts/release';
+import {
+  compileCorpus,
+  type CompiledCorpus,
+} from '../src/lib/content/compileCorpus';
+import { registryBundleSchema } from '../src/lib/content/registrySchemas';
 import {
   createReleaseArtifacts,
+  type ReleaseAssetSource,
   type ReleaseArtifacts,
 } from '../src/lib/content/release';
 import { loadContentPrivate } from './content/loadContent';
@@ -18,7 +25,21 @@ const BASELINE_MIN_RUMI = 16;
 type BuildEnvironment = Readonly<Record<string, string | undefined>>;
 
 export interface FixtureBuildOptions {
+  readonly projectRoot: string;
   readonly distDir: string;
+}
+
+export interface FixtureAssetFile {
+  readonly path: string;
+  readonly contents: Uint8Array;
+}
+
+export interface LoadReleaseAudioAssetsOptions {
+  readonly profile: BuildProfile;
+  readonly projectRoot: string;
+  readonly corpus: CompiledCorpus;
+  readonly registries: unknown;
+  readonly fixtureFiles?: readonly FixtureAssetFile[];
 }
 
 export interface ProductionBuildOptions {
@@ -143,19 +164,235 @@ export function parseProductionBuildConfig(
   };
 }
 
-function assertSafeOutputDirectory(distDir: string): string {
-  const resolved = path.resolve(distDir);
-  if (resolved === path.parse(resolved).root || resolved === process.cwd()) {
-    throw new Error('Refusing to replace an unsafe distribution directory.');
+function isNotFound(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    error.code === 'ENOENT'
+  );
+}
+
+function assertContained(root: string, candidate: string, label: string): void {
+  const relative = path.relative(root, candidate);
+  if (
+    relative === '..' ||
+    relative.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relative)
+  ) {
+    throw new Error(`${label} escapes its approved root.`);
   }
-  return resolved;
+}
+
+async function canonicalProjectRoot(projectRoot: string): Promise<string> {
+  const resolved = path.resolve(projectRoot);
+  const stat = await lstat(resolved);
+  if (stat.isSymbolicLink() || !stat.isDirectory()) {
+    throw new Error('Explicit projectRoot must be a regular, non-symlink directory.');
+  }
+  const canonical = await realpath(resolved);
+  if (canonical !== resolved) {
+    throw new Error('Explicit projectRoot cannot traverse a symlinked directory.');
+  }
+  return canonical;
+}
+
+export async function resolveSafeOutputDirectory(
+  projectRoot: string,
+  distDir: string,
+): Promise<string> {
+  const canonicalRoot = await canonicalProjectRoot(projectRoot);
+  const resolvedDist = path.resolve(distDir);
+  const expectedDist = path.join(canonicalRoot, 'dist');
+  const forbidden = new Set([
+    path.parse(resolvedDist).root,
+    path.resolve(process.cwd()),
+    path.resolve(homedir()),
+    canonicalRoot,
+  ]);
+  if (forbidden.has(resolvedDist) || resolvedDist !== expectedDist) {
+    throw new Error(
+      'Refusing to replace an unsafe distribution directory; distDir must equal explicit projectRoot/dist.',
+    );
+  }
+
+  try {
+    const stat = await lstat(resolvedDist);
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      throw new Error('Refusing to replace a symlinked or irregular distribution root.');
+    }
+    if ((await realpath(resolvedDist)) !== expectedDist) {
+      throw new Error('Refusing to replace a distribution root reached through a symlink.');
+    }
+  } catch (error) {
+    if (!isNotFound(error)) {
+      throw error;
+    }
+  }
+
+  return expectedDist;
+}
+
+function hasDeclaredAudioSignature(
+  contents: Uint8Array,
+  mimeType: 'audio/mpeg' | 'audio/ogg',
+): boolean {
+  if (mimeType === 'audio/ogg') {
+    return (
+      contents.byteLength >= 4 &&
+      contents[0] === 0x4f &&
+      contents[1] === 0x67 &&
+      contents[2] === 0x67 &&
+      contents[3] === 0x53
+    );
+  }
+  return (
+    (contents.byteLength >= 3 &&
+      contents[0] === 0x49 &&
+      contents[1] === 0x44 &&
+      contents[2] === 0x33) ||
+    (contents.byteLength >= 2 &&
+      contents[0] === 0xff &&
+      (contents[1]! & 0xe0) === 0xe0)
+  );
+}
+
+async function readProductionAsset(
+  publicRoot: string,
+  relativePath: string,
+): Promise<Uint8Array> {
+  const segments = relativePath.split('/');
+  let current = publicRoot;
+  for (const segment of segments.slice(0, -1)) {
+    current = path.join(current, segment);
+    const directoryStat = await lstat(current);
+    if (directoryStat.isSymbolicLink() || !directoryStat.isDirectory()) {
+      throw new Error(`Symlinked or irregular public asset directory is forbidden: ${relativePath}.`);
+    }
+  }
+
+  const filename = path.join(publicRoot, ...segments);
+  assertContained(publicRoot, filename, 'Public asset path');
+  const stat = await lstat(filename);
+  if (stat.isSymbolicLink() || !stat.isFile()) {
+    throw new Error(`Symlinked or irregular public asset is forbidden: ${relativePath}.`);
+  }
+  const canonical = await realpath(filename);
+  assertContained(publicRoot, canonical, 'Public asset path');
+  if (canonical !== filename) {
+    throw new Error(`Public asset cannot traverse a symlink: ${relativePath}.`);
+  }
+  return new Uint8Array(await readFile(canonical));
+}
+
+export async function loadReleaseAudioAssets(
+  options: LoadReleaseAudioAssetsOptions,
+): Promise<readonly ReleaseAssetSource[]> {
+  const registries = registryBundleSchema.parse(options.registries);
+  const audioByPath = new Map<
+    string,
+    { readonly mimeType: 'audio/mpeg' | 'audio/ogg' }
+  >();
+  for (const item of options.corpus.items) {
+    if (item.audio !== null) {
+      audioByPath.set(item.audio.assetPath, { mimeType: item.audio.mimeType });
+    }
+  }
+  if (audioByPath.size === 0) {
+    return [];
+  }
+
+  let publicRoot: string | null = null;
+  if (options.profile === 'production') {
+    const projectRoot = await canonicalProjectRoot(options.projectRoot);
+    const candidateRoot = path.join(projectRoot, 'public-static');
+    const rootStat = await lstat(candidateRoot);
+    if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
+      throw new Error('Production public-static must be a regular, non-symlink directory.');
+    }
+    publicRoot = await realpath(candidateRoot);
+    if (publicRoot !== candidateRoot) {
+      throw new Error('Production public-static cannot traverse a symlink.');
+    }
+  }
+
+  const sources: ReleaseAssetSource[] = [];
+  for (const [audioPath, audio] of audioByPath) {
+    const registryMatches = registries.assets.assets.filter(
+      (asset) => asset.path === audioPath,
+    );
+    const registryAsset = registryMatches[0];
+    if (
+      registryMatches.length !== 1 ||
+      registryAsset === undefined ||
+      registryAsset.kind !== 'audio' ||
+      registryAsset.status !== 'active' ||
+      registryAsset.mime_type !== audio.mimeType
+    ) {
+      throw new Error(
+        `Compiled audio ${audioPath} must join exactly one active matching registry asset.`,
+      );
+    }
+
+    let contents: Uint8Array;
+    if (options.profile === 'fixture') {
+      const fixtureMatches = (options.fixtureFiles ?? []).filter(
+        (file) => file.path === audioPath,
+      );
+      if (fixtureMatches.length !== 1 || fixtureMatches[0] === undefined) {
+        throw new Error(
+          `Fixture audio ${audioPath} must have exactly one TEST ONLY asset file.`,
+        );
+      }
+      contents = fixtureMatches[0].contents.slice();
+      if (new TextDecoder().decode(contents) !== 'TEST ONLY - NOT AUDIO') {
+        throw new Error('Fixture audio bytes must be the explicit TEST ONLY - NOT AUDIO sentinel.');
+      }
+    } else {
+      if (publicRoot === null) {
+        throw new Error('Production public-static root was not established.');
+      }
+      contents = await readProductionAsset(publicRoot, audioPath);
+      if (!hasDeclaredAudioSignature(contents, registryAsset.mime_type)) {
+        throw new Error(`Production audio MIME signature mismatch for ${audioPath}.`);
+      }
+    }
+
+    if (contents.byteLength !== registryAsset.bytes) {
+      throw new Error(`Audio asset byte size mismatch for ${audioPath}.`);
+    }
+    const digest = createHash('sha256').update(contents).digest('hex');
+    if (digest !== registryAsset.sha256) {
+      throw new Error(`Audio asset SHA-256 mismatch for ${audioPath}.`);
+    }
+    sources.push({
+      path: audioPath,
+      mimeType: registryAsset.mime_type,
+      sha256: registryAsset.sha256,
+      bytes: registryAsset.bytes,
+      requiredOffline: false,
+      contents,
+    });
+  }
+
+  if (options.profile === 'fixture') {
+    const referencedPaths = new Set(audioByPath.keys());
+    const orphan = (options.fixtureFiles ?? []).find(
+      (file) => !referencedPaths.has(file.path),
+    );
+    if (orphan !== undefined) {
+      throw new Error(`Orphan TEST ONLY fixture asset file ${orphan.path}.`);
+    }
+  }
+  return sources;
 }
 
 async function writeReleaseArtifacts(
+  projectRoot: string,
   distDir: string,
   artifacts: ReleaseArtifacts,
 ): Promise<void> {
-  const outputRoot = assertSafeOutputDirectory(distDir);
+  const outputRoot = await resolveSafeOutputDirectory(projectRoot, distDir);
   await rm(outputRoot, { recursive: true, force: true });
 
   try {
@@ -170,7 +407,11 @@ async function writeReleaseArtifacts(
         throw new Error('Release artifact path escapes the distribution directory.');
       }
       await mkdir(path.dirname(destination), { recursive: true });
-      await writeFile(destination, contents, { encoding: 'utf8', flag: 'wx' });
+      if (typeof contents === 'string') {
+        await writeFile(destination, contents, { encoding: 'utf8', flag: 'wx' });
+      } else {
+        await writeFile(destination, contents, { flag: 'wx' });
+      }
     }
   } catch (error) {
     await rm(outputRoot, { recursive: true, force: true });
@@ -200,15 +441,22 @@ export async function buildFixtureRelease(
     throw new Error('Fixture build must contain exactly 24 Hafez and 16 Rumi items.');
   }
 
+  const assets = await loadReleaseAudioAssets({
+    profile: 'fixture',
+    projectRoot: options.projectRoot,
+    corpus: compiled,
+    registries: fixture.registries,
+    fixtureFiles: fixture.assetFiles,
+  });
+
   const artifacts = createReleaseArtifacts({
     profile: 'fixture',
     releaseId: FIXTURE_RELEASE_ID,
     builtAt: FIXTURE_BUILT_AT,
     corpus: compiled,
-    // Application assets are intentionally empty at this content-only stage.
-    assets: [],
+    assets,
   });
-  await writeReleaseArtifacts(options.distDir, artifacts);
+  await writeReleaseArtifacts(options.projectRoot, options.distDir, artifacts);
   return artifacts.release;
 }
 
@@ -235,14 +483,21 @@ export async function buildProductionRelease(
     throw new Error('Production corpus does not meet the configured poet minimums.');
   }
 
+  const assets = await loadReleaseAudioAssets({
+    profile: 'production',
+    projectRoot: options.projectRoot,
+    corpus: compiled,
+    registries: loaded.registries,
+  });
+
   const artifacts = createReleaseArtifacts({
     profile: 'production',
     releaseId: config.releaseId,
     builtAt: config.builtAt,
     corpus: compiled,
-    assets: [],
+    assets,
   });
-  await writeReleaseArtifacts(options.distDir, artifacts);
+  await writeReleaseArtifacts(options.projectRoot, options.distDir, artifacts);
   return artifacts.release;
 }
 
@@ -263,7 +518,7 @@ async function main(): Promise<void> {
   const distDir = path.join(projectRoot, 'dist');
   const release =
     profile === 'fixture'
-      ? await buildFixtureRelease({ distDir })
+      ? await buildFixtureRelease({ projectRoot, distDir })
       : await buildProductionRelease({
           projectRoot,
           distDir,

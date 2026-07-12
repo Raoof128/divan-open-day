@@ -95,6 +95,16 @@ describe('strict YAML parsing', () => {
       ),
     ).toThrow(/remote|URL/iu);
   });
+
+  it.each([
+    'ftp://example.test/private',
+    'custom+scheme://example.test/private',
+    '//cdn.example.test/private',
+  ])('rejects every URI scheme and protocol-relative remote value: %s', (value) => {
+    expect(() =>
+      parseStrictYaml(`nested:\n  source: ${JSON.stringify(value)}\n`, 'remote.yaml'),
+    ).toThrow(/remote|URL|URI/iu);
+  });
 });
 
 describe('content-private filesystem loading', () => {

@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 import { canonicalSha256 } from '../../../src/lib/content/canonical';
 
 const REQUIRED_PUBLIC_USES = [
@@ -9,6 +11,10 @@ const REQUIRED_PUBLIC_USES = [
 
 const TEST_ONLY_REFLECTION =
   'TEST ONLY / NOT INTERPRETATION. This synthetic validation record contains neutral automated testing words only. It is not poetry, not translation, not commentary, not guidance, and not approved publication content. No phrase represents an author, source, culture, person, belief, event, or real permission. The record exists only to test compiler boundaries and must never enter a production build.';
+
+export const TEST_ONLY_AUDIO_BYTES = new TextEncoder().encode(
+  'TEST ONLY - NOT AUDIO',
+);
 
 function sequenceId(poet: 'hafez' | 'rumi', index: number): string {
   return `test-only-${poet}-${String(index + 1).padStart(2, '0')}`;
@@ -98,9 +104,14 @@ export function makeFixtureCorpus() {
     throw new Error('The TEST ONLY corpus must contain its first synthetic item.');
   }
 
+  const audioSha256 = createHash('sha256')
+    .update(TEST_ONLY_AUDIO_BYTES)
+    .digest('hex');
+  const audioPath = `audio/${audioItem.id}-${audioSha256.slice(0, 8)}.mp3`;
+
   audioItem.audio = {
     enabled: true,
-    asset_path: `audio/${audioItem.id}.mp3`,
+    asset_path: audioPath,
     mime_type: 'audio/mpeg',
     performer_id: 'test-only-performer',
     performer_public_credit: 'TEST ONLY / SYNTHETIC PERFORMER CREDIT',
@@ -226,10 +237,10 @@ export function makeFixtureCorpus() {
             id: `${audioItem.id}-audio-asset`,
             status: 'active',
             kind: 'audio',
-            path: `audio/${audioItem.id}.mp3`,
+            path: audioPath,
             mime_type: 'audio/mpeg',
-            sha256: '1'.repeat(64),
-            bytes: 1_024,
+            sha256: audioSha256,
+            bytes: TEST_ONLY_AUDIO_BYTES.byteLength,
             permission_record_id: `${audioItem.id}-audio-permission`,
             performer_id: 'test-only-performer',
             duration_seconds: 30,
@@ -237,6 +248,12 @@ export function makeFixtureCorpus() {
         ],
       },
     },
+    assetFiles: [
+      {
+        path: audioPath,
+        contents: TEST_ONLY_AUDIO_BYTES.slice(),
+      },
+    ],
   };
 
   return corpus;

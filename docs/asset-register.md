@@ -6,8 +6,10 @@ No production asset is approved or registered for public release. The launch
 gate remains closed. This document makes no claim about a creator, performer,
 rights holder, licence, permission, credit, approval, or production file.
 
-The fixture asset metadata under `tests/fixtures/content/` is synthetic test
-input only and is not a public asset record.
+The fixture asset metadata and bytes under `tests/fixtures/content/` are
+synthetic test input only and are not a public asset record. The sole fixture
+audio-shaped file contains exactly `TEST ONLY - NOT AUDIO`; it exists only to
+prove manifest/file completeness and can never pass production MIME checks.
 
 ## Required private asset record
 
@@ -36,8 +38,9 @@ Before an asset may appear in a release:
 1. An authorised human verifies source, creator/performer, rights holder, exact
    evidence, public credit, allowed modifications, territory, expiry, and every
    intended public use.
-2. The local file has no embedded secret or private metadata and matches its
-   declared MIME type, bytes, and SHA-256.
+2. The local file is read only below the canonical, non-symlink
+   `public-static/` root, has no embedded secret or private metadata, and
+   matches its declared MIME signature, bytes, and SHA-256.
 3. The published filename is content-addressed where the release contract
    requires it; remote URLs and path traversal are rejected.
 4. The release asset manifest is canonical JSON, sorted by path, hashed, and
@@ -46,6 +49,7 @@ Before an asset may appear in a release:
    undeclared files, source maps, YAML, permission evidence, remote resources,
    symlinks, and private paths.
 
-At this content-only implementation stage the emitted application asset list
-is empty. The asset manifest itself is still canonical, content-addressed, and
-verified.
+At this content-only implementation stage no production asset exists. Fixture
+builds emit one conspicuous synthetic audio-shaped file so the canonical,
+content-addressed asset manifest and the public corpus-to-manifest join are
+exercised end to end.
