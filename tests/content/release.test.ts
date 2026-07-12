@@ -5,10 +5,13 @@ import { describe, expect, it } from 'vitest';
 import { compileCorpus } from '../../src/lib/content/compileCorpus';
 import { registryBundleSchema } from '../../src/lib/content/registrySchemas';
 import {
+  assetManifestSchema,
   createReleaseArtifacts,
   type ReleaseAssetSource,
 } from '../../src/lib/content/release';
 import { makeFixtureCorpus } from '../fixtures/content/corpus';
+
+const EXPECTED_MAX_RELEASE_ASSET_BYTES = 100_000_000;
 
 function compileFixture() {
   const fixture = makeFixtureCorpus();
@@ -69,6 +72,24 @@ function createFixtureRelease(
 describe('createReleaseArtifacts', () => {
   it('rejects a release whose compiled audio has no manifest asset and file', () => {
     expect(() => createFixtureRelease([])).toThrow(/audio|asset|manifest|missing/iu);
+  });
+
+  it('rejects oversized byte counts in the public asset manifest schema', () => {
+    const sha256 = '1'.repeat(64);
+    const result = assetManifestSchema.safeParse({
+      releaseId: 'test-only-fixture-release',
+      assets: [
+        {
+          path: `images/test-${sha256.slice(0, 8)}.webp`,
+          mimeType: 'image/webp',
+          sha256,
+          bytes: EXPECTED_MAX_RELEASE_ASSET_BYTES + 1,
+          requiredOffline: false,
+        },
+      ],
+    });
+
+    expect(result.success).toBe(false);
   });
 
   it('produces deterministic canonical hashes and content-addressed paths', () => {

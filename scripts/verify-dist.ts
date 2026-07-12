@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { lstat, readFile, readdir, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,10 +9,12 @@ import {
   publicCorpusSchema,
   releaseDescriptorSchema,
 } from '../src/lib/content/release';
+import { containsRemoteResource } from '../src/lib/content/remoteResource';
 import {
   derivePrivateSourceValues,
   loadContentPrivate,
 } from './content/loadContent';
+import { readBoundedAssetFile } from './content/readAssetFile';
 
 export interface VerifyDistOptions {
   readonly projectRoot: string;
@@ -40,9 +41,8 @@ const PRIVATE_KEY_NAMES = new Set([
 ]);
 const FIXTURE_PATTERN =
   /TEST ONLY|NOT POETRY|NOT TRANSLATION|NOT INTERPRETATION|SYNTHETIC|(?:^|[-_/])fixture(?:[-_/]|$)/iu;
-const REMOTE_URL_PATTERN =
-  /(?:\b[A-Za-z][A-Za-z0-9+.-]*:\/\/|(?:^|[\s("'=])\/\/[A-Za-z0-9])/iu;
 const MAX_JSON_BYTES = 20_000_000;
+const FIXTURE_AUDIO_BYTES = new TextEncoder().encode('TEST ONLY - NOT AUDIO');
 
 function normalizedKey(value: string): string {
   return value.replaceAll(/[_-]/gu, '').toLowerCase();
@@ -57,8 +57,8 @@ function inspectPublicValue(
 ): void {
   if (typeof value === 'string') {
     const trimmed = value.trim();
-    if (REMOTE_URL_PATTERN.test(trimmed)) {
-      throw new Error(`Remote resource URL leaked into ${sourceName}.`);
+    if (containsRemoteResource(trimmed)) {
+      throw new Error(`Remote resource leaked into ${sourceName}.`);
     }
     if (privateValues.has(value) || privateValues.has(trimmed)) {
       throw new Error(`Source-derived private authoring value leaked into ${sourceName}.`);
@@ -204,37 +204,42 @@ async function verifyAssetFiles(
 ): Promise<void> {
   for (const asset of assets) {
     const filename = safeReferencedPath(distRoot, `/${asset.path}`);
-    const stat = await lstat(filename);
-    if (stat.isSymbolicLink() || !stat.isFile() || stat.size !== asset.bytes) {
-      throw new Error(`Asset size or file type mismatch for ${asset.path}.`);
-    }
-    const bytes = await readFile(filename);
-    const digest = createHash('sha256').update(bytes).digest('hex');
-    if (digest !== asset.sha256) {
+    const loaded = await readBoundedAssetFile({
+      filename,
+      declaredBytes: asset.bytes,
+      label: asset.path,
+      collectContents: false,
+    });
+    if (loaded.sha256 !== asset.sha256) {
       throw new Error(`Asset SHA-256 mismatch for ${asset.path}.`);
     }
     if (asset.mimeType === 'audio/mpeg' || asset.mimeType === 'audio/ogg') {
       if (profile === 'fixture') {
-        if (bytes.toString('utf8') !== 'TEST ONLY - NOT AUDIO') {
+        if (
+          asset.bytes !== FIXTURE_AUDIO_BYTES.byteLength ||
+          !loaded.prefix.every(
+            (byte, index) => byte === FIXTURE_AUDIO_BYTES[index],
+          )
+        ) {
           throw new Error(
             `Fixture audio bytes must use the TEST ONLY - NOT AUDIO sentinel: ${asset.path}.`,
           );
         }
       } else {
         const isOgg =
-          bytes.byteLength >= 4 &&
-          bytes[0] === 0x4f &&
-          bytes[1] === 0x67 &&
-          bytes[2] === 0x67 &&
-          bytes[3] === 0x53;
+          loaded.prefix.byteLength >= 4 &&
+          loaded.prefix[0] === 0x4f &&
+          loaded.prefix[1] === 0x67 &&
+          loaded.prefix[2] === 0x67 &&
+          loaded.prefix[3] === 0x53;
         const isMp3 =
-          (bytes.byteLength >= 3 &&
-            bytes[0] === 0x49 &&
-            bytes[1] === 0x44 &&
-            bytes[2] === 0x33) ||
-          (bytes.byteLength >= 2 &&
-            bytes[0] === 0xff &&
-            (bytes[1]! & 0xe0) === 0xe0);
+          (loaded.prefix.byteLength >= 3 &&
+            loaded.prefix[0] === 0x49 &&
+            loaded.prefix[1] === 0x44 &&
+            loaded.prefix[2] === 0x33) ||
+          (loaded.prefix.byteLength >= 2 &&
+            loaded.prefix[0] === 0xff &&
+            (loaded.prefix[1]! & 0xe0) === 0xe0);
         if (
           (asset.mimeType === 'audio/ogg' && !isOgg) ||
           (asset.mimeType === 'audio/mpeg' && !isMp3)

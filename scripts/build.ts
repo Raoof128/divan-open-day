@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { lstat, mkdir, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, realpath, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,6 +16,7 @@ import {
   type ReleaseArtifacts,
 } from '../src/lib/content/release';
 import { loadContentPrivate } from './content/loadContent';
+import { readBoundedAssetFile } from './content/readAssetFile';
 
 const FIXTURE_RELEASE_ID = 'test-only-fixture-release';
 const FIXTURE_BUILT_AT = '2026-07-13T00:00:00.000Z';
@@ -260,7 +261,8 @@ function hasDeclaredAudioSignature(
 async function readProductionAsset(
   publicRoot: string,
   relativePath: string,
-): Promise<Uint8Array> {
+  declaredBytes: number,
+): Promise<{ readonly contents: Uint8Array; readonly sha256: string }> {
   const segments = relativePath.split('/');
   let current = publicRoot;
   for (const segment of segments.slice(0, -1)) {
@@ -282,7 +284,16 @@ async function readProductionAsset(
   if (canonical !== filename) {
     throw new Error(`Public asset cannot traverse a symlink: ${relativePath}.`);
   }
-  return new Uint8Array(await readFile(canonical));
+  const result = await readBoundedAssetFile({
+    filename: canonical,
+    declaredBytes,
+    label: relativePath,
+    collectContents: true,
+  });
+  if (result.contents === null) {
+    throw new Error(`Production asset contents were not collected: ${relativePath}.`);
+  }
+  return { contents: result.contents, sha256: result.sha256 };
 }
 
 export async function loadReleaseAudioAssets(
@@ -335,6 +346,7 @@ export async function loadReleaseAudioAssets(
     }
 
     let contents: Uint8Array;
+    let digest: string;
     if (options.profile === 'fixture') {
       const fixtureMatches = (options.fixtureFiles ?? []).filter(
         (file) => file.path === audioPath,
@@ -348,11 +360,18 @@ export async function loadReleaseAudioAssets(
       if (new TextDecoder().decode(contents) !== 'TEST ONLY - NOT AUDIO') {
         throw new Error('Fixture audio bytes must be the explicit TEST ONLY - NOT AUDIO sentinel.');
       }
+      digest = createHash('sha256').update(contents).digest('hex');
     } else {
       if (publicRoot === null) {
         throw new Error('Production public-static root was not established.');
       }
-      contents = await readProductionAsset(publicRoot, audioPath);
+      const loaded = await readProductionAsset(
+        publicRoot,
+        audioPath,
+        registryAsset.bytes,
+      );
+      contents = loaded.contents;
+      digest = loaded.sha256;
       if (!hasDeclaredAudioSignature(contents, registryAsset.mime_type)) {
         throw new Error(`Production audio MIME signature mismatch for ${audioPath}.`);
       }
@@ -361,7 +380,6 @@ export async function loadReleaseAudioAssets(
     if (contents.byteLength !== registryAsset.bytes) {
       throw new Error(`Audio asset byte size mismatch for ${audioPath}.`);
     }
-    const digest = createHash('sha256').update(contents).digest('hex');
     if (digest !== registryAsset.sha256) {
       throw new Error(`Audio asset SHA-256 mismatch for ${audioPath}.`);
     }

@@ -11,6 +11,7 @@ import {
   registryBundleSchema,
   type RegistryBundle,
 } from '../../src/lib/content/registrySchemas';
+import { containsRemoteResource } from '../../src/lib/content/remoteResource';
 
 export type ContentLoadProfile = 'fixture' | 'production';
 
@@ -40,8 +41,6 @@ const ALLOWED_ROOT_FILES = new Set([
 const FIXTURE_SENTINEL_PATTERN =
   /TEST ONLY|NOT POETRY|NOT TRANSLATION|NOT INTERPRETATION|SYNTHETIC/iu;
 const FIXTURE_ID_PATTERN = /(?:^|[-_/])(?:test-only|fixture)(?:[-_/]|$)/iu;
-const REMOTE_URL_PATTERN =
-  /(?:\b[A-Za-z][A-Za-z0-9+.-]*:\/\/|(?:^|[\s("'=])\/\/[A-Za-z0-9])/iu;
 const MAX_YAML_BYTES = 1_000_000;
 
 function describeYamlError(sourceName: string, messages: readonly string[]): Error {
@@ -54,8 +53,8 @@ function inspectParsedValue(
   seen: Set<object>,
 ): void {
   if (typeof value === 'string') {
-    if (REMOTE_URL_PATTERN.test(value.trim())) {
-      throw new Error(`Remote URLs are not allowed in ${sourceName}.`);
+    if (containsRemoteResource(value.trim())) {
+      throw new Error(`Remote resources are not allowed in ${sourceName}.`);
     }
     return;
   }

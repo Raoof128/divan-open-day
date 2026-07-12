@@ -9,6 +9,7 @@ import type {
   ReleaseAsset,
   ReleaseDescriptor,
 } from '../../contracts/release';
+import { MAX_RELEASE_ASSET_BYTES } from '../../contracts/release';
 import { canonicalSha256, canonicalStringify } from './canonical';
 import type { CompiledCorpus } from './compileCorpus';
 import { publicContentItemSchema } from './publicSchema';
@@ -49,7 +50,7 @@ const releaseAssetSchema = z
     }),
     mimeType: z.enum(ASSET_MIME_TYPES),
     sha256: z.string().regex(SHA256_PATTERN),
-    bytes: z.number().int().positive(),
+    bytes: z.number().int().positive().max(MAX_RELEASE_ASSET_BYTES),
     requiredOffline: z.boolean(),
   })
   .strict()

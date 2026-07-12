@@ -100,10 +100,28 @@ describe('strict YAML parsing', () => {
     'ftp://example.test/private',
     'custom+scheme://example.test/private',
     '//cdn.example.test/private',
+    'data:text/plain,private',
+    'blob:private-resource',
+    'mailto:private@example.test',
+    'file:/private/content.yaml',
+    'tel:+61000000000',
+    'ws:private-socket',
+    'wss:private-socket',
+    'ssh:private-host',
+    'sftp:private-host',
   ])('rejects every URI scheme and protocol-relative remote value: %s', (value) => {
     expect(() =>
       parseStrictYaml(`nested:\n  source: ${JSON.stringify(value)}\n`, 'remote.yaml'),
     ).toThrow(/remote|URL|URI/iu);
+  });
+
+  it('does not treat ordinary prose containing a colon as a remote resource', () => {
+    expect(() =>
+      parseStrictYaml(
+        'nested:\n  source: "Note: this is ordinary text"\n',
+        'prose.yaml',
+      ),
+    ).not.toThrow();
   });
 });
 

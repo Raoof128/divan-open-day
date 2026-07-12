@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { POETS } from '../../contracts/content';
+import { MAX_RELEASE_ASSET_BYTES } from '../../contracts/release';
 
 export const PUBLIC_USES = [
   'website_display',
@@ -473,7 +474,7 @@ const assetBaseShape = {
   status: z.enum(['active', 'disabled']),
   path: safeAssetPathSchema,
   sha256: z.string().regex(SHA256_PATTERN),
-  bytes: z.number().int().positive().max(100_000_000),
+  bytes: z.number().int().positive().max(MAX_RELEASE_ASSET_BYTES),
   permission_record_id: identifierSchema,
 };
 

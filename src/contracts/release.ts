@@ -1,5 +1,7 @@
 export type BuildProfile = 'fixture' | 'production';
 
+export const MAX_RELEASE_ASSET_BYTES = 100_000_000;
+
 export interface ReleaseDescriptor {
   readonly releaseId: string;
   readonly schemaVersion: 2;

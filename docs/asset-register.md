@@ -40,7 +40,10 @@ Before an asset may appear in a release:
    intended public use.
 2. The local file is read only below the canonical, non-symlink
    `public-static/` root, has no embedded secret or private metadata, and
-   matches its declared MIME signature, bytes, and SHA-256.
+   matches its declared MIME signature, bytes, and SHA-256. Registry and public
+   manifest byte counts must be integers from 1 through 100,000,000 inclusive;
+   filesystem size is checked before reading, and SHA-256 is computed in
+   bounded chunks.
 3. The published filename is content-addressed where the release contract
    requires it; remote URLs and path traversal are rejected.
 4. The release asset manifest is canonical JSON, sorted by path, hashed, and

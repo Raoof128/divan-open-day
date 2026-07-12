@@ -1,11 +1,13 @@
 import { createHash } from 'node:crypto';
 import {
+  chmod,
   mkdir,
   readFile,
   readdir,
   rename,
   rm,
   symlink,
+  truncate,
   writeFile,
 } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -30,6 +32,7 @@ import {
 } from '../fixtures/content/corpus';
 
 const outputDirectories: string[] = [];
+const EXPECTED_MAX_RELEASE_ASSET_BYTES = 100_000_000;
 
 async function temporaryProject(name: string): Promise<{
   readonly projectRoot: string;
@@ -330,6 +333,7 @@ describe('production audio asset loading', () => {
     const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
     await mkdir(path.dirname(filename), { recursive: true });
     await writeFile(filename, Uint8Array.from([...input.expectedBytes, 0x01]));
+    await chmod(filename, 0o000);
 
     await expect(
       loadReleaseAudioAssets({
@@ -338,7 +342,27 @@ describe('production audio asset loading', () => {
         corpus: input.corpus,
         registries: input.registries,
       }),
-    ).rejects.toThrow(/byte|size/iu);
+    ).rejects.toThrow(`Asset size mismatch before read for ${input.assetPath}.`);
+  });
+
+  it('rejects an oversized production asset before attempting to read it', async () => {
+    const input = await makeProductionAudioCase('oversized-audio', validMp3Bytes);
+    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    await mkdir(path.dirname(filename), { recursive: true });
+    await writeFile(filename, input.expectedBytes);
+    await truncate(filename, EXPECTED_MAX_RELEASE_ASSET_BYTES + 1);
+    await chmod(filename, 0o000);
+
+    await expect(
+      loadReleaseAudioAssets({
+        profile: 'production',
+        projectRoot: input.projectRoot,
+        corpus: input.corpus,
+        registries: input.registries,
+      }),
+    ).rejects.toThrow(
+      `Asset exceeds maximum before read for ${input.assetPath}.`,
+    );
   });
 
   it('rejects production audio whose SHA-256 differs from its registry', async () => {
@@ -428,6 +452,38 @@ describe('production release build', () => {
 });
 
 describe('distribution verification', () => {
+  it('rejects a mismatched unreadable asset before verification reads it', async () => {
+    const { projectRoot, distDir } = await temporaryProject('verify-sized-asset');
+    const release = await buildFixtureRelease({ projectRoot, distDir });
+    const manifest = JSON.parse(
+      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+    ) as { assets: Array<{ path: string }> };
+    const assetPath = manifest.assets[0]!.path;
+    const filename = path.join(distDir, assetPath);
+    await writeFile(filename, Uint8Array.of(0x01), { flag: 'a' });
+    await chmod(filename, 0o000);
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      `Asset size mismatch before read for ${assetPath}.`,
+    );
+  });
+
+  it('rejects an oversized unreadable asset before verification reads it', async () => {
+    const { projectRoot, distDir } = await temporaryProject('verify-oversized-asset');
+    const release = await buildFixtureRelease({ projectRoot, distDir });
+    const manifest = JSON.parse(
+      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+    ) as { assets: Array<{ path: string }> };
+    const assetPath = manifest.assets[0]!.path;
+    const filename = path.join(distDir, assetPath);
+    await truncate(filename, EXPECTED_MAX_RELEASE_ASSET_BYTES + 1);
+    await chmod(filename, 0o000);
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      `Asset exceeds maximum before read for ${assetPath}.`,
+    );
+  });
+
   it('detects corpus tampering', async () => {
     const { projectRoot, distDir } = await temporaryProject('tampered');
     const release = await buildFixtureRelease({ projectRoot, distDir });
@@ -482,6 +538,40 @@ describe('distribution verification', () => {
     await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
       /remote|URI|URL/iu,
     );
+  });
+
+  it.each([
+    'data:text/plain,private',
+    'blob:private-resource',
+    'mailto:private@example.test',
+    'file:/private/content.yaml',
+    'tel:+61000000000',
+    'ws:private-socket',
+    'wss:private-socket',
+    'ssh:private-host',
+    'sftp:private-host',
+  ])('rejects a coherently rehashed non-hierarchical resource: %s', async (value) => {
+    const { projectRoot, distDir } = await temporaryProject('rehash-resource');
+    await buildFixtureRelease({ projectRoot, distDir });
+    await rewriteCorpus(distDir, (item) => {
+      item['translationCredit'] = value;
+    });
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /remote|resource|URI|URL/iu,
+    );
+  });
+
+  it('allows coherently rehashed ordinary prose containing a colon', async () => {
+    const { projectRoot, distDir } = await temporaryProject('rehash-colon-prose');
+    await buildFixtureRelease({ projectRoot, distDir });
+    await rewriteCorpus(distDir, (item) => {
+      item['translationCredit'] = 'Note: this is ordinary text';
+    });
+
+    await expect(verifyDist({ projectRoot, distDir })).resolves.toMatchObject({
+      buildProfile: 'fixture',
+    });
   });
 
   it('rejects private evidence files and unexpected output', async () => {

@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { registryBundleSchema } from '../../src/lib/content/registrySchemas';
 
+const EXPECTED_MAX_RELEASE_ASSET_BYTES = 100_000_000;
+
 type RegistryBundleFixture = ReturnType<typeof makeRegistryBundle>;
 
 function replaceAsset(
@@ -282,6 +284,16 @@ describe('registryBundleSchema', () => {
       expect(registryBundleSchema.safeParse(bundle).success).toBe(true);
     },
   );
+
+  it('enforces the shared maximum asset byte count', () => {
+    const accepted = makeRegistryBundle();
+    accepted.assets.assets[0]!.bytes = EXPECTED_MAX_RELEASE_ASSET_BYTES;
+    const oversized = makeRegistryBundle();
+    oversized.assets.assets[0]!.bytes = EXPECTED_MAX_RELEASE_ASSET_BYTES + 1;
+
+    expect(registryBundleSchema.safeParse(accepted).success).toBe(true);
+    expect(registryBundleSchema.safeParse(oversized).success).toBe(false);
+  });
 
   it.each([
     ['font using an image contract', 'font', 'images/test-only.png', 'image/png'],
