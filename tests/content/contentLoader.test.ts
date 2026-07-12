@@ -109,6 +109,11 @@ describe('strict YAML parsing', () => {
     'wss:private-socket',
     'ssh:private-host',
     'sftp:private-host',
+    'https:example.test/a',
+    'http:example.test/a',
+    'ftp:example.test/a',
+    'ftps:example.test/a',
+    'javascript:alert(1)',
   ])('rejects every URI scheme and protocol-relative remote value: %s', (value) => {
     expect(() =>
       parseStrictYaml(`nested:\n  source: ${JSON.stringify(value)}\n`, 'remote.yaml'),

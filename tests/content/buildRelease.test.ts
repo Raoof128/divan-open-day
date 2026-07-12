@@ -550,6 +550,11 @@ describe('distribution verification', () => {
     'wss:private-socket',
     'ssh:private-host',
     'sftp:private-host',
+    'https:example.test/a',
+    'http:example.test/a',
+    'ftp:example.test/a',
+    'ftps:example.test/a',
+    'javascript:alert(1)',
   ])('rejects a coherently rehashed non-hierarchical resource: %s', async (value) => {
     const { projectRoot, distDir } = await temporaryProject('rehash-resource');
     await buildFixtureRelease({ projectRoot, distDir });
