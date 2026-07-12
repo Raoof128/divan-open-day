@@ -189,6 +189,7 @@ export function makeFixtureCorpus() {
             attribution: item.translation.public_credit,
             modification_permitted: true,
             territories: ['worldwide'],
+            effective_on: '2000-01-01',
             expires_on: null as string | null,
           })),
           {
@@ -202,6 +203,7 @@ export function makeFixtureCorpus() {
             attribution: 'TEST ONLY / SYNTHETIC PERFORMER CREDIT',
             modification_permitted: false,
             territories: ['worldwide'],
+            effective_on: '2000-01-01',
             expires_on: null as string | null,
           },
         ],

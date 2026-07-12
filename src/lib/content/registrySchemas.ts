@@ -407,9 +407,19 @@ const permissionRecordSchema = z
         (values) => !values.includes('worldwide') || values.length === 1,
         'Worldwide must be the only territory when present.',
       ),
+    effective_on: isoDateSchema,
     expires_on: isoDateSchema.nullable(),
   })
-  .strict();
+  .strict()
+  .refine(
+    (permission) =>
+      permission.expires_on === null ||
+      permission.effective_on <= permission.expires_on,
+    {
+      message: 'Permission expiry cannot precede its effective date.',
+      path: ['expires_on'],
+    },
+  );
 
 export const permissionRegistrySchema = z
   .object({

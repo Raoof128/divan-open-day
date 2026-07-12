@@ -9,7 +9,7 @@ Before any production item can compile, authorised humans must provide and verif
 - an approved source edition and stable edition-specific reference;
 - reviewer-accepted Persian source text, English translation, and reflection;
 - active contributor records for the translator, source editor, Persian literary reviewer, English editor, cultural reviewer, rights reviewer, and final approver;
-- written permission evidence covering every public use and worldwide public delivery, with approved attribution and any expiry recorded;
+- written permission evidence covering every public use and worldwide public delivery, with approved attribution, a real ISO effective date, and any expiry recorded no earlier than that effective date;
 - a current final approval bound to the exact canonical SHA-256 digest of the authoring item; and
 - for enabled audio, an approved local asset, performer record, and matching written permission evidence.
 

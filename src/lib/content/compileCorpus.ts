@@ -153,6 +153,12 @@ function requirePermission(
     );
   }
 
+  if (permission.effective_on > buildDate) {
+    throw new Error(
+      `Item ${itemId} permission ${expectation.id} is not yet effective at the build date.`,
+    );
+  }
+
   if (permission.expires_on !== null && permission.expires_on < buildDate) {
     throw new Error(
       `Item ${itemId} permission ${expectation.id} expired before the build date.`,

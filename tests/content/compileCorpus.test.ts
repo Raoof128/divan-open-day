@@ -129,6 +129,13 @@ describe('compileCorpus', () => {
     expect(() => compileFixture(corpus)).toThrow(/expired/u);
   });
 
+  it('rejects a permission that is not effective at the injected build date', () => {
+    const corpus = makeFixtureCorpus();
+    corpus.registries.permissions.permissions[0]!.effective_on = '2099-01-01';
+
+    expect(() => compileFixture(corpus)).toThrow(/permission.*not yet effective/iu);
+  });
+
   it('rejects future-effective approval evidence', () => {
     const corpus = makeFixtureCorpus();
     const item = corpus.items[0]!;

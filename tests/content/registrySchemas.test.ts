@@ -75,7 +75,8 @@ function makeRegistryBundle() {
           attribution: 'TEST ONLY attribution',
           modification_permitted: true,
           territories: ['AU'],
-          expires_on: null,
+          effective_on: '2000-01-01',
+          expires_on: null as string | null,
         },
       ],
     },
@@ -206,6 +207,26 @@ describe('registryBundleSchema', () => {
     }
 
     expect(registryBundleSchema.safeParse(bundle).success).toBe(true);
+  });
+
+  it('accepts a real ISO effective date for a permission', () => {
+    const bundle = makeRegistryBundle();
+    const permission = bundle.permissions.permissions[0];
+    if (permission !== undefined) {
+      Object.assign(permission, { effective_on: '2026-07-01' });
+    }
+
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(true);
+  });
+
+  it('rejects a permission that expires before its effective date', () => {
+    const bundle = makeRegistryBundle();
+    const permission = bundle.permissions.permissions[0];
+    if (permission !== undefined) {
+      permission.expires_on = '1999-12-31';
+    }
+
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
   });
 
   it('requires real ISO dates and lowercase SHA-256 digests', () => {
