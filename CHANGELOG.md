@@ -187,3 +187,13 @@
 - **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED failed at the 100 ms boundary under the prior setting; GREEN focused behavior passed, five consecutive Chromium runs passed 2/2 under concurrent load, components passed 41/41, accessibility passed 18/18, and TypeScript plus ESLint passed.
 - **Follow-ups:** Manual accessibility evidence and all independent production/public-launch gates remain unchanged and blocked.
+
+## 2026-07-13 — Atomic offline release core
+
+**Raouf:**
+
+- **Scope:** Browser-safe B4 release verification, candidate cache staging, deferred activation, coherent runtime routing, service-worker client events, web manifest, and offline recovery document.
+- **Summary:** Implemented strict canonical descriptor, full corpus, item-hash, asset-manifest, and corpus/audio joins without importing Node-only content code. Required assets are status/length/SHA-verified through bounded reads and staged under one release ID; the ready marker is written last; failures remove only the candidate; one atomic pointer retains active plus the immediately previous complete release. Navigation cannot mix release HTML, cache lookups never search another release, health and worker paths have no cached fallback, all-audio precaching is rejected, and optional audio caching requires a direct browser audio request. Client failures remain nonblocking and sanitized; the local-only manifest and semantic recovery page make no remote or unapproved University-brand claim.
+- **Files Changed:** `src-sw/cacheTypes.ts`, `src-sw/integrity.ts`, `src-sw/schemas.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `public/manifest.webmanifest`, `public/offline.html`, `tests/offline/*.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED captured the three absent worker/client suites before implementation; GREEN offline 34/34, inherited content 234/234, strict TypeScript, and ESLint all passed.
+- **Follow-ups:** Bundle and register the reviewed worker in the root build, then prove the assembled distribution and real HTTPS/browser/device install, warm-offline, timeout, failed-update, refresh, storage, audio, and rollback paths. Production content, rights/reviews, governance, deployment, and physical-event gates remain independently blocked.
