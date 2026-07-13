@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import { App } from '../../src/app/App';
 import { ErrorBoundary } from '../../src/app/ErrorBoundary';
+import { OFFLINE_STATUS_EVENT } from '../../src/sw-client/register';
 import { HAFEZ_ITEM, makeVerifiedRelease } from './fixtures';
 
 beforeEach(() => {
@@ -127,6 +128,15 @@ it('announces offline readiness in one persistent polite atomic region', async (
   await screen.findByRole('button', { name: 'Begin' });
 
   act(() => {
+    window.dispatchEvent(
+      new CustomEvent(OFFLINE_STATUS_EVENT, {
+        detail: {
+          code: 'active',
+          message: 'The verified offline experience is ready.',
+          releaseId: 'test-only-release',
+        },
+      }),
+    );
     window.dispatchEvent(new Event('offline'));
     window.dispatchEvent(new Event('offline'));
   });

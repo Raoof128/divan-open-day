@@ -22,6 +22,7 @@ class WorkerHarness {
   readonly #listeners = new Map<string, WorkerListener>();
   readonly notifications: unknown[] = [];
   readonly skipWaiting = vi.fn(() => Promise.resolve());
+  readonly claim = vi.fn(() => Promise.resolve());
   readonly scope: DivanWorkerScope;
 
   public constructor(
@@ -34,6 +35,7 @@ class WorkerHarness {
       crypto: webcrypto,
       fetch: fetchFrom(files),
       clients: {
+        claim: this.claim,
         matchAll: () =>
           Promise.resolve([
             { postMessage: (message: unknown) => this.notifications.push(message) },
@@ -53,6 +55,10 @@ class WorkerHarness {
 
   public async message(data: unknown): Promise<boolean> {
     return this.#extendable('message', { data }, false);
+  }
+
+  public async activate(): Promise<void> {
+    await this.#extendable('activate', {});
   }
 
   public async fetch(request: Request): Promise<Response> {
@@ -75,7 +81,7 @@ class WorkerHarness {
   }
 
   async #extendable(
-    type: 'install' | 'message',
+    type: 'install' | 'activate' | 'message',
     event: Record<string, unknown>,
     required = true,
   ): Promise<boolean> {
@@ -131,22 +137,26 @@ describe('service-worker lifecycle harness', () => {
     expect(harness.notifications).toEqual([
       {
         source: 'divan-service-worker',
-        code: 'update_ready',
+        code: 'active',
         releaseId: 'release-one',
       },
     ]);
-
-    await expect(
-      harness.message({
-        type: 'ACTIVATE_READY_RELEASE',
-        releaseId: 'release-one',
-      }),
-    ).resolves.toBe(true);
+    await expect(pointer('release-one', caches)).resolves.toEqual({
+      activeReleaseId: 'release-one',
+      previousReleaseId: null,
+    });
     await expect(
       harness.fetch(
         new Request('https://divan.test/assets/app-0123456789abcdef.js'),
       ).then((response) => response.text()),
     ).resolves.toBe('console.log("DIVAN")');
+    await harness.activate();
+    expect(harness.claim).toHaveBeenCalledOnce();
+    expect(harness.notifications.at(-1)).toEqual({
+      source: 'divan-service-worker',
+      code: 'active',
+      releaseId: 'release-one',
+    });
   });
 
   it('activates the exact requested rollback target and reports lifecycle status accurately', async () => {

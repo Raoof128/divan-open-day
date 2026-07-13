@@ -162,6 +162,15 @@ export const assetManifestSchema = z
       }
       paths.add(asset.path);
     });
+    for (const fixedPath of FIXED_BROWSER_ASSETS.keys()) {
+      if (manifest.assets.filter((asset) => asset.path === fixedPath).length !== 1) {
+        context.addIssue({
+          code: 'custom',
+          path: ['assets'],
+          message: `Release manifest requires exactly one ${fixedPath}.`,
+        });
+      }
+    }
   });
 
 export const publicCorpusSchema = z

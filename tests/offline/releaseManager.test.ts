@@ -54,7 +54,9 @@ describe('atomic release staging', () => {
     expect(await candidate.match('/index.html')).toBeDefined();
     expect(await candidate.match('/assets/app-0123456789abcdef.js')).toBeDefined();
     expect(await candidate.match('/audio/sample.mp3')).toBeUndefined();
-    expect(caches.stores.has(POINTER_CACHE_NAME)).toBe(false);
+    expect(caches.stores.has(POINTER_CACHE_NAME)).toBe(true);
+    await expect(subject.activePointer()).resolves.toBeNull();
+    await expect(subject.pendingReleaseId()).resolves.toBe('release-one');
     expect(calls.every(({ init }) => init?.cache === 'no-store')).toBe(true);
     expect(calls.every(({ init }) => init?.credentials === 'same-origin')).toBe(true);
     expect(calls.every(({ init }) => init?.redirect === 'error')).toBe(true);

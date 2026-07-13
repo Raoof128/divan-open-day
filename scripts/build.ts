@@ -53,6 +53,27 @@ function viteConfigPath(): string {
   }
 }
 
+function repositoryFilePath(relativePath: string): string {
+  return path.resolve(path.dirname(viteConfigPath()), relativePath);
+}
+
+async function readReviewedRepositoryFile(
+  relativePath: string,
+): Promise<Uint8Array> {
+  const filename = repositoryFilePath(relativePath);
+  const stat = await lstat(filename);
+  if (
+    stat.isSymbolicLink() ||
+    !stat.isFile() ||
+    (await realpath(filename)) !== filename ||
+    stat.size <= 0 ||
+    stat.size > MAX_RELEASE_ASSET_BYTES
+  ) {
+    throw new Error(`Reviewed repository asset is invalid: ${relativePath}.`);
+  }
+  return new Uint8Array(await readFile(filename));
+}
+
 export interface FixtureBuildOptions {
   readonly projectRoot: string;
   readonly distDir: string;
@@ -419,10 +440,39 @@ async function buildBrowserAssets(
     await viteBuild({
       root: projectRoot,
       configFile: configPath,
+      publicDir: false,
       logLevel: 'silent',
       build: {
         emptyOutDir: false,
         outDir: stageRoot,
+      },
+    });
+    for (const filename of ['manifest.webmanifest', 'offline.html'] as const) {
+      await writeFile(
+        path.join(stageRoot, filename),
+        await readReviewedRepositoryFile(`public/${filename}`),
+        { flag: 'wx' },
+      );
+    }
+    await viteBuild({
+      root: projectRoot,
+      configFile: false,
+      publicDir: false,
+      envDir: false,
+      logLevel: 'silent',
+      build: {
+        target: 'es2022',
+        emptyOutDir: false,
+        outDir: stageRoot,
+        sourcemap: false,
+        rollupOptions: {
+          input: repositoryFilePath('src-sw/service-worker.ts'),
+          output: {
+            entryFileNames: 'service-worker.js',
+            format: 'iife',
+            name: 'DivanServiceWorker',
+          },
+        },
       },
     });
     const assets = await collectBrowserAssets(stageRoot);
@@ -432,6 +482,10 @@ async function buildBrowserAssets(
       !assets.some(
         (asset) =>
           asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+      ) ||
+      ['manifest.webmanifest', 'offline.html', 'service-worker.js'].some(
+        (requiredPath) =>
+          assets.filter((asset) => asset.path === requiredPath).length !== 1,
       ) ||
       totalBytes > MAX_BROWSER_DISTRIBUTION_BYTES
     ) {

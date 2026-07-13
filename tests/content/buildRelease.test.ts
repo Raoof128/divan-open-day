@@ -241,7 +241,10 @@ describe('fixture release build', () => {
       'audio',
       'content',
       'index.html',
+      'manifest.webmanifest',
+      'offline.html',
       'release.json',
+      'service-worker.js',
     ]);
     await expect(readFile(path.join(distDir, 'index.html'), 'utf8')).resolves.toMatch(
       /<html[^>]+lang="en"[^>]+dir="ltr"/u,
@@ -253,6 +256,18 @@ describe('fixture release build', () => {
     expect(emittedAssets.some((file) => /^index-[a-f0-9]{16}\.css$/u.test(file))).toBe(
       true,
     );
+    const worker = await readFile(path.join(distDir, 'service-worker.js'), 'utf8');
+    expect(worker).toMatch(/^\(function\s*\(/u);
+    expect(worker).not.toMatch(/\bimport\s*(?:\(|["'{*])/u);
+    expect(worker).not.toMatch(/sourceMappingURL/iu);
+    expect(worker).not.toMatch(
+      /(?:importScripts\s*\(|\bimport\s*\()\s*["']https?:\/\//iu,
+    );
+    expect(
+      Object.keys(await snapshotTree(distDir)).filter((assetPath) =>
+        /service-worker.*\.(?:js|map)$/u.test(assetPath),
+      ),
+    ).toEqual(['service-worker.js']);
   });
 
   it('is byte-for-byte deterministic across clean fixture builds', async () => {

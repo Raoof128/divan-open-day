@@ -24,10 +24,15 @@ export interface DivanWorkerScope {
   readonly crypto: CryptoLike;
   readonly fetch: typeof fetch;
   readonly clients: {
+    claim(): Promise<void>;
     matchAll(options: { readonly type: 'window' }): Promise<readonly ClientLike[]>;
   };
   addEventListener(
     type: 'install',
+    listener: (event: ExtendableEventLike) => void,
+  ): void;
+  addEventListener(
+    type: 'activate',
     listener: (event: ExtendableEventLike) => void,
   ): void;
   addEventListener(
@@ -65,12 +70,23 @@ export function installDivanServiceWorker(scope: DivanWorkerScope): void {
     event.waitUntil(
       manager
         .stageCurrentRelease()
-        .then((result) =>
-          notify(
+        .then(async (result) => {
+          if (
+            result.status === 'ready' &&
+            (await manager.activePointer()) === null
+          ) {
+            // A first install has no waiting-worker activation window. Activate
+            // only the exact candidate just verified so bootstrap cannot leave
+            // the page controlled by a worker with no usable release pointer.
+            await manager.activateRelease(result.releaseId);
+            await notify('active', result.releaseId);
+            return;
+          }
+          await notify(
             result.status === 'active' ? 'active' : 'update_ready',
             result.releaseId,
-          ),
-        )
+          );
+        })
         .catch(async () => {
           await notify('error', null);
           throw new Error('Verified offline release staging failed.');
@@ -80,6 +96,16 @@ export function installDivanServiceWorker(scope: DivanWorkerScope): void {
 
   scope.addEventListener('fetch', (event) => {
     event.respondWith(manager.respond(event.request));
+  });
+
+  scope.addEventListener('activate', (event) => {
+    event.waitUntil((async () => {
+      await scope.clients.claim();
+      const pointer = await manager.activePointer();
+      if (pointer !== null) {
+        await notify('active', pointer.activeReleaseId);
+      }
+    })());
   });
 
   scope.addEventListener('message', (event) => {

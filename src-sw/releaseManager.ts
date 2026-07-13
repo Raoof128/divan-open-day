@@ -22,6 +22,7 @@ export const RELEASE_CACHE_PREFIX = 'divan-release-v2:';
 export const POINTER_CACHE_NAME = 'divan-release-pointers-v2';
 export const RELEASE_POINTER_PATH = '/__divan/release-pointer-v2';
 export const READY_PATH = '/__divan/release-ready-v2';
+export const PENDING_PATH = '/__divan/release-pending-v2';
 
 const DEFAULT_NAVIGATION_TIMEOUT_MS = 2_500;
 const RELEASE_JSON_PATH = '/release.json';
@@ -55,6 +56,12 @@ const pointerSchema = z
       .string()
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u)
       .nullable(),
+  })
+  .strict();
+
+const pendingRecordSchema = z
+  .object({
+    releaseId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u),
   })
   .strict();
 
@@ -109,6 +116,31 @@ export class OfflineReleaseManager {
     return this.#serialized(() => this.#activateRelease(releaseId));
   }
 
+  public activatePendingRelease(): Promise<void> {
+    return this.#serialized(async () => {
+      const releaseId = await this.pendingReleaseId();
+      if (releaseId !== null) {
+        await this.#activateRelease(releaseId);
+      }
+    });
+  }
+
+  public async pendingReleaseId(): Promise<string | null> {
+    if (!(await this.#caches.keys()).includes(POINTER_CACHE_NAME)) {
+      return null;
+    }
+    const cache = await this.#caches.open(POINTER_CACHE_NAME);
+    const response = await cache.match(PENDING_PATH);
+    if (response === undefined) {
+      return null;
+    }
+    try {
+      return pendingRecordSchema.parse(await response.json()).releaseId;
+    } catch {
+      return null;
+    }
+  }
+
   public async activePointer(): Promise<ReleasePointer | null> {
     if (!(await this.#caches.keys()).includes(POINTER_CACHE_NAME)) {
       return null;
@@ -152,6 +184,11 @@ export class OfflineReleaseManager {
       return this.#releasePointerResponse(request);
     }
     if (this.#isNavigation(request)) {
+      try {
+        await this.activatePendingRelease();
+      } catch {
+        // A failed exact-target activation must not block the active release.
+      }
       return this.#navigationResponse(request);
     }
 
@@ -189,6 +226,7 @@ export class OfflineReleaseManager {
       ) {
         throw new Error('Active release metadata is incoherent.');
       }
+      await this.#clearPending();
       return { status: 'active', releaseId: descriptor.releaseId };
     }
 
@@ -204,6 +242,7 @@ export class OfflineReleaseManager {
         throw new Error('A release ID cannot be reused with different hashes.');
       }
       if (await this.#candidateComplete(existingReady)) {
+        await this.#writePending(descriptor.releaseId);
         return { status: 'ready', releaseId: descriptor.releaseId };
       }
     }
@@ -280,6 +319,8 @@ export class OfflineReleaseManager {
       };
       // The marker is deliberately written last; its existence is the complete-candidate boundary.
       await candidate.put(READY_PATH, this.#jsonResponse(ready));
+      // The exact pending target is persisted only after the complete marker.
+      await this.#writePending(descriptor.releaseId);
       return { status: 'ready', releaseId: descriptor.releaseId };
     } catch (error) {
       await this.#caches.delete(cacheName);
@@ -324,6 +365,33 @@ export class OfflineReleaseManager {
         await this.#caches.delete(cacheName);
       }
     }
+    const pendingReleaseId = await this.pendingReleaseId();
+    if (
+      pendingReleaseId !== null &&
+      (pendingReleaseId === releaseId ||
+        !keep.has(this.#cacheName(pendingReleaseId)))
+    ) {
+      await this.#clearPending(pendingReleaseId);
+    }
+  }
+
+  async #writePending(releaseId: string): Promise<void> {
+    const cache = await this.#caches.open(POINTER_CACHE_NAME);
+    await cache.put(PENDING_PATH, this.#jsonResponse({ releaseId }));
+  }
+
+  async #clearPending(expectedReleaseId?: string): Promise<void> {
+    if (!(await this.#caches.keys()).includes(POINTER_CACHE_NAME)) {
+      return;
+    }
+    const cache = await this.#caches.open(POINTER_CACHE_NAME);
+    if (expectedReleaseId !== undefined) {
+      const current = await this.pendingReleaseId();
+      if (current !== expectedReleaseId) {
+        return;
+      }
+    }
+    await cache.delete(PENDING_PATH);
   }
 
   async #verifyCorpus(

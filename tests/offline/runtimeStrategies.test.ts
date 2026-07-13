@@ -1,9 +1,11 @@
 import { webcrypto } from 'node:crypto';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   OfflineReleaseManager,
+  PENDING_PATH,
+  POINTER_CACHE_NAME,
   RELEASE_CACHE_PREFIX,
   type TimeoutAdapter,
 } from '../../src-sw/releaseManager';
@@ -145,7 +147,7 @@ describe('release-coherent runtime strategies', () => {
     });
   });
 
-  it('does not activate a complete ready update during ordinary navigation', async () => {
+  it('activates only the exact persisted pending update during clean navigation', async () => {
     const caches = new FakeCacheStorage();
     const firstFixture = releaseFixture('release-one');
     const first = new OfflineReleaseManager({
@@ -170,9 +172,10 @@ describe('release-coherent runtime strategies', () => {
     );
 
     await expect(second.activePointer()).resolves.toEqual({
-      activeReleaseId: 'release-one',
-      previousReleaseId: null,
+      activeReleaseId: 'release-two',
+      previousReleaseId: 'release-one',
     });
+    await expect(second.pendingReleaseId()).resolves.toBeNull();
   });
 
   it('never activates a stale later-built candidate during navigation', async () => {
@@ -185,15 +188,6 @@ describe('release-coherent runtime strategies', () => {
     });
     await first.stageCurrentRelease();
     await first.activateRelease('release-one');
-
-    const current = releaseFixture('release-current');
-    const currentManager = new OfflineReleaseManager({
-      caches,
-      fetch: fetchFrom(current.files),
-      crypto: webcrypto,
-      origin: 'https://divan.test',
-    });
-    await currentManager.stageCurrentRelease();
 
     const stale = releaseFixture('release-stale');
     const staleFiles = new Map(stale.files);
@@ -212,12 +206,56 @@ describe('release-coherent runtime strategies', () => {
     });
     await staleManager.stageCurrentRelease();
 
+    const current = releaseFixture('release-current');
+    const currentManager = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(current.files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await currentManager.stageCurrentRelease();
+
     await currentManager.respond(navigationRequest());
 
     await expect(currentManager.activePointer()).resolves.toEqual({
+      activeReleaseId: 'release-current',
+      previousReleaseId: 'release-one',
+    });
+    await expect(currentManager.pendingReleaseId()).resolves.toBeNull();
+    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-stale`)).toBe(false);
+  });
+
+  it('keeps the active release and exact pending target after activation failure', async () => {
+    const caches = new FakeCacheStorage();
+    const first = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(releaseFixture('release-one').files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await first.stageCurrentRelease();
+    await first.activateRelease('release-one');
+    const next = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(releaseFixture('release-two').files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await next.stageCurrentRelease();
+    const pointer = await caches.open(POINTER_CACHE_NAME);
+    vi.spyOn(pointer, 'put').mockRejectedValueOnce(
+      new Error('simulated atomic pointer failure'),
+    );
+
+    const response = await next.respond(navigationRequest());
+
+    await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
+    await expect(next.activePointer()).resolves.toEqual({
       activeReleaseId: 'release-one',
       previousReleaseId: null,
     });
+    await expect(next.pendingReleaseId()).resolves.toBe('release-two');
+    await expect(pointer.match(PENDING_PATH)).resolves.toBeDefined();
   });
 
   it('treats an Accept text/html scripted fetch as ordinary network traffic', async () => {
@@ -227,7 +265,14 @@ describe('release-coherent runtime strategies', () => {
       new Map(fixture.files).set('/scripted', new Response('scripted response')),
       calls,
     );
-    const { subject } = await activeManager(network);
+    const { subject, caches } = await activeManager(network);
+    const next = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(releaseFixture('release-two').files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await next.stageCurrentRelease();
 
     const response = await subject.respond(
       new Request('https://divan.test/scripted', {
