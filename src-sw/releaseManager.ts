@@ -339,6 +339,15 @@ export class OfflineReleaseManager {
 
     const current = await this.activePointer();
     if (current?.activeReleaseId === releaseId) {
+      await this.#maintainCommittedActivation(
+        releaseId,
+        new Set([
+          this.#cacheName(current.activeReleaseId),
+          ...(current.previousReleaseId === null
+            ? []
+            : [this.#cacheName(current.previousReleaseId)]),
+        ]),
+      );
       return;
     }
     const currentReady =
@@ -360,18 +369,43 @@ export class OfflineReleaseManager {
         ? []
         : [this.#cacheName(next.previousReleaseId)]),
     ]);
-    for (const cacheName of await this.#caches.keys()) {
-      if (cacheName.startsWith(RELEASE_CACHE_PREFIX) && !keep.has(cacheName)) {
-        await this.#caches.delete(cacheName);
+    // The pointer write is the commit boundary. Pending-marker and old-cache
+    // cleanup are idempotent maintenance and must never turn a committed
+    // activation into a reported failure.
+    await this.#maintainCommittedActivation(releaseId, keep);
+  }
+
+  async #maintainCommittedActivation(
+    releaseId: string,
+    keep: ReadonlySet<string>,
+  ): Promise<void> {
+    try {
+      const pendingReleaseId = await this.pendingReleaseId();
+      if (
+        pendingReleaseId !== null &&
+        (pendingReleaseId === releaseId ||
+          !keep.has(this.#cacheName(pendingReleaseId)))
+      ) {
+        await this.#clearPending(pendingReleaseId);
       }
+    } catch {
+      // A later activation attempt retries matching pending-marker cleanup.
+      return;
     }
-    const pendingReleaseId = await this.pendingReleaseId();
-    if (
-      pendingReleaseId !== null &&
-      (pendingReleaseId === releaseId ||
-        !keep.has(this.#cacheName(pendingReleaseId)))
-    ) {
-      await this.#clearPending(pendingReleaseId);
+    let cacheNames: readonly string[];
+    try {
+      cacheNames = await this.#caches.keys();
+    } catch {
+      return;
+    }
+    for (const cacheName of cacheNames) {
+      if (cacheName.startsWith(RELEASE_CACHE_PREFIX) && !keep.has(cacheName)) {
+        try {
+          await this.#caches.delete(cacheName);
+        } catch {
+          // Old-cache deletion is storage maintenance after a committed pointer.
+        }
+      }
     }
   }
 
@@ -681,7 +715,7 @@ export class OfflineReleaseManager {
       return null;
     }
     const response = await this.#timedFetch(request);
-    if (response === null || !response.ok || response.redirected) {
+    if (response === null || response.status !== 200 || response.redirected) {
       return null;
     }
     const bytes = await this.#readBoundedBody(response, indexAsset.bytes);

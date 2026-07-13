@@ -77,6 +77,31 @@ describe('release-coherent runtime strategies', () => {
     await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
   });
 
+  it('rejects a matching HTTP 206 navigation and serves the active cached shell', async () => {
+    const fixture = releaseFixture();
+    const network = ((input: RequestInfo | URL, init?: RequestInit) => {
+      const pathname = new URL(
+        typeof input === 'string' ? input : input instanceof URL ? input : input.url,
+        'https://divan.test',
+      ).pathname;
+      if (pathname === '/') {
+        return Promise.resolve(
+          new Response('<!doctype html><title>DIVAN</title>', {
+            status: 206,
+            headers: { 'content-range': 'bytes 0-39/40' },
+          }),
+        );
+      }
+      return fetchFrom(fixture.files)(input, init);
+    }) as typeof fetch;
+    const { subject } = await activeManager(network);
+
+    const response = await subject.respond(navigationRequest());
+
+    expect(response.status).toBe(200);
+    await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
+  });
+
   it('never caches or falls back for the private health route', async () => {
     const calls: { path: string; init?: RequestInit }[] = [];
     const fixture = releaseFixture();

@@ -3,6 +3,7 @@ import { webcrypto } from 'node:crypto';
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  PENDING_PATH,
   POINTER_CACHE_NAME,
   RELEASE_CACHE_PREFIX,
   RELEASE_POINTER_PATH,
@@ -399,6 +400,60 @@ describe('atomic activation', () => {
     });
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(true);
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-two`)).toBe(true);
+  });
+
+  it('keeps a committed activation successful when stale-cache deletion fails', async () => {
+    const caches = new FakeCacheStorage();
+    const first = manager(releaseFixture('release-one'), caches).subject;
+    await first.stageCurrentRelease();
+    await first.activateRelease('release-one');
+    const second = manager(releaseFixture('release-two'), caches).subject;
+    await second.stageCurrentRelease();
+    const staleCacheName = `${RELEASE_CACHE_PREFIX}release-stale`;
+    await caches.open(staleCacheName);
+    const realDelete = caches.delete.bind(caches);
+    vi.spyOn(caches, 'delete').mockImplementation((cacheName) =>
+      cacheName === staleCacheName
+        ? Promise.reject(new Error('simulated stale-cache maintenance failure'))
+        : realDelete(cacheName),
+    );
+
+    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+
+    await expect(second.activePointer()).resolves.toEqual({
+      activeReleaseId: 'release-two',
+      previousReleaseId: 'release-one',
+    });
+    await expect(second.pendingReleaseId()).resolves.toBeNull();
+    expect(caches.stores.has(staleCacheName)).toBe(true);
+    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+    await expect(second.pendingReleaseId()).resolves.toBeNull();
+  });
+
+  it('retries pending-marker cleanup after a committed activation', async () => {
+    const caches = new FakeCacheStorage();
+    const first = manager(releaseFixture('release-one'), caches).subject;
+    await first.stageCurrentRelease();
+    await first.activateRelease('release-one');
+    const second = manager(releaseFixture('release-two'), caches).subject;
+    await second.stageCurrentRelease();
+    const pointer = await caches.open(POINTER_CACHE_NAME);
+    const realDelete = pointer.delete.bind(pointer);
+    vi.spyOn(pointer, 'delete').mockImplementationOnce((request) => {
+      expect(request).toBe(PENDING_PATH);
+      return Promise.reject(new Error('simulated pending-marker cleanup failure'));
+    }).mockImplementation((request) => realDelete(request));
+
+    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+
+    await expect(second.activePointer()).resolves.toEqual({
+      activeReleaseId: 'release-two',
+      previousReleaseId: 'release-one',
+    });
+    await expect(second.pendingReleaseId()).resolves.toBe('release-two');
+
+    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+    await expect(second.pendingReleaseId()).resolves.toBeNull();
   });
 
   it('refuses to activate an incomplete candidate', async () => {
