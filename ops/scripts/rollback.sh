@@ -25,6 +25,7 @@ fi
 require_runtime_tools
 compose config --quiet
 if compose pull divan-web cloudflared \
+  && require_production_image "$previous_image" \
   && compose up -d --no-build --wait --wait-timeout 90 \
   && "$SCRIPT_DIR/verify.sh" \
     --image "$previous_image" \
@@ -40,7 +41,15 @@ fi
 
 notice 'Rollback verification failed; restoring the current immutable image.' >&2
 COMMON_IMAGE=$current_image
-if ! compose up -d --no-build --wait --wait-timeout 90; then
+require_production_image "$current_image"
+if ! compose up -d --no-build --wait --wait-timeout 90 \
+  || ! "$SCRIPT_DIR/verify.sh" \
+    --image "$current_image" \
+    --state-dir "$COMMON_STATE_DIR" \
+    --config "$COMMON_CONFIG" \
+    --credentials "$COMMON_CREDENTIALS" \
+    --public-origin "$COMMON_PUBLIC_ORIGIN"; then
+  stop_unverified_stack
   die 'Rollback failed and restoration of the current image also failed; escalate immediately.'
 fi
 die 'Rollback target failed verification; current image was restored and release state was not changed.'

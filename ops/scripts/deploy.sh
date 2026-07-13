@@ -25,6 +25,7 @@ if [[ -f "$current_file" ]]; then
 fi
 
 if compose pull divan-web cloudflared \
+  && require_production_image "$COMMON_IMAGE" \
   && compose up -d --no-build --wait --wait-timeout 90 \
   && "$SCRIPT_DIR/verify.sh" \
     --image "$COMMON_IMAGE" \
@@ -43,6 +44,18 @@ fi
 if [[ -n "$previous_image" ]]; then
   notice 'Candidate verification failed; restoring the previous immutable image.' >&2
   COMMON_IMAGE=$previous_image
-  compose up -d --no-build --wait --wait-timeout 90 || true
+  require_production_image "$previous_image"
+  if ! compose up -d --no-build --wait --wait-timeout 90 \
+    || ! "$SCRIPT_DIR/verify.sh" \
+      --image "$previous_image" \
+      --state-dir "$COMMON_STATE_DIR" \
+      --config "$COMMON_CONFIG" \
+      --credentials "$COMMON_CREDENTIALS" \
+      --public-origin "$COMMON_PUBLIC_ORIGIN"; then
+    stop_unverified_stack
+    die 'Candidate failed and bounded restoration of the previous release did not verify; escalate immediately.'
+  fi
+else
+  stop_unverified_stack
 fi
 die 'Candidate deployment failed and was not accepted.'

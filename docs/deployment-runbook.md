@@ -7,7 +7,7 @@ Status: **operator procedure; not evidence that deployment occurred**. Run only 
 - Use a dedicated non-root sudo deployment identity with SSH key authentication. Password SSH and root SSH login must be disabled and verified before launch.
 - Treat Docker access as root-equivalent. Only the dedicated operator may own the deployment directory and evidence.
 - Keep DIVAN in its own deployment directory and Compose project. Never join an existing service's network, mount its volume, read its environment, reuse its route, or copy its credentials.
-- Provision the tunnel credentials outside Git with mode `0400`, owned by the deployment identity. The web container never receives a credential mount.
+- Provision both tunnel files outside Git with mode `0400`, owned by the cloudflared container identity, UID/GID `65532:65532`. This is deliberately different from deployment-directory ownership: the deployment identity owns state/evidence, while root provisions the two read-only bind-mounted files for the fixed container UID. The web container never receives either mount.
 - Back up the administrator SSH private key and the separate encrypted-backup recovery key material to an approved password manager before launch. The public repository intentionally omits local credential paths. Losing both the SSH key and its approved backup locks out remote administration; losing encrypted-backup key material makes those backups unrecoverable. A console password is emergency console access, not an SSH fallback.
 - Confirm automated host backups, monitoring, disk/memory alerts, MFA, security updates, and recovery ownership. A Droplet backup does not replace Git tag, lockfile, content approvals, registry digest, and verification evidence.
 - Never print or paste credential contents. Record only non-sensitive check results, release IDs, commit/tag, and immutable digests.
@@ -34,19 +34,21 @@ Create the dedicated deployment layout with owner-only permissions. The exact ho
 
 ```bash
 install -d -m 0700 "$DIVAN_DEPLOY_ROOT/runtime" "$DIVAN_DEPLOY_ROOT/state" "$DIVAN_DEPLOY_ROOT/evidence"
-install -m 0400 /secure/operator-source/tunnel.json "$DIVAN_DEPLOY_ROOT/runtime/tunnel.json"
+sudo install -o 65532 -g 65532 -m 0400 /secure/operator-source/tunnel.json "$DIVAN_DEPLOY_ROOT/runtime/tunnel.json"
 ```
 
 Render the non-secret configuration from approved environment-provided identity values:
 
 ```bash
-ops/scripts/render-tunnel-config.sh \
+sudo ops/scripts/render-tunnel-config.sh \
   --hostname "$DIVAN_PUBLIC_HOSTNAME" \
   --tunnel-id "$DIVAN_TUNNEL_ID" \
   --output "$DIVAN_DEPLOY_ROOT/runtime/config.yml"
 ```
 
-The renderer accepts only a lowercase DNS name and canonical UUID, writes mode `0600`, uses the fixed in-container credential path, denies public `/healthz` before the origin route, and retains a final 404 catch-all. Review the rendered file without recording its identity in public evidence.
+The renderer accepts only a lowercase DNS name and canonical UUID, writes mode `0400`, and when run as root assigns UID/GID `65532:65532`. It uses the fixed in-container credential path, denies public `/healthz` before the origin route, and retains a final 404 catch-all. A non-root local render is allowed only for inspection and is explicitly reported as not deployment-ready; real preflight rejects either file unless its canonical path, ownership, mode and readability contract are exact. Review the rendered file without recording its identity in public evidence.
+
+The state directory must be canonical (no symlink in any path component), mode `0700`, and owned by the deployment identity invoking the scripts. Each release-state file is mode `0600`, non-symlinked, and owned by that same identity.
 
 ## 3. Preflight without mutation
 
@@ -110,7 +112,7 @@ ops/scripts/deploy.sh \
   --public-origin "$DIVAN_ORIGIN"
 ```
 
-The script rejects mutable references and unsafe paths, runs no server-side build, records the prior digest, pulls by digest, starts with `--no-build`, waits for health, verifies private isolation and public delivery, and restores the previous digest if candidate verification fails.
+The script rejects mutable references and unsafe paths, runs no server-side build, records the prior digest, and pulls by digest. Before activation it requires the final image label `org.opencontainers.image.divan-build-mode=production`; after activation it requires the configured reference, running image ID, repository digest, `buildProfile: production`, and `productionEligible: true` to agree. It starts with `--no-build`, waits at most 90 seconds for health, uses bounded HTTPS verification, and restores then re-verifies the previous production digest if candidate verification fails or times out. If there is no verified prior release, or restoration itself cannot be verified, it stops the DIVAN tunnel and origin instead of leaving an unverified release reachable.
 
 ## 5. Verification and evidence
 
@@ -127,20 +129,21 @@ ops/scripts/verify.sh \
 
 Automated checks cover:
 
-- Compose rendering, two running containers, and private release health;
-- verified content checksum/count relationship inside the web container;
-- non-root user, read-only root, all capabilities dropped, exact network membership, and no host-published web port;
-- public `/healthz` returns 404;
-- public CSP, `nosniff`, and document cache headers.
+- Compose rendering, exact immutable running image bytes, production labels/flags, two running containers, and private release health;
+- verified content and asset-manifest checksum/path/count relationships inside the web container and again from public bytes;
+- exact non-root users, read-only roots, all capabilities dropped, `no-new-privileges`, restart/resource/PID limits, exact network membership, the two tunnel-only read-only mounts, and zero host-published ports for both containers;
+- tunnel files are canonical, mode `0400`, host-owned by UID/GID `65532:65532`, mounted read-only, and consumed by a running container using that same identity;
+- bounded HTTPS-only requests, with public `/healthz` returning exact 404;
+- exact CSP, `nosniff`, referrer, COOP, CORP, permissions, and cache headers; a `Server` value must not expose Caddy;
+- `no-cache` documents/release/service worker, one-hour manifest cache, immutable existing content-addressed corpus/manifest files, and `no-store` for missing/unhashed static paths.
 
 Operator evidence must additionally cover:
 
 - external port scan and direct-IP requests showing no application response;
-- immutable asset, release pointer, service-worker, manifest, and document cache rules at the edge;
 - CSP has no inline/third-party exceptions and no third-party request occurs;
 - no cookies, analytics, visitor identifiers, request-body logs, or static access logs;
 - Cloudflare and DigitalOcean logging fields/access/retention decision;
-- container CPU, memory, PID, tmpfs, security and network settings via `docker inspect`;
+- tmpfs options and platform-specific host/runtime evidence not deterministically covered by the repository verifier;
 - approved SBOM and vulnerability scans;
 - unchanged nginx, UFW, Docker networks, existing containers, and neighbouring-service health baselines;
 - public experience, warm/offline behavior, failed-update retention, accessibility matrix, and the release ID expected by the approved evidence pack.

@@ -4,7 +4,7 @@ Rollback uses the previously verified immutable image and performs no build. Reh
 
 ## Preconditions
 
-- Stop if the state directory, current digest, previous digest, tunnel configuration, or credentials are missing, symlinked, unreadable, or have unexpected ownership.
+- Stop if the canonical mode-`0700` state directory, mode-`0600` current/previous digest, or the canonical mode-`0400` tunnel files are missing, symlinked anywhere in their paths, unreadable, or have unexpected ownership. State belongs to the invoking deployment identity; both tunnel files belong to UID/GID `65532:65532`.
 - Confirm `previous-image.txt` identifies the last independently verified production release, not a fixture image.
 - Preserve incident evidence without copying request, IP, visitor, session, selected-poem, or share-card data.
 - If content approval or credential compromise is suspected, disable the public route first under the separate incident procedure; do not reactivate an untrusted prior release.
@@ -34,7 +34,7 @@ ops/scripts/rollback.sh \
   --public-origin "$DIVAN_ORIGIN"
 ```
 
-The script pulls the previous digest, starts it with Compose `--no-build`, waits for health, runs the same private/public verifier, and only then swaps the current and previous state files. If verification fails, it does not record the rollback target as current.
+The script pulls the previous digest, rejects it unless its immutable repository digest and production image label agree, starts it with Compose `--no-build`, waits at most 90 seconds for health, and runs the same bounded private/public verifier. The verifier also rejects fixture release flags or running bytes that do not match the approved digest. Only then are current and previous state files swapped. If verification fails or times out, the script restores and re-verifies the current production image and does not record the rollback target as current. If restoration also fails verification, it stops the DIVAN tunnel and origin so an unverified release is not left reachable.
 
 ## Required post-rollback checks
 

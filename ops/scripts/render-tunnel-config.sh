@@ -65,7 +65,17 @@ awk -v hostname="$hostname" -v tunnel_id="$tunnel_id" '
   { gsub(/__DIVAN_PUBLIC_HOSTNAME__/, hostname); gsub(/__DIVAN_TUNNEL_ID__/, tunnel_id); print }
 ' "$TEMPLATE" >"$temporary"
 
-chmod 0600 "$temporary"
+chmod 0400 "$temporary"
 mv -f -- "$temporary" "$output"
 trap - EXIT
-printf '%s\n' 'Rendered tunnel configuration without credential material.'
+
+# Production provisioning runs this renderer as root so the bind-mounted file
+# is actually readable by the image's fixed non-root identity. A non-root local
+# author may still inspect the deterministic output, but deployment preflight
+# rejects it until this exact ownership is applied.
+if [[ "$(id -u)" == 0 ]]; then
+  chown 65532:65532 "$output"
+else
+  printf '%s\n' 'NOTICE: local output is not deployment-ready; root must chown 65532:65532.' >&2
+fi
+printf '%s\n' 'Rendered mode-0400 tunnel configuration without credential material.'

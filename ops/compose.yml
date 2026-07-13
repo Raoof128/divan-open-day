@@ -45,8 +45,18 @@ services:
       - /etc/cloudflared/config.yml
       - run
     volumes:
-      - ${DIVAN_TUNNEL_CONFIG_FILE:?set DIVAN_TUNNEL_CONFIG_FILE}:/etc/cloudflared/config.yml:ro
-      - ${DIVAN_TUNNEL_CREDENTIALS_FILE:?set DIVAN_TUNNEL_CREDENTIALS_FILE}:/run/secrets/divan-tunnel.json:ro
+      - type: bind
+        source: ${DIVAN_TUNNEL_CONFIG_FILE:?set DIVAN_TUNNEL_CONFIG_FILE}
+        target: /etc/cloudflared/config.yml
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${DIVAN_TUNNEL_CREDENTIALS_FILE:?set DIVAN_TUNNEL_CREDENTIALS_FILE}
+        target: /run/secrets/divan-tunnel.json
+        read_only: true
+        bind:
+          create_host_path: false
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
     networks:

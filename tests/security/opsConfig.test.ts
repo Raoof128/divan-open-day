@@ -4,10 +4,12 @@ import {
   type SpawnSyncReturns,
 } from 'node:child_process';
 import {
+  chmodSync,
   existsSync,
   mkdtempSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -74,6 +76,28 @@ describe('production image contract', () => {
     expect(dockerfile).toContain('USER 10001:10001');
     expect(dockerfile).toContain('EXPOSE 8080');
   });
+
+  test('requires production release metadata at both image and filesystem layers', () => {
+    const dockerfile = readProjectFile('ops/Dockerfile');
+    const health = readProjectFile('ops/scripts/container-health.sh');
+
+    expect(dockerfile).toContain(
+      'org.opencontainers.image.divan-build-mode=$DIVAN_BUILD_MODE',
+    );
+    expect(health).toContain('[ -f /srv/index.html ] || exit 1');
+    expect(health).toContain('[ "$build_profile" = production ] || exit 1');
+    expect(health).toContain('[ "$production_eligible" = true ] || exit 1');
+    expect(health).toContain(
+      '[ "$content_path" = "/content/${content_sha}.json" ] || exit 1',
+    );
+    expect(health).toContain(
+      '[ "$asset_manifest_path" = "/assets/${asset_manifest_sha}.json" ] || exit 1',
+    );
+    expect(health).toContain('wget -q -T 5');
+    expect(health).not.toMatch(
+      /\[ -f \/srv\/index\.html \] \|\| \[ -f "\$release_file" \]/u,
+    );
+  });
 });
 
 describe('static origin delivery contract', () => {
@@ -113,10 +137,11 @@ describe('static origin delivery contract', () => {
     expect(caddyfile).toMatch(/:8080/u);
     expect(caddyfile).toMatch(/log\s*\{[^}]*output discard/su);
     expect(caddyfile).toMatch(/\/healthz[\s\S]*Cache-Control "no-store"/u);
-    expect(caddyfile).toContain('?Cache-Control "no-cache, must-revalidate"');
     expect(caddyfile).toContain('no-cache, must-revalidate');
     expect(caddyfile).toContain('public, max-age=31536000, immutable');
     expect(caddyfile).toContain('public, max-age=3600');
+    expect(caddyfile).toContain('?Cache-Control "no-store"');
+    expect(caddyfile).toMatch(/@immutable\s*\{[\s\S]*path_regexp[\s\S]*file[\s\S]*\}/u);
     expect(caddyfile).toMatch(/@documents[\s\S]*rewrite \* \/index\.html/su);
     expect(caddyfile).toMatch(/@staticAssets[\s\S]*file_server/su);
     expect(caddyfile).not.toMatch(/browse/u);
@@ -185,10 +210,17 @@ describe('Compose and tunnel isolation', () => {
     const source = readProjectFile('ops/compose.yml');
     const template = readProjectFile('ops/cloudflared/config.yml.example');
     const compose = parse(source) as {
-      services: Record<
-        string,
-        { depends_on?: unknown; healthcheck?: unknown; volumes?: string[] }
-      >;
+      services: Record<string, {
+        depends_on?: unknown;
+        healthcheck?: unknown;
+        volumes?: Array<{
+          bind?: { create_host_path?: boolean };
+          read_only?: boolean;
+          source?: string;
+          target?: string;
+          type?: string;
+        }>;
+      }>;
     };
 
     expect(compose.services['divan-web']!.healthcheck).toBeDefined();
@@ -196,11 +228,23 @@ describe('Compose and tunnel isolation', () => {
       'divan-web': { condition: 'service_healthy' },
     });
     expect(compose.services['divan-web']!.volumes).toBeUndefined();
-    expect(
-      compose.services['cloudflared']!.volumes?.every((value) =>
-        value.endsWith(':ro'),
-      ),
-    ).toBe(true);
+    expect(compose.services['cloudflared']!.volumes).toEqual([
+      {
+        type: 'bind',
+        source: '${DIVAN_TUNNEL_CONFIG_FILE:?set DIVAN_TUNNEL_CONFIG_FILE}',
+        target: '/etc/cloudflared/config.yml',
+        read_only: true,
+        bind: { create_host_path: false },
+      },
+      {
+        type: 'bind',
+        source:
+          '${DIVAN_TUNNEL_CREDENTIALS_FILE:?set DIVAN_TUNNEL_CREDENTIALS_FILE}',
+        target: '/run/secrets/divan-tunnel.json',
+        read_only: true,
+        bind: { create_host_path: false },
+      },
+    ]);
 
     const healthIndex = template.indexOf('path: ^/healthz$');
     const originIndex = template.indexOf('service: http://divan-web:8080');
@@ -390,6 +434,170 @@ describe('safe deployment controls', () => {
     expect(scripts).not.toMatch(/credentials[^\n]*(?:cat|echo|printf)/iu);
   });
 
+  test('rejects non-production images and verifies the exact running digest', () => {
+    const library = readProjectFile('ops/scripts/lib.sh');
+    const deploy = readProjectFile('ops/scripts/deploy.sh');
+    const verify = readProjectFile('ops/scripts/verify.sh');
+    const rollback = readProjectFile('ops/scripts/rollback.sh');
+
+    expect(library).toContain('require_production_image');
+    expect(library).toContain('org.opencontainers.image.divan-build-mode');
+    expect(library).toContain('production');
+    expect(deploy).toContain('require_production_image "$COMMON_IMAGE"');
+    expect(rollback).toContain('require_production_image "$previous_image"');
+    expect(verify).toContain('require_running_image "$web_id" "$COMMON_IMAGE"');
+    expect(verify).toContain('buildProfile');
+    expect(verify).toContain('productionEligible');
+  });
+
+  test('bounds every HTTPS request and verifies the complete public contract', () => {
+    const verify = readProjectFile('ops/scripts/verify.sh');
+
+    expect(verify).toContain("--proto '=https'");
+    expect(verify).toContain('--connect-timeout 5');
+    expect(verify).toContain('--max-time 20');
+    expect(verify).toContain('Referrer-Policy');
+    expect(verify).toContain('Cross-Origin-Opener-Policy');
+    expect(verify).toContain('Cross-Origin-Resource-Policy');
+    expect(verify).toContain('Permissions-Policy');
+    expect(verify).toContain('Content-Security-Policy');
+    expect(verify).toContain('contentSha256');
+    expect(verify).toContain('assetManifestSha256');
+    expect(verify).toContain('public, max-age=31536000, immutable');
+    expect(verify).toContain('public, max-age=3600');
+    expect(verify).toContain('no-cache, must-revalidate');
+    expect(verify).toContain('no-store');
+    expect(verify).toContain('Server');
+  });
+
+  test('checks exact hardening and network membership for both containers', () => {
+    const verify = readProjectFile('ops/scripts/verify.sh');
+
+    expect(verify).toContain('require_hardened_container "$web_id"');
+    expect(verify).toContain('require_hardened_container "$tunnel_id"');
+    expect(verify).toContain("'divan_origin'");
+    expect(verify).toContain("'divan_egress divan_origin'");
+    expect(verify).toContain('no-new-privileges');
+    expect(verify).toContain('PortBindings');
+    expect(verify).toContain('65532:65532');
+    expect(verify).toContain(
+      '{"2019/tcp":null,"443/tcp":null,"443/udp":null,"80/tcp":null,"8080/tcp":null}',
+    );
+    expect(verify).toContain('"$image" == "$DIVAN_TUNNEL_IMAGE"');
+  });
+
+  test('requires root-provisioned tunnel files readable by UID 65532', () => {
+    const library = readProjectFile('ops/scripts/lib.sh');
+    const runbook = readProjectFile('docs/deployment-runbook.md');
+    const renderer = readProjectFile('ops/scripts/render-tunnel-config.sh');
+
+    expect(library).toContain('65532');
+    expect(library).toContain('require_cloudflared_file');
+    expect(renderer).toContain('chown 65532:65532');
+    expect(renderer).toContain('chmod 0400');
+    expect(runbook).toContain('install -o 65532 -g 65532 -m 0400');
+    expect(runbook).toContain('UID/GID `65532:65532`');
+  });
+
+  test('validates tunnel file metadata without requiring operator read access', () => {
+    const library = readProjectFile('ops/scripts/lib.sh');
+
+    expect(library).toContain('require_absolute_regular_file_metadata');
+    expect(library).toMatch(
+      /require_cloudflared_file\(\)[\s\S]*require_absolute_regular_file_metadata "\$path" "\$label"/u,
+    );
+    expect(library).not.toMatch(
+      /require_cloudflared_file\(\)[\s\S]*require_absolute_regular_file "\$path" "\$label"/u,
+    );
+  });
+
+  test('binds release paths to their declared hashes and release identity', () => {
+    const verify = readProjectFile('ops/scripts/verify.sh');
+
+    expect(verify).toContain(
+      '"$content_path" == "/content/${content_sha}.json"',
+    );
+    expect(verify).toContain(
+      '"$asset_manifest_path" == "/assets/${asset_manifest_sha}.json"',
+    );
+    expect(verify).toContain('corpus_release_id');
+    expect(verify).toContain('"$corpus_release_id" == "$release_id"');
+  });
+
+  test('checks global headers across every successful public cache class', () => {
+    const verify = readProjectFile('ops/scripts/verify.sh');
+
+    expect(verify).toMatch(
+      /fetch_public '\/service-worker\.js'[\s\S]*require_global_headers "\$work_dir\/worker\.headers"/u,
+    );
+    expect(verify).toMatch(
+      /fetch_public '\/manifest\.webmanifest'[\s\S]*require_global_headers "\$work_dir\/manifest\.headers"/u,
+    );
+  });
+
+  test('requires missing hashed and unhashed paths to remain no-store 404s', () => {
+    const verify = readProjectFile('ops/scripts/verify.sh');
+
+    expect(verify).toContain('/assets/not-content-addressed.js');
+    expect(verify).toContain('/assets/missing-deadbeef.js');
+    expect(verify).toContain('Missing hashed static path did not remain an exact 404.');
+  });
+
+  test('rejects permissive or symlink-traversing state directories', () => {
+    const temp = mkdtempSync(resolve(tmpdir(), 'divan-ops-state-boundary-'));
+    const realState = resolve(temp, 'real-state');
+    const linkedState = resolve(temp, 'linked-state');
+
+    try {
+      chmodSync(temp, 0o755);
+      // mkdir through Node keeps this test independent from an interactive shell.
+      const bootstrap = runScript('preflight.sh', [
+        '--image',
+        immutableImage,
+        '--state-dir',
+        temp,
+        '--config',
+        config,
+        '--credentials',
+        credentials,
+        '--dry-run',
+      ]);
+      expect(bootstrap.status).not.toBe(0);
+
+      execFileSync('mkdir', [realState]);
+      chmodSync(realState, 0o700);
+      symlinkSync(realState, linkedState);
+      const linked = runScript('preflight.sh', [
+        '--image',
+        immutableImage,
+        '--state-dir',
+        linkedState,
+        '--config',
+        config,
+        '--credentials',
+        credentials,
+        '--dry-run',
+      ]);
+      expect(linked.status).not.toBe(0);
+
+      chmodSync(realState, 0o755);
+      const permissive = runScript('preflight.sh', [
+        '--image',
+        immutableImage,
+        '--state-dir',
+        realState,
+        '--config',
+        config,
+        '--credentials',
+        credentials,
+        '--dry-run',
+      ]);
+      expect(permissive.status).not.toBe(0);
+    } finally {
+      rmSync(temp, { force: true, recursive: true });
+    }
+  });
+
   test('records state only after verification and restores failed rollback attempts', () => {
     const deploy = readProjectFile('ops/scripts/deploy.sh');
     const rollback = readProjectFile('ops/scripts/rollback.sh');
@@ -400,6 +608,8 @@ describe('safe deployment controls', () => {
     expect(rollback).toContain(
       'Rollback verification failed; restoring the current immutable image.',
     );
+    expect(deploy).toContain('stop_unverified_stack');
+    expect(rollback).toContain('stop_unverified_stack');
   });
 });
 

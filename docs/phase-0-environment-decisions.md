@@ -41,7 +41,7 @@ docker buildx imagetools inspect cloudflare/cloudflared:2026.7.0
 docker buildx imagetools inspect cloudflare/cloudflared:2026.7.0@sha256:5e49861633763e8933475477c20bae6039ed47f32c1d267a34babc347f28f0df
 ```
 
-The official cloudflared x86_64 image configuration declares user `65532:65532`. The Caddy image does not declare a non-root user, so the final DIVAN image explicitly switches to the reviewed dedicated UID/GID `10001:10001`, serves on unprivileged port 8080, and receives only verified `dist/`, the Caddy configuration, and the release-health script.
+The official cloudflared x86_64 image configuration declares user `65532:65532`. Root must provision its fixed config and credential bind mounts as UID/GID `65532:65532`, mode `0400`; deployment preflight rejects operator-owned or more permissive files, and runtime verification requires both exact read-only mounts on a running container with that identity. The Caddy image does not declare a non-root user, so the final DIVAN image explicitly switches to the reviewed dedicated UID/GID `10001:10001`, serves on unprivileged port 8080, and receives only verified `dist/`, the Caddy configuration, and the release-health script.
 
 Tags above provide human-readable provenance only. Digests select the bytes. Re-resolve, review release notes and vulnerability results, and update this table in the same change whenever an image is upgraded.
 
