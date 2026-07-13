@@ -1,0 +1,35 @@
+#!/bin/sh
+set -eu
+
+format=${2-}
+path=''
+for argument do
+  path=$argument
+done
+
+case "$format" in
+  %Lp)
+    if [ "$path" = "$MOCK_STATE_DIR" ]; then
+      printf '%s\n' 700
+    elif [ "$path" = "$MOCK_CONFIG" ] || [ "$path" = "$MOCK_CREDENTIALS" ]; then
+      printf '%s\n' 400
+    else
+      printf '%s\n' 600
+    fi
+    ;;
+  %u)
+    if [ "$path" = "$MOCK_CONFIG" ] || [ "$path" = "$MOCK_CREDENTIALS" ]; then
+      printf '%s\n' 65532
+    else
+      printf '%s\n' "$MOCK_UID"
+    fi
+    ;;
+  %g)
+    if [ "$path" = "$MOCK_CONFIG" ] || [ "$path" = "$MOCK_CREDENTIALS" ]; then
+      printf '%s\n' 65532
+    else
+      printf '%s\n' "$MOCK_GID"
+    fi
+    ;;
+  *) exit 1 ;;
+esac

@@ -11,6 +11,7 @@ COMMON_CONFIG=''
 COMMON_CREDENTIALS=''
 COMMON_PUBLIC_ORIGIN=''
 COMMON_DRY_RUN=0
+FAIL_CLOSED_ARMED=0
 
 die() {
   printf 'ERROR: %s\n' "$1" >&2
@@ -247,6 +248,89 @@ stop_unverified_stack() {
   if ! compose stop -t 10 cloudflared divan-web >/dev/null 2>&1; then
     notice 'WARNING: automatic stop did not complete; isolate the DIVAN route and escalate immediately.' >&2
   fi
+}
+
+fail_closed_exit_handler() {
+  local original_status=$1
+  trap - EXIT HUP INT TERM
+  if ((FAIL_CLOSED_ARMED == 1)); then
+    stop_unverified_stack
+  fi
+  return "$original_status"
+}
+
+arm_fail_closed() {
+  FAIL_CLOSED_ARMED=1
+  trap 'fail_closed_exit_handler $?' EXIT
+  trap 'exit 70' HUP INT TERM
+}
+
+disarm_fail_closed() {
+  FAIL_CLOSED_ARMED=0
+  trap - EXIT HUP INT TERM
+}
+
+require_no_web_mounts() {
+  local actual=$1
+  [[ -z "$actual" ]] || die 'Private origin unexpectedly receives a bind or volume mount.'
+}
+
+require_exact_tunnel_mounts() {
+  local actual=$1
+  local config_source=$2
+  local credentials_source=$3
+  local expected
+  expected="${config_source}|/etc/cloudflared/config.yml|false|bind
+${credentials_source}|/run/secrets/divan-tunnel.json|false|bind"
+  [[ "$actual" == "$expected" ]] \
+    || die 'Tunnel mount sources or destinations do not match the two reviewed read-only files.'
+}
+
+require_exact_network_members() {
+  local actual=$1
+  local expected=$2
+  local label=$3
+  [[ "$actual" == "$expected" ]] \
+    || die "$label network contains an unexpected or missing container."
+}
+
+extract_json_string() {
+  local file=$1
+  local key=$2
+  sed -n "s/.*\"${key}\":\"\([^\"]*\)\".*/\1/p" "$file"
+}
+
+extract_json_integer() {
+  local file=$1
+  local key=$2
+  sed -n "s/.*\"${key}\":\([0-9][0-9]*\).*/\1/p" "$file"
+}
+
+extract_json_boolean() {
+  local file=$1
+  local key=$2
+  sed -n "s/.*\"${key}\":\(true\|false\).*/\1/p" "$file"
+}
+
+sha256_file() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
+  else
+    shasum -a 256 "$1" | awk '{print $1}'
+  fi
+}
+
+require_matching_release_files() {
+  local running_file=$1
+  local public_file=$2
+  local running_id
+  local public_id
+  running_id=$(extract_json_string "$running_file" releaseId)
+  public_id=$(extract_json_string "$public_file" releaseId)
+  [[ "$running_id" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ && "$public_id" == "$running_id" ]] \
+    || die 'Public release identity does not match the running image release.'
+  [[ "$(sha256_file "$public_file")" == "$(sha256_file "$running_file")" ]] \
+    || die 'Public release pointer bytes do not match /srv/release.json in the running image.'
 }
 
 write_state_file() {

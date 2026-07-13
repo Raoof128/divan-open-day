@@ -23,10 +23,17 @@ if ((COMMON_DRY_RUN == 1)); then
 fi
 
 require_runtime_tools
+COMMON_IMAGE=$current_image
 compose config --quiet
-if compose pull divan-web cloudflared \
-  && require_production_image "$previous_image" \
-  && compose up -d --no-build --wait --wait-timeout 90 \
+compose pull divan-web || die 'Unable to pull the current restore image before rollback activation.'
+require_production_image "$current_image"
+
+COMMON_IMAGE=$previous_image
+compose pull divan-web cloudflared || die 'Unable to pull the rollback target and reviewed tunnel before activation.'
+require_production_image "$previous_image"
+
+arm_fail_closed
+if compose up -d --no-build --wait --wait-timeout 90 \
   && "$SCRIPT_DIR/verify.sh" \
     --image "$previous_image" \
     --state-dir "$COMMON_STATE_DIR" \
@@ -35,21 +42,21 @@ if compose pull divan-web cloudflared \
     --public-origin "$COMMON_PUBLIC_ORIGIN"; then
   write_state_file "$current_file" "$previous_image"
   write_state_file "$previous_file" "$current_image"
+  disarm_fail_closed
   notice "Rollback activated immutable image $previous_image."
   exit 0
 fi
 
 notice 'Rollback verification failed; restoring the current immutable image.' >&2
 COMMON_IMAGE=$current_image
-require_production_image "$current_image"
-if ! compose up -d --no-build --wait --wait-timeout 90 \
-  || ! "$SCRIPT_DIR/verify.sh" \
+if compose up -d --no-build --wait --wait-timeout 90 \
+  && "$SCRIPT_DIR/verify.sh" \
     --image "$current_image" \
     --state-dir "$COMMON_STATE_DIR" \
     --config "$COMMON_CONFIG" \
     --credentials "$COMMON_CREDENTIALS" \
     --public-origin "$COMMON_PUBLIC_ORIGIN"; then
-  stop_unverified_stack
-  die 'Rollback failed and restoration of the current image also failed; escalate immediately.'
+  disarm_fail_closed
+  die 'Rollback target failed verification; current image was restored and release state was not changed.'
 fi
-die 'Rollback target failed verification; current image was restored and release state was not changed.'
+die 'Rollback and current-release restoration both failed verification; the fail-closed handler will stop the DIVAN stack.'

@@ -7,6 +7,7 @@ source "$SCRIPT_DIR/lib.sh"
 
 parse_common_args "$@"
 validate_common_inputs
+candidate_image=$COMMON_IMAGE
 
 if ((COMMON_DRY_RUN == 1)); then
   notice "DRY-RUN: would pull and activate immutable candidate $COMMON_IMAGE without a server-side build."
@@ -24,38 +25,45 @@ if [[ -f "$current_file" ]]; then
   previous_image=$(read_immutable_state_file "$current_file")
 fi
 
-if compose pull divan-web cloudflared \
-  && require_production_image "$COMMON_IMAGE" \
-  && compose up -d --no-build --wait --wait-timeout 90 \
+if [[ -n "$previous_image" ]]; then
+  COMMON_IMAGE=$previous_image
+  compose pull divan-web || die 'Unable to pull the saved restore image before activation.'
+  require_production_image "$previous_image"
+fi
+
+COMMON_IMAGE=$candidate_image
+compose pull divan-web cloudflared || die 'Unable to pull the candidate image and reviewed tunnel before activation.'
+require_production_image "$candidate_image"
+
+arm_fail_closed
+if compose up -d --no-build --wait --wait-timeout 90 \
   && "$SCRIPT_DIR/verify.sh" \
-    --image "$COMMON_IMAGE" \
+    --image "$candidate_image" \
     --state-dir "$COMMON_STATE_DIR" \
     --config "$COMMON_CONFIG" \
     --credentials "$COMMON_CREDENTIALS" \
     --public-origin "$COMMON_PUBLIC_ORIGIN"; then
-  if [[ -n "$previous_image" && "$previous_image" != "$COMMON_IMAGE" ]]; then
+  if [[ -n "$previous_image" && "$previous_image" != "$candidate_image" ]]; then
     write_state_file "$previous_file" "$previous_image"
   fi
-  write_state_file "$current_file" "$COMMON_IMAGE"
-  notice "Activated immutable image $COMMON_IMAGE."
+  write_state_file "$current_file" "$candidate_image"
+  disarm_fail_closed
+  notice "Activated immutable image $candidate_image."
   exit 0
 fi
 
 if [[ -n "$previous_image" ]]; then
   notice 'Candidate verification failed; restoring the previous immutable image.' >&2
   COMMON_IMAGE=$previous_image
-  require_production_image "$previous_image"
-  if ! compose up -d --no-build --wait --wait-timeout 90 \
-    || ! "$SCRIPT_DIR/verify.sh" \
+  if compose up -d --no-build --wait --wait-timeout 90 \
+    && "$SCRIPT_DIR/verify.sh" \
       --image "$previous_image" \
       --state-dir "$COMMON_STATE_DIR" \
       --config "$COMMON_CONFIG" \
       --credentials "$COMMON_CREDENTIALS" \
       --public-origin "$COMMON_PUBLIC_ORIGIN"; then
-    stop_unverified_stack
-    die 'Candidate failed and bounded restoration of the previous release did not verify; escalate immediately.'
+    disarm_fail_closed
+    die 'Candidate deployment failed; the previous verified release was restored.'
   fi
-else
-  stop_unverified_stack
 fi
-die 'Candidate deployment failed and was not accepted.'
+die 'Candidate failed and no verified restoration is active; the fail-closed handler will stop the DIVAN stack.'

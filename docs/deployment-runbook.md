@@ -112,7 +112,9 @@ ops/scripts/deploy.sh \
   --public-origin "$DIVAN_ORIGIN"
 ```
 
-The script rejects mutable references and unsafe paths, runs no server-side build, records the prior digest, and pulls by digest. Before activation it requires the final image label `org.opencontainers.image.divan-build-mode=production`; after activation it requires the configured reference, running image ID, repository digest, `buildProfile: production`, and `productionEligible: true` to agree. It starts with `--no-build`, waits at most 90 seconds for health, uses bounded HTTPS verification, and restores then re-verifies the previous production digest if candidate verification fails or times out. If there is no verified prior release, or restoration itself cannot be verified, it stops the DIVAN tunnel and origin instead of leaving an unverified release reachable.
+The script rejects mutable references and unsafe paths, runs no server-side build, records the prior digest, and pulls by digest. Before any activation it pulls and validates the saved restore image, if present, then validates the candidate; an absent, fixture-labelled, or repository-digest-mismatched restore prerequisite prevents activation entirely. Immediately before the first `compose up`, it arms an exit/signal fail-closed handler. The handler remains armed across candidate verification and restoration, and stops both DIVAN containers on every unverified exit. It is disarmed only after either the candidate is fully accepted and state is recorded or the previous release is fully restored and re-verified.
+
+After activation the verifier requires the configured reference, running image ID, repository digest, `buildProfile: production`, and `productionEligible: true` to agree. It starts with `--no-build`, waits at most 90 seconds for health, uses bounded HTTPS verification, and restores then re-verifies the previous production digest if candidate verification fails or times out. If there is no verified prior release, or restoration itself cannot be verified, the armed handler stops the DIVAN tunnel and origin instead of leaving an unverified release reachable.
 
 ## 5. Verification and evidence
 
@@ -131,10 +133,12 @@ Automated checks cover:
 
 - Compose rendering, exact immutable running image bytes, production labels/flags, two running containers, and private release health;
 - verified content and asset-manifest checksum/path/count relationships inside the web container and again from public bytes;
-- exact non-root users, read-only roots, all capabilities dropped, `no-new-privileges`, restart/resource/PID limits, exact network membership, the two tunnel-only read-only mounts, and zero host-published ports for both containers;
+- exact non-root users, read-only roots, all capabilities dropped, `no-new-privileges`, restart/resource/PID/tmpfs limits, exact network membership, zero web mounts, the two tunnel-only canonical read-only bind sources, and zero host-published ports for both containers;
+- bridge driver, internal/egress setting, dedicated role/ownership labels, and exact member set for each DIVAN network, rejecting any unrelated container;
 - tunnel files are canonical, mode `0400`, host-owned by UID/GID `65532:65532`, mounted read-only, and consumed by a running container using that same identity;
 - bounded HTTPS-only requests, with public `/healthz` returning exact 404;
 - exact CSP, `nosniff`, referrer, COOP, CORP, permissions, and cache headers; a `Server` value must not expose Caddy;
+- byte-for-byte public `release.json` identity and SHA agreement with `/srv/release.json` extracted from the exact running image;
 - `no-cache` documents/release/service worker, one-hour manifest cache, immutable existing content-addressed corpus/manifest files, and `no-store` for missing/unhashed static paths.
 
 Operator evidence must additionally cover:

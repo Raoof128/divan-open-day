@@ -73,6 +73,13 @@ networks:
   divan_origin:
     name: divan_origin
     internal: true
+    driver: bridge
+    labels:
+      org.persiansocietyeoi.divan.network-role: origin
+      org.persiansocietyeoi.divan.scope: dedicated
   divan_egress:
     name: divan_egress
     driver: bridge
+    labels:
+      org.persiansocietyeoi.divan.network-role: egress
+      org.persiansocietyeoi.divan.scope: dedicated

@@ -139,32 +139,6 @@ fetch_public() {
     "$COMMON_PUBLIC_ORIGIN$path"
 }
 
-extract_json_string() {
-  local file=$1
-  local key=$2
-  sed -n "s/.*\"${key}\":\"\([^\"]*\)\".*/\1/p" "$file"
-}
-
-extract_json_integer() {
-  local file=$1
-  local key=$2
-  sed -n "s/.*\"${key}\":\([0-9][0-9]*\).*/\1/p" "$file"
-}
-
-extract_json_boolean() {
-  local file=$1
-  local key=$2
-  sed -n "s/.*\"${key}\":\(true\|false\).*/\1/p" "$file"
-}
-
-sha256_file() {
-  if command -v sha256sum >/dev/null 2>&1; then
-    sha256sum "$1" | awk '{print $1}'
-  else
-    shasum -a 256 "$1" | awk '{print $1}'
-  fi
-}
-
 web_id=$(compose ps -q divan-web)
 tunnel_id=$(compose ps -q cloudflared)
 [[ -n "$web_id" && -n "$tunnel_id" ]] || die 'Both deployment containers must exist.'
@@ -177,17 +151,50 @@ require_running_immutable_tunnel "$tunnel_id"
 require_hardened_container "$web_id" '10001:10001' 'divan_origin' '{"2019/tcp":null,"443/tcp":null,"443/udp":null,"80/tcp":null,"8080/tcp":null}' '268435456' '500000000' '128'
 require_hardened_container "$tunnel_id" '65532:65532' 'divan_egress divan_origin' '{}' '134217728' '250000000' '64'
 inspect_exact "$web_id" '{{.State.Health.Status}}' healthy 'Private origin health'
+inspect_exact "$web_id" '{{json .HostConfig.Tmpfs}}' '{"/config":"rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700","/data":"rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700","/tmp":"rw,noexec,nosuid,nodev,size=16m,mode=1777"}' 'Private origin tmpfs'
+inspect_exact "$tunnel_id" '{{json .HostConfig.Tmpfs}}' '{"/tmp":"rw,noexec,nosuid,nodev,size=8m,mode=1777"}' 'Tunnel tmpfs'
 
-[[ "$(docker network inspect --format '{{.Internal}}' divan_origin)" == true ]] \
-  || die 'Origin network is not internally isolated.'
-[[ "$(docker network inspect --format '{{.Internal}}' divan_egress)" == false ]] \
-  || die 'Tunnel egress network is unexpectedly internal.'
+inspect_exact_network() {
+  local network=$1
+  local expected_internal=$2
+  local expected_role=$3
+  [[ "$(docker network inspect --format '{{.Driver}}' "$network")" == bridge ]] \
+    || die "$network does not use the reviewed bridge driver."
+  [[ "$(docker network inspect --format '{{.Internal}}' "$network")" == "$expected_internal" ]] \
+    || die "$network internal setting does not match the reviewed isolation contract."
+  [[ "$(docker network inspect --format '{{index .Labels "org.persiansocietyeoi.divan.network-role"}}' "$network")" == "$expected_role" ]] \
+    || die "$network role label does not match the reviewed isolation contract."
+  [[ "$(docker network inspect --format '{{index .Labels "org.persiansocietyeoi.divan.scope"}}' "$network")" == dedicated ]] \
+    || die "$network is not labelled as dedicated to DIVAN."
+  [[ "$(docker network inspect --format '{{index .Labels "com.docker.compose.project"}}' "$network")" == divan ]] \
+    || die "$network is not owned by the reviewed Compose project."
+}
+
+inspect_exact_network divan_origin true origin
+inspect_exact_network divan_egress false egress
+
+origin_members=$(docker network inspect \
+  --format '{{range $id, $_ := .Containers}}{{$id}}{{"\n"}}{{end}}' \
+  divan_origin | LC_ALL=C sort)
+expected_origin_members=$(printf '%s\n%s\n' "$tunnel_id" "$web_id" | LC_ALL=C sort)
+require_exact_network_members "$origin_members" "$expected_origin_members" 'Origin'
+
+egress_members=$(docker network inspect \
+  --format '{{range $id, $_ := .Containers}}{{$id}}{{"\n"}}{{end}}' \
+  divan_egress | LC_ALL=C sort)
+require_exact_network_members "$egress_members" "$tunnel_id" 'Egress'
+
+web_mounts=$(docker inspect \
+  --format '{{range .Mounts}}{{.Source}}|{{.Destination}}|{{.RW}}|{{.Type}}{{"\n"}}{{end}}' \
+  "$web_id" | LC_ALL=C sort)
+require_no_web_mounts "$web_mounts"
 
 tunnel_mounts=$(docker inspect \
-  --format '{{range .Mounts}}{{.Destination}}|{{.RW}}|{{.Type}}{{"\n"}}{{end}}' \
+  --format '{{range .Mounts}}{{.Source}}|{{.Destination}}|{{.RW}}|{{.Type}}{{"\n"}}{{end}}' \
   "$tunnel_id" | LC_ALL=C sort)
-[[ "$tunnel_mounts" == $'/etc/cloudflared/config.yml|false|bind\n/run/secrets/divan-tunnel.json|false|bind' ]] \
-  || die 'Tunnel receives anything other than the two reviewed read-only bind mounts.'
+config_source=$(canonical_path "$COMMON_CONFIG")
+credentials_source=$(canonical_path "$COMMON_CREDENTIALS")
+require_exact_tunnel_mounts "$tunnel_mounts" "$config_source" "$credentials_source"
 
 # This proves both production release flags, content/asset paths, minimum counts,
 # and both hashes from the same read-only filesystem before any public checks.
@@ -195,6 +202,12 @@ compose exec -T divan-web /usr/local/bin/divan-health >/dev/null
 
 work_dir=$(mktemp -d)
 trap 'rm -rf -- "$work_dir"' EXIT
+
+compose exec -T divan-web cat /srv/release.json >"$work_dir/running-release.json" \
+  || die 'Unable to read the release pointer from the running image.'
+running_release_bytes=$(wc -c <"$work_dir/running-release.json" | tr -d ' ')
+((running_release_bytes > 0 && running_release_bytes <= 65536)) \
+  || die 'Running image release pointer has an invalid size.'
 
 health_status=$(curl "${CURL_HTTPS_ARGS[@]}" --output /dev/null --write-out '%{http_code}' \
   "$COMMON_PUBLIC_ORIGIN/healthz")
@@ -207,6 +220,7 @@ require_header_exact "$work_dir/document.headers" 'Cache-Control' 'no-cache, mus
 fetch_public '/release.json' "$work_dir/release.headers" "$work_dir/release.json"
 require_global_headers "$work_dir/release.headers"
 require_header_exact "$work_dir/release.headers" 'Cache-Control' 'no-cache, must-revalidate'
+require_matching_release_files "$work_dir/running-release.json" "$work_dir/release.json"
 
 release_id=$(extract_json_string "$work_dir/release.json" releaseId)
 schema_version=$(extract_json_integer "$work_dir/release.json" schemaVersion)

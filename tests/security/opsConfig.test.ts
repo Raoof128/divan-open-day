@@ -31,14 +31,31 @@ function readProjectFile(path: string): string {
 function runScript(
   script: string,
   args: readonly string[],
+  extraEnv: Readonly<Record<string, string>> = {},
 ): SpawnSyncReturns<string> {
   return spawnSync('bash', [resolve(opsRoot, 'scripts', script), ...args], {
     cwd: projectRoot,
     encoding: 'utf8',
     env: {
       PATH: process.env['PATH'],
+      ...extraEnv,
     },
   });
+}
+
+function runLibraryFunction(
+  command: string,
+  env: Readonly<Record<string, string>>,
+): SpawnSyncReturns<string> {
+  return spawnSync(
+    'bash',
+    ['--noprofile', '--norc', '-c', `source "${resolve(opsRoot, 'scripts', 'lib.sh')}"; ${command}`],
+    {
+      cwd: projectRoot,
+      encoding: 'utf8',
+      env: { PATH: process.env['PATH'], ...env },
+    },
+  );
 }
 
 describe('production image contract', () => {
@@ -171,6 +188,11 @@ describe('Compose and tunnel isolation', () => {
     expect(compose.networks['divan_origin']).toEqual({
       internal: true,
       name: 'divan_origin',
+      driver: 'bridge',
+      labels: {
+        'org.persiansocietyeoi.divan.network-role': 'origin',
+        'org.persiansocietyeoi.divan.scope': 'dedicated',
+      },
     });
     expect(compose.networks['divan_egress']).toMatchObject({ name: 'divan_egress' });
     expect(compose.services['divan-web']!.networks).toEqual(['divan_origin']);
@@ -443,8 +465,10 @@ describe('safe deployment controls', () => {
     expect(library).toContain('require_production_image');
     expect(library).toContain('org.opencontainers.image.divan-build-mode');
     expect(library).toContain('production');
-    expect(deploy).toContain('require_production_image "$COMMON_IMAGE"');
+    expect(deploy).toContain('require_production_image "$candidate_image"');
+    expect(deploy).toContain('require_production_image "$previous_image"');
     expect(rollback).toContain('require_production_image "$previous_image"');
+    expect(rollback).toContain('require_production_image "$current_image"');
     expect(verify).toContain('require_running_image "$web_id" "$COMMON_IMAGE"');
     expect(verify).toContain('buildProfile');
     expect(verify).toContain('productionEligible');
@@ -600,16 +624,232 @@ describe('safe deployment controls', () => {
 
   test('records state only after verification and restores failed rollback attempts', () => {
     const deploy = readProjectFile('ops/scripts/deploy.sh');
+    const library = readProjectFile('ops/scripts/lib.sh');
     const rollback = readProjectFile('ops/scripts/rollback.sh');
 
     expect(deploy.indexOf('compose pull')).toBeLessThan(
-      deploy.indexOf('write_state_file "$current_file" "$COMMON_IMAGE"'),
+      deploy.indexOf('write_state_file "$current_file" "$candidate_image"'),
     );
     expect(rollback).toContain(
       'Rollback verification failed; restoring the current immutable image.',
     );
-    expect(deploy).toContain('stop_unverified_stack');
-    expect(rollback).toContain('stop_unverified_stack');
+    expect(deploy).toContain('arm_fail_closed');
+    expect(rollback).toContain('arm_fail_closed');
+    expect(library).toContain('stop_unverified_stack');
+    expect(library).toContain('fail_closed_exit_handler');
+  });
+
+  describe('fail-closed activation mocks', () => {
+    const candidateImage =
+      'registry.invalid/divan@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
+    const currentImage =
+      'registry.invalid/divan@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc';
+
+    function runMockedActivation(
+      script: 'deploy.sh' | 'rollback.sh',
+      options: {
+        readonly invalidImage?: string;
+        readonly invalidReason?: 'absent' | 'digest' | 'fixture';
+        readonly withPrevious?: boolean;
+      } = {},
+    ): { readonly actions: string; readonly result: SpawnSyncReturns<string> } {
+      const temp = mkdtempSync(resolve(tmpdir(), 'divan-ops-activation-'));
+      const stateDir = resolve(temp, 'state');
+      const actionLog = resolve(temp, 'actions.log');
+      execFileSync('mkdir', [stateDir]);
+      chmodSync(stateDir, 0o700);
+      writeFileSync(resolve(stateDir, 'current-image.txt'), `${currentImage}\n`, {
+        mode: 0o600,
+      });
+      if (options.withPrevious || script === 'rollback.sh') {
+        writeFileSync(resolve(stateDir, 'previous-image.txt'), `${immutableImage}\n`, {
+          mode: 0o600,
+        });
+      }
+
+      const args =
+        script === 'deploy.sh'
+          ? [
+              '--image',
+              candidateImage,
+              '--state-dir',
+              stateDir,
+              '--config',
+              config,
+              '--credentials',
+              credentials,
+              '--public-origin',
+              'https://divan.test.invalid',
+            ]
+          : [
+              '--state-dir',
+              stateDir,
+              '--config',
+              config,
+              '--credentials',
+              credentials,
+              '--public-origin',
+              'https://divan.test.invalid',
+            ];
+
+      const result = runScript(script, args, {
+        PATH: `${resolve(fixtureRoot, 'mock-bin')}:${process.env['PATH'] ?? ''}`,
+        MOCK_ACTION_LOG: actionLog,
+        MOCK_CONFIG: config,
+        MOCK_CREDENTIALS: credentials,
+        MOCK_GID: String(process.getgid?.() ?? 0),
+        MOCK_INVALID_IMAGE: options.invalidImage ?? '',
+        MOCK_INVALID_REASON: options.invalidReason ?? '',
+        MOCK_STATE_DIR: stateDir,
+        MOCK_UID: String(process.getuid?.() ?? 0),
+      });
+      const actions = existsSync(actionLog) ? readFileSync(actionLog, 'utf8') : '';
+      rmSync(temp, { force: true, recursive: true });
+      return { actions, result };
+    }
+
+    test.each(['absent', 'fixture', 'digest'] as const)(
+      'deploy prevalidates an %s saved release before activation',
+      (invalidReason) => {
+        const { actions, result } = runMockedActivation('deploy.sh', {
+          invalidImage: currentImage,
+          invalidReason,
+        });
+
+        expect(result.status).not.toBe(0);
+        expect(actions).not.toContain('UP:');
+      },
+    );
+
+    test.each(['absent', 'fixture', 'digest'] as const)(
+      'rollback prevalidates an %s current restore release before activation',
+      (invalidReason) => {
+        const { actions, result } = runMockedActivation('rollback.sh', {
+          invalidImage: currentImage,
+          invalidReason,
+        });
+
+        expect(result.status).not.toBe(0);
+        expect(actions).not.toContain('UP:');
+      },
+    );
+
+    test('deploy stops after candidate verification fails without a saved release', () => {
+      const temp = mkdtempSync(resolve(tmpdir(), 'divan-ops-empty-state-'));
+      const stateDir = resolve(temp, 'state');
+      const actionLog = resolve(temp, 'actions.log');
+      execFileSync('mkdir', [stateDir]);
+      chmodSync(stateDir, 0o700);
+      const result = runScript(
+        'deploy.sh',
+        [
+          '--image',
+          candidateImage,
+          '--state-dir',
+          stateDir,
+          '--config',
+          config,
+          '--credentials',
+          credentials,
+          '--public-origin',
+          'https://divan.test.invalid',
+        ],
+        {
+          PATH: `${resolve(fixtureRoot, 'mock-bin')}:${process.env['PATH'] ?? ''}`,
+          MOCK_ACTION_LOG: actionLog,
+          MOCK_CONFIG: config,
+          MOCK_CREDENTIALS: credentials,
+          MOCK_GID: String(process.getgid?.() ?? 0),
+          MOCK_INVALID_IMAGE: '',
+          MOCK_INVALID_REASON: '',
+          MOCK_STATE_DIR: stateDir,
+          MOCK_UID: String(process.getuid?.() ?? 0),
+        },
+      );
+      const actions = existsSync(actionLog) ? readFileSync(actionLog, 'utf8') : '';
+      rmSync(temp, { force: true, recursive: true });
+
+      expect(result.status).not.toBe(0);
+      expect(actions).toContain(`UP:${candidateImage}`);
+      expect(actions).toContain('STOP');
+    });
+
+    test.each([
+      ['deploy.sh', true],
+      ['rollback.sh', false],
+    ] as const)('%s stops when target and restoration verification fail', (script, withPrevious) => {
+      const { actions, result } = runMockedActivation(script, { withPrevious });
+
+      expect(result.status).not.toBe(0);
+      expect(actions.match(/UP:/gu)).toHaveLength(2);
+      expect(actions).toContain('STOP');
+    });
+  });
+
+  test('runtime contract helpers reject swapped, extra, and unrelated resources', () => {
+    const configPath = '/runtime/config.yml';
+    const credentialsPath = '/runtime/credentials.json';
+    const validMounts = `${configPath}|/etc/cloudflared/config.yml|false|bind\n${credentialsPath}|/run/secrets/divan-tunnel.json|false|bind`;
+    const validTunnel = runLibraryFunction(
+      'require_exact_tunnel_mounts "$ACTUAL" "$CONFIG" "$CREDENTIALS"',
+      { ACTUAL: validMounts, CONFIG: configPath, CREDENTIALS: credentialsPath },
+    );
+    expect(validTunnel.status, validTunnel.stderr).toBe(0);
+
+    const swapped = runLibraryFunction(
+      'require_exact_tunnel_mounts "$ACTUAL" "$CONFIG" "$CREDENTIALS"',
+      {
+        ACTUAL: `${credentialsPath}|/etc/cloudflared/config.yml|false|bind\n${configPath}|/run/secrets/divan-tunnel.json|false|bind`,
+        CONFIG: configPath,
+        CREDENTIALS: credentialsPath,
+      },
+    );
+    expect(swapped.status).not.toBe(0);
+
+    const extraWebMount = runLibraryFunction(
+      'require_no_web_mounts "$ACTUAL"',
+      { ACTUAL: '/host|/srv|false|bind' },
+    );
+    expect(extraWebMount.status).not.toBe(0);
+
+    const validMembers = runLibraryFunction(
+      'require_exact_network_members "$ACTUAL" "$EXPECTED" "origin"',
+      { ACTUAL: 'tunnel-id\nweb-id', EXPECTED: 'tunnel-id\nweb-id' },
+    );
+    expect(validMembers.status, validMembers.stderr).toBe(0);
+    const unrelatedMember = runLibraryFunction(
+      'require_exact_network_members "$ACTUAL" "$EXPECTED" "origin"',
+      {
+        ACTUAL: 'foreign-id\ntunnel-id\nweb-id',
+        EXPECTED: 'tunnel-id\nweb-id',
+      },
+    );
+    expect(unrelatedMember.status).not.toBe(0);
+  });
+
+  test('running and public release pointers must be byte-identical', () => {
+    const temp = mkdtempSync(resolve(tmpdir(), 'divan-release-pointer-'));
+    const running = resolve(temp, 'running.json');
+    const publicSame = resolve(temp, 'public-same.json');
+    const publicOther = resolve(temp, 'public-other.json');
+    writeFileSync(running, '{"releaseId":"release-b"}\n');
+    writeFileSync(publicSame, '{"releaseId":"release-b"}\n');
+    writeFileSync(publicOther, '{"releaseId":"release-a"}\n');
+
+    try {
+      const same = runLibraryFunction(
+        'require_matching_release_files "$RUNNING" "$PUBLIC"',
+        { PUBLIC: publicSame, RUNNING: running },
+      );
+      expect(same.status, same.stderr).toBe(0);
+      const other = runLibraryFunction(
+        'require_matching_release_files "$RUNNING" "$PUBLIC"',
+        { PUBLIC: publicOther, RUNNING: running },
+      );
+      expect(other.status).not.toBe(0);
+    } finally {
+      rmSync(temp, { force: true, recursive: true });
+    }
   });
 });
 

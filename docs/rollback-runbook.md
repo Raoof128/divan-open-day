@@ -34,7 +34,7 @@ ops/scripts/rollback.sh \
   --public-origin "$DIVAN_ORIGIN"
 ```
 
-The script pulls the previous digest, rejects it unless its immutable repository digest and production image label agree, starts it with Compose `--no-build`, waits at most 90 seconds for health, and runs the same bounded private/public verifier. The verifier also rejects fixture release flags or running bytes that do not match the approved digest. Only then are current and previous state files swapped. If verification fails or times out, the script restores and re-verifies the current production image and does not record the rollback target as current. If restoration also fails verification, it stops the DIVAN tunnel and origin so an unverified release is not left reachable.
+Before changing a container, the script pulls and validates both the current restore image and rollback target. An absent image, fixture label, or repository-digest mismatch aborts before activation. It then arms the same exit/signal fail-closed handler used by deployment, starts the rollback target with Compose `--no-build`, waits at most 90 seconds for health, and runs the same bounded private/public verifier. The verifier also rejects fixture release flags, running bytes that do not match the approved digest, network/mount contamination, or a public release pointer that differs from the running image. Only then are current and previous state files swapped and the handler disarmed. If target verification fails or times out, the script restores and re-verifies the current production image without changing release state. If restoration also fails verification, the still-armed handler stops the DIVAN tunnel and origin so an unverified release is not left reachable.
 
 ## Required post-rollback checks
 
