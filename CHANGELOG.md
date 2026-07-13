@@ -177,3 +177,13 @@
 - **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `tests/e2e/accessibility.spec.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED reproduced absence at 200 ms under the old delay; GREEN component tests 41/41 twice, accessibility tests 18/18 twice, and corrected Chromium tests 2/2 twice with measured skip availability at most 300 ms. Strict TypeScript and ESLint passed.
 - **Follow-ups:** This change supplies automated timing evidence only; manual accessibility and every independent public-launch gate remain unchanged and blocked.
+
+## 2026-07-13 — Increase skip timing margin under load
+
+**Raouf:**
+
+- **Scope:** Final B5 concurrent-load skip timing correction.
+- **Summary:** Reduced skip availability from 200 ms to 100 ms after concurrent execution reproduced a browser-visible result beyond 300 ms. Updated the deterministic boundary to 99/100 ms and retained the unchanged actual-DOM elapsed assertion of at most 300 ms.
+- **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED failed at the 100 ms boundary under the prior setting; GREEN focused behavior passed, five consecutive Chromium runs passed 2/2 under concurrent load, components passed 41/41, accessibility passed 18/18, and TypeScript plus ESLint passed.
+- **Follow-ups:** Manual accessibility evidence and all independent production/public-launch gates remain unchanged and blocked.

@@ -205,3 +205,13 @@
 - **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `tests/e2e/accessibility.spec.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, test-first RED showed the skip still absent at 200 ms with the prior product delay, then focused GREEN passed at the 199/200 ms boundary. Full component tests passed 41/41 twice, accessibility tests passed 18/18 twice, and two consecutive corrected Chromium runs passed 2/2 with the unchanged measured `<= 300 ms` requirement. Strict TypeScript and zero-warning ESLint passed.
 - **Follow-ups:** The timing buffer closes this automated flake only; all previously recorded manual accessibility, genuine content, governance, security, deployment, rollback, isolation, and physical-QR launch gates remain blocked.
+
+### 2026-07-13 (Australia/Sydney) — concurrent-load skip timing
+
+**Raouf:**
+
+- **Scope:** Final B5 skip-control margin under concurrent browser load.
+- **Summary:** Moved keyboard-reachable Skip availability from 200 ms to 100 ms after the 200 ms setting exceeded the locked 300 ms browser-visible maximum under concurrent load. The deterministic test now enforces hidden at 99 ms and visible at 100 ms, while the existing Chromium test continues to measure from the actual DOM activation event and independently requires visible availability within 300 ms; no timeout or acceptance threshold was inflated.
+- **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, meaningful RED reproduced absence at the new 100 ms boundary with the prior product setting; focused GREEN passed at 99/100 ms. Five consecutive measured Chromium runs passed 2/2 under the active concurrent workload, followed by full component tests 41/41, accessibility tests 18/18, strict TypeScript, and zero-warning ESLint.
+- **Follow-ups:** This closes the automated skip-timing flake only; all manual accessibility and every independent production/public-launch gate remain unchanged and blocked pending reviewed evidence.
