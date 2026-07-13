@@ -187,3 +187,13 @@
 - **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED failed at the 100 ms boundary under the prior setting; GREEN focused behavior passed, five consecutive Chromium runs passed 2/2 under concurrent load, components passed 41/41, accessibility passed 18/18, and TypeScript plus ESLint passed.
 - **Follow-ups:** Manual accessibility evidence and all independent production/public-launch gates remain unchanged and blocked.
+
+## 2026-07-13 — Public source governance
+
+**Raouf:**
+
+- **Scope:** Public repository orientation, source-rights boundary, security reporting, third-party font notices, and removal of deployment-host detail from public documentation.
+- **Summary:** Added an honest work-in-progress README, GitHub private vulnerability reporting policy, exact installed OFL 1.1 font notices, a Node runtime pin, repository metadata, and repository-wide ownership. Kept the repository all rights reserved with no open-source licence grant, replaced host discovery with private evidence gates, and renamed the synthetic operations sentinel so it cannot be mistaken for a credential.
+- **Files Changed:** `README.md`, `SECURITY.md`, `THIRD_PARTY_NOTICES.md`, `.node-version`, `.github/CODEOWNERS`, `package.json`, `docs/phase-0-environment-decisions.md`, `tests/fixtures/ops/*`, `tests/security/opsConfig.test.ts`, `tests/security/publicReadiness.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0 and pnpm 10.33.0, TDD RED first produced six missing-public-readiness failures and a separate preview-command failure; GREEN passed the focused suite 6/6, security tests 49/49, content tests 234/234, strict TypeScript, zero-warning ESLint, and diff/prose hygiene. The frozen lockfile installed from the offline pnpm store without changing dependency versions. Gitleaks found no leaks in the exact staged snapshot or the 59-commit all-history scan.
+- **Follow-ups:** Before any public push, rewrite non-public author and committer email metadata in repository history and rescan the rewritten history; keep GitHub private vulnerability reporting disabled until the owner deliberately enables it. Production content, rights, reviews, live infrastructure, accessibility evidence, and every other launch gate remain blocked.

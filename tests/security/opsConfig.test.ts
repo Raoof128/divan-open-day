@@ -284,7 +284,7 @@ describe('safe deployment controls', () => {
     'utf8',
   ).trim();
   const config = resolve(fixtureRoot, 'rendered-config.yml');
-  const credentials = resolve(fixtureRoot, 'test-credentials.json');
+  const credentials = resolve(fixtureRoot, 'synthetic-not-a-credential.json');
 
   test('renders tunnel config only from validated non-secret inputs', () => {
     const temp = mkdtempSync(resolve(tmpdir(), 'divan-ops-render-'));
