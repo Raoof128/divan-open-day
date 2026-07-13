@@ -1,25 +1,34 @@
 # Phase 0 environment decisions
 
-Status: **launch blocked**. This document contains a sanitized discovery snapshot and repository-level image decisions only. It is not deployment evidence.
+Status: **launch blocked**. This public document records repository-level image
+decisions and the evidence required before deployment. It is not deployment
+evidence.
 
-## Sanitized host snapshot
+## Deployment evidence boundary
 
-Snapshot date: **2026-07-13 (Australia/Sydney)**.
+No machine survey is published in this repository. An authorised operator must
+capture the following as private deployment evidence for the approved target:
 
-| Area | Sanitized observation | Decision or gate |
-| --- | --- | --- |
-| Operating system | Ubuntu 24.04 LTS, x86_64 | Confirm active security support and unattended-update evidence before launch. |
-| Capacity | 2 vCPU, approximately 2 GiB memory, approximately 36 GiB disk free | Compose limits are deliberately small; prove them with runtime inspection and load evidence. |
-| Container tooling | Docker Engine 29.3.1 and Docker Compose 5.1.1 | Supported for the checked-in Compose model; capture fresh production-host output at deployment. |
-| Tunnel tooling | cloudflared 2026.3.0 is present on the host | The repository container uses a separately resolved immutable image. Do not reuse an existing service's tunnel identity. |
-| Existing services | nginx, UFW, and other services are present | DIVAN must use a separate directory, project, networks, credentials, route, and evidence; compare neighbouring-service baselines before and after any deployment. |
-| Public identity | No DIVAN-specific hostname or tunnel has been selected | Public preview and launch remain blocked. No identity is implied by repository examples. |
+- supported operating system, architecture, security-update status, and
+  capacity for the reviewed resource limits;
+- exact container and tunnel tooling versions;
+- inbound and outbound firewall state, direct-origin exposure, and the
+  dedicated network, route, volume, and credential boundaries;
+- pre-deployment and post-deployment health for unrelated services;
+- approved public hostname, tunnel ownership, registry, backups, monitoring,
+  operator access, and provider-log retention.
 
-The snapshot deliberately omits addresses, user names, service identities, account IDs, tunnel IDs, DNS names, and credentials.
+Keep that evidence outside Git with restricted access. Do not publish machine
+capacity, installed versions, addresses, user names, service identities,
+account IDs, tunnel IDs, DNS names, credential paths, or neighbouring-service
+inventory.
 
 ## Immutable upstream images
 
-Resolved from official registry manifests on **2026-07-13**. The Dockerfiles and Compose file pin the multi-platform index digest so the same reviewed reference selects the correct platform manifest on a local ARM development machine and the intended Linux x86_64 host. The x86_64 child digest is recorded as independent evidence.
+Resolved from official registry manifests on **2026-07-13**. The Dockerfiles
+and Compose file pin each multi-platform index digest. The Linux x86_64 child
+digest supplies a public supply-chain reference. Operators record the approved
+deployment architecture in private evidence.
 
 | Purpose | Pinned reference | Linux x86_64 child manifest |
 | --- | --- | --- |
@@ -55,6 +64,8 @@ The following are explicit blockers, not implementation defaults:
 - Cloud Firewall and host-firewall evidence, including no application port exposure;
 - dedicated deployment identity, directory ownership, registry, and immutable DIVAN image digest;
 - production corpus, rights, cultural review, governance, accessibility, security, rollback, and physical-QR evidence;
-- fresh neighbouring-service baselines and a reviewed proof that DIVAN shares no code, volume, database network, secret, or route with existing services.
+- pre-deployment and post-deployment isolation evidence proving that DIVAN
+  shares no code, volume, database network, secret, or route with an unrelated
+  service.
 
 No repository script resolves these decisions or mutates the host.
