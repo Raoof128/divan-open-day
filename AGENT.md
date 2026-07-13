@@ -137,3 +137,13 @@
 - **Files Changed:** `vite.config.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; three adversarial RED tests proved VITE-prefixed process-value leakage plus remote iframe and SVG-image acceptance before the fixes; focused activation/env/remote tests passed 5/5, full content tests passed 232/232, strict TypeScript and ESLint passed, and the real fixture build/dist verifier remained green.
 - **Follow-ups:** Re-run independent Task 2C review; the B4 worker/manifest/offline slice and every external production/public-launch gate remain closed.
+
+### 2026-07-13 (Australia/Sydney) — URL-bearing resource predicate closure
+
+**Raouf:**
+
+- **Scope:** Final Task 2C remote-resource verifier correction.
+- **Summary:** Generalised HTML URL-attribute validation across all elements, including inline SVG resource nodes, and rejected hard-coded remote DOM resource assignment through `setAttribute` in compiled JavaScript.
+- **Files Changed:** `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** RED reproduced a coherently rehashed inline SVG image and JavaScript `setAttribute("src", ...)` bypass; GREEN focused tests passed 2/2, full content tests passed 234/234, typecheck/lint passed, and the real fixture build plus `verify:dist` passed.
+- **Follow-ups:** Obtain final independent Task 2C approval before integration; all offline, production and external launch gates remain closed.

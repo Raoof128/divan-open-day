@@ -739,6 +739,25 @@ describe('distribution verification', () => {
     );
   });
 
+  it('rejects a remote inline-SVG image in coherently rehashed HTML', async () => {
+    const { projectRoot, distDir } = await temporaryProject('remote-inline-svg');
+    await buildFixtureRelease({ projectRoot, distDir });
+    const indexPath = path.join(distDir, 'index.html');
+    await writeFile(
+      indexPath,
+      (await readFile(indexPath, 'utf8')).replace(
+        '</body>',
+        '<svg><image href="https://remote.example.invalid/art.png" /></svg></body>',
+      ),
+      'utf8',
+    );
+    await rehashManifestAsset(distDir, 'index.html');
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /remote|browser|resource|html/iu,
+    );
+  });
+
   it('rejects remote image resources in a coherently rehashed SVG asset', async () => {
     const { projectRoot, distDir } = await temporaryProject('remote-browser-svg');
     await buildFixtureRelease({ projectRoot, distDir });
@@ -759,6 +778,31 @@ describe('distribution verification', () => {
 
     await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
       /remote|svg|resource|unsafe/iu,
+    );
+  });
+
+  it('rejects a rehashed JavaScript setAttribute remote resource load', async () => {
+    const { projectRoot, distDir } = await temporaryProject('remote-set-attribute');
+    const release = await buildFixtureRelease({ projectRoot, distDir });
+    const manifest = JSON.parse(
+      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+    ) as { assets: Array<{ path: string; mimeType: string }> };
+    const script = manifest.assets.find(
+      (asset) => asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+    );
+    if (script === undefined) {
+      throw new Error('TEST ONLY browser script is missing.');
+    }
+    const scriptPath = path.join(distDir, script.path);
+    await writeFile(
+      scriptPath,
+      `${await readFile(scriptPath, 'utf8')}\ndocument.createElement("img").setAttribute("src", "https://remote.example.invalid/art.png");`,
+      'utf8',
+    );
+    await rehashManifestAsset(distDir, script.path);
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /remote|runtime|javascript/iu,
     );
   });
 

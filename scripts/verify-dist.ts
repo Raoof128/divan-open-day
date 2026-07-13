@@ -345,7 +345,7 @@ function verifyHtmlAsset(assetPath: string, text: string): void {
   }
 
   for (const match of text.matchAll(
-    /<(?:audio|img|input|link|script|source|track|video)\b[^>]*\b(src|href|poster|srcset)\s*=\s*["']([^"']+)["']/giu,
+    /<[A-Za-z][A-Za-z0-9:-]*\b[^>]*\b(data|href|poster|src|srcset|xlink:href)\s*=\s*["']([^"']+)["']/giu,
   )) {
     const attribute = match[1]!.toLowerCase();
     const references =
@@ -413,6 +413,9 @@ function verifyBrowserTextAsset(
         text,
       ) ||
       /\b(?:poster|src)\s*[:=]\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+        text,
+      ) ||
+      /\.setAttribute\s*\(\s*["'](?:data|href|poster|src|srcset|xlink:href)["']\s*,\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
         text,
       )
     ) {

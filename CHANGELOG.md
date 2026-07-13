@@ -109,3 +109,13 @@
 - **Files Changed:** `vite.config.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; adversarial environment/iframe/SVG RED reproduced all three gaps; focused fixes 5/5, full content 232/232, typecheck/lint and real fixture build/dist verification passed.
 - **Follow-ups:** Obtain independent re-review before integration and retain the production/offline/external launch gates.
+
+## 2026-07-13 — Browser URL-bearing resource closure
+
+**Raouf:**
+
+- **Scope:** Final narrow static-distribution remote-resource correction.
+- **Summary:** Validated URL-bearing attributes generically in emitted HTML, including inline SVG, and blocked literal remote DOM resource assignment through compiled JavaScript `setAttribute` calls.
+- **Files Changed:** `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; two adversarial RED cases became GREEN 2/2; content 234/234, typecheck/lint, fixture build, and dist verification passed.
+- **Follow-ups:** Integrate only after final independent approval; retain every separate release and launch gate.
