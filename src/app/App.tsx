@@ -235,6 +235,18 @@ export function App({ services }: AppProps) {
         if (cancelled) {
           return;
         }
+        if (
+          window.location.pathname !== '/' &&
+          contextRoute(window.location.pathname) === null
+        ) {
+          // §5.3: an unknown deep path renders the welcome scene, so the
+          // address bar must not keep the bogus URL.
+          try {
+            window.history.replaceState(null, '', '/');
+          } catch {
+            // URL cleanup is cosmetic; the in-memory scene remains usable.
+          }
+        }
         const approvedIds = approvedIdsForRelease(release);
         const sessionStorage = browserStorage('sessionStorage');
         const restored =
@@ -296,16 +308,25 @@ export function App({ services }: AppProps) {
               : release.itemsById.get(restored.currentPoemId);
           if (
             restored?.selectedPoet !== null &&
-            restored?.selectedPoet !== undefined &&
-            restoredItem?.poet === restored.selectedPoet
+            restored?.selectedPoet !== undefined
           ) {
             lastSelectedPoetRef.current = restored.selectedPoet;
-            lastResultPoemIdRef.current = restoredItem.id;
+            if (restoredItem?.poet === restored.selectedPoet) {
+              lastResultPoemIdRef.current = restoredItem.id;
+              return {
+                ...welcome,
+                stage: 'result',
+                selectedPoet: restored.selectedPoet,
+                currentPoemId: restoredItem.id,
+              };
+            }
+            // §5.3: a stored poet without a matching poem still restores the
+            // visitor to the intention stage instead of the welcome screen.
+            lastResultPoemIdRef.current = null;
             return {
               ...welcome,
-              stage: 'result',
+              stage: 'intention',
               selectedPoet: restored.selectedPoet,
-              currentPoemId: restoredItem.id,
             };
           }
           lastResultPoemIdRef.current = null;
@@ -403,6 +424,15 @@ export function App({ services }: AppProps) {
       ) {
         offlineActiveReleaseIdRef.current = expectedReleaseId;
         setOfflineUpdateReleaseId(null);
+        if (navigator.onLine === false) {
+          // §26.2: a reload while offline lands here (the browser never fires
+          // another 'offline' event), so surface readiness immediately.
+          dispatch({ type: 'SET_STATUS', statusCode: 'offline_ready' });
+          setLiveMessage(
+            'You are offline, but your poetry experience is ready.',
+          );
+          return;
+        }
       }
       setLiveMessage(detail.message);
     };
@@ -420,7 +450,7 @@ export function App({ services }: AppProps) {
       active = false;
       window.removeEventListener(OFFLINE_STATUS_EVENT, handleOfflineStatus);
     };
-  }, [registerWorker, verifiedRelease]);
+  }, [dispatch, registerWorker, verifiedRelease]);
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
@@ -545,6 +575,9 @@ export function App({ services }: AppProps) {
       pendingCycleResetRef.current = draw.cycleReset;
       setShowSkip(false);
       setLiveMessage('Revealing your verse.');
+      // The pressed reveal control unmounts with the intention scene, so
+      // focus must land on the reveal-scene heading instead of <body>.
+      focusRequestRef.current = FOCUS_TARGETS.heading;
       dispatch({ type: 'REVEAL' });
       skipTimerRef.current = window.setTimeout(
         () => setShowSkip(true),

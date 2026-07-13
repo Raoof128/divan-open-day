@@ -109,6 +109,21 @@ test('completes both poet flows by keyboard with semantic, reflow, and axe check
   await expectNoHorizontalOverflow(page);
   await expectNoBrowserAxeViolations(page);
 
+  await expect(
+    page.getByRole('link', { name: 'Learn about the poet' }),
+  ).toHaveAttribute('href', '/about');
+  const stallToggle = page.getByRole('button', {
+    name: 'Return to the stall',
+  });
+  await expect(stallToggle).toHaveAttribute('aria-expanded', 'false');
+  await stallToggle.click();
+  await expect(stallToggle).toHaveAttribute('aria-expanded', 'true');
+  const stallPanel = page.locator('#stall-invitation');
+  await expect(stallPanel).toBeVisible();
+  await expect(stallPanel).toContainText('Persian Society stall');
+  expect(await stallPanel.textContent()).not.toMatch(/\d/u);
+  await expectNoBrowserAxeViolations(page);
+
   await page.addStyleTag({
     content: `
       * {
@@ -234,7 +249,13 @@ test('honours motion precedence and preserves the result when native audio fails
     return performance.now() - startedAt;
   });
   expect(skipElapsedMs).toBeLessThanOrEqual(300);
+  // WCAG 2.4.3: the pressed reveal control has unmounted, so focus must rest
+  // on the reveal-scene heading rather than falling back to <body>.
+  await expect(page.locator('[data-scene="revealing"] h1')).toBeFocused();
   await skip.press('Enter');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeFocused();
 
   const audio = page.locator('audio[aria-label="Listen in Persian"]');
   await expect(audio).toHaveAttribute('controls', '');
@@ -246,6 +267,7 @@ test('honours motion precedence and preserves the result when native audio fails
   await expect(
     page.getByText('Persian audio is unavailable right now.').first(),
   ).toBeVisible();
+  await expect(audio).toHaveCount(0);
   await expect(
     page.getByRole('heading', { level: 1, name: 'Your verse' }),
   ).toBeVisible();

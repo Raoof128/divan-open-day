@@ -30,6 +30,18 @@ export function RevealScene({
     return () => window.cancelAnimationFrame(frame);
   }, [reducedMotion]);
 
+  useEffect(() => {
+    // Escape mirrors the visible "Skip animation" control; the shared
+    // completion handler guards against running more than once.
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onSkip();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onSkip]);
+
   return (
     <section
       className="scene reveal-scene"
