@@ -257,17 +257,20 @@ test('honours motion precedence and preserves the result when native audio fails
     page.getByRole('heading', { level: 1, name: 'Your verse' }),
   ).toBeFocused();
 
-  const audio = page.locator('audio[aria-label="Listen in Persian"]');
-  await expect(audio).toHaveAttribute('controls', '');
-  await expect(audio).toHaveAttribute('preload', 'metadata');
-  await expect(audio).not.toHaveAttribute('autoplay', /.*/u);
-  await audio.evaluate((element) => {
-    element.dispatchEvent(new Event('error'));
-  });
+  // The fixture's stub audio fails to load naturally in a real browser, so
+  // the §26.4 path runs on its own: the dead control is removed and only the
+  // honest unavailable message remains. (Element attributes — controls,
+  // preload, no autoplay — are pinned by the jsdom component tests, where no
+  // real fetch occurs.)
+  await expect(
+    page.getByRole('heading', { name: 'Listen in Persian' }),
+  ).toBeVisible();
   await expect(
     page.getByText('Persian audio is unavailable right now.').first(),
   ).toBeVisible();
-  await expect(audio).toHaveCount(0);
+  await expect(
+    page.locator('audio[aria-label="Listen in Persian"]'),
+  ).toHaveCount(0);
   await expect(
     page.getByRole('heading', { level: 1, name: 'Your verse' }),
   ).toBeVisible();

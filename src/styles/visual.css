@@ -601,7 +601,8 @@ button:active {
 
 /* Gold links fail contrast on light paper (1.56:1); deep red reads at
    9.77:1 on --paper. Night-surface links elsewhere stay gold. */
-.context-document a {
+.context-document a,
+.poem-result a {
   color: var(--deep-red);
   text-decoration-color: rgb(118 35 47 / 45%);
 }

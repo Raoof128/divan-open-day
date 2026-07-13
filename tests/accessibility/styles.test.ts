@@ -100,9 +100,11 @@ describe('CSS accessibility guardrails', () => {
     );
   });
 
-  it('renders links on light paper documents in an accessible dark colour', async () => {
+  it('renders links on light surfaces (context documents and the result card) in an accessible dark colour', async () => {
     const css = await visualCss();
-    const links = rule(css, '.context-document a');
+    // Gold on paper measures 1.56:1; both light surfaces — the context
+    // document and the parchment result card — must share the dark rule.
+    const links = rule(css, '.context-document a,\n.poem-result a');
     expect(links).toMatch(/color:\s*var\(--deep-red\)/u);
     expect(links).toMatch(/text-decoration-color:/u);
   });
