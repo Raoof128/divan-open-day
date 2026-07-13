@@ -256,8 +256,12 @@ const server = createServer((request, response) => {
   let pathname = url.pathname;
   if (
     pathname === '/' ||
-    ['/about', '/privacy', '/accessibility', '/credits'].includes(pathname)
+    ['/about', '/privacy', '/accessibility', '/credits', '/offline'].includes(
+      pathname,
+    )
   ) {
+    // `/offline` is a live SPA route (the OfflinePage); only `/offline.html`
+    // is the static recovery artefact. This mirrors production Caddy routing.
     pathname = '/index.html';
   }
   if (pathname === variant.brokenPath) {

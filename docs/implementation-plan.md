@@ -188,7 +188,7 @@ Behaviors and evidence:
 Validation:
 
 ```text
-docker compose -f ops/compose.yaml config --quiet
+docker compose -f ops/compose.yml config --quiet
 pnpm test:security
 pnpm test:performance
 pnpm verify:container
@@ -222,7 +222,7 @@ pnpm verify:dist
 pnpm audit --prod
 docker buildx build --load --build-arg DIVAN_BUILD_PROFILE=fixture -f ops/Dockerfile -t divan:verify .
 syft divan:verify -o cyclonedx-json
-docker compose -f ops/compose.yaml config --quiet
+docker compose -f ops/compose.yml config --quiet
 ```
 
 Create `docs/verification-report.md` with command, tool version, Australia/Sydney timestamp, commit, exit code, artifact hash, acceptance-criterion mapping, and every unrun/manual/external gate. The final result cannot be labelled public-launch-ready while production content, human approvals, final hostname, firewall/provider logging, manual assistive-technology, physical QR, campus Wi-Fi, or production rollback evidence is absent.

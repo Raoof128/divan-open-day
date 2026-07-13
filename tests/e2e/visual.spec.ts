@@ -35,6 +35,24 @@ async function installFixtureRelease(page: Page): Promise<{
   const corpusBytes = await readFile(
     resolve(dist, release.contentPath.replace(/^\//u, '')),
   );
+
+  // The visual matrix asserts layout via Playwright route interception. The
+  // offline service worker (exercised separately by offline.spec.ts) would
+  // serve the cached release and bypass those routes, so it is disabled for
+  // this capture run; the app registers it fail-safe, so this is a no-op path.
+  await page.addInitScript(() => {
+    const container = navigator.serviceWorker as
+      | { register?: unknown }
+      | undefined;
+    if (container && typeof container.register === 'function') {
+      Object.defineProperty(container, 'register', {
+        configurable: true,
+        value: () =>
+          Promise.reject(new Error('service worker disabled for visual capture')),
+      });
+    }
+  });
+
   let releasePaused = false;
   let pausedRoutes: Route[] = [];
   let resolveFirstRequest: (() => void) | null = null;
