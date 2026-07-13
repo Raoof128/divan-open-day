@@ -653,6 +653,7 @@ export function App({ services }: AppProps) {
             <PoemResult
               item={item}
               audioUnavailable={state.statusCode === 'audio_unavailable'}
+              onAnnounce={setLiveMessage}
               onAudioError={() => {
                 dispatch({ type: 'SET_STATUS', statusCode: 'audio_unavailable' });
                 setLiveMessage('Persian audio is unavailable right now.');

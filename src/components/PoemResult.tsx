@@ -1,14 +1,44 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import type { PublicContentItem } from '../contracts/content';
+import {
+  DEFAULT_SHARE_CONFIG,
+  type ShareConfig,
+} from '../lib/share/shareCard';
+import {
+  type ShareOutcome,
+  downloadShareCard as defaultDownloadShareCard,
+  shareVerse as defaultShareVerse,
+} from '../lib/share/shareService';
 import { IlluminatedFrame } from './IlluminatedFrame';
 import { SourceCredit } from './SourceCredit';
+
+export interface ShareService {
+  readonly shareVerse: typeof defaultShareVerse;
+  readonly downloadShareCard: typeof defaultDownloadShareCard;
+}
+
+const DEFAULT_SHARE_SERVICE: ShareService = {
+  shareVerse: defaultShareVerse,
+  downloadShareCard: defaultDownloadShareCard,
+};
+
+const SHARE_MESSAGES: Record<ShareOutcome, string | null> = {
+  shared: 'Verse shared.',
+  copied: 'Verse text copied to your clipboard.',
+  cancelled: null,
+  'copy-unavailable':
+    'Sharing is not available in this browser. You can select and copy the verse text.',
+};
 
 export interface PoemResultProps {
   readonly item: PublicContentItem;
   readonly audioUnavailable: boolean;
   readonly onAudioError: () => void;
   readonly onRevealAnother: () => void;
+  readonly shareService?: ShareService;
+  /** Announce share outcomes through the app's single polite live region. */
+  readonly onAnnounce?: (message: string) => void;
 }
 
 export function PoemResult({
@@ -16,12 +46,51 @@ export function PoemResult({
   audioUnavailable,
   onAudioError,
   onRevealAnother,
+  shareService = DEFAULT_SHARE_SERVICE,
+  onAnnounce,
 }: PoemResultProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
+
+  const shareConfig = useMemo<ShareConfig>(
+    () => ({
+      siteUrl:
+        typeof window === 'undefined' ? '' : window.location.origin,
+      society: DEFAULT_SHARE_CONFIG.society,
+    }),
+    [],
+  );
 
   useEffect(() => {
     headingRef.current?.focus();
   }, []);
+
+  function announce(message: string | null): void {
+    if (message !== null) {
+      onAnnounce?.(message);
+    }
+  }
+
+  async function handleSaveVerse(): Promise<void> {
+    try {
+      const outcome = await shareService.shareVerse(item, shareConfig);
+      announce(SHARE_MESSAGES[outcome]);
+    } catch {
+      announce(
+        'Sharing is unavailable right now. The verse is still here for you.',
+      );
+    }
+  }
+
+  function handleDownloadCard(): void {
+    try {
+      shareService.downloadShareCard(item, shareConfig);
+      announce('Verse card downloaded.');
+    } catch {
+      announce(
+        'The verse card could not be created. The verse is still here for you.',
+      );
+    }
+  }
 
   return (
     <article
@@ -87,6 +156,12 @@ export function PoemResult({
         <div className="result-actions" aria-label="Verse actions">
           <button type="button" onClick={onRevealAnother}>
             Reveal another
+          </button>
+          <button type="button" onClick={() => void handleSaveVerse()}>
+            Save this verse
+          </button>
+          <button type="button" onClick={handleDownloadCard}>
+            Download verse card
           </button>
         </div>
       </IlluminatedFrame>
