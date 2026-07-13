@@ -195,3 +195,13 @@
 - **Files Changed:** `src/app/App.tsx`, `src/app/core.css`, `src/scenes/RevealScene.tsx`, `tests/accessibility/appAccessibility.test.tsx`, `tests/accessibility/styles.test.ts`, `tests/components/failures.test.tsx`, `tests/e2e/accessibility.playwright.config.ts`, `tests/e2e/accessibility.spec.ts`, `playwright.config.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, meaningful RED reproduced one inert opacity path and two body-focused blocking errors; focused GREEN passed 25/25, accessibility passed 18/18, components passed 41/41, and unit tests passed 38/38. `pnpm test:e2e --list` selected exactly two tests in one spec; Chromium passed 2/2 and exposed a rendered `CSSTransition` from opacity 0 to 1 over 120 ms. A second 2/2 Chromium run rebuilt fixture output after the prior ignored `dist` was moved away. Strict TypeScript and zero-warning ESLint passed.
 - **Follow-ups:** Automated evidence is not a WCAG-conformance claim; keep the same manual assistive-technology, Persian-pronunciation, device/browser, 200-percent zoom, measured-contrast, focus-order, context-navigation, and all independent public-launch gates blocked until genuine evidence is reviewed.
+
+### 2026-07-13 (Australia/Sydney) — skip-timing flake closure
+
+**Raouf:**
+
+- **Scope:** Final B5 keyboard skip timing and real-browser elapsed-time evidence.
+- **Summary:** Moved the reveal skip control from 250 ms to 200 ms so browser timer, render, and observation scheduling retain a 100 ms margin inside the locked 300 ms maximum. Replaced the exact-300-ms Playwright wait dependency with an in-browser activation timestamp and an independent measured assertion that visible skip availability is at most 300 ms; focus remains on the visitor's existing control until they choose Skip.
+- **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `tests/e2e/accessibility.spec.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, test-first RED showed the skip still absent at 200 ms with the prior product delay, then focused GREEN passed at the 199/200 ms boundary. Full component tests passed 41/41 twice, accessibility tests passed 18/18 twice, and two consecutive corrected Chromium runs passed 2/2 with the unchanged measured `<= 300 ms` requirement. Strict TypeScript and zero-warning ESLint passed.
+- **Follow-ups:** The timing buffer closes this automated flake only; all previously recorded manual accessibility, genuine content, governance, security, deployment, rollback, isolation, and physical-QR launch gates remain blocked.

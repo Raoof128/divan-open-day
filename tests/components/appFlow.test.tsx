@@ -158,7 +158,7 @@ it('prevents a second reveal activation and exposes skip without stealing focus'
   fireEvent.click(reveal);
   fireEvent.click(reveal);
   expect(drawPoem).toHaveBeenCalledTimes(1);
-  await act(() => vi.advanceTimersByTimeAsync(249));
+  await act(() => vi.advanceTimersByTimeAsync(199));
   expect(screen.queryByRole('button', { name: 'Skip animation' })).toBeNull();
   await act(() => vi.advanceTimersByTimeAsync(1));
   const skip = screen.getByRole('button', { name: 'Skip animation' });

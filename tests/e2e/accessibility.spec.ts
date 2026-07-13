@@ -183,9 +183,28 @@ test('honours motion precedence and preserves the result when native audio fails
   await expect(page.getByTestId('app-shell')).toHaveAttribute('data-motion', 'full');
   await page.getByRole('button', { name: 'Begin' }).click();
   await page.getByRole('button', { name: /Open the Divan.*Hafez/u }).click();
-  await page.getByRole('button', { name: 'Press to reveal' }).click();
+  const reveal = page.getByRole('button', { name: 'Press to reveal' });
+  await reveal.evaluate((button) => {
+    button.addEventListener(
+      'click',
+      () => {
+        document.documentElement.dataset['revealActivatedAt'] = String(
+          performance.now(),
+        );
+      },
+      { once: true },
+    );
+  });
+  await reveal.click();
   const skip = page.getByRole('button', { name: 'Skip animation' });
-  await expect(skip).toBeVisible({ timeout: 300 });
+  await expect(skip).toBeVisible();
+  const skipElapsedMs = await page.evaluate(() => {
+    const startedAt = Number(
+      document.documentElement.dataset['revealActivatedAt'],
+    );
+    return performance.now() - startedAt;
+  });
+  expect(skipElapsedMs).toBeLessThanOrEqual(300);
   await skip.press('Enter');
 
   const audio = page.locator('audio[aria-label="Listen in Persian"]');

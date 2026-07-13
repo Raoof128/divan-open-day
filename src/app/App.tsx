@@ -53,7 +53,7 @@ import {
   type AppState,
 } from './state';
 
-const SKIP_CONTROL_DELAY_MS = 250;
+const SKIP_CONTROL_DELAY_MS = 200;
 
 export interface AppServices {
   readonly loadRelease: () => Promise<VerifiedRelease>;

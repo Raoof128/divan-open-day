@@ -167,3 +167,13 @@
 - **Files Changed:** `src/app/App.tsx`, `src/app/core.css`, `src/scenes/RevealScene.tsx`, `tests/accessibility/appAccessibility.test.tsx`, `tests/accessibility/styles.test.ts`, `tests/components/failures.test.tsx`, `tests/e2e/accessibility.playwright.config.ts`, `tests/e2e/accessibility.spec.ts`, `playwright.config.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED reproduced the non-rendering transition and both body-focus failures; GREEN focused tests 25/25, accessibility 18/18, components 41/41, unit 38/38, TypeScript and ESLint passed. The default E2E command listed exactly two tests in one file, Chromium passed 2/2, and a clean-dist rerun rebuilt fixture release output before passing 2/2 again.
 - **Follow-ups:** Automated checks remain bounded evidence, not WCAG conformance; all manual accessibility and independent public-launch gates remain blocked pending reviewed evidence.
+
+## 2026-07-13 — Stabilize skip availability timing
+
+**Raouf:**
+
+- **Scope:** B5 skip-control timing margin and browser measurement.
+- **Summary:** Reduced skip-control availability from 250 ms to 200 ms, preserving the design's within-300-ms requirement while adding scheduling margin. Updated deterministic tests to enforce the 199/200 ms boundary and Chromium coverage to measure elapsed time from the actual DOM activation event instead of relying on a timeout equal to the requirement.
+- **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `tests/e2e/accessibility.spec.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED reproduced absence at 200 ms under the old delay; GREEN component tests 41/41 twice, accessibility tests 18/18 twice, and corrected Chromium tests 2/2 twice with measured skip availability at most 300 ms. Strict TypeScript and ESLint passed.
+- **Follow-ups:** This change supplies automated timing evidence only; manual accessibility and every independent public-launch gate remain unchanged and blocked.
