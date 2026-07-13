@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-13 (Australia/Sydney) — full integration, Wave C review, share card, and verification evidence
+
+**Raouf:**
+
+- **Scope:** Complete the interrupted integration, run independent Wave C verification, fix confirmed defects, and record Task 8 evidence. No design decision was reopened; no production content, rights, or approvals were fabricated.
+- **Summary:** Diagnosed that `feat/divan-open-day-r1` had integrated B1/B2C/B3/B5/B6 but **not** B2 (visual) or B4 (offline/service-worker), leaving the branch internally inconsistent (ops referenced an absent service worker and `offline.html`). Ran a six-dimension read-only review swarm with adversarial verification (functional, accessibility, security, performance, visual/cultural, release-docs); it confirmed 11 real defects and correctly separated intended fail-closed launch gates. Merged `agent/b2-visual`, `agent/b4-integration`, and `agent/public-readiness`, resolving doc/config conflicts. Implemented the previously-absent local share card (§15 / criterion 16) with Web Share, clipboard fallback, and SVG card download announced through the app's single live region. Implemented the dangling `verify:*` scripts (`verify-privacy` docker-free denylist; `scripts/ops/verify-*` running their docker-free `opsConfig` groups; fail-closed `verify-qr`). Fixed two B2↔B4 e2e interaction bugs (service worker vs. Playwright route interception in the visual matrix; `/offline` SPA routing in the e2e server) and the `compose.yaml`→`compose.yml` doc typo. Corrected the previously-overstated `RESUME.md` and added `docs/verification-report.md` with the §31.1 acceptance matrix.
+- **Files Changed:** merges of `agent/b2-visual`, `agent/b4-integration`, `agent/public-readiness`; `src/lib/share/*`, `src/components/PoemResult.tsx`, `src/app/App.tsx`, `tests/share/*`, `tests/components/shareAction.test.tsx`; `scripts/verify-privacy.ts`, `scripts/ops/*`, `scripts/qr/verify-qr.ts`; `tests/e2e/visual.spec.ts`, `tests/e2e/offline-server.ts`; `vitest.config.ts`, `eslint.config.js`, `.gitignore`; `docs/implementation-plan.md`, `docs/verification-report.md`, `RESUME.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, commit `c552189`. `pnpm typecheck` 0, `pnpm lint` 0, `pnpm test` 472/472 (34 files), `pnpm test:e2e` 5/5 (Chromium), `test:content` 236, `test:a11y` 18, `test:offline` 53, `test:share` 13, `test:performance` 5, `test:security` 52. `build:fixture`, `verify:dist`, `verify:privacy`, and the four `verify:*` ops groups pass; `pnpm audit --prod` clean; budgets within §21.3 (JS 118 KB gz / CSS 4.8 KB / HTML 657 B / total 752 KB). `build:production` and `verify:qr` retain their exact fail-closed exits.
+- **Follow-ups:** Docker-host evidence (image build, `syft` scan, live `compose` and `ops/scripts/verify.sh`) is environment-blocked here — run on a Docker host. All §31.2 launch gates remain closed: approved corpus/rights, cultural review, manual assistive-tech, final hostname/short URL + University-mark approval, live deploy/tunnel/provider logging, rollback rehearsal, and physical QR.
+
 ### 2026-07-13 (Australia/Sydney) — visual system and context documents
 
 **Raouf:**

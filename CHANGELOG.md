@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-13 — Full integration, Wave C verification, share card, and evidence
+
+**Raouf:**
+
+- **Scope:** Finish the interrupted stage integration, verify independently, close confirmed defects, and record Task 8 evidence. No design decision reopened; no production content/rights/approvals fabricated.
+- **Summary:** The integration branch had B1/B2C/B3/B5/B6 but not B2 (visual) or B4 (offline/service-worker). Merged `agent/b2-visual`, `agent/b4-integration`, and `agent/public-readiness`; ran a six-dimension adversarial review swarm (11 confirmed defects, intended gates separated); implemented the local share card (§15 / criterion 16) and the previously-dangling `verify:*` scripts; fixed two B2↔B4 e2e interaction bugs and the `compose.yaml`→`compose.yml` doc typo; corrected the overstated `RESUME.md`; added `docs/verification-report.md`.
+- **Files Changed:** stage merges; `src/lib/share/*`, `src/components/PoemResult.tsx`, `src/app/App.tsx`, `tests/share/*`, `tests/components/shareAction.test.tsx`; `scripts/verify-privacy.ts`, `scripts/ops/*`, `scripts/qr/verify-qr.ts`; `tests/e2e/visual.spec.ts`, `tests/e2e/offline-server.ts`; `docs/implementation-plan.md`, `docs/verification-report.md`, `RESUME.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, commit `c552189`. typecheck 0, lint 0, vitest 472/472 (34 files), Playwright e2e 5/5, security 52, content 236; `verify:dist`/`verify:privacy`/ops `verify:*` pass; `audit --prod` clean; budgets within §21.3; `build:production` and `verify:qr` fail closed as intended.
+- **Follow-ups:** Docker-host image/scan/live-verify evidence is environment-blocked here; all §31.2 launch gates (corpus/rights, cultural, manual AT, hostname/mark approval, live deploy, rollback rehearsal, physical QR) remain closed.
+
 ## 2026-07-13 — Test-harness hygiene and resume handoff
 
 **Raouf:**

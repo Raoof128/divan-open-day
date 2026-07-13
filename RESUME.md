@@ -1,90 +1,70 @@
 # RESUME — DIVAN Open Day (pick up here)
 
-> Handoff note for the next session (Claude Code or Codex). Read this first, then
-> `AGENT.md`, `docs/implementation-plan.md`, and `CHANGELOG.md`.
-> Last updated: 2026-07-13 (Australia/Sydney).
+> Handoff note for the next session. Read this first, then `AGENT.md`,
+> `docs/verification-report.md`, `docs/implementation-plan.md`, and `CHANGELOG.md`.
+> Last updated: 2026-07-13 (Australia/Sydney), commit `c552189`.
 
 ## Where we are
 
 - **Integration branch:** `feat/divan-open-day-r1` (base `main`). Working tree clean.
-- **Build stages B1–B6 are all landed** on the integration branch (cherry-picked
-  from the `agent/*` worktree branches). The code build is essentially complete.
-- Baseline verified green on this machine (Node 22.16.0) — see "Green baseline" below.
-- The 14 `agent/*` branches under `.worktrees/` are the per-stage source branches;
-  their work is already reflected in `feat/divan-open-day-r1`.
+- **All build stages B1–B6 are now integrated** on this branch. An earlier
+  partial integration had merged B1/B2C/B3/B5/B6 but **not** B2 (visual) or B4
+  (offline/service-worker); those, plus `public-readiness`, have now been merged
+  and reconciled, and the previously-missing share card (criterion 16) and the
+  `verify:*` scripts have been implemented.
+- The 14 `agent/*` branches under `.worktrees/` are the per-stage source branches,
+  preserved for reference/subagent use.
 
-### Stage status
+### What was completed in this pass (2026-07-13)
 
-| Stage | Scope | Status |
-|-------|-------|--------|
-| B1 | App state, secure draw, history, React shell | done + review-closed |
-| B2 | Visual system / illuminated DIVAN experience | done |
-| B2C | Locked two-stage Vite build + dist verifier | done + review-closed |
-| B3 | Content pipeline, corpus compiler, release gate | done + review-closed |
-| B4 | Offline core, service worker, random draw | done |
-| B5 | Accessibility, motion, skip-timing | done + review-closed |
-| B6 | Ops: Docker/Caddy/tunnel, deploy/rollback | done (last worked on) |
+1. Merged `agent/b2-visual` (colour tokens, self-hosted fonts, original geometry,
+   Hafez/Rumi distinct portals, About/Credits/Privacy/Accessibility/Offline pages,
+   `tests/performance`, `tests/e2e/visual.spec.ts`).
+2. Merged `agent/b4-integration` (service worker `src-sw/*`, `src/sw-client`,
+   `public/offline.html`, `manifest.webmanifest`, `tests/offline/*`).
+3. Merged `agent/public-readiness` (README, SECURITY, THIRD_PARTY_NOTICES, metadata).
+4. Implemented the **share card** (§15 / criterion 16): `src/lib/share/*`, wired
+   into `PoemResult` via the app's single live region.
+5. Implemented the dangling `verify:*` scripts: `scripts/verify-privacy.ts`,
+   `scripts/ops/verify-*` (docker-free static checks), fail-closed `scripts/qr/verify-qr.ts`.
+6. Fixed two B2↔B4 e2e integration bugs (service worker vs. visual capture; `/offline`
+   SPA routing in the e2e server) and the `compose.yaml`→`compose.yml` doc typo.
 
-## Green baseline (verified 2026-07-13, commit `3971390`)
+## Verified green baseline (2026-07-13, commit `c552189`, Node 22.16.0)
 
 | Check | Result |
 |-------|--------|
 | `pnpm typecheck` | exit 0 |
 | `pnpm lint` | exit 0 |
-| `pnpm test` | 377/377 passed (21 files) |
-| `pnpm test:content` | 234/234 |
-| `pnpm build:fixture` | built fixture release (40 items) |
-| `pnpm verify:dist` | verified |
-| `pnpm build:production` | exit 1 — **intended** fail-closed: "no approved production corpus exists in content-private" |
+| `pnpm test` (vitest) | **472 passed (34 files)** |
+| `pnpm test:e2e` (Playwright, Chromium) | **5 passed** |
+| `pnpm build:fixture` + `verify:dist` | pass (40-item fixture release) |
+| `pnpm verify:privacy` | pass |
+| `pnpm verify:container/headers/origin-isolation/rollback` | pass (docker-free static groups) |
+| `pnpm audit --prod` | no known vulnerabilities |
+| `pnpm build:production` | exit 1 — **intended** fail-closed (no approved corpus) |
+| `pnpm verify:qr` | exit 1 — **intended** fail-closed (Phase-7 gate) |
+| Bundle budgets (§21.3) | JS 118 KB gz / CSS 4.8 KB / HTML 657 B / total 752 KB — all within |
 
-## What changed in this tidy-up pass (2026-07-13)
+Full evidence and the §31.1 acceptance-criteria matrix: **`docs/verification-report.md`**.
 
-Small robustness/hygiene fixes so `pnpm test` and `pnpm lint` are reliably green
-on a clean checkout (they previously broke on a full monolithic run). No product
-behavior was changed.
+## What remains
 
-1. `vitest.config.ts` — exclude `tests/e2e/**` (Playwright specs must run via
-   `pnpm test:e2e`, not vitest, which was collecting `accessibility.spec.ts` and
-   failing on `test.beforeEach`).
-2. `vitest.config.ts` — `testTimeout`/`hookTimeout` raised to 30 s. The ops and
-   release tests spawn real builds and shell scripts via `execFileSync`; the
-   default 5 s ceiling flaked under concurrent CPU load ("Test timed out in 5000ms").
-   Fast tests are unaffected.
-3. `eslint.config.js` + `.gitignore` — ignore `.tmp-tests/` (leftover fixture build
-   output from the determinism test was breaking `pnpm lint`).
-
-## Next task — resume at Task 7
-
-Per `docs/implementation-plan.md`:
-
-- **Task 7 — Wave C independent verification.** Six read-only reviewers audit
-  functional behavior, accessibility, security, performance, visual/cultural
-  fidelity, and release/documentation reproducibility. For each valid finding:
-  failing regression test → smallest fix → focused verification → reviewer re-check.
-- **Task 8 — Final local gauntlet + acceptance evidence.** Run the full command
-  list in the plan from a clean checkout and write `docs/verification-report.md`
-  (command, tool version, Sydney timestamp, commit, exit code, artifact hash,
-  acceptance-criterion mapping, and every unrun/manual/external gate).
-
-## Launch gates still blocked (cannot be closed by an agent)
-
-Public launch stays blocked until these human/external items have real evidence:
-
-- Genuine **approved poetry corpus** + rights/permission/licence records in
-  `content-private/` (production build is *designed* to fail without it).
-- Cultural review (Hafez/Rumi distinct, Persian pronunciation).
-- Manual accessibility evidence: VoiceOver iOS/macOS, TalkBack Android, real-device
-  portrait/landscape, 200% zoom, measured contrast, manual focus order.
-- Real deployment: final hostname, Cloudflare tunnel/domain, provider logging,
-  host/firewall, rollback rehearsal, SBOM/scan.
-- Physical: printed QR test, campus Wi-Fi.
+- **Environment-blocked (Docker daemon down in this session):** `docker buildx build`,
+  container scan (`syft`), live `docker compose config`, and `ops/scripts/verify.sh`
+  runtime evidence. The config is statically verified by `tests/security` (52 tests).
+  Re-run these on a host with Docker.
+- **§31.2 public-launch gates (cannot be closed by an agent):** approved production
+  corpus + rights/permissions (production build is designed to fail without it),
+  cultural review, manual assistive-tech evidence (VoiceOver/TalkBack/devices, 200%
+  zoom, measured contrast), final hostname/short URL + University-mark approval,
+  live deployment/tunnel/provider-logging, rollback rehearsal, physical QR/print.
 
 ## Handy commands
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm typecheck && pnpm lint && pnpm test
-pnpm test:content && pnpm test:a11y && pnpm test:security   # scoped suites
-pnpm build:fixture && pnpm verify:dist
-pnpm test:e2e            # Playwright (Chromium) — separate from vitest
+pnpm typecheck && pnpm lint && pnpm test && pnpm test:e2e
+pnpm build:fixture && pnpm verify:dist && pnpm verify:privacy
+pnpm build:production   # expect exit 1 fail-closed until an approved corpus exists
 ```
