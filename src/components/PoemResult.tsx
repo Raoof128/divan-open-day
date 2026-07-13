@@ -153,7 +153,7 @@ export function PoemResult({
           </section>
         )}
 
-        <div className="result-actions" aria-label="Verse actions">
+        <div className="result-actions" role="group" aria-label="Verse actions">
           <button type="button" onClick={onRevealAnother}>
             Reveal another
           </button>

@@ -32,11 +32,19 @@ export function RevealScene({
 
   useEffect(() => {
     // Escape mirrors the visible "Skip animation" control; the shared
-    // completion handler guards against running more than once.
+    // completion handler guards against running more than once. Escape aimed
+    // at header chrome (closing the motion dropdown) must not skip.
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onSkip();
+      if (event.key !== 'Escape') {
+        return;
       }
+      if (
+        event.target instanceof Element &&
+        event.target.closest('.utility-header') !== null
+      ) {
+        return;
+      }
+      onSkip();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);

@@ -39,13 +39,15 @@ import { verifyDist } from './verify-dist';
 const FIXTURE_RELEASE_ID = 'test-only-fixture-release';
 /**
  * Hashed woff2 faces preloaded from the emitted index.html so first paint does
- * not wait for CSS parsing before critical font discovery. Only faces used by
- * the initial screens are listed; Noto Nastaliq Urdu stays lazy by design.
+ * not wait for CSS parsing before critical font discovery. Only the welcome
+ * headline display face is listed: preloading more faces contends with the
+ * render-critical entry script on slow connections (measured +420 ms FCP when
+ * three faces were preloaded), while the remaining faces load with
+ * `font-display: swap` and shift no layout. Noto Nastaliq Urdu stays lazy by
+ * design.
  */
 const PRELOADED_FONT_FILE_STEMS = [
-  'inter-latin-400-normal',
   'cormorant-garamond-latin-500-normal',
-  'vazirmatn-arabic-400-normal',
 ] as const;
 const FIXTURE_BUILT_AT = '2026-07-13T00:00:00.000Z';
 const RELEASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;

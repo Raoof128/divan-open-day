@@ -269,7 +269,7 @@ describe('font preload injection', () => {
     'assets/vazirmatn-arabic-400-normal-0123456789abcdef.woff2',
   ];
 
-  it('injects exactly the three approved local font preloads', () => {
+  it('injects exactly the one approved local font preload', () => {
     const html = '<html><head><title>DIVAN</title></head><body></body></html>';
     const injected = injectFontPreloadLinks(html, [
       ...fontAssets,
@@ -281,10 +281,10 @@ describe('font preload injection', () => {
       (match) => match[1],
     );
 
+    // Only the welcome headline display face is preloaded; more faces contend
+    // with the render-critical entry script on slow connections.
     expect(preloads).toEqual([
-      '/assets/inter-latin-400-normal-0123456789abcdef.woff2',
       '/assets/cormorant-garamond-latin-500-normal-0123456789abcdef.woff2',
-      '/assets/vazirmatn-arabic-400-normal-0123456789abcdef.woff2',
     ]);
     expect(injected.indexOf('</head>')).toBeGreaterThan(
       injected.indexOf('preload'),
@@ -302,8 +302,8 @@ describe('font preload injection', () => {
     const html = '<html><head></head><body></body></html>';
     expect(() =>
       injectFontPreloadLinks(html, [
-        fontAssets[0]!,
-        'assets/inter-latin-400-normal-fedcba9876543210.woff2',
+        'assets/cormorant-garamond-latin-500-normal-0123456789abcdef.woff2',
+        'assets/cormorant-garamond-latin-500-normal-fedcba9876543210.woff2',
       ]),
     ).toThrow(/multiple/iu);
     expect(() =>
@@ -355,12 +355,12 @@ describe('font preload injection', () => {
       ),
     ].map((match) => match[1]);
 
-    expect(preloads).toHaveLength(3);
-    stems.forEach((stem, index) => {
-      expect(preloads[index]).toMatch(
-        new RegExp(`^assets/${stem}-[a-f0-9]{16}\\.woff2$`, 'u'),
-      );
-    });
+    // Only the display face is preloaded; the other emitted faces stay on
+    // swap discovery so the entry script keeps network priority.
+    expect(preloads).toHaveLength(1);
+    expect(preloads[0]).toMatch(
+      /^assets\/cormorant-garamond-latin-500-normal-[a-f0-9]{16}\.woff2$/u,
+    );
     for (const preloadPath of preloads) {
       expect(manifest.assets.some((asset) => asset.path === preloadPath)).toBe(
         true,

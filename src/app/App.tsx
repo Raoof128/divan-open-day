@@ -367,6 +367,11 @@ export function App({ services }: AppProps) {
     previousStageRef.current = state.stage;
   }, [state]);
 
+  const announceOfflineReady = useCallback(() => {
+    dispatch({ type: 'SET_STATUS', statusCode: 'offline_ready' });
+    setLiveMessage('You are offline, but your poetry experience is ready.');
+  }, [dispatch]);
+
   useEffect(() => {
     const handleOffline = () => {
       if (verifiedReleaseRef.current === null) {
@@ -381,12 +386,11 @@ export function App({ services }: AppProps) {
         );
         return;
       }
-      dispatch({ type: 'SET_STATUS', statusCode: 'offline_ready' });
-      setLiveMessage('You are offline, but your poetry experience is ready.');
+      announceOfflineReady();
     };
     window.addEventListener('offline', handleOffline);
     return () => window.removeEventListener('offline', handleOffline);
-  }, [dispatch]);
+  }, [announceOfflineReady]);
 
   useEffect(() => {
     if (verifiedRelease === null) {
@@ -427,10 +431,7 @@ export function App({ services }: AppProps) {
         if (navigator.onLine === false) {
           // §26.2: a reload while offline lands here (the browser never fires
           // another 'offline' event), so surface readiness immediately.
-          dispatch({ type: 'SET_STATUS', statusCode: 'offline_ready' });
-          setLiveMessage(
-            'You are offline, but your poetry experience is ready.',
-          );
+          announceOfflineReady();
           return;
         }
       }
@@ -450,7 +451,7 @@ export function App({ services }: AppProps) {
       active = false;
       window.removeEventListener(OFFLINE_STATUS_EVENT, handleOfflineStatus);
     };
-  }, [dispatch, registerWorker, verifiedRelease]);
+  }, [announceOfflineReady, registerWorker, verifiedRelease]);
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
