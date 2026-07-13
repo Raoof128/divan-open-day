@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import {
   chmod,
+  lstat,
   mkdir,
   readFile,
   readdir,
@@ -16,6 +17,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  activateStagedDistribution,
   buildFixtureRelease,
   buildProductionRelease,
   loadReleaseAudioAssets,
@@ -370,6 +372,107 @@ describe('fixture release build', () => {
       (await readdir(projectRoot)).some((entry) => entry.startsWith('.divan-dist-stage-')),
     ).toBe(false);
   });
+
+  it('restores the previous dist when the activation rename fails', async () => {
+    const { projectRoot, distDir } = await temporaryProject('activation-restore');
+    const stageRoot = path.join(projectRoot, '.divan-test-stage');
+    await mkdir(distDir);
+    await mkdir(stageRoot);
+    await writeFile(path.join(distDir, 'old.txt'), 'known good', 'utf8');
+    await writeFile(path.join(stageRoot, 'new.txt'), 'candidate', 'utf8');
+    const previous = await lstat(distDir);
+
+    await expect(
+      activateStagedDistribution({
+        projectRoot,
+        outputRoot: distDir,
+        stageRoot,
+        previousIdentity: { dev: previous.dev, ino: previous.ino },
+        operations: {
+          inspect: lstat,
+          move: async (source, destination) => {
+            if (source === stageRoot && destination === distDir) {
+              throw new Error('TEST ONLY injected second-rename failure');
+            }
+            await rename(source, destination);
+          },
+          remove: async (target) => rm(target, { recursive: true, force: false }),
+          warn: () => undefined,
+        },
+      }),
+    ).rejects.toThrow(/activation|previous|restored/iu);
+
+    await expect(readFile(path.join(distDir, 'old.txt'), 'utf8')).resolves.toBe(
+      'known good',
+    );
+    await expect(readFile(path.join(stageRoot, 'new.txt'), 'utf8')).resolves.toBe(
+      'candidate',
+    );
+  });
+
+  it('does not report activation failure when only old-backup cleanup fails', async () => {
+    const { projectRoot, distDir } = await temporaryProject('activation-cleanup');
+    const stageRoot = path.join(projectRoot, '.divan-test-stage');
+    await mkdir(distDir);
+    await mkdir(stageRoot);
+    await writeFile(path.join(distDir, 'old.txt'), 'known good', 'utf8');
+    await writeFile(path.join(stageRoot, 'new.txt'), 'candidate', 'utf8');
+    const previous = await lstat(distDir);
+    const warnings: string[] = [];
+
+    await expect(
+      activateStagedDistribution({
+        projectRoot,
+        outputRoot: distDir,
+        stageRoot,
+        previousIdentity: { dev: previous.dev, ino: previous.ino },
+        operations: {
+          inspect: lstat,
+          move: rename,
+          remove: () =>
+            Promise.reject(
+              new Error('TEST ONLY injected backup cleanup failure'),
+            ),
+          warn: (message) => warnings.push(message),
+        },
+      }),
+    ).resolves.toBeUndefined();
+
+    await expect(readFile(path.join(distDir, 'new.txt'), 'utf8')).resolves.toBe(
+      'candidate',
+    );
+    expect(warnings).toEqual([
+      'Verified release activated; a previous dist backup requires manual cleanup.',
+    ]);
+    expect(
+      (await readdir(projectRoot)).some((entry) => entry.startsWith('.divan-dist-backup-')),
+    ).toBe(true);
+  });
+
+  it('does not expose VITE-prefixed process environment values to browser output', async () => {
+    const { projectRoot, distDir } = await temporaryProject('vite-process-env');
+    const sentinel = 'DO-NOT-BUNDLE-THIS-PRIVATE-VALUE';
+    process.env['VITE_PRIVATE_SENTINEL'] = sentinel;
+    await writeFile(
+      path.join(projectRoot, 'src', 'main.ts'),
+      "document.querySelector('#root')?.append(import.meta.env.VITE_PRIVATE_SENTINEL);\n",
+      'utf8',
+    );
+    try {
+      await buildFixtureRelease({ projectRoot, distDir });
+    } finally {
+      delete process.env['VITE_PRIVATE_SENTINEL'];
+    }
+
+    const browserText = (
+      await Promise.all(
+        (await readdir(path.join(distDir, 'assets')))
+          .filter((file) => file.endsWith('.js'))
+          .map((file) => readFile(path.join(distDir, 'assets', file), 'utf8')),
+      )
+    ).join('\n');
+    expect(browserText).not.toContain(sentinel);
+  });
 });
 
 describe('production audio asset loading', () => {
@@ -614,6 +717,48 @@ describe('distribution verification', () => {
 
     await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
       /remote|runtime|javascript/iu,
+    );
+  });
+
+  it('rejects remote iframe resources in coherently rehashed HTML', async () => {
+    const { projectRoot, distDir } = await temporaryProject('remote-browser-frame');
+    await buildFixtureRelease({ projectRoot, distDir });
+    const indexPath = path.join(distDir, 'index.html');
+    await writeFile(
+      indexPath,
+      (await readFile(indexPath, 'utf8')).replace(
+        '</body>',
+        '<iframe src="https://remote.example.invalid/embed"></iframe></body>',
+      ),
+      'utf8',
+    );
+    await rehashManifestAsset(distDir, 'index.html');
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /remote|browser|resource|html/iu,
+    );
+  });
+
+  it('rejects remote image resources in a coherently rehashed SVG asset', async () => {
+    const { projectRoot, distDir } = await temporaryProject('remote-browser-svg');
+    await buildFixtureRelease({ projectRoot, distDir });
+    const assetPath = 'assets/ornament-0123456789abcdef.svg';
+    const contents = new TextEncoder().encode(
+      '<svg xmlns="http://www.w3.org/2000/svg"><image href="https://remote.example.invalid/art.png" /></svg>',
+    );
+    await writeFile(path.join(distDir, assetPath), contents);
+    await rewriteAssetManifest(distDir, (manifest) => {
+      manifest.assets.push({
+        path: assetPath,
+        mimeType: 'image/svg+xml',
+        sha256: createHash('sha256').update(contents).digest('hex'),
+        bytes: contents.byteLength,
+        requiredOffline: true,
+      });
+    });
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /remote|svg|resource|unsafe/iu,
     );
   });
 

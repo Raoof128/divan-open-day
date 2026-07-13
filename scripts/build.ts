@@ -262,9 +262,16 @@ export async function resolveSafeOutputDirectory(
   return expectedDist;
 }
 
-interface FileIdentity {
+export interface FileIdentity {
   readonly dev: number;
   readonly ino: number;
+}
+
+export interface DistributionActivationOperations {
+  readonly inspect: typeof lstat;
+  readonly move: typeof rename;
+  readonly remove: (target: string) => Promise<void>;
+  readonly warn: (message: string) => void;
 }
 
 function fileIdentity(stat: { readonly dev: number; readonly ino: number }): FileIdentity {
@@ -630,6 +637,85 @@ async function writeStagedReleaseArtifacts(
   }
 }
 
+const DEFAULT_ACTIVATION_OPERATIONS: DistributionActivationOperations = {
+  inspect: lstat,
+  move: rename,
+  remove: async (target) => rm(target, { recursive: true, force: false }),
+  warn: (message) => process.stderr.write(`${message}\n`),
+};
+
+export async function activateStagedDistribution(options: {
+  readonly projectRoot: string;
+  readonly outputRoot: string;
+  readonly stageRoot: string;
+  readonly previousIdentity: FileIdentity | null;
+  readonly operations?: DistributionActivationOperations;
+}): Promise<void> {
+  const operations = options.operations ?? DEFAULT_ACTIVATION_OPERATIONS;
+  let backupRoot: string | null = null;
+
+  if (options.previousIdentity !== null) {
+    const current = await operations.inspect(options.outputRoot);
+    if (!sameIdentity(options.previousIdentity, current) || !current.isDirectory()) {
+      throw new Error('Distribution identity changed before activation.');
+    }
+    backupRoot = path.join(
+      options.projectRoot,
+      `.divan-dist-backup-${randomUUID()}`,
+    );
+    await operations.move(options.outputRoot, backupRoot);
+  } else {
+    try {
+      await operations.inspect(options.outputRoot);
+      throw new Error('A distribution appeared before activation.');
+    } catch (error) {
+      if (!isNotFound(error)) {
+        throw error;
+      }
+    }
+  }
+
+  try {
+    await operations.move(options.stageRoot, options.outputRoot);
+  } catch (activationError) {
+    if (backupRoot !== null) {
+      try {
+        await operations.move(backupRoot, options.outputRoot);
+        backupRoot = null;
+      } catch (restoreError) {
+        throw new Error(
+          'The candidate activation failed and the previous-release restore also failed.',
+          { cause: restoreError },
+        );
+      }
+    }
+    throw new Error('Distribution activation failed; the previous release was restored.', {
+      cause: activationError,
+    });
+  }
+
+  if (backupRoot !== null) {
+    try {
+      const backup = await operations.inspect(backupRoot);
+      if (
+        options.previousIdentity === null ||
+        !sameIdentity(options.previousIdentity, backup) ||
+        !backup.isDirectory()
+      ) {
+        throw new Error('Distribution backup identity changed before cleanup.');
+      }
+      await operations.remove(backupRoot);
+    } catch {
+      // The verified release is already active. Treat backup cleanup as
+      // maintenance rather than falsely reporting a failed activation that
+      // replaced the previous release.
+      operations.warn(
+        'Verified release activated; a previous dist backup requires manual cleanup.',
+      );
+    }
+  }
+}
+
 async function replaceReleaseArtifacts(
   projectRoot: string,
   distDir: string,
@@ -649,65 +735,22 @@ async function replaceReleaseArtifacts(
     }
   }
   const stageRoot = await mkdtemp(path.join(projectRoot, '.divan-dist-stage-'));
-  let stageOwned = true;
-  let backupRoot: string | null = null;
 
   try {
     await writeStagedReleaseArtifacts(stageRoot, artifacts);
     await verifyDist({ projectRoot, distDir: stageRoot });
-
-    if (previousIdentity !== null) {
-      const current = await lstat(outputRoot);
-      if (!sameIdentity(previousIdentity, current) || !current.isDirectory()) {
-        throw new Error('Distribution identity changed before activation.');
-      }
-      backupRoot = path.join(
-        projectRoot,
-        `.divan-dist-backup-${randomUUID()}`,
-      );
-      await rename(outputRoot, backupRoot);
-    } else {
-      try {
-        await lstat(outputRoot);
-        throw new Error('A distribution appeared before activation.');
-      } catch (error) {
-        if (!isNotFound(error)) {
-          throw error;
-        }
-      }
-    }
-
-    try {
-      await rename(stageRoot, outputRoot);
-      stageOwned = false;
-    } catch (error) {
-      if (backupRoot !== null) {
-        await rename(backupRoot, outputRoot);
-        backupRoot = null;
-      }
-      throw error;
-    }
-
-    if (backupRoot !== null) {
-      const backup = await lstat(backupRoot);
-      if (
-        previousIdentity === null ||
-        !sameIdentity(previousIdentity, backup) ||
-        !backup.isDirectory()
-      ) {
-        throw new Error('Distribution backup identity changed before cleanup.');
-      }
-      await rm(backupRoot, { recursive: true, force: false });
-      backupRoot = null;
-    }
+    await activateStagedDistribution({
+      projectRoot,
+      outputRoot,
+      stageRoot,
+      previousIdentity,
+    });
   } catch (error) {
     throw new Error('Unable to stage and activate a complete release distribution.', {
       cause: error,
     });
   } finally {
-    if (stageOwned) {
-      await rm(stageRoot, { recursive: true, force: true });
-    }
+    await rm(stageRoot, { recursive: true, force: true });
   }
 }
 

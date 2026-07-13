@@ -337,15 +337,24 @@ function verifyHtmlAsset(assetPath: string, text: string): void {
     /\sstyle\s*=/iu.test(text) ||
     /\son[a-z]+\s*=/iu.test(text) ||
     /javascript\s*:/iu.test(text) ||
-    /<script\b(?![^>]*\bsrc\s*=)[^>]*>/iu.test(text)
+    /<script\b(?![^>]*\bsrc\s*=)[^>]*>/iu.test(text) ||
+    /<(?:base|embed|form|iframe|object)\b/iu.test(text) ||
+    /<meta\b[^>]*\bhttp-equiv\s*=\s*["']?refresh\b/iu.test(text)
   ) {
     throw new Error(`Inline executable HTML is forbidden in ${assetPath}.`);
   }
 
   for (const match of text.matchAll(
-    /<(?:script|link|img|audio|source)\b[^>]*\b(?:src|href)\s*=\s*["']([^"']+)["']/giu,
+    /<(?:audio|img|input|link|script|source|track|video)\b[^>]*\b(src|href|poster|srcset)\s*=\s*["']([^"']+)["']/giu,
   )) {
-    if (!isLocalRuntimeReference(match[1]!)) {
+    const attribute = match[1]!.toLowerCase();
+    const references =
+      attribute === 'srcset'
+        ? match[2]!
+            .split(',')
+            .map((candidate) => candidate.trim().split(/\s+/u)[0] ?? '')
+        : [match[2]!];
+    if (!references.every(isLocalRuntimeReference)) {
       throw new Error(`Remote browser resource is forbidden in ${assetPath}.`);
     }
   }
@@ -394,7 +403,16 @@ function verifyBrowserTextAsset(
       /\b(?:fetch|import)\s*\(\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
         text,
       ) ||
-      /\bnew\s+(?:EventSource|WebSocket)\s*\(\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+      /\bnew\s+(?:EventSource|Request|SharedWorker|WebSocket|Worker)\s*\(\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+        text,
+      ) ||
+      /\b(?:importScripts|sendBeacon)\s*\(\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+        text,
+      ) ||
+      /\.open\s*\(\s*["'][A-Z]+["']\s*,\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+        text,
+      ) ||
+      /\b(?:poster|src)\s*[:=]\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
         text,
       )
     ) {
@@ -404,11 +422,23 @@ function verifyBrowserTextAsset(
   }
   if (mimeType === 'image/svg+xml') {
     if (
-      /<script\b|\son[a-z]+\s*=|javascript\s*:|<use\b[^>]*\bhref\s*=\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/iu.test(
+      /<script\b|<foreignObject\b|\son[a-z]+\s*=|javascript\s*:|@import\b/iu.test(
         text,
       )
     ) {
       throw new Error(`Unsafe SVG content is forbidden in ${assetPath}.`);
+    }
+    for (const match of text.matchAll(
+      /\b(?:href|xlink:href|src)\s*=\s*["']([^"']+)["']/giu,
+    )) {
+      if (!isLocalRuntimeReference(match[1]!)) {
+        throw new Error(`Remote SVG resource is forbidden in ${assetPath}.`);
+      }
+    }
+    for (const match of text.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/giu)) {
+      if (!isLocalRuntimeReference(match[1]!)) {
+        throw new Error(`Remote SVG style resource is forbidden in ${assetPath}.`);
+      }
     }
     return;
   }

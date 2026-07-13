@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   base: '/',
   envDir: false,
+  envPrefix: 'DIVAN_BROWSER_PUBLIC_',
   plugins: [react()],
   build: {
     assetsInlineLimit: 0,

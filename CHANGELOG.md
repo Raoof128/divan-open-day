@@ -99,3 +99,13 @@
 - **Files Changed:** `.gitignore`, `vite.config.ts`, `src/contracts/release.ts`, `src/lib/content/release.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; focused browser-shell, inline-script, private-leak, remote-runtime and previous-dist preservation RED/GREEN tests; full content suite 227/227; components 25/25; unit 38/38; typecheck and lint passed; repeated fixture tree hashes matched; fixture build/dist verification passed; production build retained the exact expected exit-1 approved-content blocker without replacing the good dist.
 - **Follow-ups:** Add and independently verify the real B4 offline release before requiring its worker/manifest/offline files, and keep every production/public launch gate closed until external evidence is complete.
+
+## 2026-07-13 — Static assembly review fixes
+
+**Raouf:**
+
+- **Scope:** Environment isolation, embedded remote-resource coverage, and activation-status correctness.
+- **Summary:** Replaced Vite's default environment prefix with an explicit public-only namespace, rejected additional remote HTML embeds/SVG resources/JavaScript network forms after coherent rehashing, tested previous-dist restoration on activation failure, and kept verified activation successful when only obsolete-backup cleanup needs manual maintenance.
+- **Files Changed:** `vite.config.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; adversarial environment/iframe/SVG RED reproduced all three gaps; focused fixes 5/5, full content 232/232, typecheck/lint and real fixture build/dist verification passed.
+- **Follow-ups:** Obtain independent re-review before integration and retain the production/offline/external launch gates.

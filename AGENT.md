@@ -127,3 +127,13 @@
 - **Files Changed:** `.gitignore`, `vite.config.ts`, `src/contracts/release.ts`, `src/lib/content/release.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, RED proved the old build omitted the browser shell and accepted coherently rehashed inline script/private-browser leaks; GREEN content tests passed 227/227, component tests 25/25, unit tests 38/38, strict TypeScript and ESLint passed, two complete fixture builds had identical seven-file SHA-256 trees, `verify:dist` passed, and production build exited 1 with the unchanged missing-approved-corpus blocker while retaining the verified fixture distribution.
 - **Follow-ups:** B4 must add the complete hand-controlled service worker, manifest and offline document before those fixed files become mandatory; production and public launch remain blocked by genuine content/rights/reviews, manual accessibility, domain/tunnel/logging, rollback and physical-event evidence.
+
+### 2026-07-13 (Australia/Sydney) — browser assembly review hardening
+
+**Raouf:**
+
+- **Scope:** Focused correction of independent Task 2C review findings.
+- **Summary:** Prevented default `VITE_*` process variables from entering browser bundles by switching to an explicitly public-only prefix; expanded coherently rehashed HTML, JavaScript and SVG checks across embedded-resource elements and common network APIs; added second-rename restoration evidence; and made post-activation old-backup cleanup a warning-only maintenance condition so a successfully activated verified release is never falsely reported as a failed build.
+- **Files Changed:** `vite.config.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; three adversarial RED tests proved VITE-prefixed process-value leakage plus remote iframe and SVG-image acceptance before the fixes; focused activation/env/remote tests passed 5/5, full content tests passed 232/232, strict TypeScript and ESLint passed, and the real fixture build/dist verifier remained green.
+- **Follow-ups:** Re-run independent Task 2C review; the B4 worker/manifest/offline slice and every external production/public-launch gate remain closed.
