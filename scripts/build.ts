@@ -1,29 +1,57 @@
-import { createHash } from 'node:crypto';
-import { lstat, mkdir, realpath, rm, writeFile } from 'node:fs/promises';
+import { createHash, randomUUID } from 'node:crypto';
+import {
+  lstat,
+  mkdir,
+  mkdtemp,
+  open,
+  readFile,
+  readdir,
+  realpath,
+  rename,
+  rm,
+  unlink,
+  writeFile,
+} from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { build as viteBuild } from 'vite';
+
 import type { BuildProfile, ReleaseDescriptor } from '../src/contracts/release';
+import { MAX_RELEASE_ASSET_BYTES } from '../src/contracts/release';
 import {
   compileCorpus,
   type CompiledCorpus,
 } from '../src/lib/content/compileCorpus';
 import { registryBundleSchema } from '../src/lib/content/registrySchemas';
 import {
+  browserAssetMimeType,
   createReleaseArtifacts,
   type ReleaseAssetSource,
   type ReleaseArtifacts,
 } from '../src/lib/content/release';
 import { loadContentPrivate } from './content/loadContent';
 import { readBoundedAssetFile } from './content/readAssetFile';
+import { verifyDist } from './verify-dist';
 
 const FIXTURE_RELEASE_ID = 'test-only-fixture-release';
 const FIXTURE_BUILT_AT = '2026-07-13T00:00:00.000Z';
 const BASELINE_MIN_HAFEZ = 24;
 const BASELINE_MIN_RUMI = 16;
+const MAX_BROWSER_DISTRIBUTION_BYTES = 150_000_000;
 
 type BuildEnvironment = Readonly<Record<string, string | undefined>>;
+
+function viteConfigPath(): string {
+  try {
+    return fileURLToPath(new URL('../vite.config.ts', import.meta.url));
+  } catch {
+    // Vitest serves transformed modules from a non-file URL. Its working
+    // directory is the package root and contains the same reviewed config.
+    return path.resolve(process.cwd(), 'vite.config.ts');
+  }
+}
 
 export interface FixtureBuildOptions {
   readonly projectRoot: string;
@@ -234,6 +262,180 @@ export async function resolveSafeOutputDirectory(
   return expectedDist;
 }
 
+interface FileIdentity {
+  readonly dev: number;
+  readonly ino: number;
+}
+
+function fileIdentity(stat: { readonly dev: number; readonly ino: number }): FileIdentity {
+  return { dev: stat.dev, ino: stat.ino };
+}
+
+function sameIdentity(
+  left: FileIdentity,
+  right: { readonly dev: number; readonly ino: number },
+): boolean {
+  return left.dev === right.dev && left.ino === right.ino;
+}
+
+async function withBuildLock<T>(
+  projectRoot: string,
+  operation: (canonicalRoot: string) => Promise<T>,
+): Promise<T> {
+  const canonicalRoot = await canonicalProjectRoot(projectRoot);
+  const lockPath = path.join(canonicalRoot, '.divan-build.lock');
+  let lockHandle;
+  try {
+    lockHandle = await open(lockPath, 'wx', 0o600);
+  } catch (error) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 'EEXIST'
+    ) {
+      throw new Error('Another DIVAN release build already holds the project lock.', {
+        cause: error,
+      });
+    }
+    throw error;
+  }
+
+  const identity = fileIdentity(await lockHandle.stat());
+  const outcome = await operation(canonicalRoot).then(
+    (value) => ({ ok: true as const, value }),
+    (error: unknown) => ({ ok: false as const, error }),
+  );
+  let cleanupError: unknown = null;
+  try {
+    await lockHandle.close();
+    const current = await lstat(lockPath);
+    if (!sameIdentity(identity, current) || !current.isFile()) {
+      throw new Error('DIVAN build lock identity changed during the build.');
+    }
+    await unlink(lockPath);
+  } catch (error) {
+    if (!isNotFound(error)) {
+      cleanupError = error;
+    }
+  }
+
+  if (!outcome.ok) {
+    if (cleanupError !== null) {
+      throw new Error('Release build and lock cleanup both failed.', {
+        cause: new AggregateError([outcome.error, cleanupError]),
+      });
+    }
+    if (outcome.error instanceof Error) {
+      throw outcome.error;
+    }
+    throw new Error('Release build failed with a non-Error value.', {
+      cause: outcome.error,
+    });
+  }
+  if (cleanupError !== null) {
+    if (cleanupError instanceof Error) {
+      throw cleanupError;
+    }
+    throw new Error('Build lock cleanup failed with a non-Error value.', {
+      cause: cleanupError,
+    });
+  }
+  return outcome.value;
+}
+
+async function collectBrowserAssets(
+  stageRoot: string,
+  directory = stageRoot,
+): Promise<readonly ReleaseAssetSource[]> {
+  const directoryStat = await lstat(directory);
+  if (directoryStat.isSymbolicLink() || !directoryStat.isDirectory()) {
+    throw new Error('Vite output directories must be regular non-symlink directories.');
+  }
+
+  const assets: ReleaseAssetSource[] = [];
+  const entries = await readdir(directory, { withFileTypes: true });
+  for (const entry of entries.toSorted((left, right) => left.name.localeCompare(right.name))) {
+    const absolute = path.join(directory, entry.name);
+    const relative = path.relative(stageRoot, absolute).split(path.sep).join('/');
+    if (entry.isSymbolicLink()) {
+      throw new Error(`Symlinked Vite output is forbidden: ${relative}.`);
+    }
+    if (entry.isDirectory()) {
+      assets.push(...(await collectBrowserAssets(stageRoot, absolute)));
+      continue;
+    }
+    if (!entry.isFile()) {
+      throw new Error(`Special Vite output is forbidden: ${relative}.`);
+    }
+
+    const stat = await lstat(absolute);
+    if (
+      stat.isSymbolicLink() ||
+      !stat.isFile() ||
+      stat.size <= 0 ||
+      stat.size > MAX_RELEASE_ASSET_BYTES
+    ) {
+      throw new Error(`Invalid Vite output size or type: ${relative}.`);
+    }
+    const mimeType = browserAssetMimeType(relative);
+    if (mimeType === null) {
+      throw new Error(`Unexpected or unhashed Vite output: ${relative}.`);
+    }
+    const contents = new Uint8Array(await readFile(absolute));
+    assets.push({
+      path: relative,
+      mimeType,
+      sha256: createHash('sha256').update(contents).digest('hex'),
+      bytes: contents.byteLength,
+      requiredOffline: true,
+      contents,
+    });
+  }
+  return assets;
+}
+
+async function buildBrowserAssets(
+  projectRoot: string,
+): Promise<readonly ReleaseAssetSource[]> {
+  const configPath = viteConfigPath();
+  const configStat = await lstat(configPath);
+  if (
+    configStat.isSymbolicLink() ||
+    !configStat.isFile() ||
+    (await realpath(configPath)) !== configPath
+  ) {
+    throw new Error('Vite configuration must be a regular non-symlink file.');
+  }
+  const stageRoot = await mkdtemp(path.join(projectRoot, '.divan-vite-stage-'));
+  try {
+    await viteBuild({
+      root: projectRoot,
+      configFile: configPath,
+      logLevel: 'silent',
+      build: {
+        emptyOutDir: false,
+        outDir: stageRoot,
+      },
+    });
+    const assets = await collectBrowserAssets(stageRoot);
+    const totalBytes = assets.reduce((total, asset) => total + asset.bytes, 0);
+    if (
+      assets.filter((asset) => asset.path === 'index.html').length !== 1 ||
+      !assets.some(
+        (asset) =>
+          asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+      ) ||
+      totalBytes > MAX_BROWSER_DISTRIBUTION_BYTES
+    ) {
+      throw new Error('Vite output is missing the semantic shell or exceeds its budget.');
+    }
+    return assets;
+  } finally {
+    await rm(stageRoot, { recursive: true, force: true });
+  }
+}
+
 function hasDeclaredAudioSignature(
   contents: Uint8Array,
   mimeType: 'audio/mpeg' | 'audio/ogg',
@@ -405,77 +607,152 @@ export async function loadReleaseAudioAssets(
   return sources;
 }
 
-async function writeReleaseArtifacts(
+async function writeStagedReleaseArtifacts(
+  stageRoot: string,
+  artifacts: ReleaseArtifacts,
+): Promise<void> {
+  for (const [relativePath, contents] of artifacts.files) {
+    const destination = path.resolve(stageRoot, relativePath);
+    const relative = path.relative(stageRoot, destination);
+    if (
+      relative === '..' ||
+      relative.startsWith(`..${path.sep}`) ||
+      path.isAbsolute(relative)
+    ) {
+      throw new Error('Release artifact path escapes the staging directory.');
+    }
+    await mkdir(path.dirname(destination), { recursive: true });
+    if (typeof contents === 'string') {
+      await writeFile(destination, contents, { encoding: 'utf8', flag: 'wx' });
+    } else {
+      await writeFile(destination, contents, { flag: 'wx' });
+    }
+  }
+}
+
+async function replaceReleaseArtifacts(
   projectRoot: string,
   distDir: string,
   artifacts: ReleaseArtifacts,
 ): Promise<void> {
   const outputRoot = await resolveSafeOutputDirectory(projectRoot, distDir);
-  await rm(outputRoot, { recursive: true, force: true });
+  let previousIdentity: FileIdentity | null = null;
+  try {
+    const previous = await lstat(outputRoot);
+    if (previous.isSymbolicLink() || !previous.isDirectory()) {
+      throw new Error('Existing distribution must be a regular directory.');
+    }
+    previousIdentity = fileIdentity(previous);
+  } catch (error) {
+    if (!isNotFound(error)) {
+      throw error;
+    }
+  }
+  const stageRoot = await mkdtemp(path.join(projectRoot, '.divan-dist-stage-'));
+  let stageOwned = true;
+  let backupRoot: string | null = null;
 
   try {
-    for (const [relativePath, contents] of artifacts.files) {
-      const destination = path.resolve(outputRoot, relativePath);
-      const relative = path.relative(outputRoot, destination);
-      if (
-        relative === '..' ||
-        relative.startsWith(`..${path.sep}`) ||
-        path.isAbsolute(relative)
-      ) {
-        throw new Error('Release artifact path escapes the distribution directory.');
+    await writeStagedReleaseArtifacts(stageRoot, artifacts);
+    await verifyDist({ projectRoot, distDir: stageRoot });
+
+    if (previousIdentity !== null) {
+      const current = await lstat(outputRoot);
+      if (!sameIdentity(previousIdentity, current) || !current.isDirectory()) {
+        throw new Error('Distribution identity changed before activation.');
       }
-      await mkdir(path.dirname(destination), { recursive: true });
-      if (typeof contents === 'string') {
-        await writeFile(destination, contents, { encoding: 'utf8', flag: 'wx' });
-      } else {
-        await writeFile(destination, contents, { flag: 'wx' });
+      backupRoot = path.join(
+        projectRoot,
+        `.divan-dist-backup-${randomUUID()}`,
+      );
+      await rename(outputRoot, backupRoot);
+    } else {
+      try {
+        await lstat(outputRoot);
+        throw new Error('A distribution appeared before activation.');
+      } catch (error) {
+        if (!isNotFound(error)) {
+          throw error;
+        }
       }
     }
+
+    try {
+      await rename(stageRoot, outputRoot);
+      stageOwned = false;
+    } catch (error) {
+      if (backupRoot !== null) {
+        await rename(backupRoot, outputRoot);
+        backupRoot = null;
+      }
+      throw error;
+    }
+
+    if (backupRoot !== null) {
+      const backup = await lstat(backupRoot);
+      if (
+        previousIdentity === null ||
+        !sameIdentity(previousIdentity, backup) ||
+        !backup.isDirectory()
+      ) {
+        throw new Error('Distribution backup identity changed before cleanup.');
+      }
+      await rm(backupRoot, { recursive: true, force: false });
+      backupRoot = null;
+    }
   } catch (error) {
-    await rm(outputRoot, { recursive: true, force: true });
-    throw new Error('Unable to write a complete release distribution.', {
+    throw new Error('Unable to stage and activate a complete release distribution.', {
       cause: error,
     });
+  } finally {
+    if (stageOwned) {
+      await rm(stageRoot, { recursive: true, force: true });
+    }
   }
 }
 
 export async function buildFixtureRelease(
   options: FixtureBuildOptions,
 ): Promise<ReleaseDescriptor> {
-  // The dynamic import keeps production discovery independent from test-only inputs.
-  const { makeFixtureCorpus } = await import('../tests/fixtures/content/corpus');
-  const fixture = makeFixtureCorpus();
-  const compiled = compileCorpus({
-    profile: 'fixture',
-    items: fixture.items,
-    registries: fixture.registries,
-    buildDate: FIXTURE_BUILT_AT.slice(0, 10),
-  });
-  if (
-    compiled.hafezCount !== 24 ||
-    compiled.rumiCount !== 16 ||
-    compiled.totalCount !== 40
-  ) {
-    throw new Error('Fixture build must contain exactly 24 Hafez and 16 Rumi items.');
-  }
+  return withBuildLock(options.projectRoot, async (projectRoot) => {
+    // The dynamic import keeps production discovery independent from test-only inputs.
+    const { makeFixtureCorpus } = await import('../tests/fixtures/content/corpus');
+    const fixture = makeFixtureCorpus();
+    const compiled = compileCorpus({
+      profile: 'fixture',
+      items: fixture.items,
+      registries: fixture.registries,
+      buildDate: FIXTURE_BUILT_AT.slice(0, 10),
+    });
+    if (
+      compiled.hafezCount !== 24 ||
+      compiled.rumiCount !== 16 ||
+      compiled.totalCount !== 40
+    ) {
+      throw new Error('Fixture build must contain exactly 24 Hafez and 16 Rumi items.');
+    }
 
-  const assets = await loadReleaseAudioAssets({
-    profile: 'fixture',
-    projectRoot: options.projectRoot,
-    corpus: compiled,
-    registries: fixture.registries,
-    fixtureFiles: fixture.assetFiles,
-  });
+    const [audioAssets, browserAssets] = await Promise.all([
+      loadReleaseAudioAssets({
+        profile: 'fixture',
+        projectRoot,
+        corpus: compiled,
+        registries: fixture.registries,
+        fixtureFiles: fixture.assetFiles,
+      }),
+      buildBrowserAssets(projectRoot),
+    ]);
 
-  const artifacts = createReleaseArtifacts({
-    profile: 'fixture',
-    releaseId: FIXTURE_RELEASE_ID,
-    builtAt: FIXTURE_BUILT_AT,
-    corpus: compiled,
-    assets,
+    const artifacts = createReleaseArtifacts({
+      profile: 'fixture',
+      releaseId: FIXTURE_RELEASE_ID,
+      builtAt: FIXTURE_BUILT_AT,
+      corpus: compiled,
+      assets: [...audioAssets, ...browserAssets],
+    });
+    await replaceReleaseArtifacts(projectRoot, options.distDir, artifacts);
+    return artifacts.release;
   });
-  await writeReleaseArtifacts(options.projectRoot, options.distDir, artifacts);
-  return artifacts.release;
 }
 
 export async function buildProductionRelease(
@@ -488,35 +765,40 @@ export async function buildProductionRelease(
     profile: 'production',
   });
   const config = parseProductionBuildConfig(options.environment);
-  const compiled = compileCorpus({
-    profile: 'production',
-    items: loaded.items,
-    registries: loaded.registries,
-    buildDate: config.buildDate,
-  });
-  if (
-    compiled.hafezCount < config.minimumHafezCount ||
-    compiled.rumiCount < config.minimumRumiCount
-  ) {
-    throw new Error('Production corpus does not meet the configured poet minimums.');
-  }
+  return withBuildLock(options.projectRoot, async (projectRoot) => {
+    const compiled = compileCorpus({
+      profile: 'production',
+      items: loaded.items,
+      registries: loaded.registries,
+      buildDate: config.buildDate,
+    });
+    if (
+      compiled.hafezCount < config.minimumHafezCount ||
+      compiled.rumiCount < config.minimumRumiCount
+    ) {
+      throw new Error('Production corpus does not meet the configured poet minimums.');
+    }
 
-  const assets = await loadReleaseAudioAssets({
-    profile: 'production',
-    projectRoot: options.projectRoot,
-    corpus: compiled,
-    registries: loaded.registries,
-  });
+    const [audioAssets, browserAssets] = await Promise.all([
+      loadReleaseAudioAssets({
+        profile: 'production',
+        projectRoot,
+        corpus: compiled,
+        registries: loaded.registries,
+      }),
+      buildBrowserAssets(projectRoot),
+    ]);
 
-  const artifacts = createReleaseArtifacts({
-    profile: 'production',
-    releaseId: config.releaseId,
-    builtAt: config.builtAt,
-    corpus: compiled,
-    assets,
+    const artifacts = createReleaseArtifacts({
+      profile: 'production',
+      releaseId: config.releaseId,
+      builtAt: config.builtAt,
+      corpus: compiled,
+      assets: [...audioAssets, ...browserAssets],
+    });
+    await replaceReleaseArtifacts(projectRoot, options.distDir, artifacts);
+    return artifacts.release;
   });
-  await writeReleaseArtifacts(options.projectRoot, options.distDir, artifacts);
-  return artifacts.release;
 }
 
 function parseProfile(arguments_: readonly string[]): 'fixture' | 'production' {

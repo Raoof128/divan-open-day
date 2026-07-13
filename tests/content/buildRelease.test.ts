@@ -45,6 +45,38 @@ async function temporaryProject(name: string): Promise<{
   );
   outputDirectories.push(projectRoot);
   await mkdir(projectRoot, { recursive: true });
+  await mkdir(path.join(projectRoot, 'src'), { recursive: true });
+  await writeFile(
+    path.join(projectRoot, 'index.html'),
+    [
+      '<!doctype html>',
+      '<html lang="en" dir="ltr">',
+      '  <head>',
+      '    <meta charset="UTF-8">',
+      '    <meta name="description" content="A private bilingual Persian poetry reflection experience.">',
+      '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+      '    <title>DIVAN Persian Poetry Experience</title>',
+      '    <script type="module" src="/src/main.ts"></script>',
+      '  </head>',
+      '  <body>',
+      '    <div id="root"></div>',
+      '    <noscript>DIVAN needs JavaScript for the private poetry experience. No visitor record is created.</noscript>',
+      '  </body>',
+      '</html>',
+      '',
+    ].join('\n'),
+    'utf8',
+  );
+  await writeFile(
+    path.join(projectRoot, 'src', 'main.ts'),
+    "import './screen.css';\ndocument.querySelector('#root')?.append('DIVAN');\n",
+    'utf8',
+  );
+  await writeFile(
+    path.join(projectRoot, 'src', 'screen.css'),
+    ':root { color: #11182d; background: #fff9ee; }\n',
+    'utf8',
+  );
   return { projectRoot, distDir: path.join(projectRoot, 'dist') };
 }
 
@@ -110,6 +142,42 @@ async function rewriteAssetManifest(
   await writeFile(releasePath, canonicalStringify(release), 'utf8');
 }
 
+async function rehashManifestAsset(
+  distDir: string,
+  assetPath: string,
+): Promise<void> {
+  const contents = await readFile(path.join(distDir, assetPath));
+  await rewriteAssetManifest(distDir, (manifest) => {
+    const asset = manifest.assets.find((candidate) => candidate['path'] === assetPath);
+    if (asset === undefined) {
+      throw new Error(`TEST ONLY manifest asset is missing: ${assetPath}.`);
+    }
+    asset['bytes'] = contents.byteLength;
+    asset['sha256'] = createHash('sha256').update(contents).digest('hex');
+  });
+}
+
+async function snapshotTree(
+  root: string,
+  directory = root,
+): Promise<Readonly<Record<string, string>>> {
+  const snapshot: Record<string, string> = {};
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const absolute = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      Object.assign(snapshot, await snapshotTree(root, absolute));
+    } else if (entry.isFile()) {
+      const relative = path.relative(root, absolute).split(path.sep).join('/');
+      snapshot[relative] = createHash('sha256')
+        .update(await readFile(absolute))
+        .digest('hex');
+    }
+  }
+  return Object.fromEntries(Object.entries(snapshot).toSorted(([left], [right]) =>
+    left.localeCompare(right),
+  ));
+}
+
 async function makeProductionAudioCase(
   name: string,
   expectedBytes: Uint8Array,
@@ -170,8 +238,19 @@ describe('fixture release build', () => {
       'assets',
       'audio',
       'content',
+      'index.html',
       'release.json',
     ]);
+    await expect(readFile(path.join(distDir, 'index.html'), 'utf8')).resolves.toMatch(
+      /<html[^>]+lang="en"[^>]+dir="ltr"/u,
+    );
+    const emittedAssets = await readdir(path.join(distDir, 'assets'));
+    expect(emittedAssets.some((file) => /^index-[a-f0-9]{16}\.js$/u.test(file))).toBe(
+      true,
+    );
+    expect(emittedAssets.some((file) => /^index-[a-f0-9]{16}\.css$/u.test(file))).toBe(
+      true,
+    );
   });
 
   it('is byte-for-byte deterministic across clean fixture builds', async () => {
@@ -187,6 +266,9 @@ describe('fixture release build', () => {
       await readFile(path.join(secondProject.distDir, 'release.json'), 'utf8'),
     );
     expect(first).toEqual(second);
+    expect(await snapshotTree(firstProject.distDir)).toEqual(
+      await snapshotTree(secondProject.distDir),
+    );
   });
 
   it('emits one verified manifest entry and file for every compiled audio path', async () => {
@@ -208,8 +290,8 @@ describe('fixture release build', () => {
     const audio = corpus.items.flatMap((item) => (item.audio === null ? [] : [item.audio]));
 
     expect(audio).toHaveLength(1);
-    expect(manifest.assets).toHaveLength(1);
-    expect(manifest.assets[0]).toMatchObject({
+    const audioAsset = manifest.assets.find((asset) => asset.path === audio[0]!.assetPath);
+    expect(audioAsset).toMatchObject({
       path: audio[0]!.assetPath,
       mimeType: audio[0]!.mimeType,
       bytes: TEST_ONLY_AUDIO_BYTES.byteLength,
@@ -266,6 +348,27 @@ describe('fixture release build', () => {
       buildFixtureRelease({ projectRoot, distDir }),
     ).rejects.toThrow(/symlink|unsafe|distribution/iu);
     await expect(readFile(sentinel, 'utf8')).resolves.toBe('keep');
+  });
+
+  it('retains the previous complete dist when staged browser verification fails', async () => {
+    const { projectRoot, distDir } = await temporaryProject('atomic-browser-failure');
+    await mkdir(distDir);
+    await writeFile(path.join(distDir, 'known-good.txt'), 'previous release', 'utf8');
+    await writeFile(
+      path.join(projectRoot, 'index.html'),
+      '<!doctype html><html lang="en" dir="ltr"><head><title>DIVAN Experience</title></head><body><div id="root"></div><noscript>Privacy information for visitors.</noscript><script>alert("unsafe")</script><script type="module" src="/src/main.ts"></script></body></html>',
+      'utf8',
+    );
+
+    await expect(buildFixtureRelease({ projectRoot, distDir })).rejects.toThrow(
+      /inline|script|stage|complete|distribution/iu,
+    );
+    expect(await snapshotTree(distDir)).toEqual({
+      'known-good.txt': createHash('sha256').update('previous release').digest('hex'),
+    });
+    expect(
+      (await readdir(projectRoot)).some((entry) => entry.startsWith('.divan-dist-stage-')),
+    ).toBe(false);
   });
 });
 
@@ -452,6 +555,68 @@ describe('production release build', () => {
 });
 
 describe('distribution verification', () => {
+  it('rejects inline executable browser markup even when its manifest is rehashed', async () => {
+    const { projectRoot, distDir } = await temporaryProject('inline-browser-script');
+    await buildFixtureRelease({ projectRoot, distDir });
+    const indexPath = path.join(distDir, 'index.html');
+    await writeFile(
+      indexPath,
+      `${await readFile(indexPath, 'utf8')}<script>alert('unsafe')</script>`,
+      'utf8',
+    );
+    await rehashManifestAsset(distDir, 'index.html');
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /inline|script|browser|html/iu,
+    );
+  });
+
+  it('rejects source-derived private values in browser output even when rehashed', async () => {
+    const { projectRoot, distDir } = await temporaryProject('private-browser-value');
+    await buildFixtureRelease({ projectRoot, distDir });
+    const fixture = makeFixtureCorpus();
+    const privateValue = fixture.items[0]!.review.approval_record_id;
+    const indexPath = path.join(distDir, 'index.html');
+    await writeFile(
+      indexPath,
+      (await readFile(indexPath, 'utf8')).replace(
+        '</body>',
+        `<p hidden>${privateValue}</p></body>`,
+      ),
+      'utf8',
+    );
+    await rehashManifestAsset(distDir, 'index.html');
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /private|source|browser/iu,
+    );
+  });
+
+  it('rejects a hard-coded remote runtime request in rehashed JavaScript', async () => {
+    const { projectRoot, distDir } = await temporaryProject('remote-browser-request');
+    const release = await buildFixtureRelease({ projectRoot, distDir });
+    const manifest = JSON.parse(
+      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+    ) as { assets: Array<{ path: string; mimeType: string }> };
+    const script = manifest.assets.find(
+      (asset) => asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+    );
+    if (script === undefined) {
+      throw new Error('TEST ONLY browser script is missing.');
+    }
+    const scriptPath = path.join(distDir, script.path);
+    await writeFile(
+      scriptPath,
+      `${await readFile(scriptPath, 'utf8')}\nfetch("https://remote.example.invalid/data");`,
+      'utf8',
+    );
+    await rehashManifestAsset(distDir, script.path);
+
+    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+      /remote|runtime|javascript/iu,
+    );
+  });
+
   it('rejects a mismatched unreadable asset before verification reads it', async () => {
     const { projectRoot, distDir } = await temporaryProject('verify-sized-asset');
     const release = await buildFixtureRelease({ projectRoot, distDir });

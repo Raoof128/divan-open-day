@@ -201,14 +201,19 @@ async function verifyAssetFiles(
     readonly bytes: number;
   }[],
   profile: 'fixture' | 'production',
+  privateValues: ReadonlySet<string>,
 ): Promise<void> {
   for (const asset of assets) {
     const filename = safeReferencedPath(distRoot, `/${asset.path}`);
+    const isTextAsset =
+      asset.mimeType === 'application/manifest+json' ||
+      asset.mimeType === 'image/svg+xml' ||
+      asset.mimeType.startsWith('text/');
     const loaded = await readBoundedAssetFile({
       filename,
       declaredBytes: asset.bytes,
       label: asset.path,
-      collectContents: false,
+      collectContents: isTextAsset,
     });
     if (loaded.sha256 !== asset.sha256) {
       throw new Error(`Asset SHA-256 mismatch for ${asset.path}.`);
@@ -248,6 +253,179 @@ async function verifyAssetFiles(
         }
       }
     }
+    if (
+      asset.mimeType === 'font/woff2' &&
+      !(
+        loaded.prefix.byteLength >= 4 &&
+        loaded.prefix[0] === 0x77 &&
+        loaded.prefix[1] === 0x4f &&
+        loaded.prefix[2] === 0x46 &&
+        loaded.prefix[3] === 0x32
+      )
+    ) {
+      throw new Error(`WOFF2 signature mismatch for ${asset.path}.`);
+    }
+    if (
+      asset.mimeType === 'image/png' &&
+      !(
+        loaded.prefix.byteLength >= 8 &&
+        loaded.prefix[0] === 0x89 &&
+        loaded.prefix[1] === 0x50 &&
+        loaded.prefix[2] === 0x4e &&
+        loaded.prefix[3] === 0x47 &&
+        loaded.prefix[4] === 0x0d &&
+        loaded.prefix[5] === 0x0a &&
+        loaded.prefix[6] === 0x1a &&
+        loaded.prefix[7] === 0x0a
+      )
+    ) {
+      throw new Error(`PNG signature mismatch for ${asset.path}.`);
+    }
+    if (
+      asset.mimeType === 'image/webp' &&
+      !(
+        loaded.prefix.byteLength >= 12 &&
+        new TextDecoder().decode(loaded.prefix.slice(0, 4)) === 'RIFF' &&
+        new TextDecoder().decode(loaded.prefix.slice(8, 12)) === 'WEBP'
+      )
+    ) {
+      throw new Error(`WebP signature mismatch for ${asset.path}.`);
+    }
+    if (
+      asset.mimeType === 'image/avif' &&
+      !(
+        loaded.prefix.byteLength >= 12 &&
+        new TextDecoder().decode(loaded.prefix.slice(4, 8)) === 'ftyp'
+      )
+    ) {
+      throw new Error(`AVIF signature mismatch for ${asset.path}.`);
+    }
+    if (isTextAsset) {
+      if (loaded.contents === null) {
+        throw new Error(`Text browser asset was not collected: ${asset.path}.`);
+      }
+      let text: string;
+      try {
+        text = new TextDecoder('utf-8', { fatal: true }).decode(loaded.contents);
+      } catch (error) {
+        throw new Error(`Browser text asset is not valid UTF-8: ${asset.path}.`, {
+          cause: error,
+        });
+      }
+      for (const privateValue of privateValues) {
+        if (privateValue.length > 0 && text.includes(privateValue)) {
+          throw new Error(`Source-derived private value leaked into browser asset ${asset.path}.`);
+        }
+      }
+      verifyBrowserTextAsset(asset.path, asset.mimeType, text);
+    }
+  }
+}
+
+function isLocalRuntimeReference(value: string): boolean {
+  const trimmed = value.trim();
+  return (
+    trimmed !== '' &&
+    !trimmed.startsWith('//') &&
+    !/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(trimmed)
+  );
+}
+
+function verifyHtmlAsset(assetPath: string, text: string): void {
+  if (
+    /<style\b/iu.test(text) ||
+    /\sstyle\s*=/iu.test(text) ||
+    /\son[a-z]+\s*=/iu.test(text) ||
+    /javascript\s*:/iu.test(text) ||
+    /<script\b(?![^>]*\bsrc\s*=)[^>]*>/iu.test(text)
+  ) {
+    throw new Error(`Inline executable HTML is forbidden in ${assetPath}.`);
+  }
+
+  for (const match of text.matchAll(
+    /<(?:script|link|img|audio|source)\b[^>]*\b(?:src|href)\s*=\s*["']([^"']+)["']/giu,
+  )) {
+    if (!isLocalRuntimeReference(match[1]!)) {
+      throw new Error(`Remote browser resource is forbidden in ${assetPath}.`);
+    }
+  }
+
+  if (assetPath === 'index.html') {
+    const htmlTag = /<html\b([^>]*)>/iu.exec(text)?.[1] ?? '';
+    const title = /<title>([^<]+)<\/title>/iu.exec(text)?.[1]?.trim() ?? '';
+    if (
+      !/^\s*<!doctype html>/iu.test(text) ||
+      !/\blang\s*=\s*["']en["']/iu.test(htmlTag) ||
+      !/\bdir\s*=\s*["']ltr["']/iu.test(htmlTag) ||
+      title.length < 8 ||
+      !/<meta\b[^>]*\bname\s*=\s*["']description["'][^>]*\bcontent\s*=\s*["'][^"']{20,}["']/iu.test(
+        text,
+      ) ||
+      !/\bid\s*=\s*["']root["']/iu.test(text) ||
+      !/<noscript\b[^>]*>[\s\S]*(?:privacy|visitor)[\s\S]*<\/noscript>/iu.test(text)
+    ) {
+      throw new Error('index.html is missing its semantic document or privacy fallback.');
+    }
+  }
+}
+
+function verifyBrowserTextAsset(
+  assetPath: string,
+  mimeType: string,
+  text: string,
+): void {
+  if (mimeType === 'text/html') {
+    verifyHtmlAsset(assetPath, text);
+    return;
+  }
+  if (mimeType === 'text/css') {
+    if (/@import\b/iu.test(text)) {
+      throw new Error(`CSS imports are forbidden in ${assetPath}.`);
+    }
+    for (const match of text.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/giu)) {
+      if (!isLocalRuntimeReference(match[1]!)) {
+        throw new Error(`Remote CSS resource is forbidden in ${assetPath}.`);
+      }
+    }
+    return;
+  }
+  if (mimeType === 'text/javascript') {
+    if (
+      /\b(?:fetch|import)\s*\(\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+        text,
+      ) ||
+      /\bnew\s+(?:EventSource|WebSocket)\s*\(\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/u.test(
+        text,
+      )
+    ) {
+      throw new Error(`Remote JavaScript runtime dependency is forbidden in ${assetPath}.`);
+    }
+    return;
+  }
+  if (mimeType === 'image/svg+xml') {
+    if (
+      /<script\b|\son[a-z]+\s*=|javascript\s*:|<use\b[^>]*\bhref\s*=\s*["'](?:\/\/|[A-Za-z][A-Za-z0-9+.-]*:)/iu.test(
+        text,
+      )
+    ) {
+      throw new Error(`Unsafe SVG content is forbidden in ${assetPath}.`);
+    }
+    return;
+  }
+  if (mimeType === 'application/manifest+json') {
+    let manifest: unknown;
+    try {
+      manifest = JSON.parse(text) as unknown;
+    } catch (error) {
+      throw new Error(`Malformed web manifest ${assetPath}.`, { cause: error });
+    }
+    inspectPublicValue(
+      manifest,
+      assetPath,
+      false,
+      new Set<string>(),
+      new Set<object>(),
+    );
   }
 }
 
@@ -387,7 +565,21 @@ export async function verifyDist(
   }
 
   assertAudioManifestJoin(corpus, assetManifest.assets);
-  await verifyAssetFiles(distRoot, assetManifest.assets, release.buildProfile);
+  if (
+    assetManifest.assets.filter((asset) => asset.path === 'index.html').length !== 1 ||
+    !assetManifest.assets.some(
+      (asset) =>
+        asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+    )
+  ) {
+    throw new Error('Distribution is missing its browser index or hashed application entry.');
+  }
+  await verifyAssetFiles(
+    distRoot,
+    assetManifest.assets,
+    release.buildProfile,
+    privateValues,
+  );
   const expectedFiles = new Set([
     'release.json',
     release.contentPath.slice(1),

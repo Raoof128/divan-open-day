@@ -134,6 +134,49 @@ describe('createReleaseArtifacts', () => {
     );
   });
 
+  it('allows only offline-required fixed and content-hashed browser assets', () => {
+    const indexContents = new TextEncoder().encode('<!doctype html><title>DIVAN</title>');
+    const scriptContents = new TextEncoder().encode('export {};');
+    const index = {
+      path: 'index.html',
+      mimeType: 'text/html',
+      sha256: createHash('sha256').update(indexContents).digest('hex'),
+      bytes: indexContents.byteLength,
+      requiredOffline: true,
+      contents: indexContents,
+    } satisfies ReleaseAssetSource;
+    const script = {
+      path: 'assets/index-0123456789abcdef.js',
+      mimeType: 'text/javascript',
+      sha256: createHash('sha256').update(scriptContents).digest('hex'),
+      bytes: scriptContents.byteLength,
+      requiredOffline: true,
+      contents: scriptContents,
+    } satisfies ReleaseAssetSource;
+
+    expect(
+      createFixtureRelease([fixtureAudioSource(), index, script]).assetManifest.assets,
+    ).toEqual(expect.arrayContaining([expect.objectContaining({ path: index.path }), expect.objectContaining({ path: script.path })]));
+    expect(() =>
+      createFixtureRelease([fixtureAudioSource(), { ...index, requiredOffline: false }]),
+    ).toThrow(/offline|browser|asset/iu);
+    expect(() =>
+      createFixtureRelease([fixtureAudioSource(), { ...index, mimeType: 'text/css' }]),
+    ).toThrow(/MIME|browser|asset/iu);
+    expect(() =>
+      createFixtureRelease([
+        fixtureAudioSource(),
+        { ...script, path: 'assets/index.js' },
+      ]),
+    ).toThrow(/content-addressed|MIME|asset/iu);
+    expect(() =>
+      createFixtureRelease([
+        fixtureAudioSource(),
+        { ...script, path: 'assets/.hidden-0123456789abcdef.js' },
+      ]),
+    ).toThrow(/path|asset/iu);
+  });
+
   it('rejects remote, escaping, duplicate, or non-content-addressed assets', () => {
     const contents = Uint8Array.of(1);
     const sha256 = createHash('sha256').update(contents).digest('hex');

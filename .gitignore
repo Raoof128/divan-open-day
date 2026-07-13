@@ -3,6 +3,10 @@
 !.env.example
 .worktrees/
 .superpowers/
+.divan-build.lock
+.divan-*-stage-*
+.divan-dist-backup-*
+.pnpm-store/
 node_modules/
 dist/
 coverage/

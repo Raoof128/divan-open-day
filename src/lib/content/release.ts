@@ -18,6 +18,7 @@ const SHA256_PATTERN = /^[a-f0-9]{64}$/u;
 const RELEASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const SAFE_ASSET_PATH_PATTERN = /^[A-Za-z0-9._/-]+$/u;
 const ASSET_MIME_TYPES = [
+  'application/manifest+json',
   'audio/mpeg',
   'audio/ogg',
   'font/woff2',
@@ -25,7 +26,44 @@ const ASSET_MIME_TYPES = [
   'image/png',
   'image/svg+xml',
   'image/webp',
+  'text/css',
+  'text/html',
+  'text/javascript',
 ] as const;
+
+const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>([
+  ['index.html', 'text/html'],
+  ['manifest.webmanifest', 'application/manifest+json'],
+  ['offline.html', 'text/html'],
+  ['service-worker.js', 'text/javascript'],
+]);
+
+const VITE_ASSET_PATTERN =
+  /^assets\/[A-Za-z0-9][A-Za-z0-9._-]*-[a-f0-9]{16}\.(css|js|woff2|avif|png|svg|webp)$/u;
+
+const VITE_MIME_BY_EXTENSION = new Map<
+  string,
+  (typeof ASSET_MIME_TYPES)[number]
+>([
+  ['avif', 'image/avif'],
+  ['css', 'text/css'],
+  ['js', 'text/javascript'],
+  ['png', 'image/png'],
+  ['svg', 'image/svg+xml'],
+  ['webp', 'image/webp'],
+  ['woff2', 'font/woff2'],
+]);
+
+export function browserAssetMimeType(
+  assetPath: string,
+): (typeof ASSET_MIME_TYPES)[number] | null {
+  const fixed = FIXED_BROWSER_ASSETS.get(assetPath);
+  if (fixed !== undefined) {
+    return fixed;
+  }
+  const match = VITE_ASSET_PATTERN.exec(assetPath);
+  return match === null ? null : (VITE_MIME_BY_EXTENSION.get(match[1]!) ?? null);
+}
 
 function isSafeLocalAssetPath(value: string): boolean {
   if (
@@ -40,7 +78,13 @@ function isSafeLocalAssetPath(value: string): boolean {
   }
   return value
     .split('/')
-    .every((segment) => segment.length > 0 && segment !== '.' && segment !== '..');
+    .every(
+      (segment) =>
+        segment.length > 0 &&
+        segment !== '.' &&
+        segment !== '..' &&
+        !segment.startsWith('.'),
+    );
 }
 
 const releaseAssetSchema = z
@@ -55,6 +99,25 @@ const releaseAssetSchema = z
   })
   .strict()
   .superRefine((asset, context) => {
+    const browserMimeType = browserAssetMimeType(asset.path);
+    if (browserMimeType !== null) {
+      if (asset.mimeType !== browserMimeType) {
+        context.addIssue({
+          code: 'custom',
+          path: ['mimeType'],
+          message: 'Browser asset MIME type must match its fixed or Vite path.',
+        });
+      }
+      if (!asset.requiredOffline) {
+        context.addIssue({
+          code: 'custom',
+          path: ['requiredOffline'],
+          message: 'Browser shell assets must be required for offline staging.',
+        });
+      }
+      return;
+    }
+
     const filename = asset.path.split('/').at(-1) ?? '';
     if (!filename.includes(asset.sha256.slice(0, 8))) {
       context.addIssue({
