@@ -42,6 +42,12 @@ import { WelcomeScene } from '../scenes/WelcomeScene';
 import { ContextPage } from '../pages';
 import { contextRoute } from '../pages/routes';
 import {
+  OFFLINE_STATUS_EVENT,
+  parseOfflineStatusDetail,
+  registerOfflineWorker,
+  requestOfflineActivation,
+} from '../sw-client/register';
+import {
   createHistoryState,
   resolvePopHistoryState,
 } from './history';
@@ -62,6 +68,8 @@ export interface AppServices {
   readonly loadRelease: () => Promise<VerifiedRelease>;
   readonly drawPoem: (poet: Poet) => DrawResult;
   readonly randomSource: RandomValuesSource | null;
+  readonly registerOfflineWorker: typeof registerOfflineWorker;
+  readonly requestOfflineActivation: typeof requestOfflineActivation;
 }
 
 export interface AppProps {
@@ -148,6 +156,10 @@ function approvedIdsForRelease(release: VerifiedRelease) {
 
 export function App({ services }: AppProps) {
   const loadRelease = services?.loadRelease ?? loadVerifiedRelease;
+  const registerWorker =
+    services?.registerOfflineWorker ?? registerOfflineWorker;
+  const activateOfflineRelease =
+    services?.requestOfflineActivation ?? requestOfflineActivation;
   const [state, setState] = useState<AppState>(() =>
     createInitialAppState(initialMotionPreference()),
   );
@@ -156,6 +168,10 @@ export function App({ services }: AppProps) {
   const [blockingError, setBlockingError] = useState(false);
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [liveMessage, setLiveMessage] = useState('');
+  const [offlineRegistration, setOfflineRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+  const [offlineUpdateReleaseId, setOfflineUpdateReleaseId] =
+    useState<string | null>(null);
   const [showSkip, setShowSkip] = useState(false);
   const [systemReducedMotion, setSystemReducedMotion] = useState(() =>
     readSystemReducedMotion(browserMatchMedia()),
@@ -179,6 +195,8 @@ export function App({ services }: AppProps) {
   const focusRequestRef = useRef<FocusTarget | null>(null);
   const lastSelectedPoetRef = useRef<Poet | null>(null);
   const mainRef = useRef<HTMLElement>(null);
+  const lastOfflineStatusRef = useRef<string | null>(null);
+  const offlineActiveReleaseIdRef = useRef<string | null>(null);
 
   const dispatch = useCallback((event: AppEvent) => {
     setState((current) => appReducer(current, event));
@@ -258,6 +276,10 @@ export function App({ services }: AppProps) {
           };
         }
 
+        lastOfflineStatusRef.current = null;
+        offlineActiveReleaseIdRef.current = null;
+        setOfflineRegistration(null);
+        setOfflineUpdateReleaseId(null);
         verifiedReleaseRef.current = release;
         setVerifiedRelease(release);
         setState((current) => {
@@ -332,12 +354,77 @@ export function App({ services }: AppProps) {
       if (verifiedReleaseRef.current === null) {
         return;
       }
+      if (
+        offlineActiveReleaseIdRef.current !==
+        verifiedReleaseRef.current.descriptor.releaseId
+      ) {
+        setLiveMessage(
+          'You are offline. Offline access is still being prepared.',
+        );
+        return;
+      }
       dispatch({ type: 'SET_STATUS', statusCode: 'offline_ready' });
       setLiveMessage('You are offline, but your poetry experience is ready.');
     };
     window.addEventListener('offline', handleOffline);
     return () => window.removeEventListener('offline', handleOffline);
   }, [dispatch]);
+
+  useEffect(() => {
+    if (verifiedRelease === null) {
+      return;
+    }
+    const expectedReleaseId = verifiedRelease.descriptor.releaseId;
+    let active = true;
+    lastOfflineStatusRef.current = null;
+    offlineActiveReleaseIdRef.current = null;
+
+    const handleOfflineStatus = (event: Event) => {
+      if (!(event instanceof CustomEvent)) {
+        return;
+      }
+      const detail = parseOfflineStatusDetail(event.detail);
+      if (
+        detail === null ||
+        (detail.releaseId !== null &&
+          detail.releaseId !== expectedReleaseId)
+      ) {
+        return;
+      }
+      const key = `${detail.code}:${detail.releaseId ?? ''}:${detail.message}`;
+      if (lastOfflineStatusRef.current === key) {
+        return;
+      }
+      lastOfflineStatusRef.current = key;
+      if (
+        detail.code === 'update_ready' &&
+        detail.releaseId === expectedReleaseId
+      ) {
+        setOfflineUpdateReleaseId(expectedReleaseId);
+      } else if (
+        detail.code === 'active' &&
+        detail.releaseId === expectedReleaseId
+      ) {
+        offlineActiveReleaseIdRef.current = expectedReleaseId;
+        setOfflineUpdateReleaseId(null);
+      }
+      setLiveMessage(detail.message);
+    };
+
+    window.addEventListener(OFFLINE_STATUS_EVENT, handleOfflineStatus);
+    void registerWorker({
+      eventTarget: window,
+      expectedReleaseId,
+    }).then((registration) => {
+      if (active) {
+        setOfflineRegistration(registration);
+      }
+    });
+    return () => {
+      active = false;
+      window.removeEventListener(OFFLINE_STATUS_EVENT, handleOfflineStatus);
+    };
+  }, [registerWorker, verifiedRelease]);
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
@@ -611,6 +698,26 @@ export function App({ services }: AppProps) {
         )}
         {state.statusCode === 'offline_ready' ? <OfflineBadge /> : null}
         <MotionControl value={state.motionPreference} onChange={handleMotionChange} />
+        {offlineUpdateReleaseId === null ? null : (
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                offlineRegistration === null ||
+                !activateOfflineRelease(
+                  offlineRegistration,
+                  offlineUpdateReleaseId,
+                )
+              ) {
+                setLiveMessage(
+                  'The verified offline update could not be applied yet.',
+                );
+              }
+            }}
+          >
+            Apply offline update
+          </button>
+        )}
       </header>
       <main id="main-content" ref={mainRef} tabIndex={-1}>
         {scene}

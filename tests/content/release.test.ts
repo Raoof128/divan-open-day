@@ -57,8 +57,34 @@ function makeAssetSource(
   };
 }
 
+function fixedBrowserSources(): ReleaseAssetSource[] {
+  return [
+    ['index.html', 'text/html', '<!doctype html><title>DIVAN</title>'],
+    [
+      'manifest.webmanifest',
+      'application/manifest+json',
+      '{"name":"DIVAN"}',
+    ],
+    ['offline.html', 'text/html', '<!doctype html><title>Offline</title>'],
+    ['service-worker.js', 'text/javascript', '(function(){})();'],
+  ].map(([assetPath, mimeType, text]) => {
+    const contents = new TextEncoder().encode(text);
+    return {
+      path: assetPath!,
+      mimeType: mimeType as ReleaseAssetSource['mimeType'],
+      sha256: createHash('sha256').update(contents).digest('hex'),
+      bytes: contents.byteLength,
+      requiredOffline: true,
+      contents,
+    };
+  });
+}
+
 function createFixtureRelease(
-  assets: readonly ReleaseAssetSource[] = [fixtureAudioSource()],
+  assets: readonly ReleaseAssetSource[] = [
+    fixtureAudioSource(),
+    ...fixedBrowserSources(),
+  ],
 ) {
   return createReleaseArtifacts({
     profile: 'fixture',
@@ -70,6 +96,20 @@ function createFixtureRelease(
 }
 
 describe('createReleaseArtifacts', () => {
+  it('requires every fixed offline browser asset exactly once', () => {
+    const result = assetManifestSchema.safeParse({
+      releaseId: 'test-only-fixture-release',
+      assets: [],
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.message).toMatch(
+        /index\.html|manifest\.webmanifest|offline\.html|service-worker\.js/iu,
+      );
+    }
+  });
+
   it('rejects a release whose compiled audio has no manifest asset and file', () => {
     expect(() => createFixtureRelease([])).toThrow(/audio|asset|manifest|missing/iu);
   });
@@ -125,6 +165,7 @@ describe('createReleaseArtifacts', () => {
       makeAssetSource('images', 'webp', 'image/webp', Uint8Array.of(2, 2)),
       makeAssetSource('images', 'webp', 'image/webp', Uint8Array.of(1)),
       fixtureAudioSource(),
+      ...fixedBrowserSources(),
     ];
 
     const artifacts = createFixtureRelease(assets);
@@ -135,16 +176,9 @@ describe('createReleaseArtifacts', () => {
   });
 
   it('allows only offline-required fixed and content-hashed browser assets', () => {
-    const indexContents = new TextEncoder().encode('<!doctype html><title>DIVAN</title>');
+    const fixed = fixedBrowserSources();
+    const index = fixed.find((asset) => asset.path === 'index.html')!;
     const scriptContents = new TextEncoder().encode('export {};');
-    const index = {
-      path: 'index.html',
-      mimeType: 'text/html',
-      sha256: createHash('sha256').update(indexContents).digest('hex'),
-      bytes: indexContents.byteLength,
-      requiredOffline: true,
-      contents: indexContents,
-    } satisfies ReleaseAssetSource;
     const script = {
       path: 'assets/index-0123456789abcdef.js',
       mimeType: 'text/javascript',
@@ -155,13 +189,27 @@ describe('createReleaseArtifacts', () => {
     } satisfies ReleaseAssetSource;
 
     expect(
-      createFixtureRelease([fixtureAudioSource(), index, script]).assetManifest.assets,
+      createFixtureRelease([fixtureAudioSource(), ...fixed, script]).assetManifest.assets,
     ).toEqual(expect.arrayContaining([expect.objectContaining({ path: index.path }), expect.objectContaining({ path: script.path })]));
     expect(() =>
-      createFixtureRelease([fixtureAudioSource(), { ...index, requiredOffline: false }]),
+      createFixtureRelease([
+        fixtureAudioSource(),
+        ...fixed.map((asset) =>
+          asset.path === 'index.html'
+            ? { ...asset, requiredOffline: false }
+            : asset,
+        ),
+      ]),
     ).toThrow(/offline|browser|asset/iu);
     expect(() =>
-      createFixtureRelease([fixtureAudioSource(), { ...index, mimeType: 'text/css' }]),
+      createFixtureRelease([
+        fixtureAudioSource(),
+        ...fixed.map((asset) =>
+          asset.path === 'index.html'
+            ? { ...asset, mimeType: 'text/css' as const }
+            : asset,
+        ),
+      ]),
     ).toThrow(/MIME|browser|asset/iu);
     expect(() =>
       createFixtureRelease([
@@ -218,7 +266,7 @@ describe('createReleaseArtifacts', () => {
         releaseId: 'test-only-fixture-release',
         builtAt: '2026-07-13',
         corpus: compileFixture(),
-        assets: [],
+        assets: [fixtureAudioSource(), ...fixedBrowserSources()],
       }),
     ).toThrow(/builtAt|UTC|timestamp/iu);
   });

@@ -217,3 +217,52 @@
 - **Files Changed:** `ops/Caddyfile`, `ops/Dockerfile`, `docs/deployment-runbook.md`, `tests/security/opsConfig.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** TDD RED 3/46 became GREEN 46/46; content 234/234, TypeScript, ESLint, shell syntax, diff hygiene, pinned-Caddy validation, and Compose rendering passed. The fixture image built and ran locally with no network or host port, retained its fixture label/flags, and was rejected by production health; the default Docker production build retained the exact missing-approved-corpus failure.
 - **Follow-ups:** Perform the final recovery-file byte/header smoke after B4 integration. Production and public launch remain blocked by authentic content and reviews, explicit approved build values, immutable registry evidence, external governance/accessibility/security gates, live isolated deployment and rollback proof, and physical Open Day testing.
+## 2026-07-13 — Atomic offline release core
+
+**Raouf:**
+
+- **Scope:** Browser-safe B4 release verification, candidate cache staging, deferred activation, coherent runtime routing, service-worker client events, web manifest, and offline recovery document.
+- **Summary:** Implemented strict canonical descriptor, full corpus, item-hash, asset-manifest, and corpus/audio joins without importing Node-only content code. Required assets are status/length/SHA-verified through bounded reads and staged under one release ID; the ready marker is written last; failures remove only the candidate; one atomic pointer retains active plus the immediately previous complete release. Navigation cannot mix release HTML, cache lookups never search another release, health and worker paths have no cached fallback, all-audio precaching is rejected, and optional audio caching requires a direct browser audio request. Client failures remain nonblocking and sanitized; the local-only manifest and semantic recovery page make no remote or unapproved University-brand claim.
+- **Files Changed:** `src-sw/cacheTypes.ts`, `src-sw/integrity.ts`, `src-sw/schemas.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `public/manifest.webmanifest`, `public/offline.html`, `tests/offline/*.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED captured the three absent worker/client suites before implementation; GREEN offline 34/34, inherited content 234/234, strict TypeScript, and ESLint all passed.
+- **Follow-ups:** Bundle and register the reviewed worker in the root build, then prove the assembled distribution and real HTTPS/browser/device install, warm-offline, timeout, failed-update, refresh, storage, audio, and rollback paths. Production content, rights/reviews, governance, deployment, and physical-event gates remain independently blocked.
+
+## 2026-07-13 — Offline-core review fixes
+
+**Raouf:**
+
+- **Scope:** Exact activation targets, rollback retention, compressed responses, worker statuses, and lifecycle tests.
+- **Summary:** Added release IDs to verified worker statuses and activation messages, activated only the requested ready release including the retained rollback release, emitted and consumed `activating`, and prevented active status after a failed target. Preserved active/previous caches when a release ID is reused incoherently. Accepted decoded bodies whose compressed wire length differs from manifest bytes, kept decoded size/SHA verification, removed stale transfer/encoding headers from reconstructed responses, and added direct install/message/fetch worker event tests.
+- **Files Changed:** `src-sw/integrity.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `tests/offline/client.test.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/serviceWorker.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; seven behavior-specific RED failures became GREEN offline 40/40; inherited content 234/234, strict TypeScript, and ESLint passed.
+- **Follow-ups:** Complete root bundling/registration and real HTTPS browser/device lifecycle evidence before any offline or public-launch readiness claim.
+
+### 2026-07-13 (Australia/Sydney) — complete offline integration and lifecycle evidence
+
+**Raouf:**
+
+- **Scope:** B4 fixed-worker build integration, exact pending-release activation, secure client registration, accessible update control, coherent first install/update/rollback behavior, and real-browser outage evidence.
+- **Summary:** The release builder now emits one fixed classic-IIFE `service-worker.js` plus the reviewed manifest and script-free recovery page, requires all four fixed browser assets in the signed manifest, and stages only exact HTTP 200 decoded bodies. A ready release persists one exact pending target; only a real `mode=navigate` request or explicit matching waiting-worker action can activate it, while scripted HTML-accepting fetches, stale later-built caches, partial responses, failed pointer writes, and failed installs cannot replace the active release. First install bootstraps the exact verified candidate, later activation retains one rollback release, typed release-matched statuses register only after browser release verification, and URL replacement is bound to the exact waiting worker reaching `activated` with retry/redundancy/timeout cleanup. Offline-ready copy is announced only for the exact active verified release.
+- **Files Changed:** `scripts/build.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/app/App.tsx`, `src/lib/content/release.ts`, `src/sw-client/register.ts`, `tests/accessibility/appAccessibility.test.tsx`, `tests/components/failures.test.tsx`, `tests/components/offlineIntegration.test.tsx`, `tests/content/buildRelease.test.ts`, `tests/content/release.test.ts`, `tests/e2e/accessibility.playwright.config.ts`, `tests/e2e/offline-server.ts`, `tests/e2e/offline.spec.ts`, `tests/offline/*.ts`, `vitest.config.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, meaningful RED covered missing fixed outputs, pre-verification registration, insecure registration, implicit/stale activation, scripted-fetch misclassification, HTTP 206 reaching CacheStorage, first-install pointer absence, activation-listener accumulation, and Playwright specs leaking into Vitest. GREEN passed all 426 Vitest tests across 27 files, including 49 offline and 235 content tests; strict TypeScript and zero-warning ESLint passed; fixture build and `verify:dist` passed. Chromium Playwright passed all 3 tests, with the offline test proving install/control, compressed-body staging, no audio precache, warm-offline reload, network-only `/healthz`, exact clean-navigation update, failed-update retention, explicit waiting-worker activation, controller-driven navigation, and rollback.
+- **Follow-ups:** `pnpm verify:privacy` remains an inherited external blocker because the referenced B6B `scripts/verify-privacy.ts` is absent; it was not fabricated in B4. Keep Safari, Firefox, Edge, iOS, Android, storage-pressure/eviction, actual HTTPS/domain, production corpus/rights, governance, deployment, rollback rehearsal, accessibility/device, and physical-QR gates blocked until genuine evidence exists. No live system, secret, DNS, firewall, registry, or production content was changed by this slice.
+
+### 2026-07-13 (Australia/Sydney) — committed activation maintenance closure
+
+**Raouf:**
+
+- **Scope:** B4 committed-release cleanup semantics and exact navigation response acceptance.
+- **Summary:** Made the atomic active-pointer write the final activation commit boundary. Pending-marker and stale-cache cleanup now run as non-fatal, idempotent maintenance; a failed marker deletion leaves the candidate intact and an explicit same-target retry clears it before stale caches are considered. Navigation accepts only an exact HTTP 200 response for the verified running release, so matching partial-content responses fall back to the active cached shell.
+- **Files Changed:** `src-sw/releaseManager.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/runtimeStrategies.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, meaningful RED reproduced an activation reported as failed after its pointer had committed and an HTTP 206 navigation returned as live content. GREEN focused release/runtime tests passed 38/38, offline tests passed 52/52, and the full Vitest suite passed 429/429 across 27 files, including stale-cache deletion failure and pending-marker deletion retry coverage. Strict TypeScript, zero-warning ESLint, fixture build/dist verification, three Chromium Playwright flows, diff hygiene, and the staged gitleaks scan passed.
+- **Follow-ups:** Retain the existing real-browser, device, storage-pressure, production-content, rights, governance, deployment, accessibility, and physical-QR launch blockers until genuine evidence exists.
+
+## 2026-07-13 — Version service workers by release content
+
+**Raouf:**
+
+- **Scope:** Service-worker byte identity and genuine release-update evidence.
+- **Summary:** Embedded the exact public release ID and canonical public-corpus SHA-256 in every fixed worker build, rejected install-time release mismatches, and replaced synthetic E2E worker comments with genuine Vite builds for each update and rollback variant. Content changes now trigger browser worker installation even when source code is unchanged or a release ID is mistakenly reused.
+- **Files Changed:** `scripts/build.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, focused content/offline/component/E2E tests, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** RED reproduced identical worker output; GREEN focused tests passed 85/85, typecheck/lint passed, fixture build/dist verification passed, emitted identities were verified, and Chromium offline lifecycle passed 1/1 with genuine versioned workers.
+- **Follow-ups:** Run the final integrated gauntlet and independent re-review; all external launch gates remain closed.

@@ -20,6 +20,7 @@ import { build as viteBuild } from 'vite';
 
 import type { BuildProfile, ReleaseDescriptor } from '../src/contracts/release';
 import { MAX_RELEASE_ASSET_BYTES } from '../src/contracts/release';
+import { canonicalSha256 } from '../src/lib/content/canonical';
 import {
   compileCorpus,
   type CompiledCorpus,
@@ -37,6 +38,7 @@ import { verifyDist } from './verify-dist';
 
 const FIXTURE_RELEASE_ID = 'test-only-fixture-release';
 const FIXTURE_BUILT_AT = '2026-07-13T00:00:00.000Z';
+const RELEASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const BASELINE_MIN_HAFEZ = 24;
 const BASELINE_MIN_RUMI = 16;
 const MAX_BROWSER_DISTRIBUTION_BYTES = 150_000_000;
@@ -51,6 +53,27 @@ function viteConfigPath(): string {
     // directory is the package root and contains the same reviewed config.
     return path.resolve(process.cwd(), 'vite.config.ts');
   }
+}
+
+function repositoryFilePath(relativePath: string): string {
+  return path.resolve(path.dirname(viteConfigPath()), relativePath);
+}
+
+async function readReviewedRepositoryFile(
+  relativePath: string,
+): Promise<Uint8Array> {
+  const filename = repositoryFilePath(relativePath);
+  const stat = await lstat(filename);
+  if (
+    stat.isSymbolicLink() ||
+    !stat.isFile() ||
+    (await realpath(filename)) !== filename ||
+    stat.size <= 0 ||
+    stat.size > MAX_RELEASE_ASSET_BYTES
+  ) {
+    throw new Error(`Reviewed repository asset is invalid: ${relativePath}.`);
+  }
+  return new Uint8Array(await readFile(filename));
 }
 
 export interface FixtureBuildOptions {
@@ -402,8 +425,76 @@ async function collectBrowserAssets(
   return assets;
 }
 
+export async function buildServiceWorkerBytes(
+  projectRoot: string,
+  releaseId: string,
+  contentSha256: string,
+): Promise<Uint8Array> {
+  if (!RELEASE_ID_PATTERN.test(releaseId)) {
+    throw new Error('Service-worker release ID must use lowercase kebab-case.');
+  }
+  if (!/^[a-f0-9]{64}$/u.test(contentSha256)) {
+    throw new Error('Service-worker content SHA-256 must use 64 lowercase hex characters.');
+  }
+  const canonicalRoot = await canonicalProjectRoot(projectRoot);
+  const stageRoot = await mkdtemp(
+    path.join(canonicalRoot, '.divan-worker-stage-'),
+  );
+  try {
+    await viteBuild({
+      root: canonicalRoot,
+      configFile: false,
+      publicDir: false,
+      envDir: false,
+      define: {
+        __DIVAN_RELEASE_ID__: JSON.stringify(releaseId),
+        __DIVAN_CONTENT_SHA256__: JSON.stringify(contentSha256),
+      },
+      logLevel: 'silent',
+      build: {
+        target: 'es2022',
+        emptyOutDir: false,
+        outDir: stageRoot,
+        sourcemap: false,
+        rollupOptions: {
+          input: repositoryFilePath('src-sw/service-worker.ts'),
+          output: {
+            entryFileNames: 'service-worker.js',
+            format: 'iife',
+            name: 'DivanServiceWorker',
+          },
+        },
+      },
+    });
+    const entries = await readdir(stageRoot, { withFileTypes: true });
+    if (
+      entries.length !== 1 ||
+      entries[0]?.name !== 'service-worker.js' ||
+      !entries[0].isFile()
+    ) {
+      throw new Error('Service-worker build must emit exactly one fixed script.');
+    }
+    const workerPath = path.join(stageRoot, 'service-worker.js');
+    const stat = await lstat(workerPath);
+    if (
+      stat.isSymbolicLink() ||
+      !stat.isFile() ||
+      stat.size <= 0 ||
+      stat.size > MAX_RELEASE_ASSET_BYTES ||
+      (await realpath(workerPath)) !== workerPath
+    ) {
+      throw new Error('Service-worker output is invalid.');
+    }
+    return new Uint8Array(await readFile(workerPath));
+  } finally {
+    await rm(stageRoot, { recursive: true, force: true });
+  }
+}
+
 async function buildBrowserAssets(
   projectRoot: string,
+  releaseId: string,
+  contentSha256: string,
 ): Promise<readonly ReleaseAssetSource[]> {
   const configPath = viteConfigPath();
   const configStat = await lstat(configPath);
@@ -419,12 +510,25 @@ async function buildBrowserAssets(
     await viteBuild({
       root: projectRoot,
       configFile: configPath,
+      publicDir: false,
       logLevel: 'silent',
       build: {
         emptyOutDir: false,
         outDir: stageRoot,
       },
     });
+    for (const filename of ['manifest.webmanifest', 'offline.html'] as const) {
+      await writeFile(
+        path.join(stageRoot, filename),
+        await readReviewedRepositoryFile(`public/${filename}`),
+        { flag: 'wx' },
+      );
+    }
+    await writeFile(
+      path.join(stageRoot, 'service-worker.js'),
+      await buildServiceWorkerBytes(projectRoot, releaseId, contentSha256),
+      { flag: 'wx' },
+    );
     const assets = await collectBrowserAssets(stageRoot);
     const totalBytes = assets.reduce((total, asset) => total + asset.bytes, 0);
     if (
@@ -432,6 +536,10 @@ async function buildBrowserAssets(
       !assets.some(
         (asset) =>
           asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+      ) ||
+      ['manifest.webmanifest', 'offline.html', 'service-worker.js'].some(
+        (requiredPath) =>
+          assets.filter((asset) => asset.path === requiredPath).length !== 1,
       ) ||
       totalBytes > MAX_BROWSER_DISTRIBUTION_BYTES
     ) {
@@ -783,7 +891,15 @@ export async function buildFixtureRelease(
         registries: fixture.registries,
         fixtureFiles: fixture.assetFiles,
       }),
-      buildBrowserAssets(projectRoot),
+      buildBrowserAssets(
+        projectRoot,
+        FIXTURE_RELEASE_ID,
+        canonicalSha256({
+          schemaVersion: 2,
+          releaseId: FIXTURE_RELEASE_ID,
+          items: compiled.items,
+        }),
+      ),
     ]);
 
     const artifacts = createReleaseArtifacts({
@@ -829,7 +945,15 @@ export async function buildProductionRelease(
         corpus: compiled,
         registries: loaded.registries,
       }),
-      buildBrowserAssets(projectRoot),
+      buildBrowserAssets(
+        projectRoot,
+        config.releaseId,
+        canonicalSha256({
+          schemaVersion: 2,
+          releaseId: config.releaseId,
+          items: compiled.items,
+        }),
+      ),
     ]);
 
     const artifacts = createReleaseArtifacts({

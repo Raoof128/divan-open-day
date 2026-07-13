@@ -13,6 +13,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App, type AppServices } from '../../src/app/App';
 import { ErrorBoundary } from '../../src/app/ErrorBoundary';
 import type { Poet } from '../../src/contracts/content';
+import { OFFLINE_STATUS_EVENT } from '../../src/sw-client/register';
 import {
   HAFEZ_ITEM,
   makeVerifiedRelease,
@@ -227,6 +228,17 @@ describe('announcements, motion, audio, and errors', () => {
   it('deduplicates an offline change in one polite atomic live region', async () => {
     await renderLoadedApp();
     const liveRegion = screen.getByRole('status');
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(OFFLINE_STATUS_EVENT, {
+          detail: {
+            code: 'active',
+            message: 'The verified offline experience is ready.',
+            releaseId: 'test-only-release',
+          },
+        }),
+      );
+    });
     const mutations: MutationRecord[] = [];
     const observer = new MutationObserver((records) => mutations.push(...records));
     observer.observe(liveRegion, {
