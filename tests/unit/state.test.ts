@@ -139,7 +139,10 @@ describe('appReducer', () => {
 
   it('treats unknown runtime events as invalid instead of throwing', () => {
     const initial = createInitialAppState();
-    const unknownEvent = { type: 'STORE_VISITOR_ID', id: 'visitor-1' } as AppEvent;
+    const unknownEvent = {
+      type: 'STORE_VISITOR_ID',
+      id: 'visitor-1',
+    } as unknown as AppEvent;
 
     expect(() => appReducer(initial, unknownEvent)).not.toThrow();
     expect(appReducer(initial, unknownEvent)).toEqual(initial);

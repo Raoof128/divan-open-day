@@ -72,4 +72,16 @@ describe('secureRandomInt', () => {
       expect(error).toMatchObject({ code: 'secure_random_unavailable' });
     }
   });
+
+  it('maps a failing secure-random provider to the typed browser error', () => {
+    const failingSource: RandomValuesSource = {
+      getRandomValues() {
+        throw new Error('TEST ONLY provider failure with internal details.');
+      },
+    };
+
+    expect(() => secureRandomInt(2, failingSource)).toThrow(
+      UnsupportedSecureRandomError,
+    );
+  });
 });

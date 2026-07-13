@@ -1,5 +1,7 @@
+type RandomUint32Buffer = Uint32Array<ArrayBuffer>;
+
 export interface RandomValuesSource {
-  getRandomValues(target: Uint32Array): Uint32Array;
+  getRandomValues(target: RandomUint32Buffer): RandomUint32Buffer;
 }
 
 export class UnsupportedSecureRandomError extends Error {
@@ -13,9 +15,24 @@ export class UnsupportedSecureRandomError extends Error {
 
 const UINT32_RANGE = 2 ** 32;
 
+function browserRandomSource(): RandomValuesSource | null {
+  if (
+    typeof globalThis.crypto === 'undefined' ||
+    typeof globalThis.crypto.getRandomValues !== 'function'
+  ) {
+    return null;
+  }
+  const browserCrypto = globalThis.crypto;
+  return {
+    getRandomValues(target) {
+      return browserCrypto.getRandomValues(target);
+    },
+  };
+}
+
 export function secureRandomInt(
   maxExclusive: number,
-  source: RandomValuesSource | null | undefined = globalThis.crypto,
+  source?: RandomValuesSource | null,
 ): number {
   if (
     !Number.isInteger(maxExclusive) ||
@@ -24,15 +41,23 @@ export function secureRandomInt(
   ) {
     throw new RangeError('maxExclusive must be an integer from 1 through 2^32.');
   }
-  if (source === null || typeof source?.getRandomValues !== 'function') {
+  const resolvedSource = source === undefined ? browserRandomSource() : source;
+  if (
+    resolvedSource === null ||
+    typeof resolvedSource.getRandomValues !== 'function'
+  ) {
     throw new UnsupportedSecureRandomError();
   }
 
   const limit = Math.floor(UINT32_RANGE / maxExclusive) * maxExclusive;
-  const valueBuffer = new Uint32Array(1);
+  const valueBuffer: RandomUint32Buffer = new Uint32Array(1);
   let value: number;
   do {
-    source.getRandomValues(valueBuffer);
+    try {
+      resolvedSource.getRandomValues(valueBuffer);
+    } catch {
+      throw new UnsupportedSecureRandomError();
+    }
     value = valueBuffer[0] ?? 0;
   } while (value >= limit);
 

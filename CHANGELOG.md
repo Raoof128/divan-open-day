@@ -59,3 +59,13 @@
 - **Files Changed:** `src/lib/content/remoteResource.ts`, `tests/content/contentLoader.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED reproduced 10 loader/verifier acceptances; GREEN direct tests 74/74 and full content tests 222/222; fixture build, dist verification, typecheck, and lint passed; production build preserved the exact required exit-1 blocker.
 - **Follow-ups:** No production content or approval was added; all production and public-launch gates remain closed.
+
+## 2026-07-13 — Application domain and secure local draw
+
+**Raouf:**
+
+- **Scope:** B1 state machine, browser-history records, storage boundaries, secure integer selection, and per-poet shuffle bags.
+- **Summary:** Implemented the locked application-stage reducer with stale-data recovery, exact three-field history state, release-matched session restoration using only the six approved keys, local motion preference persistence, Web Crypto rejection sampling across the full 1 through 2^32 contract, and Fisher-Yates bags restricted to approved active IDs. Bags return each eligible ID once per cycle, expose reset metadata, fail closed when empty, and persist only public remaining IDs while the release still matches.
+- **Files Changed:** `src/app/state.ts`, `src/app/history.ts`, `src/lib/draw/secureRandom.ts`, `src/lib/draw/shuffleBag.ts`, `src/lib/storage/session.ts`, `tests/unit/state.test.ts`, `tests/unit/history.test.ts`, `tests/unit/secureRandom.test.ts`, `tests/unit/shuffleBag.test.ts`, `tests/unit/storage.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful RED produced 12 reducer/random assertion failures, 11 history/storage/shuffle assertion failures, and three security-review regression failures; final unit suite passed 38/38, content tests passed 222/222, strict TypeScript passed, and ESLint passed with zero warnings or errors.
+- **Follow-ups:** Wire the domain layer into the separately owned React/browser shell with injected native storage and crypto adapters; production and public launch remain independently blocked pending genuine content, rights, human review, accessibility, security, deployment, rollback, isolation, and QR evidence.

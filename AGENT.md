@@ -87,3 +87,13 @@
 - **Files Changed:** `src/lib/content/remoteResource.ts`, `tests/content/contentLoader.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, direct loader/verifier tests passed 74/74, the full content suite passed 222/222, fixture build and dist verification passed, strict TypeScript and ESLint passed, and production build retained the exact expected missing-approved-corpus exit-1 blocker.
 - **Follow-ups:** Production and public launch remain blocked pending authentic approved content, assets, evidence, reviews, and all independent launch gates.
+
+### 2026-07-13 (Australia/Sydney) — application domain and secure draw
+
+**Raouf:**
+
+- **Scope:** B1 non-React state, history, storage, secure randomness, and per-poet shuffle bags.
+- **Summary:** Added a fail-safe typed reducer for the locked stage sequence, exact release-scoped history recovery, six-key session restoration with motion-only local persistence, unbiased Web Crypto rejection sampling without a fallback PRNG, and deterministic approved-active shuffle bags with no-repeat cycles, reset announcements, and optional remaining-ID persistence. No visitor intention, visitor identifier, private content, React/UI, compiler, build, service-worker, deployment, or EOI/ballot behavior was added or changed.
+- **Files Changed:** `src/app/state.ts`, `src/app/history.ts`, `src/lib/draw/secureRandom.ts`, `src/lib/draw/shuffleBag.ts`, `src/lib/storage/session.ts`, `tests/unit/state.test.ts`, `tests/unit/history.test.ts`, `tests/unit/secureRandom.test.ts`, `tests/unit/shuffleBag.test.ts`, `tests/unit/storage.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, meaningful behavioral RED captured 12 reducer/random failures, 11 history/storage/shuffle failures, and three release-boundary hardening failures; GREEN unit tests passed 38/38, the unchanged content suite passed 222/222, strict TypeScript typecheck passed, and ESLint passed with zero warnings or errors.
+- **Follow-ups:** Integrate these injected domain APIs into the separately owned UI/browser shell, retain verified release IDs when constructing history and storage adapters, and keep every production/public-launch gate closed until authentic content and independent governance, accessibility, security, deployment, rollback, isolation, and physical-QR evidence pass.
