@@ -41,9 +41,7 @@ const readyRecordSchema = z
     rumiCount: z.number().int().nonnegative(),
     contentPath: z.string().regex(/^\/content\/[a-f0-9]{64}\.json$/u),
     contentSha256: z.string().regex(/^[a-f0-9]{64}$/u),
-    assetManifestPath: z
-      .string()
-      .regex(/^\/assets\/[a-f0-9]{64}\.json$/u),
+    assetManifestPath: z.string().regex(/^\/assets\/[a-f0-9]{64}\.json$/u),
     assetManifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
     requiredPaths: z.array(z.string().startsWith('/')).min(1),
   })
@@ -214,7 +212,9 @@ export class OfflineReleaseManager {
       url.pathname === '/offline.html'
     ) {
       const cached = await active?.match(request);
-      return cached ?? new Response('Release asset unavailable.', { status: 504 });
+      return (
+        cached ?? new Response('Release asset unavailable.', { status: 504 })
+      );
     }
     return this.#fetch(request);
   }
@@ -469,7 +469,9 @@ export class OfflineReleaseManager {
         this.#crypto,
       );
       if (digest !== contentHash) {
-        throw new Error('Corpus item SHA-256 does not match its canonical payload.');
+        throw new Error(
+          'Corpus item SHA-256 does not match its canonical payload.',
+        );
       }
     }
   }
@@ -533,7 +535,9 @@ export class OfflineReleaseManager {
           asset.mimeType === 'text/javascript',
       )
     ) {
-      throw new Error('Asset manifest is missing the required application shell.');
+      throw new Error(
+        'Asset manifest is missing the required application shell.',
+      );
     }
   }
 
@@ -584,11 +588,10 @@ export class OfflineReleaseManager {
     if (response.redirected) {
       throw new Error('Redirected release responses are forbidden.');
     }
-    if (
-      expectedBytes !== undefined &&
-      expectedBytes > maximumBytes
-    ) {
-      throw new Error('Required release response exceeds the offline byte ceiling.');
+    if (expectedBytes !== undefined && expectedBytes > maximumBytes) {
+      throw new Error(
+        'Required release response exceeds the offline byte ceiling.',
+      );
     }
     const declaredLength = response.headers.get('content-length');
     if (declaredLength !== null) {
@@ -608,7 +611,9 @@ export class OfflineReleaseManager {
           !hasEncodedWireRepresentation &&
           parsedLength !== expectedBytes)
       ) {
-        throw new Error('Required release response declares an invalid byte size.');
+        throw new Error(
+          'Required release response declares an invalid byte size.',
+        );
       }
     }
     const bytes = await this.#readBoundedBody(response, maximumBytes);
@@ -646,7 +651,9 @@ export class OfflineReleaseManager {
         total += result.value.byteLength;
         if (total > maximumBytes) {
           await reader.cancel();
-          throw new Error('Required release response exceeds the offline byte ceiling.');
+          throw new Error(
+            'Required release response exceeds the offline byte ceiling.',
+          );
         }
         chunks.push(result.value.slice());
       }
@@ -724,13 +731,18 @@ export class OfflineReleaseManager {
       readyResponse === undefined
         ? undefined
         : await active.match(
-            readyRecordSchema.parse(await readyResponse.json()).assetManifestPath,
+            readyRecordSchema.parse(await readyResponse.json())
+              .assetManifestPath,
           );
     if (manifestResponse === undefined) {
       return null;
     }
-    const manifest = offlineAssetManifestSchema.parse(await manifestResponse.json());
-    const indexAsset = manifest.assets.find((asset) => asset.path === 'index.html');
+    const manifest = offlineAssetManifestSchema.parse(
+      await manifestResponse.json(),
+    );
+    const indexAsset = manifest.assets.find(
+      (asset) => asset.path === 'index.html',
+    );
     if (indexAsset === undefined) {
       return null;
     }
@@ -790,10 +802,13 @@ export class OfflineReleaseManager {
     if (manifestResponse === undefined) {
       return new Response('Audio unavailable.', { status: 503 });
     }
-    const manifest = offlineAssetManifestSchema.parse(await manifestResponse.json());
+    const manifest = offlineAssetManifestSchema.parse(
+      await manifestResponse.json(),
+    );
     const asset = manifest.assets.find(
       (candidate) =>
-        `/${candidate.path}` === path && candidate.mimeType.startsWith('audio/'),
+        `/${candidate.path}` === path &&
+        candidate.mimeType.startsWith('audio/'),
     );
     if (asset === undefined) {
       return this.#fetch(request);

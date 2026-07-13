@@ -133,7 +133,9 @@ describe('compileCorpus', () => {
     const corpus = makeFixtureCorpus();
     corpus.registries.permissions.permissions[0]!.effective_on = '2099-01-01';
 
-    expect(() => compileFixture(corpus)).toThrow(/permission.*not yet effective/iu);
+    expect(() => compileFixture(corpus)).toThrow(
+      /permission.*not yet effective/iu,
+    );
   });
 
   it('rejects future-effective approval evidence', () => {
@@ -198,14 +200,18 @@ describe('compileCorpus', () => {
 
   it('rejects a production corpus with only 23 Hafez and 16 Rumi records', () => {
     const corpus = makeFixtureCorpus();
-    corpus.items = corpus.items.filter((item) => item.id !== 'test-only-hafez-24');
+    corpus.items = corpus.items.filter(
+      (item) => item.id !== 'test-only-hafez-24',
+    );
 
     expect(() => compileProduction(corpus)).toThrow(/24 Hafez/u);
   });
 
   it('rejects a production corpus with 24 Hafez and only 15 Rumi records', () => {
     const corpus = makeFixtureCorpus();
-    corpus.items = corpus.items.filter((item) => item.id !== 'test-only-rumi-16');
+    corpus.items = corpus.items.filter(
+      (item) => item.id !== 'test-only-rumi-16',
+    );
 
     expect(() => compileProduction(corpus)).toThrow(/16 Rumi/u);
   });

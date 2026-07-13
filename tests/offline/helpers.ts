@@ -7,7 +7,11 @@ export function sha256(value: string | Uint8Array): string {
 }
 
 export function canonicalStringify(value: unknown): string {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean') {
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean'
+  ) {
     return JSON.stringify(value);
   }
   if (typeof value === 'number') {
@@ -147,12 +151,7 @@ export function releaseFixture(releaseId = 'release-one'): FixtureRelease {
       true,
     ),
     asset('service-worker.js', 'text/javascript', worker, true),
-    asset(
-      audioPath,
-      'audio/mpeg',
-      audio,
-      false,
-    ),
+    asset(audioPath, 'audio/mpeg', audio, false),
   ];
   const manifest = { releaseId, assets };
   const corpusText = canonicalStringify(corpus);
@@ -210,7 +209,10 @@ function contentItem(
     },
     text: {
       persianLines: ['این سطر فقط برای آزمون است', 'این نیز سطر آزمون است'],
-      englishLines: ['This line exists only for testing.', 'This is another synthetic test line.'],
+      englishLines: [
+        'This line exists only for testing.',
+        'This is another synthetic test line.',
+      ],
       alignment: 'line',
     },
     translationClassification: 'society_translation',
@@ -251,7 +253,11 @@ export function fetchFrom(
 ): typeof fetch {
   return (input: RequestInfo | URL, init?: RequestInit) => {
     const path = new URL(
-      typeof input === 'string' ? input : input instanceof URL ? input : input.url,
+      typeof input === 'string'
+        ? input
+        : input instanceof URL
+          ? input
+          : input.url,
       'https://divan.test',
     ).pathname;
     calls.push(init === undefined ? { path } : { path, init });

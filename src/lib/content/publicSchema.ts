@@ -42,7 +42,10 @@ function publicText(maximumLength: number) {
     .min(1)
     .max(maximumLength)
     .refine((value) => value.trim().length > 0, 'Text cannot be blank.')
-    .refine((value) => !containsRawMarkup(value), 'Raw HTML or Markdown is not allowed.')
+    .refine(
+      (value) => !containsRawMarkup(value),
+      'Raw HTML or Markdown is not allowed.',
+    )
     .refine(
       (value) => !BIDI_CONTROL_PATTERN.test(value),
       'Bidi control characters are not allowed in content fields.',
@@ -68,8 +71,9 @@ function isSafeAudioPath(value: string): boolean {
 
   const segments = value.split('/');
   return (
-    segments.every((segment) => segment.length > 0 && segment !== '.' && segment !== '..') &&
-    /\.(?:mp3|ogg)$/u.test(value)
+    segments.every(
+      (segment) => segment.length > 0 && segment !== '.' && segment !== '..',
+    ) && /\.(?:mp3|ogg)$/u.test(value)
   );
 }
 
@@ -106,7 +110,10 @@ const audioSchema = z
     assetPath: z
       .string()
       .max(300)
-      .refine(isSafeAudioPath, 'Audio must use a safe local audio/ asset path.'),
+      .refine(
+        isSafeAudioPath,
+        'Audio must use a safe local audio/ asset path.',
+      ),
     mimeType: z.enum(AUDIO_MIME_TYPES),
     durationSeconds: z.number().int().min(20).max(60),
     performerCredit: publicText(300),
@@ -141,18 +148,17 @@ const publicContentPayloadObjectSchema = z
     text: textSchema,
     translationClassification: z.enum(TRANSLATION_CLASSIFICATIONS),
     translationCredit: publicText(300),
-    reflection: publicText(1_200).refine(
-      (value) => {
-        const count = wordCount(value);
-        return count >= 45 && count <= 90;
-      },
-      'Reflections must contain between 45 and 90 words.',
-    ),
+    reflection: publicText(1_200).refine((value) => {
+      const count = wordCount(value);
+      return count >= 45 && count <= 90;
+    }, 'Reflections must contain between 45 and 90 words.'),
     audio: audioSchema.nullable(),
   })
   .strict();
 
-type PublicContentPayloadInput = z.infer<typeof publicContentPayloadObjectSchema>;
+type PublicContentPayloadInput = z.infer<
+  typeof publicContentPayloadObjectSchema
+>;
 
 function addContentSemantics(
   item: PublicContentPayloadInput,
@@ -162,7 +168,10 @@ function addContentSemantics(
     (item.poet === 'hafez' && item.mode === 'open_the_divan') ||
     (item.poet === 'rumi' && item.mode === 'moment_of_reflection');
   if (!validMode) {
-    addIssue(['mode'], 'Poet and experience mode do not form an approved pairing.');
+    addIssue(
+      ['mode'],
+      'Poet and experience mode do not form an approved pairing.',
+    );
   }
 
   if (
@@ -177,20 +186,21 @@ function addContentSemantics(
   }
 }
 
-export const publicContentPayloadSchema = publicContentPayloadObjectSchema.superRefine(
-  (item, context) => {
+export const publicContentPayloadSchema =
+  publicContentPayloadObjectSchema.superRefine((item, context) => {
     addContentSemantics(item, (path, message) => {
       context.addIssue({ code: 'custom', path: [...path], message });
     });
-  },
-);
+  });
 
 const publicContentItemObjectSchema = publicContentPayloadObjectSchema.extend({
-  contentHash: z.string().regex(SHA256_PATTERN, 'Use a lowercase SHA-256 digest.'),
+  contentHash: z
+    .string()
+    .regex(SHA256_PATTERN, 'Use a lowercase SHA-256 digest.'),
 });
 
-export const publicContentItemSchema = publicContentItemObjectSchema.superRefine(
-  (item, context) => {
+export const publicContentItemSchema =
+  publicContentItemObjectSchema.superRefine((item, context) => {
     addContentSemantics(item, (path, message) => {
       context.addIssue({ code: 'custom', path: [...path], message });
     });
@@ -215,8 +225,9 @@ export const publicContentItemSchema = publicContentItemObjectSchema.superRefine
         message: 'Content hash does not match the canonical public item.',
       });
     }
-  },
-);
+  });
 
 export type PublicContentPayload = z.infer<typeof publicContentPayloadSchema>;
-export type ValidatedPublicContentItem = z.infer<typeof publicContentItemSchema>;
+export type ValidatedPublicContentItem = z.infer<
+  typeof publicContentItemSchema
+>;

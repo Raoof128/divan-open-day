@@ -45,7 +45,10 @@ function parseBuildDate(value: string): string {
   }
 
   const parsed = new Date(`${value}T00:00:00.000Z`);
-  if (Number.isNaN(parsed.valueOf()) || parsed.toISOString().slice(0, 10) !== value) {
+  if (
+    Number.isNaN(parsed.valueOf()) ||
+    parsed.toISOString().slice(0, 10) !== value
+  ) {
     throw new Error('Build date must be a real ISO calendar date.');
   }
 
@@ -66,7 +69,9 @@ function compareCodeUnits(left: string, right: string): number {
 
 function containsFixtureMarker(value: unknown, seen: Set<object>): boolean {
   if (typeof value === 'string') {
-    return FIXTURE_SENTINEL_PATTERN.test(value) || FIXTURE_ID_PATTERN.test(value);
+    return (
+      FIXTURE_SENTINEL_PATTERN.test(value) || FIXTURE_ID_PATTERN.test(value)
+    );
   }
 
   if (value === null || typeof value !== 'object' || seen.has(value)) {
@@ -79,13 +84,17 @@ function containsFixtureMarker(value: unknown, seen: Set<object>): boolean {
       return value.some((entry) => containsFixtureMarker(entry, seen));
     }
 
-    return Object.values(value).some((entry) => containsFixtureMarker(entry, seen));
+    return Object.values(value).some((entry) =>
+      containsFixtureMarker(entry, seen),
+    );
   } finally {
     seen.delete(value);
   }
 }
 
-function indexById<T extends { readonly id: string }>(records: readonly T[]): Map<string, T> {
+function indexById<T extends { readonly id: string }>(
+  records: readonly T[],
+): Map<string, T> {
   return new Map(records.map((record) => [record.id, record]));
 }
 
@@ -129,7 +138,9 @@ function requirePermission(
   }
 
   if (permission.status !== 'active') {
-    throw new Error(`Item ${itemId} permission ${expectation.id} is not active.`);
+    throw new Error(
+      `Item ${itemId} permission ${expectation.id} is not active.`,
+    );
   }
 
   if (
@@ -142,7 +153,9 @@ function requirePermission(
   }
 
   if (!PUBLIC_USES.every((use) => permission.permitted_uses.includes(use))) {
-    throw new Error(`Item ${itemId} permission ${expectation.id} has the wrong public use.`);
+    throw new Error(
+      `Item ${itemId} permission ${expectation.id} has the wrong public use.`,
+    );
   }
 
   // This release is publicly reachable without geofencing, so a country-only
@@ -166,14 +179,18 @@ function requirePermission(
   }
 
   if (permission.attribution !== expectation.attribution) {
-    throw new Error(`Item ${itemId} permission ${expectation.id} has stale attribution.`);
+    throw new Error(
+      `Item ${itemId} permission ${expectation.id} has stale attribution.`,
+    );
   }
 
   if (
     expectation.rightsOwner !== undefined &&
     permission.rights_owner !== expectation.rightsOwner
   ) {
-    throw new Error(`Item ${itemId} permission ${expectation.id} has a stale rights owner.`);
+    throw new Error(
+      `Item ${itemId} permission ${expectation.id} has a stale rights owner.`,
+    );
   }
 
   return permission;
@@ -209,10 +226,17 @@ function requireAudioAsset(
     asset.performer_id !== item.audio.performer_id ||
     asset.permission_record_id !== item.audio.permission_record_id
   ) {
-    throw new Error(`Item ${item.id} has stale or invalid enabled audio asset evidence.`);
+    throw new Error(
+      `Item ${item.id} has stale or invalid enabled audio asset evidence.`,
+    );
   }
 
-  requireContributor(contributors, item.audio.performer_id, 'performer', item.id);
+  requireContributor(
+    contributors,
+    item.audio.performer_id,
+    'performer',
+    item.id,
+  );
   requirePermission(
     permissions,
     {
@@ -245,7 +269,9 @@ function validateItemEvidence(
     edition.citation !== item.source.edition_citation ||
     edition.public_credit !== item.source.edition_public_credit
   ) {
-    throw new Error(`Item ${item.id} is missing its active approved edition join.`);
+    throw new Error(
+      `Item ${item.id} is missing its active approved edition join.`,
+    );
   }
 
   for (const translatorId of item.translation.translator_ids) {
@@ -268,8 +294,12 @@ function validateItemEvidence(
 
   const translatorIds = new Set(item.translation.translator_ids);
   const accountableReviewerIds = reviewerGroups.flatMap(([, ids]) => ids);
-  if (accountableReviewerIds.every((reviewerId) => translatorIds.has(reviewerId))) {
-    throw new Error(`Item ${item.id} cannot be approved only by its translator.`);
+  if (
+    accountableReviewerIds.every((reviewerId) => translatorIds.has(reviewerId))
+  ) {
+    throw new Error(
+      `Item ${item.id} cannot be approved only by its translator.`,
+    );
   }
 
   requirePermission(
@@ -291,11 +321,15 @@ function validateItemEvidence(
   }
 
   if (approval.status !== 'current') {
-    throw new Error(`Item ${item.id} final approval is not current or approved.`);
+    throw new Error(
+      `Item ${item.id} final approval is not current or approved.`,
+    );
   }
 
   if (approval.item_id !== item.id) {
-    throw new Error(`Item ${item.id} final approval is bound to the wrong item.`);
+    throw new Error(
+      `Item ${item.id} final approval is bound to the wrong item.`,
+    );
   }
 
   if (approval.approved_at !== item.review.approved_at) {
@@ -312,11 +346,18 @@ function validateItemEvidence(
     );
   }
 
-  requireContributor(contributors, approval.approved_by, 'final_approver', item.id);
+  requireContributor(
+    contributors,
+    approval.approved_by,
+    'final_approver',
+    item.id,
+  );
   requireAudioAsset(item, registries, contributors, permissions, buildDate);
 }
 
-function assertProductionMinimums(items: readonly AuthoringContentItem[]): void {
+function assertProductionMinimums(
+  items: readonly AuthoringContentItem[],
+): void {
   const hafezCount = items.filter((item) => item.poet === 'hafez').length;
   const rumiCount = items.filter((item) => item.poet === 'rumi').length;
   const totalCount = items.length;
@@ -347,7 +388,9 @@ export function compileCorpus(input: CompileCorpusInput): CompiledCorpus {
 
   const buildDate = parseBuildDate(input.buildDate);
   const registries = registryBundleSchema.parse(input.registries);
-  const authoringItems = input.items.map((item) => authoringContentItemSchema.parse(item));
+  const authoringItems = input.items.map((item) =>
+    authoringContentItemSchema.parse(item),
+  );
 
   const seenItemIds = new Set<string>();
   for (const item of authoringItems) {
@@ -364,11 +407,17 @@ export function compileCorpus(input: CompileCorpusInput): CompiledCorpus {
     throw new Error('Production corpus cannot contain draft authoring items.');
   }
 
-  const compilableItems = authoringItems.filter((item) => item.status !== 'disabled');
+  const compilableItems = authoringItems.filter(
+    (item) => item.status !== 'disabled',
+  );
   if (input.profile === 'production') {
     assertProductionMinimums(compilableItems);
-    if (containsFixtureMarker([authoringItems, registries], new Set<object>())) {
-      throw new Error('Production corpus cannot contain fixture IDs or TEST ONLY sentinels.');
+    if (
+      containsFixtureMarker([authoringItems, registries], new Set<object>())
+    ) {
+      throw new Error(
+        'Production corpus cannot contain fixture IDs or TEST ONLY sentinels.',
+      );
     }
   }
 
@@ -378,7 +427,9 @@ export function compileCorpus(input: CompileCorpusInput): CompiledCorpus {
   });
   compiledItems.sort((left, right) => compareCodeUnits(left.id, right.id));
 
-  const hafezCount = compiledItems.filter((item) => item.poet === 'hafez').length;
+  const hafezCount = compiledItems.filter(
+    (item) => item.poet === 'hafez',
+  ).length;
   const rumiCount = compiledItems.filter((item) => item.poet === 'rumi').length;
 
   return {

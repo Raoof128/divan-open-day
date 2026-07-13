@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-13 — Prettier, quality gate, and CI
+
+**Raouf:**
+
+- **Scope:** Repository professionalisation. No product behaviour changed.
+- **Summary:** Added Prettier + `eslint-config-prettier` (wired last so ESLint and Prettier do not conflict) with config/ignore files and `format`/`format:check` scripts, and applied formatting repo-wide (append-only logs and the design authority excluded). Added `scripts/check.sh` — one command running the §30.1 gauntlet with fail-closed launch-gate reporting and `--quick`/`--e2e`/`--ci` modes — exposed as `pnpm check`. Added `.github/workflows/ci.yml` (runs `check.sh --ci` incl. Playwright on `main` pushes and all PRs), `.editorconfig`, a PR template, `CONTRIBUTING.md`, and README badges.
+- **Files Changed:** `package.json`, `pnpm-lock.yaml`, `eslint.config.js`, `.prettierrc.json`, `.prettierignore`, `.editorconfig`, `scripts/check.sh`, `.github/workflows/ci.yml`, `.github/pull_request_template.md`, `CONTRIBUTING.md`, `README.md`, repo-wide formatting, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; post-format `typecheck` 0, `lint` 0, `test` 472/472, `format:check` clean, `scripts/check.sh` passes with launch gates fail-closed. CI workflow uses only static commands (no untrusted input in `run` steps).
+- **Follow-ups:** Docker-host and §31.2 launch gates unchanged. Consider requiring the CI `Quality gate` check via branch protection on `main`.
+
 ## 2026-07-13 — Full integration, Wave C verification, share card, and evidence
 
 **Raouf:**

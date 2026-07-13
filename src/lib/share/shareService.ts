@@ -6,7 +6,8 @@ import {
   buildShareText,
 } from './shareCard';
 
-export type ShareOutcome = 'shared' | 'copied' | 'cancelled' | 'copy-unavailable';
+export type ShareOutcome =
+  'shared' | 'copied' | 'cancelled' | 'copy-unavailable';
 
 interface ClipboardLike {
   readonly writeText: (text: string) => Promise<void>;
@@ -109,7 +110,11 @@ export function downloadShareCard(
   const svg = buildShareCardSvg(item, config);
   const blob = new Blob([svg], { type: 'image/svg+xml' });
   const createUrl = deps?.createUrl ?? ((b: Blob) => URL.createObjectURL(b));
-  const revokeUrl = deps?.revokeUrl ?? ((u: string) => { URL.revokeObjectURL(u); });
+  const revokeUrl =
+    deps?.revokeUrl ??
+    ((u: string) => {
+      URL.revokeObjectURL(u);
+    });
   const triggerDownload = deps?.triggerDownload ?? defaultTriggerDownload;
   const url = createUrl(blob);
   try {

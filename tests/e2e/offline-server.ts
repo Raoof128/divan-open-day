@@ -37,7 +37,11 @@ const HOST = '127.0.0.1';
 const PORT = 4173;
 
 function canonicalStringify(value: unknown): string {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean') {
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean'
+  ) {
     return JSON.stringify(value);
   }
   if (typeof value === 'number') {
@@ -71,7 +75,10 @@ async function readDistFiles(directory = DIST): Promise<Map<string, Buffer>> {
       if (entry.isDirectory()) {
         await walk(absolute);
       } else if (entry.isFile()) {
-        const relative = path.relative(DIST, absolute).split(path.sep).join('/');
+        const relative = path
+          .relative(DIST, absolute)
+          .split(path.sep)
+          .join('/');
         files.set(`/${relative}`, await readFile(absolute));
       }
     }
@@ -173,7 +180,8 @@ function write(
   pathname: string,
   acceptEncoding = '',
 ): void {
-  const compressed = /(?:^|,)\s*gzip\s*(?:,|$)/iu.test(acceptEncoding) &&
+  const compressed =
+    /(?:^|,)\s*gzip\s*(?:,|$)/iu.test(acceptEncoding) &&
     /(?:text|javascript|json|manifest|svg)/iu.test(mimeType(pathname));
   const bytes = compressed ? gzipSync(body) : body;
   response.writeHead(status, {
@@ -203,13 +211,12 @@ const rebuiltBaseWorker = Buffer.from(
 );
 const baseWorker = baseFiles.get('/service-worker.js');
 if (baseWorker === undefined || !rebuiltBaseWorker.equals(baseWorker)) {
-  throw new Error('Fixture worker bytes are not the genuine release-versioned build.');
+  throw new Error(
+    'Fixture worker bytes are not the genuine release-versioned build.',
+  );
 }
 const variants = new Map<string, Variant>([
-  [
-    'one',
-    { files: baseFiles, release: baseRelease, brokenPath: null },
-  ],
+  ['one', { files: baseFiles, release: baseRelease, brokenPath: null }],
   [
     'two',
     await createVariant(

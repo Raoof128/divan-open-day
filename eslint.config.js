@@ -1,4 +1,5 @@
 import eslint from '@eslint/js';
+import prettier from 'eslint-config-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
@@ -54,4 +55,6 @@ export default tseslint.config(
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
+  // Must be last: turn off ESLint rules that conflict with Prettier formatting.
+  prettier,
 );

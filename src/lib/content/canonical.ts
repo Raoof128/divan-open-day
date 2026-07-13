@@ -23,14 +23,18 @@ function serializeCanonical(value: unknown, ancestors: Set<object>): string {
 
   if (typeof value === 'number') {
     if (!Number.isFinite(value)) {
-      throw new TypeError('Canonical JSON does not support non-finite numbers.');
+      throw new TypeError(
+        'Canonical JSON does not support non-finite numbers.',
+      );
     }
 
     return JSON.stringify(value);
   }
 
   if (typeof value !== 'object') {
-    throw new TypeError(`Canonical JSON does not support ${typeof value} values.`);
+    throw new TypeError(
+      `Canonical JSON does not support ${typeof value} values.`,
+    );
   }
 
   if (ancestors.has(value)) {
@@ -90,5 +94,7 @@ export function canonicalStringify(value: unknown): string {
 }
 
 export function canonicalSha256(value: unknown): string {
-  return createHash('sha256').update(canonicalStringify(value), 'utf8').digest('hex');
+  return createHash('sha256')
+    .update(canonicalStringify(value), 'utf8')
+    .digest('hex');
 }

@@ -14,7 +14,11 @@ function CreditList({ values }: { readonly values: readonly string[] }) {
   );
 }
 
-export function CreditsPage({ release }: { readonly release: VerifiedRelease | null }) {
+export function CreditsPage({
+  release,
+}: {
+  readonly release: VerifiedRelease | null;
+}) {
   const editions = unique(
     release?.corpus.items.map((item) => item.source.editionPublicCredit) ?? [],
   );
@@ -52,19 +56,29 @@ export function CreditsPage({ release }: { readonly release: VerifiedRelease | n
               </time>
             </dd>
             <dt>Content checksum</dt>
-            <dd><code>{release.descriptor.contentSha256}</code></dd>
+            <dd>
+              <code>{release.descriptor.contentSha256}</code>
+            </dd>
           </dl>
         )}
       </section>
 
       <section aria-labelledby="source-editions">
         <h2 id="source-editions">Source editions</h2>
-        {editions.length === 0 ? <p>No verified public edition credits are available.</p> : <CreditList values={editions} />}
+        {editions.length === 0 ? (
+          <p>No verified public edition credits are available.</p>
+        ) : (
+          <CreditList values={editions} />
+        )}
       </section>
 
       <section aria-labelledby="translation-credits">
         <h2 id="translation-credits">Translation and adaptation credits</h2>
-        {translations.length === 0 ? <p>No verified public translation credits are available.</p> : <CreditList values={translations} />}
+        {translations.length === 0 ? (
+          <p>No verified public translation credits are available.</p>
+        ) : (
+          <CreditList values={translations} />
+        )}
       </section>
 
       {performers.length === 0 ? null : (
@@ -77,20 +91,24 @@ export function CreditsPage({ release }: { readonly release: VerifiedRelease | n
       <section aria-labelledby="font-credits">
         <h2 id="font-credits">Fonts</h2>
         <ul className="credits-list">
-          <li>Cormorant Garamond — Fontsource 5.2.11, SIL Open Font License 1.1</li>
+          <li>
+            Cormorant Garamond — Fontsource 5.2.11, SIL Open Font License 1.1
+          </li>
           <li>Inter — Fontsource 5.2.8, SIL Open Font License 1.1</li>
           <li>Vazirmatn — Fontsource 5.2.8, SIL Open Font License 1.1</li>
-          <li>Noto Nastaliq Urdu — Fontsource 5.2.8, SIL Open Font License 1.1</li>
+          <li>
+            Noto Nastaliq Urdu — Fontsource 5.2.8, SIL Open Font License 1.1
+          </li>
         </ul>
       </section>
 
       <section aria-labelledby="design-credit">
         <h2 id="design-credit">Design and development</h2>
         <p>
-          Original DIVAN interface geometry and implementation by project
-          design and development contributors. No museum image, copied
-          calligraphy, University mark, or third-party decorative artwork is
-          used in this release.
+          Original DIVAN interface geometry and implementation by project design
+          and development contributors. No museum image, copied calligraphy,
+          University mark, or third-party decorative artwork is used in this
+          release.
         </p>
       </section>
 

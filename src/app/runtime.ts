@@ -72,7 +72,10 @@ const releaseDescriptorSchema = z
         message: 'Poet counts must add up to the release total.',
       });
     }
-    if (release.productionEligible !== (release.buildProfile === 'production')) {
+    if (
+      release.productionEligible !==
+      (release.buildProfile === 'production')
+    ) {
       context.addIssue({
         code: 'custom',
         path: ['productionEligible'],
@@ -211,13 +214,10 @@ const contentItemSchema = z
     text: textSchema,
     translationClassification: z.enum(TRANSLATION_CLASSIFICATIONS),
     translationCredit: nonBlankText(300),
-    reflection: nonBlankText(1_200).refine(
-      (value) => {
-        const count = wordCount(value);
-        return count >= 45 && count <= 90;
-      },
-      'Reflections must contain between 45 and 90 words.',
-    ),
+    reflection: nonBlankText(1_200).refine((value) => {
+      const count = wordCount(value);
+      return count >= 45 && count <= 90;
+    }, 'Reflections must contain between 45 and 90 words.'),
     audio: audioSchema.nullable(),
     contentHash: z.string().regex(SHA256_PATTERN),
   })
@@ -286,7 +286,11 @@ export interface VerifiedRelease {
 }
 
 function canonicalStringify(value: unknown): string {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean') {
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean'
+  ) {
     return JSON.stringify(value);
   }
   if (typeof value === 'number') {
@@ -304,13 +308,13 @@ function canonicalStringify(value: unknown): string {
   const record = value as Record<string, unknown>;
   return `{${Object.keys(record)
     .sort()
-    .map(
-      (key) => `${JSON.stringify(key)}:${canonicalStringify(record[key])}`,
-    )
+    .map((key) => `${JSON.stringify(key)}:${canonicalStringify(record[key])}`)
     .join(',')}}`;
 }
 
-function itemPayload(item: PublicContentItem): Omit<PublicContentItem, 'contentHash'> {
+function itemPayload(
+  item: PublicContentItem,
+): Omit<PublicContentItem, 'contentHash'> {
   return {
     id: item.id,
     schemaVersion: item.schemaVersion,
@@ -363,7 +367,10 @@ async function verifyItemHashes(
 ): Promise<void> {
   const hashes = await Promise.all(
     items.map((item) =>
-      sha256(new TextEncoder().encode(canonicalStringify(itemPayload(item))), crypto),
+      sha256(
+        new TextEncoder().encode(canonicalStringify(itemPayload(item))),
+        crypto,
+      ),
     ),
   );
   if (items.some((item, index) => item.contentHash !== hashes[index])) {
@@ -403,9 +410,13 @@ export async function loadVerifiedRelease(
       throw new ReleaseLoadError();
     }
     const corpus: PublicCorpus = publicCorpusSchema.parse(
-      JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(corpusBuffer)) as unknown,
+      JSON.parse(
+        new TextDecoder('utf-8', { fatal: true }).decode(corpusBuffer),
+      ) as unknown,
     );
-    const hafezCount = corpus.items.filter((item) => item.poet === 'hafez').length;
+    const hafezCount = corpus.items.filter(
+      (item) => item.poet === 'hafez',
+    ).length;
     const rumiCount = corpus.items.length - hafezCount;
     if (
       corpus.releaseId !== release.releaseId ||

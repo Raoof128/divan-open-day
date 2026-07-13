@@ -1,7 +1,11 @@
 import type { CryptoLike } from './cacheTypes';
 
 export function canonicalStringify(value: unknown): string {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean') {
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean'
+  ) {
     return JSON.stringify(value);
   }
   if (typeof value === 'number') {

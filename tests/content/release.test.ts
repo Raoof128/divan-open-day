@@ -25,7 +25,8 @@ function compileFixture() {
 
 function fixtureAudioSource(): ReleaseAssetSource {
   const fixture = makeFixtureCorpus();
-  const asset = registryBundleSchema.parse(fixture.registries).assets.assets[0]!;
+  const asset = registryBundleSchema.parse(fixture.registries).assets
+    .assets[0]!;
   const file = fixture.assetFiles[0]!;
   if (asset.kind !== 'audio') {
     throw new Error('TEST ONLY fixture asset must be audio.');
@@ -60,11 +61,7 @@ function makeAssetSource(
 function fixedBrowserSources(): ReleaseAssetSource[] {
   return [
     ['index.html', 'text/html', '<!doctype html><title>DIVAN</title>'],
-    [
-      'manifest.webmanifest',
-      'application/manifest+json',
-      '{"name":"DIVAN"}',
-    ],
+    ['manifest.webmanifest', 'application/manifest+json', '{"name":"DIVAN"}'],
     ['offline.html', 'text/html', '<!doctype html><title>Offline</title>'],
     ['service-worker.js', 'text/javascript', '(function(){})();'],
   ].map(([assetPath, mimeType, text]) => {
@@ -111,7 +108,9 @@ describe('createReleaseArtifacts', () => {
   });
 
   it('rejects a release whose compiled audio has no manifest asset and file', () => {
-    expect(() => createFixtureRelease([])).toThrow(/audio|asset|manifest|missing/iu);
+    expect(() => createFixtureRelease([])).toThrow(
+      /audio|asset|manifest|missing/iu,
+    );
   });
 
   it('rejects oversized byte counts in the public asset manifest schema', () => {
@@ -189,8 +188,14 @@ describe('createReleaseArtifacts', () => {
     } satisfies ReleaseAssetSource;
 
     expect(
-      createFixtureRelease([fixtureAudioSource(), ...fixed, script]).assetManifest.assets,
-    ).toEqual(expect.arrayContaining([expect.objectContaining({ path: index.path }), expect.objectContaining({ path: script.path })]));
+      createFixtureRelease([fixtureAudioSource(), ...fixed, script])
+        .assetManifest.assets,
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: index.path }),
+        expect.objectContaining({ path: script.path }),
+      ]),
+    );
     expect(() =>
       createFixtureRelease([
         fixtureAudioSource(),
@@ -239,15 +244,11 @@ describe('createReleaseArtifacts', () => {
     expect(() => createFixtureRelease([asset])).toThrow(/asset|local|path/iu);
 
     expect(() =>
-      createFixtureRelease([
-        { ...asset, path: '../private.webp' },
-      ]),
+      createFixtureRelease([{ ...asset, path: '../private.webp' }]),
     ).toThrow(/asset|escape|path/iu);
 
     expect(() =>
-      createFixtureRelease([
-        { ...asset, path: 'images/image.webp' },
-      ]),
+      createFixtureRelease([{ ...asset, path: 'images/image.webp' }]),
     ).toThrow(/content-addressed|sha/iu);
 
     const localAsset = {

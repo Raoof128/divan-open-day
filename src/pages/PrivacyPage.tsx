@@ -21,11 +21,15 @@ export function PrivacyPage() {
       </p>
       <section aria-labelledby="privacy-storage">
         <h2 id="privacy-storage">What stays in this browser</h2>
-        <p>Session storage contains only public release and content identifiers:</p>
+        <p>
+          Session storage contains only public release and content identifiers:
+        </p>
         <dl>
           {SESSION_KEYS.map(([key, purpose]) => (
             <div key={key}>
-              <dt><code>{key}</code></dt>
+              <dt>
+                <code>{key}</code>
+              </dt>
               <dd>{purpose}</dd>
             </div>
           ))}

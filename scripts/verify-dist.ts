@@ -3,7 +3,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { ReleaseDescriptor } from '../src/contracts/release';
-import { canonicalSha256, canonicalStringify } from '../src/lib/content/canonical';
+import {
+  canonicalSha256,
+  canonicalStringify,
+} from '../src/lib/content/canonical';
 import {
   assetManifestSchema,
   publicCorpusSchema,
@@ -61,10 +64,14 @@ function inspectPublicValue(
       throw new Error(`Remote resource leaked into ${sourceName}.`);
     }
     if (privateValues.has(value) || privateValues.has(trimmed)) {
-      throw new Error(`Source-derived private authoring value leaked into ${sourceName}.`);
+      throw new Error(
+        `Source-derived private authoring value leaked into ${sourceName}.`,
+      );
     }
     if (fixtureForbidden && FIXTURE_PATTERN.test(value)) {
-      throw new Error(`Fixture sentinel leaked into a production distribution.`);
+      throw new Error(
+        `Fixture sentinel leaked into a production distribution.`,
+      );
     }
     return;
   }
@@ -90,7 +97,9 @@ function inspectPublicValue(
 
     for (const [key, entry] of Object.entries(value)) {
       if (PRIVATE_KEY_NAMES.has(normalizedKey(key))) {
-        throw new Error(`Private authoring key ${key} leaked into ${sourceName}.`);
+        throw new Error(
+          `Private authoring key ${key} leaked into ${sourceName}.`,
+        );
       }
       inspectPublicValue(
         entry,
@@ -132,7 +141,9 @@ async function readCanonicalJson(
     new Set<object>(),
   );
   if (canonicalStringify(value) !== raw) {
-    throw new Error(`Distribution JSON is not canonical and may be tampered: ${filename}.`);
+    throw new Error(
+      `Distribution JSON is not canonical and may be tampered: ${filename}.`,
+    );
   }
   return value;
 }
@@ -148,11 +159,15 @@ async function walkDistribution(
 
   const entries = await readdir(directory, { withFileTypes: true });
   const files: string[] = [];
-  for (const entry of entries.toSorted((left, right) => left.name.localeCompare(right.name))) {
+  for (const entry of entries.toSorted((left, right) =>
+    left.name.localeCompare(right.name),
+  )) {
     const absolute = path.join(directory, entry.name);
     const relative = path.relative(root, absolute).split(path.sep).join('/');
     if (entry.isSymbolicLink()) {
-      throw new Error(`Symlinked distribution entry is not allowed: ${relative}.`);
+      throw new Error(
+        `Symlinked distribution entry is not allowed: ${relative}.`,
+      );
     }
     if (entry.isDirectory()) {
       files.push(...(await walkDistribution(root, absolute)));
@@ -174,8 +189,12 @@ function assertNoForbiddenFiles(files: readonly string[]): void {
     if (/\.ya?ml$/iu.test(file)) {
       throw new Error(`YAML files are forbidden in dist: ${file}.`);
     }
-    if (/(?:permission|evidence|content-private|rights-register)/iu.test(file)) {
-      throw new Error(`Private permission or evidence file is forbidden in dist: ${file}.`);
+    if (
+      /(?:permission|evidence|content-private|rights-register)/iu.test(file)
+    ) {
+      throw new Error(
+        `Private permission or evidence file is forbidden in dist: ${file}.`,
+      );
     }
   }
 }
@@ -186,7 +205,11 @@ function safeReferencedPath(distRoot: string, publicPath: string): string {
   }
   const absolute = path.resolve(distRoot, publicPath.slice(1));
   const relative = path.relative(distRoot, absolute);
-  if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+  if (
+    relative === '..' ||
+    relative.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relative)
+  ) {
     throw new Error('Release path escapes the distribution root.');
   }
   return absolute;
@@ -306,15 +329,22 @@ async function verifyAssetFiles(
       }
       let text: string;
       try {
-        text = new TextDecoder('utf-8', { fatal: true }).decode(loaded.contents);
+        text = new TextDecoder('utf-8', { fatal: true }).decode(
+          loaded.contents,
+        );
       } catch (error) {
-        throw new Error(`Browser text asset is not valid UTF-8: ${asset.path}.`, {
-          cause: error,
-        });
+        throw new Error(
+          `Browser text asset is not valid UTF-8: ${asset.path}.`,
+          {
+            cause: error,
+          },
+        );
       }
       for (const privateValue of privateValues) {
         if (privateValue.length > 0 && text.includes(privateValue)) {
-          throw new Error(`Source-derived private value leaked into browser asset ${asset.path}.`);
+          throw new Error(
+            `Source-derived private value leaked into browser asset ${asset.path}.`,
+          );
         }
       }
       verifyBrowserTextAsset(asset.path, asset.mimeType, text);
@@ -371,9 +401,13 @@ function verifyHtmlAsset(assetPath: string, text: string): void {
         text,
       ) ||
       !/\bid\s*=\s*["']root["']/iu.test(text) ||
-      !/<noscript\b[^>]*>[\s\S]*(?:privacy|visitor)[\s\S]*<\/noscript>/iu.test(text)
+      !/<noscript\b[^>]*>[\s\S]*(?:privacy|visitor)[\s\S]*<\/noscript>/iu.test(
+        text,
+      )
     ) {
-      throw new Error('index.html is missing its semantic document or privacy fallback.');
+      throw new Error(
+        'index.html is missing its semantic document or privacy fallback.',
+      );
     }
   }
 }
@@ -419,7 +453,9 @@ function verifyBrowserTextAsset(
         text,
       )
     ) {
-      throw new Error(`Remote JavaScript runtime dependency is forbidden in ${assetPath}.`);
+      throw new Error(
+        `Remote JavaScript runtime dependency is forbidden in ${assetPath}.`,
+      );
     }
     return;
   }
@@ -440,7 +476,9 @@ function verifyBrowserTextAsset(
     }
     for (const match of text.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/giu)) {
       if (!isLocalRuntimeReference(match[1]!)) {
-        throw new Error(`Remote SVG style resource is forbidden in ${assetPath}.`);
+        throw new Error(
+          `Remote SVG style resource is forbidden in ${assetPath}.`,
+        );
       }
     }
     return;
@@ -467,11 +505,15 @@ async function loadSourcePrivateValues(
   profile: 'fixture' | 'production',
 ): Promise<ReadonlySet<string>> {
   if (profile === 'fixture') {
-    const { makeFixtureCorpus } = await import('../tests/fixtures/content/corpus');
+    const { makeFixtureCorpus } =
+      await import('../tests/fixtures/content/corpus');
     const fixture = makeFixtureCorpus();
     return derivePrivateSourceValues(fixture.items, fixture.registries);
   }
-  const loaded = await loadContentPrivate({ projectRoot, profile: 'production' });
+  const loaded = await loadContentPrivate({
+    projectRoot,
+    profile: 'production',
+  });
   return loaded.privateValues;
 }
 
@@ -511,7 +553,10 @@ function assertAudioManifestJoin(
     }
   }
   for (const asset of assets) {
-    if (asset.mimeType.startsWith('audio/') && !audioReferences.has(asset.path)) {
+    if (
+      asset.mimeType.startsWith('audio/') &&
+      !audioReferences.has(asset.path)
+    ) {
       throw new Error(`Orphan manifest audio entry ${asset.path}.`);
     }
   }
@@ -523,7 +568,9 @@ export async function verifyDist(
   const unresolvedDistRoot = path.resolve(options.distDir);
   const rootStat = await lstat(unresolvedDistRoot);
   if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
-    throw new Error('Distribution root must be a regular, non-symlink directory.');
+    throw new Error(
+      'Distribution root must be a regular, non-symlink directory.',
+    );
   }
   const distRoot = await realpath(unresolvedDistRoot);
   if (distRoot !== unresolvedDistRoot) {
@@ -577,7 +624,10 @@ export async function verifyDist(
     new Set<object>(),
   );
 
-  if (corpus.releaseId !== release.releaseId || assetManifest.releaseId !== release.releaseId) {
+  if (
+    corpus.releaseId !== release.releaseId ||
+    assetManifest.releaseId !== release.releaseId
+  ) {
     throw new Error('Release ID mismatch across public release artifacts.');
   }
   if (canonicalSha256(corpus) !== release.contentSha256) {
@@ -587,7 +637,9 @@ export async function verifyDist(
     throw new Error('Asset manifest SHA-256 mismatch.');
   }
 
-  const hafezCount = corpus.items.filter((item) => item.poet === 'hafez').length;
+  const hafezCount = corpus.items.filter(
+    (item) => item.poet === 'hafez',
+  ).length;
   const rumiCount = corpus.items.filter((item) => item.poet === 'rumi').length;
   if (
     corpus.items.length !== release.itemCount ||
@@ -599,13 +651,17 @@ export async function verifyDist(
 
   assertAudioManifestJoin(corpus, assetManifest.assets);
   if (
-    assetManifest.assets.filter((asset) => asset.path === 'index.html').length !== 1 ||
+    assetManifest.assets.filter((asset) => asset.path === 'index.html')
+      .length !== 1 ||
     !assetManifest.assets.some(
       (asset) =>
-        asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+        asset.mimeType === 'text/javascript' &&
+        asset.path.startsWith('assets/'),
     )
   ) {
-    throw new Error('Distribution is missing its browser index or hashed application entry.');
+    throw new Error(
+      'Distribution is missing its browser index or hashed application entry.',
+    );
   }
   await verifyAssetFiles(
     distRoot,
@@ -634,7 +690,9 @@ async function main(): Promise<void> {
   if (process.argv.length !== 2) {
     throw new Error('Usage: tsx scripts/verify-dist.ts');
   }
-  const projectRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
+  const projectRoot = path.resolve(
+    fileURLToPath(new URL('..', import.meta.url)),
+  );
   const release = await verifyDist({
     projectRoot,
     distDir: path.join(projectRoot, 'dist'),
@@ -650,7 +708,10 @@ if (
   path.resolve(invokedPath) === path.resolve(fileURLToPath(import.meta.url))
 ) {
   main().catch((error: unknown) => {
-    const message = error instanceof Error ? error.message : 'Unknown dist verification failure.';
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown dist verification failure.';
     process.stderr.write(`${message}\n`);
     process.exitCode = 1;
   });

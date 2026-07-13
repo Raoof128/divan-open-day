@@ -32,7 +32,10 @@ const item: PublicContentItem = {
   contentHash: 'abc123',
 };
 
-const config = { siteUrl: 'https://example.test/divan', society: 'Test Society' };
+const config = {
+  siteUrl: 'https://example.test/divan',
+  society: 'Test Society',
+};
 
 describe('buildShareText', () => {
   it('includes the required §15.1 fields generated locally', () => {
@@ -93,7 +96,11 @@ describe('buildShareCardSvg', () => {
   it('escapes angle brackets in content to prevent markup injection', () => {
     const evil = {
       ...item,
-      text: { ...item.text, englishLines: ['<script>x</script>'], persianLines: ['x'] },
+      text: {
+        ...item.text,
+        englishLines: ['<script>x</script>'],
+        persianLines: ['x'],
+      },
     };
     const svg = buildShareCardSvg(evil, config);
     expect(svg).not.toContain('<script>x</script>');

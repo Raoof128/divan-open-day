@@ -47,14 +47,8 @@ import {
   registerOfflineWorker,
   requestOfflineActivation,
 } from '../sw-client/register';
-import {
-  createHistoryState,
-  resolvePopHistoryState,
-} from './history';
-import {
-  loadVerifiedRelease,
-  type VerifiedRelease,
-} from './runtime';
+import { createHistoryState, resolvePopHistoryState } from './history';
+import { loadVerifiedRelease, type VerifiedRelease } from './runtime';
 import {
   appReducer,
   createInitialAppState,
@@ -76,7 +70,9 @@ export interface AppProps {
   readonly services?: Partial<AppServices>;
 }
 
-function browserStorage(kind: 'localStorage' | 'sessionStorage'): StorageAdapter | null {
+function browserStorage(
+  kind: 'localStorage' | 'sessionStorage',
+): StorageAdapter | null {
   try {
     return window[kind];
   } catch {
@@ -86,7 +82,9 @@ function browserStorage(kind: 'localStorage' | 'sessionStorage'): StorageAdapter
 
 function initialMotionPreference(): MotionPreference {
   const storage = browserStorage('localStorage');
-  return storage === null ? 'system' : (readLocalMotionPreference(storage) ?? 'system');
+  return storage === null
+    ? 'system'
+    : (readLocalMotionPreference(storage) ?? 'system');
 }
 
 function browserMatchMedia(): typeof window.matchMedia | undefined {
@@ -122,9 +120,7 @@ function stateFromHistory(
   currentPoemId: string | null,
 ): AppState {
   const resultItem =
-    currentPoemId === null
-      ? undefined
-      : release.itemsById.get(currentPoemId);
+    currentPoemId === null ? undefined : release.itemsById.get(currentPoemId);
   const canRestoreResult =
     resolved.stage === 'result' &&
     resolved.selectedPoet !== null &&
@@ -170,8 +166,9 @@ export function App({ services }: AppProps) {
   const [liveMessage, setLiveMessage] = useState('');
   const [offlineRegistration, setOfflineRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
-  const [offlineUpdateReleaseId, setOfflineUpdateReleaseId] =
-    useState<string | null>(null);
+  const [offlineUpdateReleaseId, setOfflineUpdateReleaseId] = useState<
+    string | null
+  >(null);
   const [showSkip, setShowSkip] = useState(false);
   const [systemReducedMotion, setSystemReducedMotion] = useState(() =>
     readSystemReducedMotion(browserMatchMedia()),
@@ -386,8 +383,7 @@ export function App({ services }: AppProps) {
       const detail = parseOfflineStatusDetail(event.detail);
       if (
         detail === null ||
-        (detail.releaseId !== null &&
-          detail.releaseId !== expectedReleaseId)
+        (detail.releaseId !== null && detail.releaseId !== expectedReleaseId)
       ) {
         return;
       }
@@ -538,7 +534,8 @@ export function App({ services }: AppProps) {
       const draw =
         services?.drawPoem?.(state.selectedPoet) ??
         bagsRef.current[state.selectedPoet]?.draw();
-      const item = draw === undefined ? undefined : verifiedRelease.itemsById.get(draw.id);
+      const item =
+        draw === undefined ? undefined : verifiedRelease.itemsById.get(draw.id);
       if (draw === undefined || item?.poet !== state.selectedPoet) {
         setBlockingError(true);
         return;
@@ -561,7 +558,14 @@ export function App({ services }: AppProps) {
       setBlockingError(true);
       setLiveMessage('Secure verse selection is unavailable in this browser.');
     }
-  }, [completeReveal, dispatch, effectiveMotion, services, state.selectedPoet, verifiedRelease]);
+  }, [
+    completeReveal,
+    dispatch,
+    effectiveMotion,
+    services,
+    state.selectedPoet,
+    verifiedRelease,
+  ]);
 
   const handleMotionChange = useCallback(
     (motionPreference: MotionPreference) => {
@@ -576,7 +580,9 @@ export function App({ services }: AppProps) {
 
   let scene;
   if (activeContextRoute !== null) {
-    scene = <ContextPage route={activeContextRoute} release={verifiedRelease} />;
+    scene = (
+      <ContextPage route={activeContextRoute} release={verifiedRelease} />
+    );
   } else if (blockingError) {
     scene = (
       <BlockingErrorScene
@@ -622,23 +628,29 @@ export function App({ services }: AppProps) {
         );
         break;
       case 'intention':
-        scene = state.selectedPoet === null ? (
-          <BlockingErrorScene onRetry={() => setLoadAttempt((attempt) => attempt + 1)} />
-        ) : (
-          <IntentionScene poet={state.selectedPoet} onReveal={handleReveal} />
-        );
+        scene =
+          state.selectedPoet === null ? (
+            <BlockingErrorScene
+              onRetry={() => setLoadAttempt((attempt) => attempt + 1)}
+            />
+          ) : (
+            <IntentionScene poet={state.selectedPoet} onReveal={handleReveal} />
+          );
         break;
       case 'revealing':
-        scene = state.selectedPoet === null ? (
-          <BlockingErrorScene onRetry={() => setLoadAttempt((attempt) => attempt + 1)} />
-        ) : (
-          <RevealScene
-            poet={state.selectedPoet}
-            reducedMotion={effectiveMotion === 'reduced'}
-            showSkip={showSkip}
-            onSkip={completeReveal}
-          />
-        );
+        scene =
+          state.selectedPoet === null ? (
+            <BlockingErrorScene
+              onRetry={() => setLoadAttempt((attempt) => attempt + 1)}
+            />
+          ) : (
+            <RevealScene
+              poet={state.selectedPoet}
+              reducedMotion={effectiveMotion === 'reduced'}
+              showSkip={showSkip}
+              onSkip={completeReveal}
+            />
+          );
         break;
       case 'result':
       case 'result_action': {
@@ -648,14 +660,19 @@ export function App({ services }: AppProps) {
             : verifiedRelease?.itemsById.get(state.currentPoemId);
         scene =
           item === undefined ? (
-            <BlockingErrorScene onRetry={() => setLoadAttempt((attempt) => attempt + 1)} />
+            <BlockingErrorScene
+              onRetry={() => setLoadAttempt((attempt) => attempt + 1)}
+            />
           ) : (
             <PoemResult
               item={item}
               audioUnavailable={state.statusCode === 'audio_unavailable'}
               onAnnounce={setLiveMessage}
               onAudioError={() => {
-                dispatch({ type: 'SET_STATUS', statusCode: 'audio_unavailable' });
+                dispatch({
+                  type: 'SET_STATUS',
+                  statusCode: 'audio_unavailable',
+                });
                 setLiveMessage('Persian audio is unavailable right now.');
               }}
               onRevealAnother={() => {
@@ -698,7 +715,10 @@ export function App({ services }: AppProps) {
           </a>
         )}
         {state.statusCode === 'offline_ready' ? <OfflineBadge /> : null}
-        <MotionControl value={state.motionPreference} onChange={handleMotionChange} />
+        <MotionControl
+          value={state.motionPreference}
+          onChange={handleMotionChange}
+        />
         {offlineUpdateReleaseId === null ? null : (
           <button
             type="button"

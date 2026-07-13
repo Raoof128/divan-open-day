@@ -1,20 +1,12 @@
-import type {
-  AppStage,
-  MotionPreference,
-} from '../contracts/app';
+import type { AppStage, MotionPreference } from '../contracts/app';
 import { MOTION_PREFERENCES } from '../contracts/app';
 import type { Poet } from '../contracts/content';
 import { POETS } from '../contracts/content';
 
 export type AppStatusCode =
-  | 'audio_unavailable'
-  | 'cycle_reset'
-  | 'offline_ready'
-  | 'share_unavailable';
+  'audio_unavailable' | 'cycle_reset' | 'offline_ready' | 'share_unavailable';
 
-export type AppErrorCode =
-  | 'release_unavailable'
-  | 'secure_random_unavailable';
+export type AppErrorCode = 'release_unavailable' | 'secure_random_unavailable';
 
 const APP_STATUS_CODES = [
   'audio_unavailable',
@@ -83,7 +75,8 @@ function isMotionPreference(value: unknown): value is MotionPreference {
 
 function isStatusCode(value: unknown): value is AppStatusCode | null {
   return (
-    value === null || APP_STATUS_CODES.some((statusCode) => statusCode === value)
+    value === null ||
+    APP_STATUS_CODES.some((statusCode) => statusCode === value)
   );
 }
 
@@ -163,7 +156,9 @@ function copyState(
         ? state.motionPreference
         : overrides.motionPreference,
     statusCode:
-      overrides.statusCode === undefined ? state.statusCode : overrides.statusCode,
+      overrides.statusCode === undefined
+        ? state.statusCode
+        : overrides.statusCode,
     errorCode:
       overrides.errorCode === undefined ? state.errorCode : overrides.errorCode,
   };

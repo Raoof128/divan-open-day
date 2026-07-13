@@ -101,7 +101,9 @@ export function makeFixtureCorpus() {
   ];
   const audioItem = items[0];
   if (audioItem === undefined) {
-    throw new Error('The TEST ONLY corpus must contain its first synthetic item.');
+    throw new Error(
+      'The TEST ONLY corpus must contain its first synthetic item.',
+    );
   }
 
   const audioSha256 = createHash('sha256')
@@ -209,7 +211,8 @@ export function makeFixtureCorpus() {
             kind: 'audio',
             subject_id: `${audioItem.id}-audio-asset`,
             rights_owner: 'TEST ONLY / SYNTHETIC AUDIO RIGHTS OWNER',
-            evidence_reference: 'TEST ONLY / SYNTHETIC AUDIO PERMISSION EVIDENCE',
+            evidence_reference:
+              'TEST ONLY / SYNTHETIC AUDIO PERMISSION EVIDENCE',
             permitted_uses: [...REQUIRED_PUBLIC_USES],
             attribution: 'TEST ONLY / SYNTHETIC PERFORMER CREDIT',
             modification_permitted: false,

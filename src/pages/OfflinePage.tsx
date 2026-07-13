@@ -11,9 +11,16 @@ export function OfflinePage() {
       <section aria-labelledby="offline-recovery">
         <h2 id="offline-recovery">Try these steps</h2>
         <ol>
-          <li>Return to the open poetry tab instead of repeatedly refreshing.</li>
-          <li>Reconnect to Wi-Fi or mobile data, then try the experience again.</li>
-          <li>Ask the Persian Society stall for the prepared tablet or printed sample.</li>
+          <li>
+            Return to the open poetry tab instead of repeatedly refreshing.
+          </li>
+          <li>
+            Reconnect to Wi-Fi or mobile data, then try the experience again.
+          </li>
+          <li>
+            Ask the Persian Society stall for the prepared tablet or printed
+            sample.
+          </li>
         </ol>
       </section>
       <p className="context-note">

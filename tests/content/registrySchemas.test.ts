@@ -117,7 +117,9 @@ function makeRegistryBundle() {
 
 describe('registryBundleSchema', () => {
   it('accepts a complete strict registry bundle', () => {
-    expect(registryBundleSchema.safeParse(makeRegistryBundle()).success).toBe(true);
+    expect(registryBundleSchema.safeParse(makeRegistryBundle()).success).toBe(
+      true,
+    );
   });
 
   it('rejects unknown registry and record fields', () => {
@@ -140,14 +142,20 @@ describe('registryBundleSchema', () => {
     ['permissions', 'permissions'],
     ['approvals', 'approvals'],
     ['assets', 'assets'],
-  ] as const)('rejects duplicate IDs in the %s registry', (registryName, listName) => {
-    const bundle = makeRegistryBundle();
-    const registry = bundle[registryName] as unknown as Record<string, unknown>;
-    const records = registry[listName] as unknown[];
-    records.push(structuredClone(records[0]));
+  ] as const)(
+    'rejects duplicate IDs in the %s registry',
+    (registryName, listName) => {
+      const bundle = makeRegistryBundle();
+      const registry = bundle[registryName] as unknown as Record<
+        string,
+        unknown
+      >;
+      const records = registry[listName] as unknown[];
+      records.push(structuredClone(records[0]));
 
-    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
-  });
+      expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+    },
+  );
 
   it('requires complete rights evidence and territorial constraints', () => {
     const missingEvidence = makeRegistryBundle();
@@ -163,19 +171,16 @@ describe('registryBundleSchema', () => {
     }
 
     expect(registryBundleSchema.safeParse(missingEvidence).success).toBe(false);
-    expect(registryBundleSchema.safeParse(invalidTerritory).success).toBe(false);
+    expect(registryBundleSchema.safeParse(invalidTerritory).success).toBe(
+      false,
+    );
   });
 
   it.each([
     ['a subset', ['website_display']],
     [
       'a duplicate in place of a required use',
-      [
-        'website_display',
-        'website_display',
-        'event_print',
-        'archival_hosting',
-      ],
+      ['website_display', 'website_display', 'event_print', 'archival_hosting'],
     ],
   ])('rejects permitted uses containing %s', (_description, permittedUses) => {
     const bundle = makeRegistryBundle();
@@ -253,18 +258,18 @@ describe('registryBundleSchema', () => {
     expect(registryBundleSchema.safeParse(invalidAsset).success).toBe(false);
   });
 
-  it.each([
-    ['audio//test-only.mp3'],
-    ['audio/recitations//test-only.mp3'],
-  ])('rejects asset paths with empty segments: %s', (path) => {
-    const bundle = makeRegistryBundle();
-    const asset = bundle.assets.assets[0];
-    if (asset !== undefined) {
-      asset.path = path;
-    }
+  it.each([['audio//test-only.mp3'], ['audio/recitations//test-only.mp3']])(
+    'rejects asset paths with empty segments: %s',
+    (path) => {
+      const bundle = makeRegistryBundle();
+      const asset = bundle.assets.assets[0];
+      if (asset !== undefined) {
+        asset.path = path;
+      }
 
-    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
-  });
+      expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+    },
+  );
 
   it.each([
     ['font', 'fonts/test-only.woff2', 'font/woff2'],
@@ -296,20 +301,52 @@ describe('registryBundleSchema', () => {
   });
 
   it.each([
-    ['font using an image contract', 'font', 'images/test-only.png', 'image/png'],
-    ['image using a font contract', 'image', 'fonts/test-only.woff2', 'font/woff2'],
-    ['raster image declared as SVG', 'image', 'images/test-only.svg', 'image/svg+xml'],
-    ['icon outside the icon root', 'icon', 'images/test-only.svg', 'image/svg+xml'],
-    ['audio outside the audio root', 'audio', 'images/test-only.mp3', 'audio/mpeg'],
-    ['MP3 MIME with an OGG extension', 'audio', 'audio/test-only.ogg', 'audio/mpeg'],
-    ['AVIF MIME with a PNG extension', 'image', 'images/test-only.png', 'image/avif'],
-  ] as const)(
-    'rejects %s',
-    (_description, kind, path, mimeType) => {
-      const bundle = makeRegistryBundle();
-      replaceAsset(bundle, makeAsset(kind, path, mimeType));
+    [
+      'font using an image contract',
+      'font',
+      'images/test-only.png',
+      'image/png',
+    ],
+    [
+      'image using a font contract',
+      'image',
+      'fonts/test-only.woff2',
+      'font/woff2',
+    ],
+    [
+      'raster image declared as SVG',
+      'image',
+      'images/test-only.svg',
+      'image/svg+xml',
+    ],
+    [
+      'icon outside the icon root',
+      'icon',
+      'images/test-only.svg',
+      'image/svg+xml',
+    ],
+    [
+      'audio outside the audio root',
+      'audio',
+      'images/test-only.mp3',
+      'audio/mpeg',
+    ],
+    [
+      'MP3 MIME with an OGG extension',
+      'audio',
+      'audio/test-only.ogg',
+      'audio/mpeg',
+    ],
+    [
+      'AVIF MIME with a PNG extension',
+      'image',
+      'images/test-only.png',
+      'image/avif',
+    ],
+  ] as const)('rejects %s', (_description, kind, path, mimeType) => {
+    const bundle = makeRegistryBundle();
+    replaceAsset(bundle, makeAsset(kind, path, mimeType));
 
-      expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
-    },
-  );
+    expect(registryBundleSchema.safeParse(bundle).success).toBe(false);
+  });
 });

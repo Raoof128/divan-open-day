@@ -10,8 +10,12 @@ describe('nonblocking service-worker client', () => {
   it('reports registration failure without exposing the exception or rejecting', async () => {
     const events: Event[] = [];
     const target = new EventTarget();
-    target.addEventListener(OFFLINE_STATUS_EVENT, (event) => events.push(event));
-    const register = vi.fn().mockRejectedValue(new Error('private stack and URL'));
+    target.addEventListener(OFFLINE_STATUS_EVENT, (event) =>
+      events.push(event),
+    );
+    const register = vi
+      .fn()
+      .mockRejectedValue(new Error('private stack and URL'));
 
     await expect(
       registerOfflineWorker({
@@ -166,11 +170,9 @@ describe('nonblocking service-worker client', () => {
     const replace = vi.fn();
     const waiting = {
       state: 'installed',
-      addEventListener: vi.fn(
-        (_type: string, listener: () => void) => {
-          stateChanged = listener;
-        },
-      ),
+      addEventListener: vi.fn((_type: string, listener: () => void) => {
+        stateChanged = listener;
+      }),
       removeEventListener: vi.fn(),
       postMessage,
     } as unknown as ServiceWorker;
@@ -214,8 +216,12 @@ describe('nonblocking service-worker client', () => {
       clearTimer: vi.fn(),
     };
 
-    expect(requestOfflineActivation(registration, 'release-one', options)).toBe(true);
-    expect(requestOfflineActivation(registration, 'release-one', options)).toBe(true);
+    expect(requestOfflineActivation(registration, 'release-one', options)).toBe(
+      true,
+    );
+    expect(requestOfflineActivation(registration, 'release-one', options)).toBe(
+      true,
+    );
     expect(listeners).toHaveLength(1);
 
     timers[0]?.();

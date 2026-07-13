@@ -20,9 +20,7 @@ import {
   RUMI_ITEM,
 } from '../components/fixtures';
 
-function services(
-  overrides: Partial<AppServices> = {},
-): Partial<AppServices> {
+function services(overrides: Partial<AppServices> = {}): Partial<AppServices> {
   return {
     loadRelease: () => Promise.resolve(makeVerifiedRelease()),
     drawPoem: (poet) => ({
@@ -222,7 +220,9 @@ describe('announcements, motion, audio, and errors', () => {
     act(() => revealFrame?.(16));
 
     expect(revealScene).toHaveAttribute('data-reveal-phase', 'visible');
-    expect(screen.queryByRole('heading', { level: 1, name: 'Your verse' })).toBeNull();
+    expect(
+      screen.queryByRole('heading', { level: 1, name: 'Your verse' }),
+    ).toBeNull();
   });
 
   it('deduplicates an offline change in one polite atomic live region', async () => {
@@ -240,7 +240,9 @@ describe('announcements, motion, audio, and errors', () => {
       );
     });
     const mutations: MutationRecord[] = [];
-    const observer = new MutationObserver((records) => mutations.push(...records));
+    const observer = new MutationObserver((records) =>
+      mutations.push(...records),
+    );
     observer.observe(liveRegion, {
       characterData: true,
       childList: true,
@@ -304,10 +306,16 @@ describe('announcements, motion, audio, and errors', () => {
     expect(audio).not.toHaveAttribute('autoplay');
     fireEvent.error(audio);
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Your verse' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Reveal another' })).toBeEnabled();
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Your verse' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Reveal another' }),
+    ).toBeEnabled();
     expect(screen.getByText(HAFEZ_ITEM.text.englishLines[0]!)).toBeVisible();
-    expect(screen.getAllByText('Persian audio is unavailable right now.')).toHaveLength(2);
+    expect(
+      screen.getAllByText('Persian audio is unavailable right now.'),
+    ).toHaveLength(2);
   });
 
   it('contains a render crash in plain language without private diagnostics', () => {

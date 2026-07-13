@@ -1,10 +1,4 @@
-import {
-  mkdir,
-  mkdtemp,
-  readFile,
-  readdir,
-  rm,
-} from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { gzipSync } from 'node:zlib';
 
@@ -53,7 +47,9 @@ describe('locked visual system', () => {
       '--focus': '#78D6FF',
     } as const;
     for (const [name, value] of Object.entries(tokens)) {
-      expect(css.match(new RegExp(`${name}:\\s*${value}`, 'giu'))).toHaveLength(1);
+      expect(css.match(new RegExp(`${name}:\\s*${value}`, 'giu'))).toHaveLength(
+        1,
+      );
     }
   });
 
@@ -69,8 +65,12 @@ describe('locked visual system', () => {
 
   it('animates only transform, opacity, and bounded stroke properties', async () => {
     const css = `${await source('src/styles/visual.css')}\n${await source('src/styles/motion.css')}`;
-    expect(css).not.toMatch(/transition(?:-property)?:[^;]*(?:width|height|top|left)/iu);
-    expect(css).not.toMatch(/@keyframes[\s\S]*?\{[\s\S]*?(?:width|height|top|left):/iu);
+    expect(css).not.toMatch(
+      /transition(?:-property)?:[^;]*(?:width|height|top|left)/iu,
+    );
+    expect(css).not.toMatch(
+      /@keyframes[\s\S]*?\{[\s\S]*?(?:width|height|top|left):/iu,
+    );
     expect(css).not.toMatch(/filter:\s*blur\([^)]*(?:[2-9]\d|\d{3,})px/iu);
     expect(css).toContain("[data-motion='reduced']");
     expect(css).toContain('@media (pointer: coarse)');
@@ -114,9 +114,9 @@ describe('locked visual system', () => {
           .filter(({ path }) => path.endsWith(extension))
           .reduce((total, { bytes }) => total + gzipSync(bytes).byteLength, 0);
       const criticalFonts = assets
-        .filter(({ path }) =>
-          path.endsWith('.woff2') &&
-          !path.includes('noto-nastaliq-urdu'),
+        .filter(
+          ({ path }) =>
+            path.endsWith('.woff2') && !path.includes('noto-nastaliq-urdu'),
         )
         .reduce((total, { bytes }) => total + bytes.byteLength, 0);
       const initialImages = assets
@@ -131,8 +131,9 @@ describe('locked visual system', () => {
       expect(javascript).toBeLessThanOrEqual(200_000);
       expect(criticalFonts).toBeLessThanOrEqual(180_000);
       expect(initialImages).toBe(0);
-      expect(html + css + javascript + criticalFonts + initialImages)
-        .toBeLessThanOrEqual(1_200_000);
+      expect(
+        html + css + javascript + criticalFonts + initialImages,
+      ).toBeLessThanOrEqual(1_200_000);
     } finally {
       await rm(output, { recursive: true, force: true });
     }

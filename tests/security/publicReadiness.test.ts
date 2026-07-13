@@ -111,7 +111,9 @@ describe('font redistribution notices', () => {
 
     expect(sharedOflText).not.toBeNull();
     expect(notices).toContain(sharedOflText!);
-    expect(notices).toContain('No licence is granted for repository-authored material');
+    expect(notices).toContain(
+      'No licence is granted for repository-authored material',
+    );
   });
 });
 
@@ -162,7 +164,9 @@ describe('public operational evidence boundary', () => {
       ),
     ).toBe(true);
     expect(
-      existsSync(resolve(projectRoot, 'tests/fixtures/ops/test-credentials.json')),
+      existsSync(
+        resolve(projectRoot, 'tests/fixtures/ops/test-credentials.json'),
+      ),
     ).toBe(false);
   });
 });

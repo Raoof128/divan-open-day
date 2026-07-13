@@ -15,7 +15,9 @@ import { makeFixtureCorpus } from '../fixtures/content/corpus';
 const temporaryDirectories: string[] = [];
 
 async function makeProject(): Promise<string> {
-  const projectRoot = await mkdtemp(path.join(tmpdir(), 'divan-content-loader-'));
+  const projectRoot = await mkdtemp(
+    path.join(tmpdir(), 'divan-content-loader-'),
+  );
   temporaryDirectories.push(projectRoot);
   await mkdir(path.join(projectRoot, 'content-private', 'hafez'), {
     recursive: true,
@@ -64,9 +66,12 @@ afterEach(async () => {
 
 describe('strict YAML parsing', () => {
   it('rejects duplicate mapping keys', () => {
-    expect(() => parseStrictYaml('schema_version: 1\nschema_version: 1\n', 'duplicate.yaml')).toThrow(
-      /duplicate|unique/iu,
-    );
+    expect(() =>
+      parseStrictYaml(
+        'schema_version: 1\nschema_version: 1\n',
+        'duplicate.yaml',
+      ),
+    ).toThrow(/duplicate|unique/iu);
   });
 
   it('rejects aliases and anchors', () => {
@@ -114,11 +119,17 @@ describe('strict YAML parsing', () => {
     'ftp:example.test/a',
     'ftps:example.test/a',
     'javascript:alert(1)',
-  ])('rejects every URI scheme and protocol-relative remote value: %s', (value) => {
-    expect(() =>
-      parseStrictYaml(`nested:\n  source: ${JSON.stringify(value)}\n`, 'remote.yaml'),
-    ).toThrow(/remote|URL|URI/iu);
-  });
+  ])(
+    'rejects every URI scheme and protocol-relative remote value: %s',
+    (value) => {
+      expect(() =>
+        parseStrictYaml(
+          `nested:\n  source: ${JSON.stringify(value)}\n`,
+          'remote.yaml',
+        ),
+      ).toThrow(/remote|URL|URI/iu);
+    },
+  );
 
   it('does not treat ordinary prose containing a colon as a remote resource', () => {
     expect(() =>
@@ -135,7 +146,10 @@ describe('content-private filesystem loading', () => {
     const projectRoot = await makeProject();
     await writeFixtureTree(projectRoot);
 
-    const loaded = await loadContentPrivate({ projectRoot, profile: 'fixture' });
+    const loaded = await loadContentPrivate({
+      projectRoot,
+      profile: 'fixture',
+    });
 
     expect(loaded.items).toHaveLength(2);
     expect(loaded.items.map((item) => item.poet).toSorted()).toEqual([
@@ -147,7 +161,11 @@ describe('content-private filesystem loading', () => {
 
   it('rejects path traversal outside content-private', async () => {
     const projectRoot = await makeProject();
-    await writeFile(path.join(projectRoot, 'outside.yaml'), 'value: TEST\n', 'utf8');
+    await writeFile(
+      path.join(projectRoot, 'outside.yaml'),
+      'value: TEST\n',
+      'utf8',
+    );
 
     await expect(
       readStrictYamlFile(

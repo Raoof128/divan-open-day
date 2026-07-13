@@ -42,13 +42,14 @@ async function installFixtureRelease(page: Page): Promise<{
   // this capture run; the app registers it fail-safe, so this is a no-op path.
   await page.addInitScript(() => {
     const container = navigator.serviceWorker as
-      | { register?: unknown }
-      | undefined;
+      { register?: unknown } | undefined;
     if (container && typeof container.register === 'function') {
       Object.defineProperty(container, 'register', {
         configurable: true,
         value: () =>
-          Promise.reject(new Error('service worker disabled for visual capture')),
+          Promise.reject(
+            new Error('service worker disabled for visual capture'),
+          ),
       });
     }
   });
@@ -89,11 +90,15 @@ async function installFixtureRelease(page: Page): Promise<{
           releasePaused = false;
           const routes = pausedRoutes;
           pausedRoutes = [];
-          await Promise.all(routes.map((route) => route.fulfill({
-            status: 200,
-            contentType: 'application/json; charset=utf-8',
-            body: releaseBytes,
-          })));
+          await Promise.all(
+            routes.map((route) =>
+              route.fulfill({
+                status: 200,
+                contentType: 'application/json; charset=utf-8',
+                body: releaseBytes,
+              }),
+            ),
+          );
         },
       };
     },
@@ -101,10 +106,7 @@ async function installFixtureRelease(page: Page): Promise<{
   };
 }
 
-async function capture(
-  page: Page,
-  path: string,
-): Promise<void> {
+async function capture(page: Page, path: string): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
@@ -137,7 +139,10 @@ test('captures the locked visual matrix without remote resources or overflow', a
   });
 
   for (const [index, baseline] of BASELINES.entries()) {
-    await page.setViewportSize({ width: baseline.width, height: baseline.height });
+    await page.setViewportSize({
+      width: baseline.width,
+      height: baseline.height,
+    });
     if (index > 0) {
       await page.goto('/about');
       await page.evaluate(() => window.sessionStorage.clear());
@@ -145,54 +150,132 @@ test('captures the locked visual matrix without remote resources or overflow', a
     const pausedRelease = pauseRelease();
     await page.goto('/');
     await pausedRelease.firstRequest;
-    await expect(page.getByRole('heading', { level: 1, name: 'DIVAN' })).toBeVisible();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '00-boot.jpg'));
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'DIVAN' }),
+    ).toBeVisible();
+    await capture(
+      page,
+      testInfo.outputPath('visual-evidence', baseline.name, '00-boot.jpg'),
+    );
     await pausedRelease.resume();
 
     await expect(page.getByRole('button', { name: 'Begin' })).toBeVisible();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '01-welcome.jpg'));
+    await capture(
+      page,
+      testInfo.outputPath('visual-evidence', baseline.name, '01-welcome.jpg'),
+    );
 
     await page.getByRole('button', { name: 'Begin' }).click();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '02-choose.jpg'));
+    await capture(
+      page,
+      testInfo.outputPath('visual-evidence', baseline.name, '02-choose.jpg'),
+    );
 
     const hafez = page.getByRole('button', { name: /Open the Divan.*Hafez/u });
-    const rumi = page.getByRole('button', { name: /A Moment of Reflection.*Rumi/u });
-    const hafezBackground = await hafez.evaluate((element) => getComputedStyle(element, '::before').backgroundImage);
-    const rumiBackground = await rumi.evaluate((element) => getComputedStyle(element, '::before').backgroundImage);
+    const rumi = page.getByRole('button', {
+      name: /A Moment of Reflection.*Rumi/u,
+    });
+    const hafezBackground = await hafez.evaluate(
+      (element) => getComputedStyle(element, '::before').backgroundImage,
+    );
+    const rumiBackground = await rumi.evaluate(
+      (element) => getComputedStyle(element, '::before').backgroundImage,
+    );
     expect(hafezBackground).not.toBe(rumiBackground);
 
     await hafez.click();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '03-hafez-intention.jpg'));
+    await capture(
+      page,
+      testInfo.outputPath(
+        'visual-evidence',
+        baseline.name,
+        '03-hafez-intention.jpg',
+      ),
+    );
     await page.getByLabel('Motion').selectOption('full');
     await page.getByRole('button', { name: 'Press to reveal' }).click();
     const hafezSkip = page.getByRole('button', { name: 'Skip animation' });
     await expect(hafezSkip).toBeVisible();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '04-hafez-revealing.jpg'));
+    await capture(
+      page,
+      testInfo.outputPath(
+        'visual-evidence',
+        baseline.name,
+        '04-hafez-revealing.jpg',
+      ),
+    );
     await hafezSkip.click();
-    await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeFocused();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '05-hafez-result.jpg'));
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Your verse' }),
+    ).toBeFocused();
+    await capture(
+      page,
+      testInfo.outputPath(
+        'visual-evidence',
+        baseline.name,
+        '05-hafez-result.jpg',
+      ),
+    );
 
     await page.goBack();
     await page.goBack();
-    await page.getByRole('button', { name: /A Moment of Reflection.*Rumi/u }).click();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '06-rumi-intention.jpg'));
+    await page
+      .getByRole('button', { name: /A Moment of Reflection.*Rumi/u })
+      .click();
+    await capture(
+      page,
+      testInfo.outputPath(
+        'visual-evidence',
+        baseline.name,
+        '06-rumi-intention.jpg',
+      ),
+    );
     await page.getByRole('button', { name: 'Press to reveal' }).click();
     const rumiSkip = page.getByRole('button', { name: 'Skip animation' });
     await expect(rumiSkip).toBeVisible();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '07-rumi-revealing.jpg'));
+    await capture(
+      page,
+      testInfo.outputPath(
+        'visual-evidence',
+        baseline.name,
+        '07-rumi-revealing.jpg',
+      ),
+    );
     await rumiSkip.click();
-    await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeFocused();
-    await capture(page, testInfo.outputPath('visual-evidence', baseline.name, '08-rumi-result.jpg'));
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Your verse' }),
+    ).toBeFocused();
+    await capture(
+      page,
+      testInfo.outputPath(
+        'visual-evidence',
+        baseline.name,
+        '08-rumi-result.jpg',
+      ),
+    );
 
     for (const [route, name] of CONTEXT_PAGES) {
       await page.goto(route);
-      await capture(page, testInfo.outputPath('visual-evidence', baseline.name, `context-${name}.jpg`));
+      await capture(
+        page,
+        testInfo.outputPath(
+          'visual-evidence',
+          baseline.name,
+          `context-${name}.jpg`,
+        ),
+      );
     }
   }
 
-  const dimensionlessDecorativeSvg = await page.locator('svg[data-divan-geometry]').evaluateAll((elements) =>
-    elements.filter((element) => !element.hasAttribute('width') || !element.hasAttribute('height')).length,
-  );
+  const dimensionlessDecorativeSvg = await page
+    .locator('svg[data-divan-geometry]')
+    .evaluateAll(
+      (elements) =>
+        elements.filter(
+          (element) =>
+            !element.hasAttribute('width') || !element.hasAttribute('height'),
+        ).length,
+    );
   expect(dimensionlessDecorativeSvg).toBe(0);
   expect(remoteRequests).toEqual([]);
 });
@@ -211,30 +294,53 @@ test('full reveal uses bounded composited choreography and reduced mode stays st
   await page.getByRole('button', { name: 'Press to reveal' }).click();
   await expect(page.locator('.reveal-object')).toBeVisible();
 
-  const fullAnimations = await page.locator('.reveal-object').evaluate((element) =>
-    element.getAnimations({ subtree: true }).map((animation) => {
-      const effect = animation.effect;
-      const keyframes = effect instanceof KeyframeEffect ? effect.getKeyframes() : [];
-      return {
-        duration: Number(effect?.getTiming().duration ?? 0),
-        properties: [...new Set(keyframes.flatMap((frame) => Object.keys(frame)))]
-          .filter((property) => !['composite', 'computedOffset', 'easing', 'offset'].includes(property)),
-      };
-    }),
-  );
+  const fullAnimations = await page
+    .locator('.reveal-object')
+    .evaluate((element) =>
+      element.getAnimations({ subtree: true }).map((animation) => {
+        const effect = animation.effect;
+        const keyframes =
+          effect instanceof KeyframeEffect ? effect.getKeyframes() : [];
+        return {
+          duration: Number(effect?.getTiming().duration ?? 0),
+          properties: [
+            ...new Set(keyframes.flatMap((frame) => Object.keys(frame))),
+          ].filter(
+            (property) =>
+              !['composite', 'computedOffset', 'easing', 'offset'].includes(
+                property,
+              ),
+          ),
+        };
+      }),
+    );
   expect(fullAnimations.length).toBeGreaterThanOrEqual(2);
-  expect(Math.max(...fullAnimations.map((animation) => animation.duration))).toBeLessThanOrEqual(1_600);
+  expect(
+    Math.max(...fullAnimations.map((animation) => animation.duration)),
+  ).toBeLessThanOrEqual(1_600);
   for (const animation of fullAnimations) {
-    expect(animation.properties.every((property) => ['opacity', 'strokeDashoffset', 'transform'].includes(property))).toBe(true);
+    expect(
+      animation.properties.every((property) =>
+        ['opacity', 'strokeDashoffset', 'transform'].includes(property),
+      ),
+    ).toBe(true);
   }
 
   await page.getByRole('button', { name: 'Skip animation' }).click();
   await page.getByRole('button', { name: 'Reveal another' }).click();
   await page.getByLabel('Motion').selectOption('reduced');
   await page.getByRole('button', { name: 'Press to reveal' }).click();
-  await expect(page.locator('[data-scene="revealing"]')).toHaveAttribute('data-motion', 'reduced');
-  const reducedAnimations = await page.locator('.reveal-object').evaluate((element) =>
-    element.getAnimations({ subtree: true }).filter((animation) => animation instanceof CSSAnimation).length,
+  await expect(page.locator('[data-scene="revealing"]')).toHaveAttribute(
+    'data-motion',
+    'reduced',
   );
+  const reducedAnimations = await page
+    .locator('.reveal-object')
+    .evaluate(
+      (element) =>
+        element
+          .getAnimations({ subtree: true })
+          .filter((animation) => animation instanceof CSSAnimation).length,
+    );
   expect(reducedAnimations).toBe(0);
 });

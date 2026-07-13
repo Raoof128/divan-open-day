@@ -30,18 +30,18 @@ export function AccessibilityPage() {
         <h2 id="access-audio">Audio and text</h2>
         <p>
           Recitation is optional, starts only when requested, and uses native
-          browser controls. The visible Persian poem is the transcript. A
-          failed recording never removes the poem or its actions.
+          browser controls. The visible Persian poem is the transcript. A failed
+          recording never removes the poem or its actions.
         </p>
       </section>
       <section aria-labelledby="access-gates">
         <h2 id="access-gates">Testing still required</h2>
         <p>
-          Automated checks support but do not establish WCAG conformance.
-          Public launch still requires recorded VoiceOver and TalkBack flows,
-          Persian pronunciation review, Safari/Chrome/Firefox/Edge coverage,
-          physical-device zoom and orientation checks, measured contrast, and
-          a manual focus-order review.
+          Automated checks support but do not establish WCAG conformance. Public
+          launch still requires recorded VoiceOver and TalkBack flows, Persian
+          pronunciation review, Safari/Chrome/Firefox/Edge coverage,
+          physical-device zoom and orientation checks, measured contrast, and a
+          manual focus-order review.
         </p>
       </section>
     </ContextLayout>

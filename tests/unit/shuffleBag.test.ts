@@ -7,7 +7,10 @@ import {
 } from '../../src/lib/draw/shuffleBag';
 import { SESSION_STORAGE_KEYS } from '../../src/contracts/app';
 import type { RandomValuesSource } from '../../src/lib/draw/secureRandom';
-import { persistSessionRelease, type StorageAdapter } from '../../src/lib/storage/session';
+import {
+  persistSessionRelease,
+  type StorageAdapter,
+} from '../../src/lib/storage/session';
 
 const RELEASE_ID = 'test-only-release';
 

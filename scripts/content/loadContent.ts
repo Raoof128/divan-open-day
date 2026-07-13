@@ -43,7 +43,10 @@ const FIXTURE_SENTINEL_PATTERN =
 const FIXTURE_ID_PATTERN = /(?:^|[-_/])(?:test-only|fixture)(?:[-_/]|$)/iu;
 const MAX_YAML_BYTES = 1_000_000;
 
-function describeYamlError(sourceName: string, messages: readonly string[]): Error {
+function describeYamlError(
+  sourceName: string,
+  messages: readonly string[],
+): Error {
   return new Error(`Invalid YAML in ${sourceName}: ${messages.join('; ')}`);
 }
 
@@ -82,7 +85,9 @@ function inspectParsedValue(
 
 function containsFixtureMarker(value: unknown, seen: Set<object>): boolean {
   if (typeof value === 'string') {
-    return FIXTURE_SENTINEL_PATTERN.test(value) || FIXTURE_ID_PATTERN.test(value);
+    return (
+      FIXTURE_SENTINEL_PATTERN.test(value) || FIXTURE_ID_PATTERN.test(value)
+    );
   }
 
   if (value === null || typeof value !== 'object' || seen.has(value)) {
@@ -94,7 +99,9 @@ function containsFixtureMarker(value: unknown, seen: Set<object>): boolean {
     if (Array.isArray(value)) {
       return value.some((entry) => containsFixtureMarker(entry, seen));
     }
-    return Object.values(value).some((entry) => containsFixtureMarker(entry, seen));
+    return Object.values(value).some((entry) =>
+      containsFixtureMarker(entry, seen),
+    );
   } finally {
     seen.delete(value);
   }
@@ -223,7 +230,9 @@ export function parseStrictYaml(source: string, sourceName: string): unknown {
 
   visit(document, (_key, node) => {
     if (isAlias(node)) {
-      throw new Error(`YAML aliases and anchors are not allowed in ${sourceName}.`);
+      throw new Error(
+        `YAML aliases and anchors are not allowed in ${sourceName}.`,
+      );
     }
 
     if (
@@ -233,7 +242,9 @@ export function parseStrictYaml(source: string, sourceName: string): unknown {
       typeof node.anchor === 'string' &&
       node.anchor !== ''
     ) {
-      throw new Error(`YAML aliases and anchors are not allowed in ${sourceName}.`);
+      throw new Error(
+        `YAML aliases and anchors are not allowed in ${sourceName}.`,
+      );
     }
 
     if (
@@ -250,8 +261,11 @@ export function parseStrictYaml(source: string, sourceName: string): unknown {
   try {
     value = document.toJS({ maxAliasCount: 0, mapAsMap: false });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown parse failure';
-    throw new Error(`Invalid YAML in ${sourceName}: ${message}`, { cause: error });
+    const message =
+      error instanceof Error ? error.message : 'unknown parse failure';
+    throw new Error(`Invalid YAML in ${sourceName}: ${message}`, {
+      cause: error,
+    });
   }
 
   inspectParsedValue(value, sourceName, new Set<object>());
@@ -260,7 +274,11 @@ export function parseStrictYaml(source: string, sourceName: string): unknown {
 
 function assertContainedPath(root: string, candidate: string): void {
   const relative = path.relative(root, candidate);
-  if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+  if (
+    relative === '..' ||
+    relative.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relative)
+  ) {
     throw new Error('Content path would escape outside content-private.');
   }
 }
@@ -301,7 +319,10 @@ export async function readStrictYamlFile(
   }
 }
 
-async function assertRegularDirectory(directory: string, label: string): Promise<void> {
+async function assertRegularDirectory(
+  directory: string,
+  label: string,
+): Promise<void> {
   const stat = await lstat(directory);
   if (stat.isSymbolicLink()) {
     throw new Error(`Symlinked ${label} directory is not allowed.`);
@@ -335,10 +356,17 @@ async function discoverItemFiles(
     .toSorted((left, right) => left.name.localeCompare(right.name, 'en'))
     .map((entry) => {
       if (entry.isSymbolicLink()) {
-        throw new Error(`Symlinked content is not allowed: ${poet}/${entry.name}.`);
+        throw new Error(
+          `Symlinked content is not allowed: ${poet}/${entry.name}.`,
+        );
       }
-      if (!entry.isFile() || !/^[a-z0-9]+(?:-[a-z0-9]+)*\.yaml$/u.test(entry.name)) {
-        throw new Error(`Unexpected content-private entry: ${poet}/${entry.name}.`);
+      if (
+        !entry.isFile() ||
+        !/^[a-z0-9]+(?:-[a-z0-9]+)*\.yaml$/u.test(entry.name)
+      ) {
+        throw new Error(
+          `Unexpected content-private entry: ${poet}/${entry.name}.`,
+        );
       }
       return `${poet}/${entry.name}`;
     });
@@ -371,13 +399,19 @@ function parseAuthoringItem(
 ): AuthoringContentItem {
   const result = authoringContentItemSchema.safeParse(value);
   if (!result.success) {
-    throw new Error(`Invalid authoring schema in ${relativePath}: ${result.error.message}`);
+    throw new Error(
+      `Invalid authoring schema in ${relativePath}: ${result.error.message}`,
+    );
   }
   if (result.data.poet !== expectedPoet) {
-    throw new Error(`${relativePath} contains an authoring item for the wrong poet.`);
+    throw new Error(
+      `${relativePath} contains an authoring item for the wrong poet.`,
+    );
   }
   if (`${result.data.id}.yaml` !== path.basename(relativePath)) {
-    throw new Error(`${relativePath} filename must exactly match its authoring item ID.`);
+    throw new Error(
+      `${relativePath} filename must exactly match its authoring item ID.`,
+    );
   }
   return result.data;
 }
@@ -401,7 +435,9 @@ export async function loadContentPrivate(
   }
 
   const rawItems = await Promise.all(
-    itemFiles.map((relativePath) => readStrictYamlFile(contentRoot, relativePath)),
+    itemFiles.map((relativePath) =>
+      readStrictYamlFile(contentRoot, relativePath),
+    ),
   );
   const items = rawItems.map((value, index) => {
     const relativePath = itemFiles[index];
@@ -416,22 +452,27 @@ export async function loadContentPrivate(
   });
 
   const registryEntries = await Promise.all(
-    Object.entries(REGISTRY_FILES).map(async ([name, relativePath]) =>
-      [name, await readStrictYamlFile(contentRoot, relativePath)] as const,
+    Object.entries(REGISTRY_FILES).map(
+      async ([name, relativePath]) =>
+        [name, await readStrictYamlFile(contentRoot, relativePath)] as const,
     ),
   );
   const rawRegistries: Record<string, unknown> =
     Object.fromEntries(registryEntries);
   const registryResult = registryBundleSchema.safeParse(rawRegistries);
   if (!registryResult.success) {
-    throw new Error(`Invalid private registry schema: ${registryResult.error.message}`);
+    throw new Error(
+      `Invalid private registry schema: ${registryResult.error.message}`,
+    );
   }
 
   if (
     options.profile === 'production' &&
     containsFixtureMarker([items, registryResult.data], new Set<object>())
   ) {
-    throw new Error('Production content cannot contain fixture IDs or TEST ONLY sentinels.');
+    throw new Error(
+      'Production content cannot contain fixture IDs or TEST ONLY sentinels.',
+    );
   }
 
   return {

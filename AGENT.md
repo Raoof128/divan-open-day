@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-13 (Australia/Sydney) — Prettier, quality-gate script, and CI
+
+**Raouf:**
+
+- **Scope:** Repository professionalisation — formatting, a single quality-gate command, continuous integration, and contributor scaffolding. No product behaviour changed.
+- **Summary:** Added Prettier (`prettier`, `eslint-config-prettier`) with `.prettierrc.json`/`.prettierignore`, wired `eslint-config-prettier` last in the flat ESLint config so the two do not conflict, and applied formatting repo-wide (append-only logs and the design authority are ignored to avoid prose churn). Added `format`, `format:check`, and `check` scripts. Added `scripts/check.sh`, one command that runs the design §30.1 gauntlet (format, lint, typecheck, tests, fixture build, dist/privacy verification, prod audit) and reports the fail-closed launch gates (`build:production`, `verify:qr`) and the Docker-host evidence it skips; supports `--quick`, `--e2e`, and `--ci`. Added `.github/workflows/ci.yml` running `check.sh --ci` (including Playwright) on pushes to `main` and all pull requests, plus `.editorconfig`, a pull-request template, `CONTRIBUTING.md`, and CI/Node/pnpm badges in `README.md`.
+- **Files Changed:** `package.json`, `pnpm-lock.yaml`, `eslint.config.js`, `.prettierrc.json`, `.prettierignore`, `.editorconfig`, `scripts/check.sh`, `.github/workflows/ci.yml`, `.github/pull_request_template.md`, `CONTRIBUTING.md`, `README.md`, repo-wide Prettier formatting, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0. After formatting: `pnpm typecheck` 0, `pnpm lint` 0, `pnpm test` 472/472 (34 files), `pnpm format:check` clean. `bash scripts/check.sh` passes all hard gates with `build:production` and `verify:qr` correctly fail-closed and Docker evidence skipped (no daemon). The CI workflow uses only static commands — no untrusted `github.event.*` input reaches any `run` step.
+- **Follow-ups:** Docker-host and §31.2 launch gates are unchanged and remain closed. Consider adding branch protection requiring the `Quality gate` check before merge to `main`.
+
 ### 2026-07-13 (Australia/Sydney) — full integration, Wave C review, share card, and verification evidence
 
 **Raouf:**

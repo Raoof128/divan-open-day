@@ -24,13 +24,44 @@ interface Rule {
 // Violations in BOTH source and built output. Host-based so they do not collide
 // with minified identifiers (e.g. a bundled function named `ga`).
 const FORBIDDEN_EVERYWHERE: readonly Rule[] = [
-  { id: 'cookie-write', pattern: /document\s*\.\s*cookie\s*=[^=]/u, reason: 'no cookies (§23)' },
-  { id: 'geolocation', pattern: /navigator\s*\.\s*geolocation/u, reason: 'no geolocation (§23)' },
-  { id: 'analytics-host', pattern: /google-analytics\.com|googletagmanager\.com|stats\.g\.doubleclick|region1\.google-analytics/u, reason: 'no analytics host' },
-  { id: 'ad-host', pattern: /doubleclick\.net|googlesyndication\.com|adservice\.google/u, reason: 'no advertising host' },
-  { id: 'social-sdk-host', pattern: /connect\.facebook\.net|platform\.twitter\.com|platform\.linkedin\.com/u, reason: 'no social SDK host' },
-  { id: 'tracker-host', pattern: /\bcdn\.mixpanel\b|\bcdn\.segment\b|static\.hotjar\.com|plausible\.io|\bmatomo\b|cdn\.amplitude\.com|fullstory\.com|clarity\.ms/iu, reason: 'no third-party tracker host' },
-  { id: 'fingerprint', pattern: /fingerprintjs|@fingerprint/iu, reason: 'no fingerprinting library' },
+  {
+    id: 'cookie-write',
+    pattern: /document\s*\.\s*cookie\s*=[^=]/u,
+    reason: 'no cookies (§23)',
+  },
+  {
+    id: 'geolocation',
+    pattern: /navigator\s*\.\s*geolocation/u,
+    reason: 'no geolocation (§23)',
+  },
+  {
+    id: 'analytics-host',
+    pattern:
+      /google-analytics\.com|googletagmanager\.com|stats\.g\.doubleclick|region1\.google-analytics/u,
+    reason: 'no analytics host',
+  },
+  {
+    id: 'ad-host',
+    pattern: /doubleclick\.net|googlesyndication\.com|adservice\.google/u,
+    reason: 'no advertising host',
+  },
+  {
+    id: 'social-sdk-host',
+    pattern:
+      /connect\.facebook\.net|platform\.twitter\.com|platform\.linkedin\.com/u,
+    reason: 'no social SDK host',
+  },
+  {
+    id: 'tracker-host',
+    pattern:
+      /\bcdn\.mixpanel\b|\bcdn\.segment\b|static\.hotjar\.com|plausible\.io|\bmatomo\b|cdn\.amplitude\.com|fullstory\.com|clarity\.ms/iu,
+    reason: 'no third-party tracker host',
+  },
+  {
+    id: 'fingerprint',
+    pattern: /fingerprintjs|@fingerprint/iu,
+    reason: 'no fingerprinting library',
+  },
 ];
 
 // Additional call-shaped patterns checked only in unminified source, where they
@@ -38,7 +69,11 @@ const FORBIDDEN_EVERYWHERE: readonly Rule[] = [
 const FORBIDDEN_SOURCE: readonly Rule[] = [
   { id: 'gtag-call', pattern: /\bgtag\s*\(/u, reason: 'no Google tag' },
   { id: 'fbq-call', pattern: /\bfbq\s*\(/u, reason: 'no Facebook pixel' },
-  { id: 'datalayer', pattern: /\bdataLayer\s*\.\s*push/u, reason: 'no GTM dataLayer' },
+  {
+    id: 'datalayer',
+    pattern: /\bdataLayer\s*\.\s*push/u,
+    reason: 'no GTM dataLayer',
+  },
 ];
 
 const SOURCE_DIRS = ['src', 'src-sw'];
@@ -72,7 +107,9 @@ function scan(dir: string, rules: readonly Rule[]): void {
     const text = readFileSync(file, 'utf8');
     for (const rule of rules) {
       if (rule.pattern.test(text)) {
-        violations.push(`${file.replace(`${ROOT}/`, '')}: ${rule.id} — ${rule.reason}`);
+        violations.push(
+          `${file.replace(`${ROOT}/`, '')}: ${rule.id} — ${rule.reason}`,
+        );
       }
     }
   }
@@ -86,8 +123,14 @@ scan(DIST_DIR, FORBIDDEN_EVERYWHERE);
 // Positive assertion: the app uses session-scoped storage for draw/session state.
 const appFile = resolve(ROOT, 'src/app/App.tsx');
 try {
-  if (!/browserStorage\(\s*'sessionStorage'\s*\)/u.test(readFileSync(appFile, 'utf8'))) {
-    violations.push('src/app/App.tsx: expected session-scoped draw/session storage');
+  if (
+    !/browserStorage\(\s*'sessionStorage'\s*\)/u.test(
+      readFileSync(appFile, 'utf8'),
+    )
+  ) {
+    violations.push(
+      'src/app/App.tsx: expected session-scoped draw/session storage',
+    );
   }
 } catch {
   violations.push('src/app/App.tsx: application shell not found');

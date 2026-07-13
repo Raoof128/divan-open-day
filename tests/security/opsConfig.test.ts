@@ -49,7 +49,12 @@ function runLibraryFunction(
 ): SpawnSyncReturns<string> {
   return spawnSync(
     'bash',
-    ['--noprofile', '--norc', '-c', `source "${resolve(opsRoot, 'scripts', 'lib.sh')}"; ${command}`],
+    [
+      '--noprofile',
+      '--norc',
+      '-c',
+      `source "${resolve(opsRoot, 'scripts', 'lib.sh')}"; ${command}`,
+    ],
     {
       cwd: projectRoot,
       encoding: 'utf8',
@@ -70,8 +75,12 @@ describe('production image contract', () => {
     expect(syntaxReference).toMatch(
       /^docker\/dockerfile:[a-z0-9._-]+@sha256:[a-f0-9]{64}$/u,
     );
-    expect(imageReferences.every((image) => immutableImagePattern.test(image))).toBe(true);
-    expect(dockerfile).not.toMatch(/VERIFIED_DIGEST|PLACEHOLDER|CHANGEME|latest/iu);
+    expect(
+      imageReferences.every((image) => immutableImagePattern.test(image)),
+    ).toBe(true);
+    expect(dockerfile).not.toMatch(
+      /VERIFIED_DIGEST|PLACEHOLDER|CHANGEME|latest/iu,
+    );
   });
 
   test('defaults to the production content gate and marks fixture builds', () => {
@@ -80,7 +89,9 @@ describe('production image contract', () => {
     expect(dockerfile).toContain('ARG DIVAN_BUILD_MODE=production');
     expect(dockerfile).toMatch(/production\).*pnpm build:production/su);
     expect(dockerfile).toMatch(/fixture\).*pnpm build:fixture/su);
-    expect(dockerfile).toContain('org.opencontainers.image.divan-build-mode=$DIVAN_BUILD_MODE');
+    expect(dockerfile).toContain(
+      'org.opencontainers.image.divan-build-mode=$DIVAN_BUILD_MODE',
+    );
     expect(dockerfile).toContain('pnpm verify:dist');
   });
 
@@ -117,7 +128,9 @@ describe('production image contract', () => {
 
     expect(dockerfile).toContain('RUN setcap -r /usr/bin/caddy');
     expect(dockerfile).toMatch(/COPY --from=build[^\n]*\/app\/dist \/srv/u);
-    expect(dockerfile).not.toMatch(/COPY --from=build[^\n]*(content-private|src|\.git)/u);
+    expect(dockerfile).not.toMatch(
+      /COPY --from=build[^\n]*(content-private|src|\.git)/u,
+    );
     expect(dockerfile).toContain('USER 10001:10001');
     expect(dockerfile).toContain('EXPOSE 8080');
   });
@@ -186,7 +199,9 @@ describe('static origin delivery contract', () => {
     expect(caddyfile).toContain('public, max-age=31536000, immutable');
     expect(caddyfile).toContain('public, max-age=3600');
     expect(caddyfile).toContain('?Cache-Control "no-store"');
-    expect(caddyfile).toMatch(/@immutable\s*\{[\s\S]*path_regexp[\s\S]*file[\s\S]*\}/u);
+    expect(caddyfile).toMatch(
+      /@immutable\s*\{[\s\S]*path_regexp[\s\S]*file[\s\S]*\}/u,
+    );
     expect(caddyfile).toMatch(/@documents[\s\S]*rewrite \* \/index\.html/su);
     expect(caddyfile).toMatch(/@staticAssets[\s\S]*file_server/su);
     expect(caddyfile).not.toMatch(/browse/u);
@@ -194,10 +209,14 @@ describe('static origin delivery contract', () => {
 
   test('serves the offline recovery file exactly without rewriting it to the SPA', () => {
     const caddyfile = readProjectFile('ops/Caddyfile');
-    const staticPaths = caddyfile.match(/@staticAssets path ([^\n]+)/u)?.[1] ?? '';
-    const documentPaths = caddyfile.match(/@documents path ([^\n]+)/u)?.[1] ?? '';
-    const noCachePaths = caddyfile.match(/@noCacheFiles \{\s*path ([^\n]+)/u)?.[1] ?? '';
-    const technicalPaths = caddyfile.match(/@technical path ([^\n]+)/u)?.[1] ?? '';
+    const staticPaths =
+      caddyfile.match(/@staticAssets path ([^\n]+)/u)?.[1] ?? '';
+    const documentPaths =
+      caddyfile.match(/@documents path ([^\n]+)/u)?.[1] ?? '';
+    const noCachePaths =
+      caddyfile.match(/@noCacheFiles \{\s*path ([^\n]+)/u)?.[1] ?? '';
+    const technicalPaths =
+      caddyfile.match(/@technical path ([^\n]+)/u)?.[1] ?? '';
 
     expect(staticPaths.split(/\s+/u)).toContain('/offline.html');
     expect(documentPaths.split(/\s+/u)).not.toContain('/offline.html');
@@ -212,25 +231,29 @@ describe('static origin delivery contract', () => {
     expect(source).toBeDefined();
     const immutable = new RegExp(source!);
 
-    expect([
-      `/content/${'a'.repeat(64)}.json`,
-      `/assets/${'b'.repeat(64)}.json`,
-      '/assets/main-0123456789abcdef.js',
-      '/audio/poets/hafez/reading_sample_0123abcd.mp3',
-      '/audio/0123abcd-opening.ogg',
-      '/fonts/persian/display_font0123abcd.woff2',
-      '/images/manuscripts/page_0123abcd.webp',
-      '/icons/ui/_ornament-0123abcd.svg',
-    ].every((path) => immutable.test(path))).toBe(true);
+    expect(
+      [
+        `/content/${'a'.repeat(64)}.json`,
+        `/assets/${'b'.repeat(64)}.json`,
+        '/assets/main-0123456789abcdef.js',
+        '/audio/poets/hafez/reading_sample_0123abcd.mp3',
+        '/audio/0123abcd-opening.ogg',
+        '/fonts/persian/display_font0123abcd.woff2',
+        '/images/manuscripts/page_0123abcd.webp',
+        '/icons/ui/_ornament-0123abcd.svg',
+      ].every((path) => immutable.test(path)),
+    ).toBe(true);
 
-    expect([
-      '/assets/not-content-addressed.js',
-      '/audio/poets/reading.mp3',
-      '/audio/.hidden-0123abcd.mp3',
-      '/images/page-0123abcd.html',
-      `/content/${'a'.repeat(63)}.json`,
-      '/offline.html',
-    ].some((path) => immutable.test(path))).toBe(false);
+    expect(
+      [
+        '/assets/not-content-addressed.js',
+        '/audio/poets/reading.mp3',
+        '/audio/.hidden-0123abcd.mp3',
+        '/images/page-0123abcd.html',
+        `/content/${'a'.repeat(63)}.json`,
+        '/offline.html',
+      ].some((path) => immutable.test(path)),
+    ).toBe(false);
   });
 });
 
@@ -242,7 +265,9 @@ describe('Compose and tunnel isolation', () => {
     };
 
     expect(source).toContain('${DIVAN_WEB_IMAGE:?');
-    expect(immutableImagePattern.test(compose.services['cloudflared']!.image)).toBe(true);
+    expect(
+      immutableImagePattern.test(compose.services['cloudflared']!.image),
+    ).toBe(true);
     expect(compose.services['divan-web']!.ports).toBeUndefined();
     expect(compose.services['cloudflared']!.ports).toBeUndefined();
     expect(source).not.toMatch(/VERIFIED_DIGEST|PLACEHOLDER|CHANGEME|latest/iu);
@@ -263,7 +288,9 @@ describe('Compose and tunnel isolation', () => {
         'org.persiansocietyeoi.divan.scope': 'dedicated',
       },
     });
-    expect(compose.networks['divan_egress']).toMatchObject({ name: 'divan_egress' });
+    expect(compose.networks['divan_egress']).toMatchObject({
+      name: 'divan_egress',
+    });
     expect(compose.services['divan-web']!.networks).toEqual(['divan_origin']);
     expect(compose.services['cloudflared']!.networks).toEqual([
       'divan_origin',
@@ -301,17 +328,20 @@ describe('Compose and tunnel isolation', () => {
     const source = readProjectFile('ops/compose.yml');
     const template = readProjectFile('ops/cloudflared/config.yml.example');
     const compose = parse(source) as {
-      services: Record<string, {
-        depends_on?: unknown;
-        healthcheck?: unknown;
-        volumes?: Array<{
-          bind?: { create_host_path?: boolean };
-          read_only?: boolean;
-          source?: string;
-          target?: string;
-          type?: string;
-        }>;
-      }>;
+      services: Record<
+        string,
+        {
+          depends_on?: unknown;
+          healthcheck?: unknown;
+          volumes?: Array<{
+            bind?: { create_host_path?: boolean };
+            read_only?: boolean;
+            source?: string;
+            target?: string;
+            type?: string;
+          }>;
+        }
+      >;
     };
 
     expect(compose.services['divan-web']!.healthcheck).toBeDefined();
@@ -343,7 +373,9 @@ describe('Compose and tunnel isolation', () => {
     expect(healthIndex).toBeGreaterThan(0);
     expect(originIndex).toBeGreaterThan(healthIndex);
     expect(catchAllIndex).toBeGreaterThan(originIndex);
-    expect(template).not.toMatch(/[0-9a-f]{8}-[0-9a-f-]{27,}|\.com\b|credentials\.json/iu);
+    expect(template).not.toMatch(
+      /[0-9a-f]{8}-[0-9a-f-]{27,}|\.com\b|credentials\.json/iu,
+    );
   });
 });
 
@@ -372,8 +404,12 @@ describe('safe deployment controls', () => {
       expect(result.status).toBe(0);
       const rendered = readFileSync(output, 'utf8');
       expect(rendered).toContain('hostname: divan.test.invalid');
-      expect(rendered).toContain('tunnel: 00000000-0000-4000-8000-000000000000');
-      expect(rendered).toContain('credentials-file: /run/secrets/divan-tunnel.json');
+      expect(rendered).toContain(
+        'tunnel: 00000000-0000-4000-8000-000000000000',
+      );
+      expect(rendered).toContain(
+        'credentials-file: /run/secrets/divan-tunnel.json',
+      );
       expect(rendered).toContain('path: ^/healthz$');
       expect(rendered.trimEnd()).toMatch(/service: http_status:404$/u);
     } finally {
@@ -408,9 +444,13 @@ describe('safe deployment controls', () => {
       const stateDir = mkdtempSync(resolve(tmpdir(), 'divan-ops-state-'));
 
       try {
-        writeFileSync(resolve(stateDir, 'current-image.txt'), `${immutableImage}\n`, {
-          mode: 0o600,
-        });
+        writeFileSync(
+          resolve(stateDir, 'current-image.txt'),
+          `${immutableImage}\n`,
+          {
+            mode: 0o600,
+          },
+        );
         const result = runScript(script, [
           '--image',
           immutableImage,
@@ -438,12 +478,20 @@ describe('safe deployment controls', () => {
     const stateDir = mkdtempSync(resolve(tmpdir(), 'divan-ops-rollback-'));
 
     try {
-      writeFileSync(resolve(stateDir, 'current-image.txt'), `${immutableImage}\n`, {
-        mode: 0o600,
-      });
-      writeFileSync(resolve(stateDir, 'previous-image.txt'), `${immutableImage}\n`, {
-        mode: 0o600,
-      });
+      writeFileSync(
+        resolve(stateDir, 'current-image.txt'),
+        `${immutableImage}\n`,
+        {
+          mode: 0o600,
+        },
+      );
+      writeFileSync(
+        resolve(stateDir, 'previous-image.txt'),
+        `${immutableImage}\n`,
+        {
+          mode: 0o600,
+        },
+      );
       const result = runScript('rollback.sh', [
         '--state-dir',
         stateDir,
@@ -633,7 +681,9 @@ describe('safe deployment controls', () => {
 
     expect(verify).toContain('/assets/not-content-addressed.js');
     expect(verify).toContain('/assets/missing-deadbeef.js');
-    expect(verify).toContain('Missing hashed static path did not remain an exact 404.');
+    expect(verify).toContain(
+      'Missing hashed static path did not remain an exact 404.',
+    );
   });
 
   test('rejects permissive or symlink-traversing state directories', () => {
@@ -727,13 +777,21 @@ describe('safe deployment controls', () => {
       const actionLog = resolve(temp, 'actions.log');
       execFileSync('mkdir', [stateDir]);
       chmodSync(stateDir, 0o700);
-      writeFileSync(resolve(stateDir, 'current-image.txt'), `${currentImage}\n`, {
-        mode: 0o600,
-      });
-      if (options.withPrevious || script === 'rollback.sh') {
-        writeFileSync(resolve(stateDir, 'previous-image.txt'), `${immutableImage}\n`, {
+      writeFileSync(
+        resolve(stateDir, 'current-image.txt'),
+        `${currentImage}\n`,
+        {
           mode: 0o600,
-        });
+        },
+      );
+      if (options.withPrevious || script === 'rollback.sh') {
+        writeFileSync(
+          resolve(stateDir, 'previous-image.txt'),
+          `${immutableImage}\n`,
+          {
+            mode: 0o600,
+          },
+        );
       }
 
       const args =
@@ -772,7 +830,9 @@ describe('safe deployment controls', () => {
         MOCK_STATE_DIR: stateDir,
         MOCK_UID: String(process.getuid?.() ?? 0),
       });
-      const actions = existsSync(actionLog) ? readFileSync(actionLog, 'utf8') : '';
+      const actions = existsSync(actionLog)
+        ? readFileSync(actionLog, 'utf8')
+        : '';
       rmSync(temp, { force: true, recursive: true });
       return { actions, result };
     }
@@ -835,7 +895,9 @@ describe('safe deployment controls', () => {
           MOCK_UID: String(process.getuid?.() ?? 0),
         },
       );
-      const actions = existsSync(actionLog) ? readFileSync(actionLog, 'utf8') : '';
+      const actions = existsSync(actionLog)
+        ? readFileSync(actionLog, 'utf8')
+        : '';
       rmSync(temp, { force: true, recursive: true });
 
       expect(result.status).not.toBe(0);
@@ -846,13 +908,18 @@ describe('safe deployment controls', () => {
     test.each([
       ['deploy.sh', true],
       ['rollback.sh', false],
-    ] as const)('%s stops when target and restoration verification fail', (script, withPrevious) => {
-      const { actions, result } = runMockedActivation(script, { withPrevious });
+    ] as const)(
+      '%s stops when target and restoration verification fail',
+      (script, withPrevious) => {
+        const { actions, result } = runMockedActivation(script, {
+          withPrevious,
+        });
 
-      expect(result.status).not.toBe(0);
-      expect(actions.match(/UP:/gu)).toHaveLength(2);
-      expect(actions).toContain('STOP');
-    });
+        expect(result.status).not.toBe(0);
+        expect(actions.match(/UP:/gu)).toHaveLength(2);
+        expect(actions).toContain('STOP');
+      },
+    );
   });
 
   test('runtime contract helpers reject swapped, extra, and unrelated resources', () => {
@@ -924,7 +991,7 @@ describe('safe deployment controls', () => {
 
 afterAll(() => {
   // Ensure this suite never accidentally relies on a local interactive shell.
-  expect(execFileSync('bash', ['-c', 'printf test'], { encoding: 'utf8' })).toBe(
-    'test',
-  );
+  expect(
+    execFileSync('bash', ['-c', 'printf test'], { encoding: 'utf8' }),
+  ).toBe('test');
 });

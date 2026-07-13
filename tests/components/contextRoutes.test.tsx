@@ -30,10 +30,9 @@ describe.each([
     ).toBeVisible();
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     expect(screen.getByRole('main')).toBeVisible();
-    expect(screen.getByRole('link', { name: /return to the poetry experience/i })).toHaveAttribute(
-      'href',
-      '/',
-    );
+    expect(
+      screen.getByRole('link', { name: /return to the poetry experience/i }),
+    ).toHaveAttribute('href', '/');
   });
 });
 
@@ -66,8 +65,13 @@ it('offers offline recovery without pretending to know connection or cache state
   window.history.replaceState(null, '', '/offline');
   render(<App services={{ loadRelease }} />);
 
-  await screen.findByRole('heading', { level: 1, name: 'When you are offline' });
-  expect(document.body).toHaveTextContent('This page cannot confirm network status');
+  await screen.findByRole('heading', {
+    level: 1,
+    name: 'When you are offline',
+  });
+  expect(document.body).toHaveTextContent(
+    'This page cannot confirm network status',
+  );
   expect(document.body).toHaveTextContent(
     'This page does not infer network status or claim that caching is active',
   );
@@ -81,8 +85,12 @@ it('derives fixture release metadata and public credits without presenting them 
 
   await screen.findByRole('heading', { level: 1, name: 'Credits and sources' });
   expect(screen.getByText('test-only-release', { exact: true })).toBeVisible();
-  expect(screen.getByText('TEST ONLY public edition credit', { exact: true })).toBeVisible();
-  expect(screen.getByText('TEST ONLY Society translation', { exact: true })).toBeVisible();
+  expect(
+    screen.getByText('TEST ONLY public edition credit', { exact: true }),
+  ).toBeVisible();
+  expect(
+    screen.getByText('TEST ONLY Society translation', { exact: true }),
+  ).toBeVisible();
   expect(screen.getByText(/non-production fixture release/i)).toBeVisible();
   expect(document.body).not.toHaveTextContent('Macquarie University');
 });

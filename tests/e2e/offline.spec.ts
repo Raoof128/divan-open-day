@@ -27,7 +27,9 @@ async function activeRelease(page: Page): Promise<string | null> {
 }
 
 async function waitForActive(page: Page, releaseId: string): Promise<void> {
-  await expect.poll(() => activeRelease(page), { timeout: 15_000 }).toBe(releaseId);
+  await expect
+    .poll(() => activeRelease(page), { timeout: 15_000 })
+    .toBe(releaseId);
 }
 
 async function updateRegistration(
@@ -87,7 +89,9 @@ test('keeps one coherent verified release through outage, update failure, and ro
     }
     return paths;
   });
-  expect(cachedPaths.some((pathname) => pathname.startsWith('/audio/'))).toBe(false);
+  expect(cachedPaths.some((pathname) => pathname.startsWith('/audio/'))).toBe(
+    false,
+  );
 
   await context.setOffline(true);
   await page.reload({ waitUntil: 'domcontentloaded' });

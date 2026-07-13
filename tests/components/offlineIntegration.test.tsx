@@ -31,7 +31,8 @@ afterEach(() => {
 });
 
 it('registers only after browser release verification and exposes explicit activation', async () => {
-  let resolveRelease: ((release: ReturnType<typeof makeVerifiedRelease>) => void) | undefined;
+  let resolveRelease:
+    ((release: ReturnType<typeof makeVerifiedRelease>) => void) | undefined;
   const loadRelease = () =>
     new Promise<ReturnType<typeof makeVerifiedRelease>>((resolve) => {
       resolveRelease = resolve;
@@ -108,7 +109,9 @@ it('deduplicates matching typed statuses and ignores a different release', async
   await screen.findByRole('button', { name: 'Begin' });
   const liveRegion = screen.getByRole('status');
   const mutations: MutationRecord[] = [];
-  const observer = new MutationObserver((records) => mutations.push(...records));
+  const observer = new MutationObserver((records) =>
+    mutations.push(...records),
+  );
   observer.observe(liveRegion, { childList: true, subtree: true });
 
   act(() => {

@@ -1,5 +1,9 @@
 # DIVAN Open Day
 
+[![CI](https://github.com/Raoof128/divan-open-day/actions/workflows/ci.yml/badge.svg)](https://github.com/Raoof128/divan-open-day/actions/workflows/ci.yml)
+![Node](https://img.shields.io/badge/node-22.16-brightgreen)
+![pnpm](https://img.shields.io/badge/pnpm-10.33-orange)
+
 DIVAN is a bilingual Persian poetry experience for a Persian Society Open Day
 stall. This repository is a **Work in progress**. The application is not deployed,
 and the repository contains no approved production poetry corpus,
@@ -40,19 +44,20 @@ Open `http://127.0.0.1:4173`. The source development server from `pnpm dev`
 does not serve `dist/release.json`; without an explicit local fixture adapter it
 shows the intended fail-closed release error instead of loading test content.
 
-Run the current core checks with:
+Run the full local quality gate with a single command:
 
 ```bash
-pnpm test
-pnpm typecheck
-pnpm lint
-pnpm build:fixture
-pnpm verify:dist
+pnpm check           # format, lint, typecheck, tests, build, verify:*, gates
+pnpm check --quick   # fast loop: format, lint, typecheck, unit tests
+pnpm check --e2e     # also run Playwright end-to-end tests
 ```
 
-Some release-1 verification commands remain under active implementation. The
-checked-in package scripts and CI configuration must all pass before a public
-release or deployment claim.
+CI runs the same gate (`scripts/check.sh --ci`, including end-to-end tests) on
+every push to `main` and every pull request. See `CONTRIBUTING.md` for the full
+developer workflow. `build:production` and `verify:qr` are intentionally
+fail-closed until an approved corpus and the physical QR deliverable exist;
+Docker-host evidence (`ops/scripts/verify.sh`, image build, SBOM scan) is run
+separately on a host with a running Docker daemon.
 
 ## Architecture
 

@@ -2,7 +2,11 @@ import type { ReactNode } from 'react';
 
 import { DecorativeGeometry } from './DecorativeGeometry';
 
-export function ManuscriptPortal({ children }: { readonly children: ReactNode }) {
+export function ManuscriptPortal({
+  children,
+}: {
+  readonly children: ReactNode;
+}) {
   return (
     <div className="manuscript-portal">
       <DecorativeGeometry

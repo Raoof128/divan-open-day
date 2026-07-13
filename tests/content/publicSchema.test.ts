@@ -19,7 +19,8 @@ function makePublicPayload() {
       workFa: 'TEST ONLY NOT POETRY SOURCE LABEL',
       editionPublicCredit: 'TEST ONLY public edition credit',
       reference: 'TEST-REFERENCE-1',
-      openingHemistichFa: 'TEST ONLY NOT POETRY OPENING IDENTIFIER' as string | null,
+      openingHemistichFa: 'TEST ONLY NOT POETRY OPENING IDENTIFIER' as
+        string | null,
     },
     text: {
       persianLines: [
@@ -50,9 +51,9 @@ function withHash(payload: ReturnType<typeof makePublicPayload>) {
 
 describe('publicContentItemSchema', () => {
   it('accepts a complete item with its canonical content hash', () => {
-    expect(publicContentItemSchema.safeParse(withHash(makePublicPayload())).success).toBe(
-      true,
-    );
+    expect(
+      publicContentItemSchema.safeParse(withHash(makePublicPayload())).success,
+    ).toBe(true);
   });
 
   it('rejects unknown private fields at top-level and nested boundaries', () => {
@@ -70,11 +71,15 @@ describe('publicContentItemSchema', () => {
     expect(topResult.success).toBe(false);
     expect(nestedResult.success).toBe(false);
     if (!topResult.success && !nestedResult.success) {
-      expect(topResult.error.issues.some((issue) => issue.code === 'unrecognized_keys')).toBe(
-        true,
-      );
       expect(
-        nestedResult.error.issues.some((issue) => issue.code === 'unrecognized_keys'),
+        topResult.error.issues.some(
+          (issue) => issue.code === 'unrecognized_keys',
+        ),
+      ).toBe(true);
+      expect(
+        nestedResult.error.issues.some(
+          (issue) => issue.code === 'unrecognized_keys',
+        ),
       ).toBe(true);
     }
   });
@@ -87,23 +92,29 @@ describe('publicContentItemSchema', () => {
     payload.poet = poet;
     payload.mode = mode;
 
-    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+      false,
+    );
   });
 
   it('requires an opening hemistich for Hafez', () => {
     const payload = makePublicPayload();
     payload.source.openingHemistichFa = null;
 
-    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+      false,
+    );
   });
 
-  it.each(['<em>raw HTML</em>', '**raw Markdown**']) (
+  it.each(['<em>raw HTML</em>', '**raw Markdown**'])(
     'rejects raw markup in public text: %s',
     (unsafeText) => {
       const payload = makePublicPayload();
       payload.text.englishLines[0] = unsafeText;
 
-      expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+      expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+        false,
+      );
     },
   );
 
@@ -128,7 +139,9 @@ describe('publicContentItemSchema', () => {
     const payload = makePublicPayload();
     payload.text.englishLines[0] = unsafeText;
 
-    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+      false,
+    );
   });
 
   it.each(['\u061C', '\u200E', '\u200F'])(
@@ -137,16 +150,23 @@ describe('publicContentItemSchema', () => {
       const payload = makePublicPayload();
       payload.text.englishLines[0] = `TEST ONLY${unsafeControl}NOT TRANSLATION`;
 
-      expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+      expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+        false,
+      );
     },
   );
 
   it('does not count punctuation-only tokens as public reflection words', () => {
     const payload = makePublicPayload();
-    const actualWords = Array.from({ length: 44 }, (_, index) => `word${index}`);
+    const actualWords = Array.from(
+      { length: 44 },
+      (_, index) => `word${index}`,
+    );
     payload.reflection = [...actualWords, '...', '---', '!!!'].join(' ');
 
-    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+      false,
+    );
   });
 
   it('requires equal Persian and English unit counts for stanza alignment', () => {
@@ -177,23 +197,27 @@ describe('publicContentItemSchema', () => {
       performerCredit: 'TEST ONLY performer credit',
     };
 
-    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(true);
+    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+      true,
+    );
   });
 
-  it.each([
-    'https://example.test/recitation.mp3',
-    'audio/%2e%2e/private.mp3',
-  ])('rejects remote or escaping public audio assets: %s', (assetPath) => {
-    const payload = makePublicPayload();
-    payload.audio = {
-      assetPath,
-      mimeType: 'audio/mpeg',
-      durationSeconds: 30,
-      performerCredit: 'TEST ONLY performer credit',
-    };
+  it.each(['https://example.test/recitation.mp3', 'audio/%2e%2e/private.mp3'])(
+    'rejects remote or escaping public audio assets: %s',
+    (assetPath) => {
+      const payload = makePublicPayload();
+      payload.audio = {
+        assetPath,
+        mimeType: 'audio/mpeg',
+        durationSeconds: 30,
+        performerCredit: 'TEST ONLY performer credit',
+      };
 
-    expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(false);
-  });
+      expect(publicContentItemSchema.safeParse(withHash(payload)).success).toBe(
+        false,
+      );
+    },
+  );
 
   it('rejects a valid-looking but incorrect content hash', () => {
     const item = withHash(makePublicPayload());

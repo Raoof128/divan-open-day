@@ -171,18 +171,20 @@ describe('session storage domain', () => {
     expect(
       persistShuffleIds(storage, 'rumi', ['rumi-two'], APPROVED_IDS.rumi),
     ).toBe(true);
-    expect(
-      persistCurrentPoemId(storage, 'rumi-one', APPROVED_IDS.rumi),
-    ).toBe(true);
+    expect(persistCurrentPoemId(storage, 'rumi-one', APPROVED_IDS.rumi)).toBe(
+      true,
+    );
     expect(persistSessionRelease(storage, '../private')).toBe(false);
     expect(
       persistShuffleIds(storage, 'rumi', ['rumi-private'], APPROVED_IDS.rumi),
     ).toBe(false);
-    expect([...storage.touched].every((key) =>
-      Object.values(SESSION_STORAGE_KEYS).includes(
-        key as (typeof SESSION_STORAGE_KEYS)[keyof typeof SESSION_STORAGE_KEYS],
+    expect(
+      [...storage.touched].every((key) =>
+        Object.values(SESSION_STORAGE_KEYS).includes(
+          key as (typeof SESSION_STORAGE_KEYS)[keyof typeof SESSION_STORAGE_KEYS],
+        ),
       ),
-    )).toBe(true);
+    ).toBe(true);
   });
 
   it('clears prior release-scoped values before activating a new release', () => {
@@ -212,7 +214,9 @@ describe('local motion preference storage', () => {
     expect(readLocalMotionPreference(storage)).toBe('full');
     storage.values.set(SESSION_STORAGE_KEYS.motionPreference, 'visitor-123');
     expect(readLocalMotionPreference(storage)).toBeNull();
-    expect(storage.values.has(SESSION_STORAGE_KEYS.motionPreference)).toBe(false);
+    expect(storage.values.has(SESSION_STORAGE_KEYS.motionPreference)).toBe(
+      false,
+    );
     expect([...storage.touched]).toEqual([
       SESSION_STORAGE_KEYS.motionPreference,
     ]);

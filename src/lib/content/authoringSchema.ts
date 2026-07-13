@@ -49,7 +49,10 @@ function reviewedText(maximumLength: number) {
     .min(1)
     .max(maximumLength)
     .refine((value) => value.trim().length > 0, 'Text cannot be blank.')
-    .refine((value) => !containsRawMarkup(value), 'Raw HTML or Markdown is not allowed.')
+    .refine(
+      (value) => !containsRawMarkup(value),
+      'Raw HTML or Markdown is not allowed.',
+    )
     .refine(
       (value) => !BIDI_CONTROL_PATTERN.test(value),
       'Bidi control characters are not allowed in content fields.',
@@ -83,8 +86,9 @@ function isSafeAudioPath(value: string): boolean {
 
   const segments = value.split('/');
   return (
-    segments.every((segment) => segment.length > 0 && segment !== '.' && segment !== '..') &&
-    /\.(?:mp3|ogg)$/u.test(value)
+    segments.every(
+      (segment) => segment.length > 0 && segment !== '.' && segment !== '..',
+    ) && /\.(?:mp3|ogg)$/u.test(value)
   );
 }
 
@@ -135,7 +139,10 @@ const translationSchema = z
     rights_owner: reviewedText(300),
     permission_record_id: identifierSchema,
     public_credit: reviewedText(300),
-    permitted_uses: z.array(z.enum(PERMITTED_USES)).min(1).max(PERMITTED_USES.length),
+    permitted_uses: z
+      .array(z.enum(PERMITTED_USES))
+      .min(1)
+      .max(PERMITTED_USES.length),
     moral_rights_notes: reviewedText(1_000).nullable().optional(),
   })
   .strict()
@@ -162,13 +169,10 @@ const translationSchema = z
 
 const reflectionSchema = z
   .object({
-    english: reviewedText(1_200).refine(
-      (value) => {
-        const count = wordCount(value);
-        return count >= 45 && count <= 90;
-      },
-      'Reflections must contain between 45 and 90 words.',
-    ),
+    english: reviewedText(1_200).refine((value) => {
+      const count = wordCount(value);
+      return count >= 45 && count <= 90;
+    }, 'Reflections must contain between 45 and 90 words.'),
     reviewer_ids: identifierListSchema,
     disclaimer_profile: z.literal('reflection_not_prediction'),
   })
@@ -192,7 +196,10 @@ const enabledAudioSchema = z
     asset_path: z
       .string()
       .max(300)
-      .refine(isSafeAudioPath, 'Audio must use a safe local audio/ asset path.'),
+      .refine(
+        isSafeAudioPath,
+        'Audio must use a safe local audio/ asset path.',
+      ),
     mime_type: z.enum(AUDIO_MIME_TYPES),
     performer_id: identifierSchema,
     performer_public_credit: reviewedText(300),
@@ -246,7 +253,10 @@ export const authoringContentItemSchema = z
     text: textSchema,
     translation: translationSchema,
     reflection: reflectionSchema,
-    audio: z.discriminatedUnion('enabled', [disabledAudioSchema, enabledAudioSchema]),
+    audio: z.discriminatedUnion('enabled', [
+      disabledAudioSchema,
+      enabledAudioSchema,
+    ]),
     review: reviewSchema,
   })
   .strict()
@@ -283,7 +293,9 @@ export const authoringContentItemSchema = z
       ...item.review.cultural_reviewer_ids,
       ...item.review.rights_reviewer_ids,
     ];
-    if (!accountableReviewers.some((reviewerId) => !translatorIds.has(reviewerId))) {
+    if (
+      !accountableReviewers.some((reviewerId) => !translatorIds.has(reviewerId))
+    ) {
       context.addIssue({
         code: 'custom',
         path: ['review'],

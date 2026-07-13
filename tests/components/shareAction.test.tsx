@@ -32,7 +32,10 @@ const item: PublicContentItem = {
 
 afterEach(cleanup);
 
-function renderResult(shareService: ShareService, onAnnounce: (m: string) => void) {
+function renderResult(
+  shareService: ShareService,
+  onAnnounce: (m: string) => void,
+) {
   return render(
     <PoemResult
       item={item}
@@ -54,7 +57,9 @@ describe('PoemResult share actions', () => {
     const onAnnounce = vi.fn();
     renderResult(shareService, onAnnounce);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Save this verse' }));
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save this verse' }),
+    );
 
     expect(shareService.shareVerse).toHaveBeenCalledOnce();
     expect(onAnnounce).toHaveBeenCalledWith(
@@ -72,7 +77,9 @@ describe('PoemResult share actions', () => {
     const onAnnounce = vi.fn();
     renderResult(shareService, onAnnounce);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Save this verse' }));
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save this verse' }),
+    );
 
     expect(onAnnounce).not.toHaveBeenCalled();
   });
@@ -90,7 +97,9 @@ describe('PoemResult share actions', () => {
     );
 
     expect(shareService.downloadShareCard).toHaveBeenCalledOnce();
-    expect(onAnnounce).toHaveBeenCalledWith(expect.stringMatching(/downloaded/iu));
+    expect(onAnnounce).toHaveBeenCalledWith(
+      expect.stringMatching(/downloaded/iu),
+    );
   });
 
   it('keeps the verse and reports gracefully if sharing throws', async () => {
@@ -101,9 +110,13 @@ describe('PoemResult share actions', () => {
     const onAnnounce = vi.fn();
     renderResult(shareService, onAnnounce);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Save this verse' }));
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Save this verse' }),
+    );
 
-    expect(onAnnounce).toHaveBeenCalledWith(expect.stringMatching(/unavailable/iu));
+    expect(onAnnounce).toHaveBeenCalledWith(
+      expect.stringMatching(/unavailable/iu),
+    );
     expect(screen.getByText('An English line')).toBeInTheDocument();
   });
 });

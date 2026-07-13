@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import type { PublicContentItem } from '../../src/contracts/content';
-import { downloadShareCard, shareVerse } from '../../src/lib/share/shareService';
+import {
+  downloadShareCard,
+  shareVerse,
+} from '../../src/lib/share/shareService';
 
 const item: PublicContentItem = {
   id: 'rumi-0001',
@@ -28,7 +31,10 @@ const item: PublicContentItem = {
   contentHash: 'def456',
 };
 
-const config = { siteUrl: 'https://example.test/divan', society: 'Test Society' };
+const config = {
+  siteUrl: 'https://example.test/divan',
+  society: 'Test Society',
+};
 
 describe('shareVerse', () => {
   it('uses the Web Share API when available and permitted', async () => {
@@ -41,7 +47,9 @@ describe('shareVerse', () => {
     expect(share).toHaveBeenCalledOnce();
     expect(share).toHaveBeenCalledWith(
       expect.objectContaining({
-        text: expect.stringContaining('Listen to the reed') as unknown as string,
+        text: expect.stringContaining(
+          'Listen to the reed',
+        ) as unknown as string,
       }),
     );
     const payload = share.mock.calls[0]?.[0] as { text: string };
@@ -93,7 +101,10 @@ describe('downloadShareCard', () => {
     const triggerDownload = vi.fn();
     downloadShareCard(item, config, { createUrl, revokeUrl, triggerDownload });
     expect(createUrl).toHaveBeenCalledOnce();
-    expect(triggerDownload).toHaveBeenCalledWith('blob:mock', expect.stringMatching(/\.svg$/u));
+    expect(triggerDownload).toHaveBeenCalledWith(
+      'blob:mock',
+      expect.stringMatching(/\.svg$/u),
+    );
     expect(revokeUrl).toHaveBeenCalledWith('blob:mock');
   });
 });

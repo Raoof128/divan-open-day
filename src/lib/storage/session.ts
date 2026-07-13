@@ -55,11 +55,7 @@ function safeGet(storage: StorageAdapter, key: string): string | null {
   }
 }
 
-function safeSet(
-  storage: StorageAdapter,
-  key: string,
-  value: string,
-): boolean {
+function safeSet(storage: StorageAdapter, key: string, value: string): boolean {
   try {
     storage.setItem(key, value);
     return true;
@@ -104,10 +100,7 @@ function parseRemainingIds(
     if (
       !Array.isArray(parsed) ||
       parsed.length > approved.size ||
-      !parsed.every(
-        (id): id is string =>
-          isPublicId(id) && approved.has(id),
-      ) ||
+      !parsed.every((id): id is string => isPublicId(id) && approved.has(id)) ||
       new Set(parsed).size !== parsed.length
     ) {
       return null;
@@ -179,14 +172,12 @@ export function restoreSessionState(
     'hafez',
     options.approvedIds.hafez,
   );
-  const rumiShuffle = readShuffleIds(
-    storage,
-    'rumi',
-    options.approvedIds.rumi,
-  );
+  const rumiShuffle = readShuffleIds(storage, 'rumi', options.approvedIds.rumi);
   const storedPoemId = safeGet(storage, SESSION_STORAGE_KEYS.currentPoemId);
   const selectedApprovedIds =
-    selectedPoet === null ? null : approvedIdSet(options.approvedIds[selectedPoet]);
+    selectedPoet === null
+      ? null
+      : approvedIdSet(options.approvedIds[selectedPoet]);
   const currentPoemId =
     isPublicId(storedPoemId) && selectedApprovedIds?.has(storedPoemId) === true
       ? storedPoemId
@@ -224,8 +215,7 @@ export function persistSelectedPoet(
     return safeRemove(storage, SESSION_STORAGE_KEYS.selectedPoet);
   }
   return (
-    isPoet(poet) &&
-    safeSet(storage, SESSION_STORAGE_KEYS.selectedPoet, poet)
+    isPoet(poet) && safeSet(storage, SESSION_STORAGE_KEYS.selectedPoet, poet)
   );
 }
 
@@ -277,11 +267,7 @@ export function persistLocalMotionPreference(
 ): boolean {
   return (
     isMotionPreference(motionPreference) &&
-    safeSet(
-      storage,
-      SESSION_STORAGE_KEYS.motionPreference,
-      motionPreference,
-    )
+    safeSet(storage, SESSION_STORAGE_KEYS.motionPreference, motionPreference)
   );
 }
 

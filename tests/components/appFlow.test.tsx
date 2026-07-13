@@ -65,9 +65,7 @@ async function finishRevealWithSkip(): Promise<void> {
   vi.useFakeTimers();
   fireEvent.click(screen.getByRole('button', { name: 'Press to reveal' }));
   expect(oneActiveHeading()).toHaveTextContent(/Opening|Revealing/u);
-  expect(screen.getByRole('status')).toHaveTextContent(
-    'Revealing your verse.',
-  );
+  expect(screen.getByRole('status')).toHaveTextContent('Revealing your verse.');
   expect(screen.queryByRole('button', { name: 'Skip animation' })).toBeNull();
   await act(() => vi.advanceTimersByTimeAsync(250));
   fireEvent.click(screen.getByRole('button', { name: 'Skip animation' }));
@@ -112,14 +110,18 @@ describe.each([
 
     const english = screen.getByTestId('english-poem');
     const persian = screen.getByTestId('persian-poem');
-    const reflection = screen.getByRole('heading', {
-      level: 2,
-      name: 'A reflection, not a prediction',
-    }).closest('section')!;
-    const source = screen.getByRole('heading', {
-      level: 2,
-      name: 'Source and translation information',
-    }).closest('section')!;
+    const reflection = screen
+      .getByRole('heading', {
+        level: 2,
+        name: 'A reflection, not a prediction',
+      })
+      .closest('section')!;
+    const source = screen
+      .getByRole('heading', {
+        level: 2,
+        name: 'Source and translation information',
+      })
+      .closest('section')!;
     expect(
       english.compareDocumentPosition(persian) &
         Node.DOCUMENT_POSITION_FOLLOWING,
@@ -136,7 +138,9 @@ describe.each([
     expect(persian).toHaveAttribute('dir', 'rtl');
     expect(within(persian).getAllByRole('paragraph')).toHaveLength(2);
     expect(source.querySelectorAll('bdi').length).toBeGreaterThan(0);
-    expect(screen.getByRole('button', { name: 'Reveal another' })).toBeEnabled();
+    expect(
+      screen.getByRole('button', { name: 'Reveal another' }),
+    ).toBeEnabled();
   });
 });
 
@@ -172,9 +176,9 @@ it('uses a 150ms opacity path when reduced motion is selected', async () => {
   fireEvent.change(screen.getByLabelText('Motion'), {
     target: { value: 'reduced' },
   });
-  expect(window.localStorage.getItem(SESSION_STORAGE_KEYS.motionPreference)).toBe(
-    'reduced',
-  );
+  expect(
+    window.localStorage.getItem(SESSION_STORAGE_KEYS.motionPreference),
+  ).toBe('reduced');
   reachIntention('rumi');
   vi.useFakeTimers();
 

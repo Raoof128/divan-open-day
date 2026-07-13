@@ -15,8 +15,7 @@ export default defineConfig({
     ...devices['Desktop Chrome'],
   },
   webServer: {
-    command:
-      'pnpm build:fixture && pnpm exec tsx tests/e2e/offline-server.ts',
+    command: 'pnpm build:fixture && pnpm exec tsx tests/e2e/offline-server.ts',
     cwd: path.resolve(process.cwd()),
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: false,

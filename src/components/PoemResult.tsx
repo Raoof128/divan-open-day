@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 
 import type { PublicContentItem } from '../contracts/content';
-import {
-  DEFAULT_SHARE_CONFIG,
-  type ShareConfig,
-} from '../lib/share/shareCard';
+import { DEFAULT_SHARE_CONFIG, type ShareConfig } from '../lib/share/shareCard';
 import {
   type ShareOutcome,
   downloadShareCard as defaultDownloadShareCard,
@@ -53,8 +50,7 @@ export function PoemResult({
 
   const shareConfig = useMemo<ShareConfig>(
     () => ({
-      siteUrl:
-        typeof window === 'undefined' ? '' : window.location.origin,
+      siteUrl: typeof window === 'undefined' ? '' : window.location.origin,
       society: DEFAULT_SHARE_CONFIG.society,
     }),
     [],

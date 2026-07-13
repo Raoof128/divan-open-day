@@ -318,7 +318,10 @@ function addDuplicateIdIssues(
       return;
     }
 
-    addIssue(index, `Duplicate identifier ${record.id}; first seen at index ${firstIndex}.`);
+    addIssue(
+      index,
+      `Duplicate identifier ${record.id}; first seen at index ${firstIndex}.`,
+    );
   });
 }
 
@@ -345,7 +348,11 @@ export const editionRegistrySchema = z
   .strict()
   .superRefine((registry, context) => {
     addDuplicateIdIssues(registry.editions, (index, message) => {
-      context.addIssue({ code: 'custom', path: ['editions', index, 'id'], message });
+      context.addIssue({
+        code: 'custom',
+        path: ['editions', index, 'id'],
+        message,
+      });
     });
   });
 
@@ -370,7 +377,11 @@ export const contributorRegistrySchema = z
   .strict()
   .superRefine((registry, context) => {
     addDuplicateIdIssues(registry.contributors, (index, message) => {
-      context.addIssue({ code: 'custom', path: ['contributors', index, 'id'], message });
+      context.addIssue({
+        code: 'custom',
+        path: ['contributors', index, 'id'],
+        message,
+      });
     });
   });
 
@@ -430,7 +441,11 @@ export const permissionRegistrySchema = z
   .strict()
   .superRefine((registry, context) => {
     addDuplicateIdIssues(registry.permissions, (index, message) => {
-      context.addIssue({ code: 'custom', path: ['permissions', index, 'id'], message });
+      context.addIssue({
+        code: 'custom',
+        path: ['permissions', index, 'id'],
+        message,
+      });
     });
   });
 
@@ -453,7 +468,11 @@ export const approvalRegistrySchema = z
   .strict()
   .superRefine((registry, context) => {
     addDuplicateIdIssues(registry.approvals, (index, message) => {
-      context.addIssue({ code: 'custom', path: ['approvals', index, 'id'], message });
+      context.addIssue({
+        code: 'custom',
+        path: ['approvals', index, 'id'],
+        message,
+      });
     });
   });
 
@@ -465,7 +484,8 @@ const safeAssetPathSchema = z
     'Asset paths must use an approved root and nonempty path segments.',
   )
   .refine(
-    (value) => value.split('/').every((segment) => segment !== '.' && segment !== '..'),
+    (value) =>
+      value.split('/').every((segment) => segment !== '.' && segment !== '..'),
     'Asset paths cannot traverse directories.',
   );
 
@@ -509,7 +529,9 @@ const assetRecordSchema = z.discriminatedUnion('kind', [
   nonAudioAssetSchema,
 ]);
 
-function hasMatchingAssetContract(asset: z.infer<typeof assetRecordSchema>): boolean {
+function hasMatchingAssetContract(
+  asset: z.infer<typeof assetRecordSchema>,
+): boolean {
   switch (asset.kind) {
     case 'audio':
       return (
@@ -548,7 +570,11 @@ export const assetRegistrySchema = z
   .strict()
   .superRefine((registry, context) => {
     addDuplicateIdIssues(registry.assets, (index, message) => {
-      context.addIssue({ code: 'custom', path: ['assets', index, 'id'], message });
+      context.addIssue({
+        code: 'custom',
+        path: ['assets', index, 'id'],
+        message,
+      });
     });
 
     registry.assets.forEach((asset, index) => {

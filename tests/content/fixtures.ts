@@ -19,7 +19,8 @@ const BASE_AUTHORING_ITEM = {
     edition_public_credit: 'TEST ONLY public edition credit',
     reference_type: 'ghazal',
     reference_value: 'TEST-REFERENCE-1',
-    opening_hemistich_fa: 'TEST ONLY NOT POETRY OPENING IDENTIFIER' as string | null,
+    opening_hemistich_fa: 'TEST ONLY NOT POETRY OPENING IDENTIFIER' as
+      string | null,
     page_reference: null as string | null,
     source_language: 'fa',
   },

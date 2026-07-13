@@ -57,20 +57,27 @@ describe('atomic release staging', () => {
     const candidate = await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);
     expect(await candidate.match(READY_PATH)).toBeDefined();
     expect(await candidate.match('/index.html')).toBeDefined();
-    expect(await candidate.match('/assets/app-0123456789abcdef.js')).toBeDefined();
+    expect(
+      await candidate.match('/assets/app-0123456789abcdef.js'),
+    ).toBeDefined();
     expect(await candidate.match('/audio/sample.mp3')).toBeUndefined();
     expect(caches.stores.has(POINTER_CACHE_NAME)).toBe(true);
     await expect(subject.activePointer()).resolves.toBeNull();
     await expect(subject.pendingReleaseId()).resolves.toBe('release-one');
     expect(calls.every(({ init }) => init?.cache === 'no-store')).toBe(true);
-    expect(calls.every(({ init }) => init?.credentials === 'same-origin')).toBe(true);
+    expect(calls.every(({ init }) => init?.credentials === 'same-origin')).toBe(
+      true,
+    );
     expect(calls.every(({ init }) => init?.redirect === 'error')).toBe(true);
   });
 
   it.each([
     ['response failure', () => new Response('no', { status: 503 })],
     ['redirect', () => redirected(jsonResponse(releaseFixture().release))],
-    ['malformed exact metadata', () => jsonResponse({ ...releaseFixture().release, extra: true })],
+    [
+      'malformed exact metadata',
+      () => jsonResponse({ ...releaseFixture().release, extra: true }),
+    ],
   ])('cleans only the candidate on %s', async (_name, releaseResponse) => {
     const fixture = releaseFixture();
     const files = new Map(fixture.files);
@@ -113,7 +120,11 @@ describe('atomic release staging', () => {
     const files = new Map(fixture.files);
     files.set('/release.json', jsonResponse(release));
     files.set(release.contentPath, new Response(corpusText));
-    const { caches, subject } = manager(fixture, new FakeCacheStorage(), fetchFrom(files));
+    const { caches, subject } = manager(
+      fixture,
+      new FakeCacheStorage(),
+      fetchFrom(files),
+    );
 
     await expect(subject.stageCurrentRelease()).rejects.toThrow();
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
@@ -125,7 +136,9 @@ describe('atomic release staging', () => {
       assets: { path: string; requiredOffline: boolean }[];
       releaseId: string;
     };
-    manifest.assets.find(({ path }) => path.startsWith('audio/'))!.requiredOffline = true;
+    manifest.assets.find(({ path }) =>
+      path.startsWith('audio/'),
+    )!.requiredOffline = true;
     const manifestText = canonicalStringify(manifest);
     const digest = sha256(manifestText);
     const release = {
@@ -176,7 +189,11 @@ describe('atomic release staging', () => {
     };
     files.set('/release.json', jsonResponse(release));
     files.set(release.assetManifestPath, new Response(manifestText));
-    const { caches, subject } = manager(fixture, new FakeCacheStorage(), fetchFrom(files));
+    const { caches, subject } = manager(
+      fixture,
+      new FakeCacheStorage(),
+      fetchFrom(files),
+    );
 
     await expect(subject.stageCurrentRelease()).rejects.toThrow(/staging/iu);
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
@@ -185,7 +202,11 @@ describe('atomic release staging', () => {
   it('rejects reuse of a ready release ID with changed public metadata', async () => {
     const fixture = releaseFixture();
     const files = new Map(fixture.files);
-    const { subject } = manager(fixture, new FakeCacheStorage(), fetchFrom(files));
+    const { subject } = manager(
+      fixture,
+      new FakeCacheStorage(),
+      fetchFrom(files),
+    );
     await subject.stageCurrentRelease();
     files.set(
       '/release.json',
@@ -195,7 +216,9 @@ describe('atomic release staging', () => {
       }),
     );
 
-    await expect(subject.stageCurrentRelease()).rejects.toThrow(/reused|reuse/iu);
+    await expect(subject.stageCurrentRelease()).rejects.toThrow(
+      /reused|reuse/iu,
+    );
   });
 
   it('preserves active and previous rollback caches when a previous ID is reused with changed metadata', async () => {
@@ -217,7 +240,9 @@ describe('atomic release staging', () => {
     );
     const subject = manager(reused, caches, fetchFrom(files)).subject;
 
-    await expect(subject.stageCurrentRelease()).rejects.toThrow(/reuse|rollback/iu);
+    await expect(subject.stageCurrentRelease()).rejects.toThrow(
+      /reuse|rollback/iu,
+    );
 
     expect(await subject.activePointer()).toEqual({
       activeReleaseId: 'release-two',
@@ -293,10 +318,37 @@ describe('atomic release staging', () => {
   });
 
   it.each([
-    ['wrong counts', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.release, itemCount: 3 })],
-    ['wrong content path', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.release, contentPath: `/content/${'a'.repeat(64)}.json` })],
-    ['wrong corpus release ID', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.corpus, releaseId: 'another-release' })],
-    ['duplicate corpus IDs', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.corpus, items: [{ id: 'same', poet: 'hafez' }, { id: 'same', poet: 'rumi' }] })],
+    [
+      'wrong counts',
+      (fixture: ReturnType<typeof releaseFixture>) => ({
+        ...fixture.release,
+        itemCount: 3,
+      }),
+    ],
+    [
+      'wrong content path',
+      (fixture: ReturnType<typeof releaseFixture>) => ({
+        ...fixture.release,
+        contentPath: `/content/${'a'.repeat(64)}.json`,
+      }),
+    ],
+    [
+      'wrong corpus release ID',
+      (fixture: ReturnType<typeof releaseFixture>) => ({
+        ...fixture.corpus,
+        releaseId: 'another-release',
+      }),
+    ],
+    [
+      'duplicate corpus IDs',
+      (fixture: ReturnType<typeof releaseFixture>) => ({
+        ...fixture.corpus,
+        items: [
+          { id: 'same', poet: 'hafez' },
+          { id: 'same', poet: 'rumi' },
+        ],
+      }),
+    ],
   ])('rejects %s and removes its candidate', async (_name, mutate) => {
     const fixture = releaseFixture();
     const files = new Map(fixture.files);
@@ -306,59 +358,88 @@ describe('atomic release staging', () => {
     } else {
       const text = canonicalStringify(changed);
       const digest = sha256(text);
-      const release = { ...fixture.release, contentPath: `/content/${digest}.json`, contentSha256: digest };
+      const release = {
+        ...fixture.release,
+        contentPath: `/content/${digest}.json`,
+        contentSha256: digest,
+      };
       files.set('/release.json', jsonResponse(release));
       files.set(release.contentPath, new Response(text));
     }
-    const { caches, subject } = manager(fixture, new FakeCacheStorage(), fetchFrom(files));
+    const { caches, subject } = manager(
+      fixture,
+      new FakeCacheStorage(),
+      fetchFrom(files),
+    );
 
     await expect(subject.stageCurrentRelease()).rejects.toThrow();
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
   });
 
-  it.each(['corpus', 'manifest', 'asset'] as const)('rejects a %s SHA mismatch', async (kind) => {
-    const fixture = releaseFixture();
-    const files = new Map(fixture.files);
-    const path =
-      kind === 'corpus'
-        ? String(fixture.release['contentPath'])
-        : kind === 'manifest'
-          ? String(fixture.release['assetManifestPath'])
-          : '/index.html';
-    files.set(path, new Response('tampered'));
-    const { caches, subject } = manager(fixture, new FakeCacheStorage(), fetchFrom(files));
+  it.each(['corpus', 'manifest', 'asset'] as const)(
+    'rejects a %s SHA mismatch',
+    async (kind) => {
+      const fixture = releaseFixture();
+      const files = new Map(fixture.files);
+      const path =
+        kind === 'corpus'
+          ? String(fixture.release['contentPath'])
+          : kind === 'manifest'
+            ? String(fixture.release['assetManifestPath'])
+            : '/index.html';
+      files.set(path, new Response('tampered'));
+      const { caches, subject } = manager(
+        fixture,
+        new FakeCacheStorage(),
+        fetchFrom(files),
+      );
 
-    await expect(subject.stageCurrentRelease()).rejects.toThrow();
-    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
-  });
+      await expect(subject.stageCurrentRelease()).rejects.toThrow();
+      expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(
+        false,
+      );
+    },
+  );
 
   it.each([
     ['missing asset', () => new Response('missing', { status: 404 })],
     ['oversized response', () => new Response('x'.repeat(100))],
-  ])('rejects a %s while preserving the active release', async (_name, replacement) => {
-    const fixture = releaseFixture();
-    const manifest = structuredClone(fixture.manifest) as { assets: { path: string; bytes: number; sha256: string }[]; releaseId: string };
-    const index = manifest.assets.find(({ path }) => path === 'index.html')!;
-    if (_name === 'oversized response') {
-      index.bytes = 10;
-      index.sha256 = sha256('x'.repeat(10));
-    }
-    const manifestText = canonicalStringify(manifest);
-    const manifestDigest = sha256(manifestText);
-    const release = {
-      ...fixture.release,
-      assetManifestPath: `/assets/${manifestDigest}.json`,
-      assetManifestSha256: manifestDigest,
-    };
-    const files = new Map(fixture.files);
-    files.set('/release.json', jsonResponse(release));
-    files.set(release.assetManifestPath, new Response(manifestText));
-    files.set('/index.html', replacement());
-    const { caches, subject } = manager(fixture, new FakeCacheStorage(), fetchFrom(files));
+  ])(
+    'rejects a %s while preserving the active release',
+    async (_name, replacement) => {
+      const fixture = releaseFixture();
+      const manifest = structuredClone(fixture.manifest) as {
+        assets: { path: string; bytes: number; sha256: string }[];
+        releaseId: string;
+      };
+      const index = manifest.assets.find(({ path }) => path === 'index.html')!;
+      if (_name === 'oversized response') {
+        index.bytes = 10;
+        index.sha256 = sha256('x'.repeat(10));
+      }
+      const manifestText = canonicalStringify(manifest);
+      const manifestDigest = sha256(manifestText);
+      const release = {
+        ...fixture.release,
+        assetManifestPath: `/assets/${manifestDigest}.json`,
+        assetManifestSha256: manifestDigest,
+      };
+      const files = new Map(fixture.files);
+      files.set('/release.json', jsonResponse(release));
+      files.set(release.assetManifestPath, new Response(manifestText));
+      files.set('/index.html', replacement());
+      const { caches, subject } = manager(
+        fixture,
+        new FakeCacheStorage(),
+        fetchFrom(files),
+      );
 
-    await expect(subject.stageCurrentRelease()).rejects.toThrow();
-    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
-  });
+      await expect(subject.stageCurrentRelease()).rejects.toThrow();
+      expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(
+        false,
+      );
+    },
+  );
 });
 
 describe('atomic activation', () => {
@@ -385,7 +466,9 @@ describe('atomic activation', () => {
     });
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
     expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-two`)).toBe(true);
-    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-three`)).toBe(true);
+    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-three`)).toBe(
+      true,
+    );
   });
 
   it('leaves pointer and complete caches untouched when the atomic pointer write fails', async () => {
@@ -396,7 +479,9 @@ describe('atomic activation', () => {
     const second = manager(releaseFixture('release-two'), caches).subject;
     await second.stageCurrentRelease();
     const pointer = await caches.open(POINTER_CACHE_NAME);
-    vi.spyOn(pointer, 'put').mockRejectedValueOnce(new Error('simulated pointer failure'));
+    vi.spyOn(pointer, 'put').mockRejectedValueOnce(
+      new Error('simulated pointer failure'),
+    );
 
     await expect(second.activateRelease('release-two')).rejects.toThrow();
     expect(await second.activePointer()).toEqual({
@@ -423,7 +508,9 @@ describe('atomic activation', () => {
         : realDelete(cacheName),
     );
 
-    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+    await expect(
+      second.activateRelease('release-two'),
+    ).resolves.toBeUndefined();
 
     await expect(second.activePointer()).resolves.toEqual({
       activeReleaseId: 'release-two',
@@ -431,7 +518,9 @@ describe('atomic activation', () => {
     });
     await expect(second.pendingReleaseId()).resolves.toBeNull();
     expect(caches.stores.has(staleCacheName)).toBe(true);
-    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+    await expect(
+      second.activateRelease('release-two'),
+    ).resolves.toBeUndefined();
     await expect(second.pendingReleaseId()).resolves.toBeNull();
   });
 
@@ -444,12 +533,18 @@ describe('atomic activation', () => {
     await second.stageCurrentRelease();
     const pointer = await caches.open(POINTER_CACHE_NAME);
     const realDelete = pointer.delete.bind(pointer);
-    vi.spyOn(pointer, 'delete').mockImplementationOnce((request) => {
-      expect(request).toBe(PENDING_PATH);
-      return Promise.reject(new Error('simulated pending-marker cleanup failure'));
-    }).mockImplementation((request) => realDelete(request));
+    vi.spyOn(pointer, 'delete')
+      .mockImplementationOnce((request) => {
+        expect(request).toBe(PENDING_PATH);
+        return Promise.reject(
+          new Error('simulated pending-marker cleanup failure'),
+        );
+      })
+      .mockImplementation((request) => realDelete(request));
 
-    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+    await expect(
+      second.activateRelease('release-two'),
+    ).resolves.toBeUndefined();
 
     await expect(second.activePointer()).resolves.toEqual({
       activeReleaseId: 'release-two',
@@ -457,7 +552,9 @@ describe('atomic activation', () => {
     });
     await expect(second.pendingReleaseId()).resolves.toBe('release-two');
 
-    await expect(second.activateRelease('release-two')).resolves.toBeUndefined();
+    await expect(
+      second.activateRelease('release-two'),
+    ).resolves.toBeUndefined();
     await expect(second.pendingReleaseId()).resolves.toBeNull();
   });
 
@@ -465,7 +562,9 @@ describe('atomic activation', () => {
     const { caches, subject } = manager();
     await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);
 
-    await expect(subject.activateRelease('release-one')).rejects.toThrow(/complete|ready/iu);
+    await expect(subject.activateRelease('release-one')).rejects.toThrow(
+      /complete|ready/iu,
+    );
     expect(await subject.activePointer()).toBeNull();
   });
 });

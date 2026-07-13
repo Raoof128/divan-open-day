@@ -11,11 +11,7 @@ import {
   type DivanWorkerScope,
   type WorkerReleaseIdentity,
 } from '../../src-sw/service-worker';
-import {
-  FakeCacheStorage,
-  fetchFrom,
-  releaseFixture,
-} from './helpers';
+import { FakeCacheStorage, fetchFrom, releaseFixture } from './helpers';
 
 type WorkerListener = (event: never) => void;
 
@@ -32,7 +28,9 @@ class WorkerHarness {
     expectedRelease: WorkerReleaseIdentity | null = null,
   ) {
     this.scope = {
-      location: new URL('https://divan.test/service-worker.js') as unknown as Location,
+      location: new URL(
+        'https://divan.test/service-worker.js',
+      ) as unknown as Location,
       caches,
       crypto: webcrypto,
       fetch: fetchFrom(files),
@@ -40,7 +38,10 @@ class WorkerHarness {
         claim: this.claim,
         matchAll: () =>
           Promise.resolve([
-            { postMessage: (message: unknown) => this.notifications.push(message) },
+            {
+              postMessage: (message: unknown) =>
+                this.notifications.push(message),
+            },
           ]),
       },
       addEventListener: (type: string, listener: WorkerListener) => {
@@ -169,9 +170,9 @@ describe('service-worker lifecycle harness', () => {
       previousReleaseId: null,
     });
     await expect(
-      harness.fetch(
-        new Request('https://divan.test/assets/app-0123456789abcdef.js'),
-      ).then((response) => response.text()),
+      harness
+        .fetch(new Request('https://divan.test/assets/app-0123456789abcdef.js'))
+        .then((response) => response.text()),
     ).resolves.toBe('console.log("DIVAN")');
     await harness.activate();
     expect(harness.claim).toHaveBeenCalledOnce();

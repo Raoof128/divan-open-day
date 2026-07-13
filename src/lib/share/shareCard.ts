@@ -85,7 +85,8 @@ export function buildShareCardSvg(
   const credit = escapeXml(item.translationCredit);
   const society = escapeXml(config.society);
   const url = escapeXml(config.siteUrl);
-  const accentColor = item.display.accent === 'pomegranate' ? '#7b1f2b' : '#1f3a7b';
+  const accentColor =
+    item.display.accent === 'pomegranate' ? '#7b1f2b' : '#1f3a7b';
 
   return [
     '<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="DIVAN verse share card">',

@@ -31,12 +31,14 @@ const ASSET_MIME_TYPES = [
   'text/javascript',
 ] as const;
 
-const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>([
-  ['index.html', 'text/html'],
-  ['manifest.webmanifest', 'application/manifest+json'],
-  ['offline.html', 'text/html'],
-  ['service-worker.js', 'text/javascript'],
-]);
+const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>(
+  [
+    ['index.html', 'text/html'],
+    ['manifest.webmanifest', 'application/manifest+json'],
+    ['offline.html', 'text/html'],
+    ['service-worker.js', 'text/javascript'],
+  ],
+);
 
 const VITE_ASSET_PATTERN =
   /^assets\/[A-Za-z0-9][A-Za-z0-9._-]*-[a-f0-9]{16}\.(css|js|woff2|avif|png|svg|webp)$/u;
@@ -62,7 +64,9 @@ export function browserAssetMimeType(
     return fixed;
   }
   const match = VITE_ASSET_PATTERN.exec(assetPath);
-  return match === null ? null : (VITE_MIME_BY_EXTENSION.get(match[1]!) ?? null);
+  return match === null
+    ? null
+    : (VITE_MIME_BY_EXTENSION.get(match[1]!) ?? null);
 }
 
 function isSafeLocalAssetPath(value: string): boolean {
@@ -123,23 +127,39 @@ const releaseAssetSchema = z
       context.addIssue({
         code: 'custom',
         path: ['path'],
-        message: 'Published asset filenames must be content-addressed by SHA-256.',
+        message:
+          'Published asset filenames must be content-addressed by SHA-256.',
       });
     }
 
     const validMimePath =
-      (asset.mimeType === 'audio/mpeg' && asset.path.startsWith('audio/') && asset.path.endsWith('.mp3')) ||
-      (asset.mimeType === 'audio/ogg' && asset.path.startsWith('audio/') && asset.path.endsWith('.ogg')) ||
-      (asset.mimeType === 'font/woff2' && asset.path.startsWith('fonts/') && asset.path.endsWith('.woff2')) ||
-      (asset.mimeType === 'image/svg+xml' && asset.path.startsWith('icons/') && asset.path.endsWith('.svg')) ||
-      (asset.mimeType === 'image/avif' && asset.path.startsWith('images/') && asset.path.endsWith('.avif')) ||
-      (asset.mimeType === 'image/webp' && asset.path.startsWith('images/') && asset.path.endsWith('.webp')) ||
-      (asset.mimeType === 'image/png' && asset.path.startsWith('images/') && asset.path.endsWith('.png'));
+      (asset.mimeType === 'audio/mpeg' &&
+        asset.path.startsWith('audio/') &&
+        asset.path.endsWith('.mp3')) ||
+      (asset.mimeType === 'audio/ogg' &&
+        asset.path.startsWith('audio/') &&
+        asset.path.endsWith('.ogg')) ||
+      (asset.mimeType === 'font/woff2' &&
+        asset.path.startsWith('fonts/') &&
+        asset.path.endsWith('.woff2')) ||
+      (asset.mimeType === 'image/svg+xml' &&
+        asset.path.startsWith('icons/') &&
+        asset.path.endsWith('.svg')) ||
+      (asset.mimeType === 'image/avif' &&
+        asset.path.startsWith('images/') &&
+        asset.path.endsWith('.avif')) ||
+      (asset.mimeType === 'image/webp' &&
+        asset.path.startsWith('images/') &&
+        asset.path.endsWith('.webp')) ||
+      (asset.mimeType === 'image/png' &&
+        asset.path.startsWith('images/') &&
+        asset.path.endsWith('.png'));
     if (!validMimePath) {
       context.addIssue({
         code: 'custom',
         path: ['mimeType'],
-        message: 'Release asset MIME type must match its approved path and extension.',
+        message:
+          'Release asset MIME type must match its approved path and extension.',
       });
     }
   });
@@ -163,7 +183,9 @@ export const assetManifestSchema = z
       paths.add(asset.path);
     });
     for (const fixedPath of FIXED_BROWSER_ASSETS.keys()) {
-      if (manifest.assets.filter((asset) => asset.path === fixedPath).length !== 1) {
+      if (
+        manifest.assets.filter((asset) => asset.path === fixedPath).length !== 1
+      ) {
         context.addIssue({
           code: 'custom',
           path: ['assets'],
@@ -224,7 +246,10 @@ export const releaseDescriptorSchema = z
         message: 'Release poet counts must add up to the total item count.',
       });
     }
-    if (release.productionEligible !== (release.buildProfile === 'production')) {
+    if (
+      release.productionEligible !==
+      (release.buildProfile === 'production')
+    ) {
       context.addIssue({
         code: 'custom',
         path: ['productionEligible'],
@@ -298,7 +323,9 @@ export function createReleaseArtifacts(
   }
   const builtAt = parseCanonicalUtcTimestamp(input.builtAt);
   if (input.corpus.productionEligible !== (input.profile === 'production')) {
-    throw new Error('Compiled corpus eligibility must match the release profile.');
+    throw new Error(
+      'Compiled corpus eligibility must match the release profile.',
+    );
   }
 
   const corpus: PublicCorpus = publicCorpusSchema.parse({
@@ -324,7 +351,9 @@ export function createReleaseArtifacts(
       }
       return { asset, contents: source.contents.slice() };
     })
-    .toSorted((left, right) => compareCodeUnits(left.asset.path, right.asset.path));
+    .toSorted((left, right) =>
+      compareCodeUnits(left.asset.path, right.asset.path),
+    );
   const assets = assetSources.map((source) => source.asset);
   const assetManifest: AssetManifest = assetManifestSchema.parse({
     releaseId: input.releaseId,
@@ -338,7 +367,9 @@ export function createReleaseArtifacts(
     }
     const previousMime = publicAudioByPath.get(item.audio.assetPath);
     if (previousMime !== undefined && previousMime !== item.audio.mimeType) {
-      throw new Error(`Compiled audio path ${item.audio.assetPath} has conflicting MIME types.`);
+      throw new Error(
+        `Compiled audio path ${item.audio.assetPath} has conflicting MIME types.`,
+      );
     }
     publicAudioByPath.set(item.audio.assetPath, item.audio.mimeType);
   }
@@ -351,8 +382,13 @@ export function createReleaseArtifacts(
     }
   }
   for (const asset of assets) {
-    if (asset.mimeType.startsWith('audio/') && !publicAudioByPath.has(asset.path)) {
-      throw new Error(`Orphan audio manifest asset ${asset.path} is not referenced by the corpus.`);
+    if (
+      asset.mimeType.startsWith('audio/') &&
+      !publicAudioByPath.has(asset.path)
+    ) {
+      throw new Error(
+        `Orphan audio manifest asset ${asset.path} is not referenced by the corpus.`,
+      );
     }
   }
 

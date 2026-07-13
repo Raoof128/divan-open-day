@@ -16,9 +16,17 @@ body::before {
   content: '';
   pointer-events: none;
   background:
-    radial-gradient(circle at 12% 18%, rgb(46 110 158 / 18%), transparent 34rem),
+    radial-gradient(
+      circle at 12% 18%,
+      rgb(46 110 158 / 18%),
+      transparent 34rem
+    ),
     radial-gradient(circle at 88% 82%, rgb(118 35 47 / 16%), transparent 30rem),
-    repeating-linear-gradient(115deg, transparent 0 7px, rgb(255 249 238 / 1.4%) 8px);
+    repeating-linear-gradient(
+      115deg,
+      transparent 0 7px,
+      rgb(255 249 238 / 1.4%) 8px
+    );
 }
 
 .skip-link {
@@ -47,8 +55,18 @@ body::before {
   pointer-events: none;
   opacity: 0.25;
   background-image:
-    linear-gradient(30deg, transparent 48%, rgb(212 166 74 / 6%) 49% 51%, transparent 52%),
-    linear-gradient(150deg, transparent 48%, rgb(212 166 74 / 5%) 49% 51%, transparent 52%);
+    linear-gradient(
+      30deg,
+      transparent 48%,
+      rgb(212 166 74 / 6%) 49% 51%,
+      transparent 52%
+    ),
+    linear-gradient(
+      150deg,
+      transparent 48%,
+      rgb(212 166 74 / 5%) 49% 51%,
+      transparent 52%
+    );
   background-size: 5rem 8.65rem;
 }
 
@@ -201,7 +219,8 @@ body::before {
     linear-gradient(145deg, rgb(17 24 45 / 96%), rgb(11 16 38 / 94%)),
     var(--ink-deep);
   border: 1px solid rgb(231 199 119 / 48%);
-  border-radius: 50% 50% var(--radius-paper) var(--radius-paper) / 18% 18% var(--radius-paper) var(--radius-paper);
+  border-radius: 50% 50% var(--radius-paper) var(--radius-paper) / 18% 18%
+    var(--radius-paper) var(--radius-paper);
   box-shadow:
     inset 0 0 0 0.3rem rgb(11 16 38),
     inset 0 0 0 0.35rem rgb(212 166 74 / 34%),
@@ -341,8 +360,17 @@ button:active {
 
 .poet-options button[data-visual-language='lamp-constellation']::before {
   background:
-    radial-gradient(circle at 70% 18%, rgb(231 199 119 / 36%), transparent 7rem),
-    linear-gradient(145deg, rgb(44 140 138 / 42%), rgb(23 74 126 / 72%), rgb(11 16 38 / 96%));
+    radial-gradient(
+      circle at 70% 18%,
+      rgb(231 199 119 / 36%),
+      transparent 7rem
+    ),
+    linear-gradient(
+      145deg,
+      rgb(44 140 138 / 42%),
+      rgb(23 74 126 / 72%),
+      rgb(11 16 38 / 96%)
+    );
 }
 
 .poet-options button strong {
@@ -360,7 +388,9 @@ button:active {
   color: var(--gold-light);
 }
 
-.poet-options button[data-visual-language='lamp-constellation'] .geometry-motif {
+.poet-options
+  button[data-visual-language='lamp-constellation']
+  .geometry-motif {
   color: #9fd8d6;
 }
 
@@ -625,7 +655,8 @@ button:active {
   }
 
   .manuscript-portal {
-    border-radius: 42% 42% var(--radius-paper) var(--radius-paper) / 12% 12% var(--radius-paper) var(--radius-paper);
+    border-radius: 42% 42% var(--radius-paper) var(--radius-paper) / 12% 12%
+      var(--radius-paper) var(--radius-paper);
   }
 }
 

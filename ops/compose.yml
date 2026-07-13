@@ -5,7 +5,7 @@ services:
     image: ${DIVAN_WEB_IMAGE:?set DIVAN_WEB_IMAGE to an immutable registry reference}
     restart: unless-stopped
     read_only: true
-    user: "10001:10001"
+    user: '10001:10001'
     cap_drop:
       - ALL
     security_opt:
@@ -15,11 +15,11 @@ services:
       - /data:rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700
       - /config:rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700
     expose:
-      - "8080"
+      - '8080'
     networks:
       - divan_origin
     healthcheck:
-      test: ["CMD", "/usr/local/bin/divan-health"]
+      test: ['CMD', '/usr/local/bin/divan-health']
       interval: 30s
       timeout: 5s
       retries: 3
@@ -32,7 +32,7 @@ services:
     image: cloudflare/cloudflared:2026.7.0@sha256:5e49861633763e8933475477c20bae6039ed47f32c1d267a34babc347f28f0df
     restart: unless-stopped
     read_only: true
-    user: "65532:65532"
+    user: '65532:65532'
     cap_drop:
       - ALL
     security_opt:

@@ -38,9 +38,7 @@ describe('secureRandomInt', () => {
 
   it('accepts the full 1..2^32 contract including both boundaries', () => {
     expect(secureRandomInt(1, sourceFrom([0xffffffff]))).toBe(0);
-    expect(secureRandomInt(2 ** 32, sourceFrom([0xffffffff]))).toBe(
-      0xffffffff,
-    );
+    expect(secureRandomInt(2 ** 32, sourceFrom([0xffffffff]))).toBe(0xffffffff);
   });
 
   it('rejects the incomplete upper interval for a non-power-of-two range', () => {
@@ -51,11 +49,9 @@ describe('secureRandomInt', () => {
   });
 
   it('never falls back to Math.random when secure randomness is unavailable', () => {
-    const mathRandom = vi
-      .spyOn(Math, 'random')
-      .mockImplementation(() => {
-        throw new Error('Math.random must not be called.');
-      });
+    const mathRandom = vi.spyOn(Math, 'random').mockImplementation(() => {
+      throw new Error('Math.random must not be called.');
+    });
 
     expect(() => secureRandomInt(2, null)).toThrow(
       UnsupportedSecureRandomError,

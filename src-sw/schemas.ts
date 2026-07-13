@@ -208,9 +208,7 @@ export const offlineReleaseDescriptorSchema = z
     rumiCount: z.number().int().nonnegative(),
     contentPath: z.string().regex(/^\/content\/[a-f0-9]{64}\.json$/u),
     contentSha256: z.string().regex(SHA256_PATTERN),
-    assetManifestPath: z
-      .string()
-      .regex(/^\/assets\/[a-f0-9]{64}\.json$/u),
+    assetManifestPath: z.string().regex(/^\/assets\/[a-f0-9]{64}\.json$/u),
     assetManifestSha256: z.string().regex(SHA256_PATTERN),
   })
   .strict()
@@ -222,7 +220,10 @@ export const offlineReleaseDescriptorSchema = z
         message: 'Poet counts must add up to the total.',
       });
     }
-    if (release.productionEligible !== (release.buildProfile === 'production')) {
+    if (
+      release.productionEligible !==
+      (release.buildProfile === 'production')
+    ) {
       context.addIssue({
         code: 'custom',
         path: ['productionEligible'],
@@ -299,7 +300,8 @@ const offlineAssetSchema = z
       if (asset.mimeType !== browserMime || !asset.requiredOffline) {
         context.addIssue({
           code: 'custom',
-          message: 'Browser assets require their fixed MIME and offline status.',
+          message:
+            'Browser assets require their fixed MIME and offline status.',
         });
       }
       return;

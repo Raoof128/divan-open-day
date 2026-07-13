@@ -1,4 +1,10 @@
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import { App } from '../../src/app/App';
@@ -60,30 +66,37 @@ it.each([
       throw new Error('private random-provider detail');
     },
   },
-])('focuses the mounted blocking-error heading after $name', async ({ drawPoem }) => {
-  render(
-    <App
-      services={{
-        loadRelease: () => Promise.resolve(makeVerifiedRelease([HAFEZ_ITEM])),
-        drawPoem,
-      }}
-    />,
-  );
-  await screen.findByRole('button', { name: 'Begin' });
-  fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
-  fireEvent.click(screen.getByRole('button', { name: /Open the Divan.*Hafez/u }));
-  const reveal = screen.getByRole('button', { name: 'Press to reveal' });
-  reveal.focus();
+])(
+  'focuses the mounted blocking-error heading after $name',
+  async ({ drawPoem }) => {
+    render(
+      <App
+        services={{
+          loadRelease: () => Promise.resolve(makeVerifiedRelease([HAFEZ_ITEM])),
+          drawPoem,
+        }}
+      />,
+    );
+    await screen.findByRole('button', { name: 'Begin' });
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: /Open the Divan.*Hafez/u }),
+    );
+    const reveal = screen.getByRole('button', { name: 'Press to reveal' });
+    reveal.focus();
 
-  fireEvent.click(reveal);
+    fireEvent.click(reveal);
 
-  const heading = await screen.findByRole('heading', {
-    level: 1,
-    name: 'The experience could not finish loading.',
-  });
-  expect(heading).toHaveFocus();
-  expect(document.body).not.toHaveTextContent('private random-provider detail');
-});
+    const heading = await screen.findByRole('heading', {
+      level: 1,
+      name: 'The experience could not finish loading.',
+    });
+    expect(heading).toHaveFocus();
+    expect(document.body).not.toHaveTextContent(
+      'private random-provider detail',
+    );
+  },
+);
 
 it('keeps the poem visible and announces a native audio failure once', async () => {
   render(
@@ -101,7 +114,9 @@ it('keeps the poem visible and announces a native audio failure once', async () 
   );
   await screen.findByRole('button', { name: 'Begin' });
   fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
-  fireEvent.click(screen.getByRole('button', { name: /Open the Divan.*Hafez/u }));
+  fireEvent.click(
+    screen.getByRole('button', { name: /Open the Divan.*Hafez/u }),
+  );
   vi.useFakeTimers();
   fireEvent.click(screen.getByRole('button', { name: 'Press to reveal' }));
   await act(() => vi.advanceTimersByTimeAsync(250));
@@ -115,15 +130,21 @@ it('keeps the poem visible and announces a native audio failure once', async () 
   expect(audio).not.toHaveAttribute('autoplay');
   fireEvent.error(audio);
 
-  expect(screen.getByRole('heading', { level: 1, name: 'Your verse' })).toBeVisible();
-  expect(screen.getAllByText('Persian audio is unavailable right now.')).toHaveLength(2);
+  expect(
+    screen.getByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeVisible();
+  expect(
+    screen.getAllByText('Persian audio is unavailable right now.'),
+  ).toHaveLength(2);
   expect(screen.getAllByRole('status')).toHaveLength(1);
   expect(screen.queryByRole('alert')).toBeNull();
 });
 
 it('announces offline readiness in one persistent polite atomic region', async () => {
   render(
-    <App services={{ loadRelease: () => Promise.resolve(makeVerifiedRelease()) }} />,
+    <App
+      services={{ loadRelease: () => Promise.resolve(makeVerifiedRelease()) }}
+    />,
   );
   await screen.findByRole('button', { name: 'Begin' });
 
@@ -161,7 +182,9 @@ it('does not claim offline readiness while release verification is pending', () 
   act(() => {
     window.dispatchEvent(new Event('offline'));
   });
-  expect(screen.getByRole('heading', { level: 1, name: 'DIVAN' })).toBeVisible();
+  expect(
+    screen.getByRole('heading', { level: 1, name: 'DIVAN' }),
+  ).toBeVisible();
   expect(screen.getByRole('status')).not.toHaveTextContent(
     'You are offline, but your poetry experience is ready.',
   );

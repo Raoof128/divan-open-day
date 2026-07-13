@@ -3,7 +3,8 @@
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url('@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2');
+  src: url('@fontsource/inter/files/inter-latin-400-normal.woff2')
+    format('woff2');
 }
 
 @font-face {
@@ -11,7 +12,8 @@
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url('@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2');
+  src: url('@fontsource/inter/files/inter-latin-700-normal.woff2')
+    format('woff2');
 }
 
 @font-face {

@@ -65,7 +65,9 @@ test('completes both poet flows by keyboard with semantic, reflow, and axe check
   await expectNoBrowserAxeViolations(page);
 
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeFocused();
+  await expect(
+    page.getByRole('link', { name: 'Skip to main content' }),
+  ).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('main')).toBeFocused();
   await page.keyboard.press('Tab');
@@ -81,21 +83,27 @@ test('completes both poet flows by keyboard with semantic, reflow, and axe check
   ).toBeFocused();
   await page.keyboard.press('Enter');
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: 'Press to reveal' })).toBeFocused();
+  await expect(
+    page.getByRole('button', { name: 'Press to reveal' }),
+  ).toBeFocused();
   await page.keyboard.press('Enter');
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeFocused();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeFocused();
   const english = page.getByTestId('english-poem');
   const persian = page.getByTestId('persian-poem');
   await expect(persian).toHaveAttribute('lang', 'fa');
   await expect(persian).toHaveAttribute('dir', 'rtl');
   expect(
-    await english.evaluate((element, other) =>
-      Boolean(
-        element.compareDocumentPosition(other as Node) &
+    await english.evaluate(
+      (element, other) =>
+        Boolean(
+          element.compareDocumentPosition(other as Node) &
           Node.DOCUMENT_POSITION_FOLLOWING,
-      ),
-    await persian.elementHandle()),
+        ),
+      await persian.elementHandle(),
+    ),
   ).toBe(true);
   expect(await page.locator('bdi').count()).toBeGreaterThanOrEqual(3);
   await expectNoHorizontalOverflow(page);
@@ -112,20 +120,28 @@ test('completes both poet flows by keyboard with semantic, reflow, and axe check
     `,
   });
   await expectNoHorizontalOverflow(page);
-  await expect(page.getByRole('button', { name: 'Reveal another' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Reveal another' }),
+  ).toBeVisible();
 
   await page.goBack();
-  await expect(page.getByRole('button', { name: 'Press to reveal' })).toBeFocused();
+  await expect(
+    page.getByRole('button', { name: 'Press to reveal' }),
+  ).toBeFocused();
   await page.goBack();
   await expect(
     page.getByRole('button', { name: /Open the Divan.*Hafez/u }),
   ).toBeFocused();
 
-  await page.getByRole('button', { name: /A Moment of Reflection.*Rumi/u }).focus();
+  await page
+    .getByRole('button', { name: /A Moment of Reflection.*Rumi/u })
+    .focus();
   await page.keyboard.press('Enter');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeFocused();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeFocused();
   await expectNoBrowserAxeViolations(page);
 });
 
@@ -137,7 +153,11 @@ test('honours motion precedence and preserves the result when native audio fails
       configurable: true,
       value: <T extends ArrayBufferView | null>(target: T): T => {
         if (target !== null) {
-          new Uint8Array(target.buffer, target.byteOffset, target.byteLength).fill(0);
+          new Uint8Array(
+            target.buffer,
+            target.byteOffset,
+            target.byteLength,
+          ).fill(0);
         }
         return target;
       },
@@ -145,7 +165,10 @@ test('honours motion precedence and preserves the result when native audio fails
   });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.getByTestId('app-shell')).toHaveAttribute('data-motion', 'reduced');
+  await expect(page.getByTestId('app-shell')).toHaveAttribute(
+    'data-motion',
+    'reduced',
+  );
 
   await page.getByRole('button', { name: 'Begin' }).click();
   await page.getByRole('button', { name: /Open the Divan.*Hafez/u }).click();
@@ -163,7 +186,8 @@ test('honours motion precedence and preserves the result when native audio fails
           animation.transitionProperty === 'opacity',
       );
     const effect = transition?.effect;
-    const keyframes = effect instanceof KeyframeEffect ? effect.getKeyframes() : [];
+    const keyframes =
+      effect instanceof KeyframeEffect ? effect.getKeyframes() : [];
     return {
       duration: effect?.getTiming().duration ?? null,
       startOpacity: keyframes.at(0)?.['opacity'] ?? null,
@@ -175,12 +199,17 @@ test('honours motion precedence and preserves the result when native audio fails
     startOpacity: '0',
     endOpacity: '1',
   });
-  await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeFocused();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeFocused();
 
   await page.evaluate(() => window.sessionStorage.clear());
   await page.reload();
   await page.getByLabel('Motion').selectOption('full');
-  await expect(page.getByTestId('app-shell')).toHaveAttribute('data-motion', 'full');
+  await expect(page.getByTestId('app-shell')).toHaveAttribute(
+    'data-motion',
+    'full',
+  );
   await page.getByRole('button', { name: 'Begin' }).click();
   await page.getByRole('button', { name: /Open the Divan.*Hafez/u }).click();
   const reveal = page.getByRole('button', { name: 'Press to reveal' });
@@ -214,7 +243,13 @@ test('honours motion precedence and preserves the result when native audio fails
   await audio.evaluate((element) => {
     element.dispatchEvent(new Event('error'));
   });
-  await expect(page.getByText('Persian audio is unavailable right now.').first()).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Reveal another' })).toBeEnabled();
+  await expect(
+    page.getByText('Persian audio is unavailable right now.').first(),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Reveal another' }),
+  ).toBeEnabled();
 });

@@ -42,7 +42,9 @@ export interface DivanWorkerScope {
   readonly fetch: typeof fetch;
   readonly clients: {
     claim(): Promise<void>;
-    matchAll(options: { readonly type: 'window' }): Promise<readonly ClientLike[]>;
+    matchAll(options: {
+      readonly type: 'window';
+    }): Promise<readonly ClientLike[]>;
   };
   addEventListener(
     type: 'install',
@@ -126,13 +128,15 @@ export function installDivanServiceWorker(
   });
 
   scope.addEventListener('activate', (event) => {
-    event.waitUntil((async () => {
-      await scope.clients.claim();
-      const pointer = await manager.activePointer();
-      if (pointer !== null) {
-        await notify('active', pointer.activeReleaseId);
-      }
-    })());
+    event.waitUntil(
+      (async () => {
+        await scope.clients.claim();
+        const pointer = await manager.activePointer();
+        if (pointer !== null) {
+          await notify('active', pointer.activeReleaseId);
+        }
+      })(),
+    );
   });
 
   scope.addEventListener('message', (event) => {
@@ -140,26 +144,26 @@ export function installDivanServiceWorker(
       return;
     }
     const activation = event.data;
-    event.waitUntil((async () => {
-      try {
-        await notify('activating', activation.releaseId);
-        await manager.activateRelease(activation.releaseId);
-        const pointer = await manager.activePointer();
-        if (pointer?.activeReleaseId !== activation.releaseId) {
-          throw new Error('Requested release did not become active.');
+    event.waitUntil(
+      (async () => {
+        try {
+          await notify('activating', activation.releaseId);
+          await manager.activateRelease(activation.releaseId);
+          const pointer = await manager.activePointer();
+          if (pointer?.activeReleaseId !== activation.releaseId) {
+            throw new Error('Requested release did not become active.');
+          }
+          await scope.skipWaiting();
+          await notify('active', activation.releaseId);
+        } catch {
+          await notify('error', activation.releaseId);
         }
-        await scope.skipWaiting();
-        await notify('active', activation.releaseId);
-      } catch {
-        await notify('error', activation.releaseId);
-      }
-    })());
+      })(),
+    );
   });
 }
 
-function isActivationMessage(
-  value: unknown,
-): value is {
+function isActivationMessage(value: unknown): value is {
   readonly type: 'ACTIVATE_READY_RELEASE';
   readonly releaseId: string;
 } {

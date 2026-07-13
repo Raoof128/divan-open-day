@@ -48,7 +48,9 @@ export async function readBoundedAssetFile(
 
   const pathStat = await lstat(options.filename);
   if (pathStat.isSymbolicLink() || !pathStat.isFile()) {
-    throw new Error(`Symlinked or irregular asset is forbidden: ${options.label}.`);
+    throw new Error(
+      `Symlinked or irregular asset is forbidden: ${options.label}.`,
+    );
   }
   assertAllowedSize(pathStat.size, options.declaredBytes, options.label);
 
@@ -73,10 +75,7 @@ export async function readBoundedAssetFile(
     );
     let offset = 0;
     while (offset < options.declaredBytes) {
-      const length = Math.min(
-        READ_CHUNK_BYTES,
-        options.declaredBytes - offset,
-      );
+      const length = Math.min(READ_CHUNK_BYTES, options.declaredBytes - offset);
       const target = contents ?? scratch;
       if (target === null) {
         throw new Error('Bounded asset reader did not allocate a read buffer.');
@@ -103,7 +102,9 @@ export async function readBoundedAssetFile(
     }
 
     const extra = new Uint8Array(1);
-    if ((await handle.read(extra, 0, 1, options.declaredBytes)).bytesRead !== 0) {
+    if (
+      (await handle.read(extra, 0, 1, options.declaredBytes)).bytesRead !== 0
+    ) {
       throw new Error(`Asset changed while reading ${options.label}.`);
     }
     return { sha256: hash.digest('hex'), contents, prefix };

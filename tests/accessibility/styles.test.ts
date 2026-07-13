@@ -9,8 +9,11 @@ async function coreCss(): Promise<string> {
 
 function rule(css: string, selector: string): string {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
-  return new RegExp(`${escaped}\\s*\\{(?<body>[^}]*)\\}`, 'u').exec(css)
-    ?.groups?.['body'] ?? '';
+  return (
+    new RegExp(`${escaped}\\s*\\{(?<body>[^}]*)\\}`, 'u').exec(css)?.groups?.[
+      'body'
+    ] ?? ''
+  );
 }
 
 describe('CSS accessibility guardrails', () => {
@@ -52,7 +55,7 @@ describe('CSS accessibility guardrails', () => {
     const reducedMedia = css.match(
       /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{(?<body>[\s\S]*)\}\s*$/u,
     )?.groups?.['body'];
-    expect(reducedMedia).toContain('[data-motion-preference=\'system\']');
+    expect(reducedMedia).toContain("[data-motion-preference='system']");
     expect(reducedMedia).not.toMatch(/^\s*\*,/mu);
     expect(css).toContain("[data-motion-preference='reduced']");
   });

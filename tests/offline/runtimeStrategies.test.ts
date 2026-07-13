@@ -40,7 +40,10 @@ describe('release-coherent runtime strategies', () => {
   it('serves hashed assets only from the active complete release, never another candidate', async () => {
     const { subject, caches } = await activeManager();
     const candidate = await caches.open(`${RELEASE_CACHE_PREFIX}release-two`);
-    await candidate.put('/assets/app-0123456789abcdef.js', new Response('wrong release'));
+    await candidate.put(
+      '/assets/app-0123456789abcdef.js',
+      new Response('wrong release'),
+    );
 
     const response = await subject.respond(
       new Request('https://divan.test/assets/app-0123456789abcdef.js'),
@@ -53,7 +56,11 @@ describe('release-coherent runtime strategies', () => {
     const fixture = releaseFixture();
     const hangingFetch = ((input: RequestInfo | URL, init?: RequestInit) => {
       const path = new URL(
-        typeof input === 'string' ? input : input instanceof URL ? input : input.url,
+        typeof input === 'string'
+          ? input
+          : input instanceof URL
+            ? input
+            : input.url,
         'https://divan.test',
       ).pathname;
       if (path === '/') {
@@ -70,9 +77,7 @@ describe('release-coherent runtime strategies', () => {
     };
     const { subject } = await activeManager(hangingFetch, timers);
 
-    const response = await subject.respond(
-      navigationRequest(),
-    );
+    const response = await subject.respond(navigationRequest());
 
     await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
   });
@@ -81,7 +86,11 @@ describe('release-coherent runtime strategies', () => {
     const fixture = releaseFixture();
     const network = ((input: RequestInfo | URL, init?: RequestInit) => {
       const pathname = new URL(
-        typeof input === 'string' ? input : input instanceof URL ? input : input.url,
+        typeof input === 'string'
+          ? input
+          : input instanceof URL
+            ? input
+            : input.url,
         'https://divan.test',
       ).pathname;
       if (pathname === '/') {
@@ -105,11 +114,15 @@ describe('release-coherent runtime strategies', () => {
   it('never caches or falls back for the private health route', async () => {
     const calls: { path: string; init?: RequestInit }[] = [];
     const fixture = releaseFixture();
-    const { subject, caches } = await activeManager(fetchFrom(fixture.files, calls));
+    const { subject, caches } = await activeManager(
+      fetchFrom(fixture.files, calls),
+    );
     const active = await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);
     await active.put('/healthz', new Response('cached health'));
 
-    const response = await subject.respond(new Request('https://divan.test/healthz'));
+    const response = await subject.respond(
+      new Request('https://divan.test/healthz'),
+    );
 
     expect(response.status).toBe(404);
     expect(calls.at(-1)?.path).toBe('/healthz');
@@ -123,7 +136,10 @@ describe('release-coherent runtime strategies', () => {
     await subject.respond(new Request('https://divan.test/release.json'));
     await subject.respond(new Request('https://divan.test/service-worker.js'));
 
-    expect(calls.slice(-2).map(({ init }) => init?.cache)).toEqual(['no-store', 'no-store']);
+    expect(calls.slice(-2).map(({ init }) => init?.cache)).toEqual([
+      'no-store',
+      'no-store',
+    ]);
   });
 
   it('uses exact cache matching and rejects a query-mutated hashed asset', async () => {
@@ -161,9 +177,7 @@ describe('release-coherent runtime strategies', () => {
     const candidate = await caches.open(`${RELEASE_CACHE_PREFIX}release-two`);
     await candidate.delete('/index.html');
 
-    const response = await second.respond(
-      navigationRequest(),
-    );
+    const response = await second.respond(navigationRequest());
 
     await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
     expect(await second.activePointer()).toEqual({
@@ -192,9 +206,7 @@ describe('release-coherent runtime strategies', () => {
     });
     await second.stageCurrentRelease();
 
-    await second.respond(
-      navigationRequest(),
-    );
+    await second.respond(navigationRequest());
 
     await expect(second.activePointer()).resolves.toEqual({
       activeReleaseId: 'release-two',
@@ -247,7 +259,9 @@ describe('release-coherent runtime strategies', () => {
       previousReleaseId: 'release-one',
     });
     await expect(currentManager.pendingReleaseId()).resolves.toBeNull();
-    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-stale`)).toBe(false);
+    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-stale`)).toBe(
+      false,
+    );
   });
 
   it('keeps the active release and exact pending target after activation failure', async () => {
@@ -287,7 +301,10 @@ describe('release-coherent runtime strategies', () => {
     const fixture = releaseFixture();
     const calls: { path: string; init?: RequestInit }[] = [];
     const network = fetchFrom(
-      new Map(fixture.files).set('/scripted', new Response('scripted response')),
+      new Map(fixture.files).set(
+        '/scripted',
+        new Response('scripted response'),
+      ),
       calls,
     );
     const { subject, caches } = await activeManager(network);
@@ -319,7 +336,11 @@ describe('release-coherent runtime strategies', () => {
     let failAudio = false;
     const network = (async (input: RequestInfo | URL, init?: RequestInit) => {
       const path = new URL(
-        typeof input === 'string' ? input : input instanceof URL ? input : input.url,
+        typeof input === 'string'
+          ? input
+          : input instanceof URL
+            ? input
+            : input.url,
         'https://divan.test',
       ).pathname;
       if (failAudio && path.startsWith('/audio/')) {

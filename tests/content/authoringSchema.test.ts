@@ -5,9 +5,9 @@ import { makeAuthoringItem, makeRumiAuthoringItem } from './fixtures';
 
 describe('authoringContentItemSchema', () => {
   it('accepts complete Hafez and Rumi authoring records', () => {
-    expect(authoringContentItemSchema.safeParse(makeAuthoringItem()).success).toBe(
-      true,
-    );
+    expect(
+      authoringContentItemSchema.safeParse(makeAuthoringItem()).success,
+    ).toBe(true);
     expect(
       authoringContentItemSchema.safeParse(makeRumiAuthoringItem()).success,
     ).toBe(true);
@@ -20,8 +20,12 @@ describe('authoringContentItemSchema', () => {
     const nestedLeak = makeAuthoringItem();
     Object.assign(nestedLeak.translation, { internal_note: 'leak' });
 
-    expect(authoringContentItemSchema.safeParse(topLevelLeak).success).toBe(false);
-    expect(authoringContentItemSchema.safeParse(nestedLeak).success).toBe(false);
+    expect(authoringContentItemSchema.safeParse(topLevelLeak).success).toBe(
+      false,
+    );
+    expect(authoringContentItemSchema.safeParse(nestedLeak).success).toBe(
+      false,
+    );
   });
 
   it.each([
@@ -58,7 +62,9 @@ describe('authoringContentItemSchema', () => {
     misaligned.text.english_lines = ['TEST ONLY one line'];
 
     expect(authoringContentItemSchema.safeParse(tooShort).success).toBe(false);
-    expect(authoringContentItemSchema.safeParse(misaligned).success).toBe(false);
+    expect(authoringContentItemSchema.safeParse(misaligned).success).toBe(
+      false,
+    );
   });
 
   it('requires a 45 to 90 word reflection', () => {
@@ -70,7 +76,10 @@ describe('authoringContentItemSchema', () => {
 
   it('does not count punctuation-only tokens as reflection words', () => {
     const item = makeAuthoringItem();
-    const actualWords = Array.from({ length: 44 }, (_, index) => `word${index}`);
+    const actualWords = Array.from(
+      { length: 44 },
+      (_, index) => `word${index}`,
+    );
     item.reflection.english = [...actualWords, '...', '---', '!!!'].join(' ');
 
     expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
@@ -104,12 +113,15 @@ describe('authoringContentItemSchema', () => {
     '<!DOCTYPE html>',
     '<![CDATA[TEST ONLY declaration]]>',
     '<?xml version="1.0"?>',
-  ])('rejects additional raw markup forms in authoring text: %s', (unsafeText) => {
-    const item = makeAuthoringItem();
-    item.text.english_lines[0] = unsafeText;
+  ])(
+    'rejects additional raw markup forms in authoring text: %s',
+    (unsafeText) => {
+      const item = makeAuthoringItem();
+      item.text.english_lines[0] = unsafeText;
 
-    expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
-  });
+      expect(authoringContentItemSchema.safeParse(item).success).toBe(false);
+    },
+  );
 
   it.each(['\u061C', '\u200E', '\u200F'])(
     'rejects unsafe bidi control U+%s in authoring text',
@@ -150,7 +162,8 @@ describe('authoringContentItemSchema', () => {
     ).toBe(true);
     expect(
       item.text.english_lines.every(
-        (line) => line.includes('TEST ONLY') && line.includes('NOT TRANSLATION'),
+        (line) =>
+          line.includes('TEST ONLY') && line.includes('NOT TRANSLATION'),
       ),
     ).toBe(true);
     expect(item.reflection.english).toContain('TEST ONLY');
@@ -165,7 +178,9 @@ describe('authoringContentItemSchema', () => {
     const missingReviewer = makeAuthoringItem();
     missingReviewer.review.rights_reviewer_ids = [];
 
-    expect(authoringContentItemSchema.safeParse(missingUse).success).toBe(false);
+    expect(authoringContentItemSchema.safeParse(missingUse).success).toBe(
+      false,
+    );
     expect(authoringContentItemSchema.safeParse(missingReviewer).success).toBe(
       false,
     );

@@ -84,7 +84,10 @@
   .app-shell[data-motion='full'] .poet-options button,
   .app-shell[data-motion='full'] .primary-action,
   .app-shell[data-motion='full'] .result-actions button {
-    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
   }
 
   .app-shell[data-motion='full'] .poet-options button:hover {

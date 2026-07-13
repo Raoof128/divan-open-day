@@ -1,21 +1,21 @@
 :root {
-  --ink-night: #0B1026;
-  --ink-deep: #11182D;
-  --lapis: #174A7E;
-  --lapis-light: #2E6E9E;
-  --turquoise: #2C8C8A;
-  --pomegranate: #A6192E;
-  --bright-red: #D6001C;
-  --deep-red: #76232F;
-  --gold: #D4A64A;
-  --gold-light: #E7C777;
-  --parchment: #F2E6CF;
-  --paper: #FFF9EE;
-  --cypress: #204F40;
-  --charcoal: #2E302E;
-  --muted-ink: #6E675D;
-  --error: #B42318;
-  --focus: #78D6FF;
+  --ink-night: #0b1026;
+  --ink-deep: #11182d;
+  --lapis: #174a7e;
+  --lapis-light: #2e6e9e;
+  --turquoise: #2c8c8a;
+  --pomegranate: #a6192e;
+  --bright-red: #d6001c;
+  --deep-red: #76232f;
+  --gold: #d4a64a;
+  --gold-light: #e7c777;
+  --parchment: #f2e6cf;
+  --paper: #fff9ee;
+  --cypress: #204f40;
+  --charcoal: #2e302e;
+  --muted-ink: #6e675d;
+  --error: #b42318;
+  --focus: #78d6ff;
 
   --surface-night: var(--ink-night);
   --surface-night-raised: var(--ink-deep);
@@ -33,8 +33,8 @@
   --font-interface: 'DIVAN Inter', Inter, system-ui, sans-serif;
   --font-display: 'DIVAN Cormorant Garamond', Georgia, serif;
   --font-persian: 'DIVAN Vazirmatn', Vazirmatn, Tahoma, sans-serif;
-  --font-persian-display: 'DIVAN Noto Nastaliq Urdu', 'Noto Nastaliq Urdu',
-    var(--font-persian);
+  --font-persian-display:
+    'DIVAN Noto Nastaliq Urdu', 'Noto Nastaliq Urdu', var(--font-persian);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;

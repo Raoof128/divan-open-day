@@ -39,7 +39,9 @@ export function secureRandomInt(
     maxExclusive < 1 ||
     maxExclusive > UINT32_RANGE
   ) {
-    throw new RangeError('maxExclusive must be an integer from 1 through 2^32.');
+    throw new RangeError(
+      'maxExclusive must be an integer from 1 through 2^32.',
+    );
   }
   const resolvedSource = source === undefined ? browserRandomSource() : source;
   if (

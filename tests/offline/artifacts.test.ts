@@ -24,7 +24,9 @@ describe('local-only offline artifacts', () => {
       lang: 'en',
       dir: 'ltr',
     });
-    expect(JSON.stringify(manifest)).not.toMatch(/Macquarie|University|https?:/u);
+    expect(JSON.stringify(manifest)).not.toMatch(
+      /Macquarie|University|https?:/u,
+    );
   });
 
   it('provides a semantic, script-free, local-link-only recovery page', async () => {
@@ -33,13 +35,12 @@ describe('local-only offline artifacts', () => {
     expect(offline).toContain('<html lang="en" dir="ltr">');
     expect(offline).toContain('<h1>DIVAN is not ready offline yet</h1>');
     expect(offline).toContain('Persian Society');
-    expect(offline).not.toMatch(/<script|<style|https?:|Macquarie|University/iu);
-    expect([...offline.matchAll(/href="([^"]+)"/gu)].map((match) => match[1])).toEqual([
-      '/',
-      '/about',
-      '/privacy',
-      '/accessibility',
-    ]);
+    expect(offline).not.toMatch(
+      /<script|<style|https?:|Macquarie|University/iu,
+    );
+    expect(
+      [...offline.matchAll(/href="([^"]+)"/gu)].map((match) => match[1]),
+    ).toEqual(['/', '/about', '/privacy', '/accessibility']);
   });
 
   it('exports a hand-controlled worker installer for the root build seam', () => {

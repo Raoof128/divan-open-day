@@ -95,7 +95,9 @@ function sha256(value: string): string {
   return createHash('sha256').update(value, 'utf8').digest('hex');
 }
 
-function makeReleaseFixture(items: readonly PublicContentItem[] = [makeItem()]): {
+function makeReleaseFixture(
+  items: readonly PublicContentItem[] = [makeItem()],
+): {
   readonly release: ReleaseDescriptor;
   readonly corpusJson: string;
 } {
@@ -140,10 +142,7 @@ function createFixtureFetch(
     cache: RequestCache | undefined;
     redirect: RequestRedirect | undefined;
   }[] = [];
-  const fixtureFetch = ((
-    input: string | URL | Request,
-    init?: RequestInit,
-  ) => {
+  const fixtureFetch = ((input: string | URL | Request, init?: RequestInit) => {
     const path =
       typeof input === 'string'
         ? input
@@ -173,7 +172,10 @@ function createFixtureFetch(
 describe('browser release runtime', () => {
   it('loads no-store metadata and its verified content-addressed corpus', async () => {
     const fixture = makeReleaseFixture();
-    const fixtureFetch = createFixtureFetch(fixture.release, fixture.corpusJson);
+    const fixtureFetch = createFixtureFetch(
+      fixture.release,
+      fixture.corpusJson,
+    );
 
     const verified = await loadVerifiedRelease({
       fetch: fixtureFetch.fetch,
@@ -194,9 +196,25 @@ describe('browser release runtime', () => {
   });
 
   it.each([
-    ['strict release shape', (release: ReleaseDescriptor) => ({ ...release, privatePath: '/secret' })],
-    ['release ID mismatch', (release: ReleaseDescriptor) => ({ ...release, releaseId: 'other-release' })],
-    ['count mismatch', (release: ReleaseDescriptor) => ({ ...release, itemCount: 2, hafezCount: 2 })],
+    [
+      'strict release shape',
+      (release: ReleaseDescriptor) => ({ ...release, privatePath: '/secret' }),
+    ],
+    [
+      'release ID mismatch',
+      (release: ReleaseDescriptor) => ({
+        ...release,
+        releaseId: 'other-release',
+      }),
+    ],
+    [
+      'count mismatch',
+      (release: ReleaseDescriptor) => ({
+        ...release,
+        itemCount: 2,
+        hafezCount: 2,
+      }),
+    ],
   ])('fails closed on %s', async (_label, mutateRelease) => {
     const fixture = makeReleaseFixture();
     const fixtureFetch = createFixtureFetch(
@@ -256,22 +274,25 @@ describe('browser release runtime', () => {
         items: [{ ...item, contentHash: 'b'.repeat(64) }],
       }),
     ],
-  ])('rejects %s even when the outer digest matches', async (_label, makeCorpus) => {
-    const corpusJson = JSON.stringify(makeCorpus(makeItem()));
-    const release = {
-      ...makeReleaseFixture().release,
-      contentSha256: sha256(corpusJson),
-      contentPath: `/content/${sha256(corpusJson)}.json`,
-    };
-    const fixtureFetch = createFixtureFetch(release, corpusJson);
+  ])(
+    'rejects %s even when the outer digest matches',
+    async (_label, makeCorpus) => {
+      const corpusJson = JSON.stringify(makeCorpus(makeItem()));
+      const release = {
+        ...makeReleaseFixture().release,
+        contentSha256: sha256(corpusJson),
+        contentPath: `/content/${sha256(corpusJson)}.json`,
+      };
+      const fixtureFetch = createFixtureFetch(release, corpusJson);
 
-    await expect(
-      loadVerifiedRelease({
-        fetch: fixtureFetch.fetch,
-        crypto: globalThis.crypto,
-      }),
-    ).rejects.toBeInstanceOf(ReleaseLoadError);
-  });
+      await expect(
+        loadVerifiedRelease({
+          fetch: fixtureFetch.fetch,
+          crypto: globalThis.crypto,
+        }),
+      ).rejects.toBeInstanceOf(ReleaseLoadError);
+    },
+  );
 
   it.each([
     [
@@ -297,7 +318,10 @@ describe('browser release runtime', () => {
     ],
   ])('rejects %s from a digest-valid corpus', async (_label, item) => {
     const fixture = makeReleaseFixture([item]);
-    const fixtureFetch = createFixtureFetch(fixture.release, fixture.corpusJson);
+    const fixtureFetch = createFixtureFetch(
+      fixture.release,
+      fixture.corpusJson,
+    );
 
     await expect(
       loadVerifiedRelease({
@@ -328,7 +352,10 @@ describe('browser release runtime', () => {
 
   it('uses the privacy-safe blocking error when Web Crypto is unavailable', async () => {
     const fixture = makeReleaseFixture();
-    const fixtureFetch = createFixtureFetch(fixture.release, fixture.corpusJson);
+    const fixtureFetch = createFixtureFetch(
+      fixture.release,
+      fixture.corpusJson,
+    );
 
     await expect(
       loadVerifiedRelease({ fetch: fixtureFetch.fetch, crypto: null }),
@@ -342,7 +369,10 @@ describe('browser release runtime', () => {
 
   it('fails closed when digest exists but secure random values are unavailable', async () => {
     const fixture = makeReleaseFixture();
-    const fixtureFetch = createFixtureFetch(fixture.release, fixture.corpusJson);
+    const fixtureFetch = createFixtureFetch(
+      fixture.release,
+      fixture.corpusJson,
+    );
 
     await expect(
       loadVerifiedRelease({

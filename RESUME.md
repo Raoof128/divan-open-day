@@ -32,19 +32,19 @@
 
 ## Verified green baseline (2026-07-13, commit `c552189`, Node 22.16.0)
 
-| Check | Result |
-|-------|--------|
-| `pnpm typecheck` | exit 0 |
-| `pnpm lint` | exit 0 |
-| `pnpm test` (vitest) | **472 passed (34 files)** |
-| `pnpm test:e2e` (Playwright, Chromium) | **5 passed** |
-| `pnpm build:fixture` + `verify:dist` | pass (40-item fixture release) |
-| `pnpm verify:privacy` | pass |
-| `pnpm verify:container/headers/origin-isolation/rollback` | pass (docker-free static groups) |
-| `pnpm audit --prod` | no known vulnerabilities |
-| `pnpm build:production` | exit 1 — **intended** fail-closed (no approved corpus) |
-| `pnpm verify:qr` | exit 1 — **intended** fail-closed (Phase-7 gate) |
-| Bundle budgets (§21.3) | JS 118 KB gz / CSS 4.8 KB / HTML 657 B / total 752 KB — all within |
+| Check                                                     | Result                                                             |
+| --------------------------------------------------------- | ------------------------------------------------------------------ |
+| `pnpm typecheck`                                          | exit 0                                                             |
+| `pnpm lint`                                               | exit 0                                                             |
+| `pnpm test` (vitest)                                      | **472 passed (34 files)**                                          |
+| `pnpm test:e2e` (Playwright, Chromium)                    | **5 passed**                                                       |
+| `pnpm build:fixture` + `verify:dist`                      | pass (40-item fixture release)                                     |
+| `pnpm verify:privacy`                                     | pass                                                               |
+| `pnpm verify:container/headers/origin-isolation/rollback` | pass (docker-free static groups)                                   |
+| `pnpm audit --prod`                                       | no known vulnerabilities                                           |
+| `pnpm build:production`                                   | exit 1 — **intended** fail-closed (no approved corpus)             |
+| `pnpm verify:qr`                                          | exit 1 — **intended** fail-closed (Phase-7 gate)                   |
+| Bundle budgets (§21.3)                                    | JS 118 KB gz / CSS 4.8 KB / HTML 657 B / total 752 KB — all within |
 
 Full evidence and the §31.1 acceptance-criteria matrix: **`docs/verification-report.md`**.
 

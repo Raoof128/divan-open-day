@@ -26,7 +26,10 @@ import {
   resolveSafeOutputDirectory,
 } from '../../scripts/build';
 import { verifyDist } from '../../scripts/verify-dist';
-import { canonicalSha256, canonicalStringify } from '../../src/lib/content/canonical';
+import {
+  canonicalSha256,
+  canonicalStringify,
+} from '../../src/lib/content/canonical';
 import { compileCorpus } from '../../src/lib/content/compileCorpus';
 import {
   makeFixtureCorpus,
@@ -127,7 +130,10 @@ async function rewriteAssetManifest(
     assetManifestPath: string;
     assetManifestSha256: string;
   };
-  const oldManifestPath = path.join(distDir, release.assetManifestPath.slice(1));
+  const oldManifestPath = path.join(
+    distDir,
+    release.assetManifestPath.slice(1),
+  );
   const manifest = JSON.parse(await readFile(oldManifestPath, 'utf8')) as {
     assets: Array<Record<string, unknown>>;
   };
@@ -151,7 +157,9 @@ async function rehashManifestAsset(
 ): Promise<void> {
   const contents = await readFile(path.join(distDir, assetPath));
   await rewriteAssetManifest(distDir, (manifest) => {
-    const asset = manifest.assets.find((candidate) => candidate['path'] === assetPath);
+    const asset = manifest.assets.find(
+      (candidate) => candidate['path'] === assetPath,
+    );
     if (asset === undefined) {
       throw new Error(`TEST ONLY manifest asset is missing: ${assetPath}.`);
     }
@@ -176,9 +184,11 @@ async function snapshotTree(
         .digest('hex');
     }
   }
-  return Object.fromEntries(Object.entries(snapshot).toSorted(([left], [right]) =>
-    left.localeCompare(right),
-  ));
+  return Object.fromEntries(
+    Object.entries(snapshot).toSorted(([left], [right]) =>
+      left.localeCompare(right),
+    ),
+  );
 }
 
 async function makeProductionAudioCase(
@@ -216,9 +226,9 @@ async function makeProductionAudioCase(
 
 afterEach(async () => {
   await Promise.all(
-    outputDirectories.splice(0).map((directory) =>
-      rm(directory, { recursive: true, force: true }),
-    ),
+    outputDirectories
+      .splice(0)
+      .map((directory) => rm(directory, { recursive: true, force: true })),
   );
 });
 
@@ -273,17 +283,20 @@ describe('fixture release build', () => {
       'release.json',
       'service-worker.js',
     ]);
-    await expect(readFile(path.join(distDir, 'index.html'), 'utf8')).resolves.toMatch(
-      /<html[^>]+lang="en"[^>]+dir="ltr"/u,
-    );
+    await expect(
+      readFile(path.join(distDir, 'index.html'), 'utf8'),
+    ).resolves.toMatch(/<html[^>]+lang="en"[^>]+dir="ltr"/u);
     const emittedAssets = await readdir(path.join(distDir, 'assets'));
-    expect(emittedAssets.some((file) => /^index-[a-f0-9]{16}\.js$/u.test(file))).toBe(
-      true,
+    expect(
+      emittedAssets.some((file) => /^index-[a-f0-9]{16}\.js$/u.test(file)),
+    ).toBe(true);
+    expect(
+      emittedAssets.some((file) => /^index-[a-f0-9]{16}\.css$/u.test(file)),
+    ).toBe(true);
+    const worker = await readFile(
+      path.join(distDir, 'service-worker.js'),
+      'utf8',
     );
-    expect(emittedAssets.some((file) => /^index-[a-f0-9]{16}\.css$/u.test(file))).toBe(
-      true,
-    );
-    const worker = await readFile(path.join(distDir, 'service-worker.js'), 'utf8');
     expect(worker).toMatch(/^\(function\s*\(/u);
     expect(worker).not.toMatch(/\bimport\s*(?:\(|["'{*])/u);
     expect(worker).not.toMatch(/sourceMappingURL/iu);
@@ -320,9 +333,14 @@ describe('fixture release build', () => {
     const release = await buildFixtureRelease({ projectRoot, distDir });
     const corpus = JSON.parse(
       await readFile(path.join(distDir, release.contentPath.slice(1)), 'utf8'),
-    ) as { items: Array<{ audio: null | { assetPath: string; mimeType: string } }> };
+    ) as {
+      items: Array<{ audio: null | { assetPath: string; mimeType: string } }>;
+    };
     const manifest = JSON.parse(
-      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+      await readFile(
+        path.join(distDir, release.assetManifestPath.slice(1)),
+        'utf8',
+      ),
     ) as {
       assets: Array<{
         path: string;
@@ -331,10 +349,14 @@ describe('fixture release build', () => {
         sha256: string;
       }>;
     };
-    const audio = corpus.items.flatMap((item) => (item.audio === null ? [] : [item.audio]));
+    const audio = corpus.items.flatMap((item) =>
+      item.audio === null ? [] : [item.audio],
+    );
 
     expect(audio).toHaveLength(1);
-    const audioAsset = manifest.assets.find((asset) => asset.path === audio[0]!.assetPath);
+    const audioAsset = manifest.assets.find(
+      (asset) => asset.path === audio[0]!.assetPath,
+    );
     expect(audioAsset).toMatchObject({
       path: audio[0]!.assetPath,
       mimeType: audio[0]!.mimeType,
@@ -388,16 +410,22 @@ describe('fixture release build', () => {
     await writeFile(sentinel, 'keep', 'utf8');
     await symlink(target, distDir);
 
-    await expect(
-      buildFixtureRelease({ projectRoot, distDir }),
-    ).rejects.toThrow(/symlink|unsafe|distribution/iu);
+    await expect(buildFixtureRelease({ projectRoot, distDir })).rejects.toThrow(
+      /symlink|unsafe|distribution/iu,
+    );
     await expect(readFile(sentinel, 'utf8')).resolves.toBe('keep');
   });
 
   it('retains the previous complete dist when staged browser verification fails', async () => {
-    const { projectRoot, distDir } = await temporaryProject('atomic-browser-failure');
+    const { projectRoot, distDir } = await temporaryProject(
+      'atomic-browser-failure',
+    );
     await mkdir(distDir);
-    await writeFile(path.join(distDir, 'known-good.txt'), 'previous release', 'utf8');
+    await writeFile(
+      path.join(distDir, 'known-good.txt'),
+      'previous release',
+      'utf8',
+    );
     await writeFile(
       path.join(projectRoot, 'index.html'),
       '<!doctype html><html lang="en" dir="ltr"><head><title>DIVAN Experience</title></head><body><div id="root"></div><noscript>Privacy information for visitors.</noscript><script>alert("unsafe")</script><script type="module" src="/src/main.ts"></script></body></html>',
@@ -408,15 +436,20 @@ describe('fixture release build', () => {
       /inline|script|stage|complete|distribution/iu,
     );
     expect(await snapshotTree(distDir)).toEqual({
-      'known-good.txt': createHash('sha256').update('previous release').digest('hex'),
+      'known-good.txt': createHash('sha256')
+        .update('previous release')
+        .digest('hex'),
     });
     expect(
-      (await readdir(projectRoot)).some((entry) => entry.startsWith('.divan-dist-stage-')),
+      (await readdir(projectRoot)).some((entry) =>
+        entry.startsWith('.divan-dist-stage-'),
+      ),
     ).toBe(false);
   });
 
   it('restores the previous dist when the activation rename fails', async () => {
-    const { projectRoot, distDir } = await temporaryProject('activation-restore');
+    const { projectRoot, distDir } =
+      await temporaryProject('activation-restore');
     const stageRoot = path.join(projectRoot, '.divan-test-stage');
     await mkdir(distDir);
     await mkdir(stageRoot);
@@ -438,7 +471,8 @@ describe('fixture release build', () => {
             }
             await rename(source, destination);
           },
-          remove: async (target) => rm(target, { recursive: true, force: false }),
+          remove: async (target) =>
+            rm(target, { recursive: true, force: false }),
           warn: () => undefined,
         },
       }),
@@ -447,13 +481,14 @@ describe('fixture release build', () => {
     await expect(readFile(path.join(distDir, 'old.txt'), 'utf8')).resolves.toBe(
       'known good',
     );
-    await expect(readFile(path.join(stageRoot, 'new.txt'), 'utf8')).resolves.toBe(
-      'candidate',
-    );
+    await expect(
+      readFile(path.join(stageRoot, 'new.txt'), 'utf8'),
+    ).resolves.toBe('candidate');
   });
 
   it('does not report activation failure when only old-backup cleanup fails', async () => {
-    const { projectRoot, distDir } = await temporaryProject('activation-cleanup');
+    const { projectRoot, distDir } =
+      await temporaryProject('activation-cleanup');
     const stageRoot = path.join(projectRoot, '.divan-test-stage');
     await mkdir(distDir);
     await mkdir(stageRoot);
@@ -487,7 +522,9 @@ describe('fixture release build', () => {
       'Verified release activated; a previous dist backup requires manual cleanup.',
     ]);
     expect(
-      (await readdir(projectRoot)).some((entry) => entry.startsWith('.divan-dist-backup-')),
+      (await readdir(projectRoot)).some((entry) =>
+        entry.startsWith('.divan-dist-backup-'),
+      ),
     ).toBe(true);
   });
 
@@ -521,8 +558,15 @@ describe('production audio asset loading', () => {
   const validMp3Bytes = Uint8Array.of(0x49, 0x44, 0x33, 0x04, 0x00, 0x00);
 
   it('reads a referenced file only from public-static and verifies its metadata', async () => {
-    const input = await makeProductionAudioCase('production-audio', validMp3Bytes);
-    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    const input = await makeProductionAudioCase(
+      'production-audio',
+      validMp3Bytes,
+    );
+    const filename = path.join(
+      input.projectRoot,
+      'public-static',
+      input.assetPath,
+    );
     await mkdir(path.dirname(filename), { recursive: true });
     await writeFile(filename, input.expectedBytes);
 
@@ -560,7 +604,11 @@ describe('production audio asset loading', () => {
 
   it('rejects a symlinked production audio file', async () => {
     const input = await makeProductionAudioCase('symlink-audio', validMp3Bytes);
-    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    const filename = path.join(
+      input.projectRoot,
+      'public-static',
+      input.assetPath,
+    );
     const outside = path.join(input.projectRoot, 'outside.mp3');
     await mkdir(path.dirname(filename), { recursive: true });
     await writeFile(outside, input.expectedBytes);
@@ -578,7 +626,11 @@ describe('production audio asset loading', () => {
 
   it('rejects production audio whose byte count differs from its registry', async () => {
     const input = await makeProductionAudioCase('sized-audio', validMp3Bytes);
-    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    const filename = path.join(
+      input.projectRoot,
+      'public-static',
+      input.assetPath,
+    );
     await mkdir(path.dirname(filename), { recursive: true });
     await writeFile(filename, Uint8Array.from([...input.expectedBytes, 0x01]));
     await chmod(filename, 0o000);
@@ -590,12 +642,21 @@ describe('production audio asset loading', () => {
         corpus: input.corpus,
         registries: input.registries,
       }),
-    ).rejects.toThrow(`Asset size mismatch before read for ${input.assetPath}.`);
+    ).rejects.toThrow(
+      `Asset size mismatch before read for ${input.assetPath}.`,
+    );
   });
 
   it('rejects an oversized production asset before attempting to read it', async () => {
-    const input = await makeProductionAudioCase('oversized-audio', validMp3Bytes);
-    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    const input = await makeProductionAudioCase(
+      'oversized-audio',
+      validMp3Bytes,
+    );
+    const filename = path.join(
+      input.projectRoot,
+      'public-static',
+      input.assetPath,
+    );
     await mkdir(path.dirname(filename), { recursive: true });
     await writeFile(filename, input.expectedBytes);
     await truncate(filename, EXPECTED_MAX_RELEASE_ASSET_BYTES + 1);
@@ -615,9 +676,16 @@ describe('production audio asset loading', () => {
 
   it('rejects production audio whose SHA-256 differs from its registry', async () => {
     const input = await makeProductionAudioCase('hashed-audio', validMp3Bytes);
-    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    const filename = path.join(
+      input.projectRoot,
+      'public-static',
+      input.assetPath,
+    );
     await mkdir(path.dirname(filename), { recursive: true });
-    await writeFile(filename, Uint8Array.of(0x49, 0x44, 0x33, 0x05, 0x00, 0x00));
+    await writeFile(
+      filename,
+      Uint8Array.of(0x49, 0x44, 0x33, 0x05, 0x00, 0x00),
+    );
 
     await expect(
       loadReleaseAudioAssets({
@@ -632,7 +700,11 @@ describe('production audio asset loading', () => {
   it('rejects production audio bytes that do not match the declared MIME type', async () => {
     const invalidMp3Bytes = new TextEncoder().encode('not an mp3');
     const input = await makeProductionAudioCase('mime-audio', invalidMp3Bytes);
-    const filename = path.join(input.projectRoot, 'public-static', input.assetPath);
+    const filename = path.join(
+      input.projectRoot,
+      'public-static',
+      input.assetPath,
+    );
     await mkdir(path.dirname(filename), { recursive: true });
     await writeFile(filename, invalidMp3Bytes);
 
@@ -701,7 +773,9 @@ describe('production release build', () => {
 
 describe('distribution verification', () => {
   it('rejects inline executable browser markup even when its manifest is rehashed', async () => {
-    const { projectRoot, distDir } = await temporaryProject('inline-browser-script');
+    const { projectRoot, distDir } = await temporaryProject(
+      'inline-browser-script',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     const indexPath = path.join(distDir, 'index.html');
     await writeFile(
@@ -717,7 +791,9 @@ describe('distribution verification', () => {
   });
 
   it('rejects source-derived private values in browser output even when rehashed', async () => {
-    const { projectRoot, distDir } = await temporaryProject('private-browser-value');
+    const { projectRoot, distDir } = await temporaryProject(
+      'private-browser-value',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     const fixture = makeFixtureCorpus();
     const privateValue = fixture.items[0]!.review.approval_record_id;
@@ -738,13 +814,20 @@ describe('distribution verification', () => {
   });
 
   it('rejects a hard-coded remote runtime request in rehashed JavaScript', async () => {
-    const { projectRoot, distDir } = await temporaryProject('remote-browser-request');
+    const { projectRoot, distDir } = await temporaryProject(
+      'remote-browser-request',
+    );
     const release = await buildFixtureRelease({ projectRoot, distDir });
     const manifest = JSON.parse(
-      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+      await readFile(
+        path.join(distDir, release.assetManifestPath.slice(1)),
+        'utf8',
+      ),
     ) as { assets: Array<{ path: string; mimeType: string }> };
     const script = manifest.assets.find(
-      (asset) => asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+      (asset) =>
+        asset.mimeType === 'text/javascript' &&
+        asset.path.startsWith('assets/'),
     );
     if (script === undefined) {
       throw new Error('TEST ONLY browser script is missing.');
@@ -763,7 +846,9 @@ describe('distribution verification', () => {
   });
 
   it('rejects remote iframe resources in coherently rehashed HTML', async () => {
-    const { projectRoot, distDir } = await temporaryProject('remote-browser-frame');
+    const { projectRoot, distDir } = await temporaryProject(
+      'remote-browser-frame',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     const indexPath = path.join(distDir, 'index.html');
     await writeFile(
@@ -782,7 +867,8 @@ describe('distribution verification', () => {
   });
 
   it('rejects a remote inline-SVG image in coherently rehashed HTML', async () => {
-    const { projectRoot, distDir } = await temporaryProject('remote-inline-svg');
+    const { projectRoot, distDir } =
+      await temporaryProject('remote-inline-svg');
     await buildFixtureRelease({ projectRoot, distDir });
     const indexPath = path.join(distDir, 'index.html');
     await writeFile(
@@ -801,7 +887,8 @@ describe('distribution verification', () => {
   });
 
   it('rejects remote image resources in a coherently rehashed SVG asset', async () => {
-    const { projectRoot, distDir } = await temporaryProject('remote-browser-svg');
+    const { projectRoot, distDir } =
+      await temporaryProject('remote-browser-svg');
     await buildFixtureRelease({ projectRoot, distDir });
     const assetPath = 'assets/ornament-0123456789abcdef.svg';
     const contents = new TextEncoder().encode(
@@ -824,13 +911,20 @@ describe('distribution verification', () => {
   });
 
   it('rejects a rehashed JavaScript setAttribute remote resource load', async () => {
-    const { projectRoot, distDir } = await temporaryProject('remote-set-attribute');
+    const { projectRoot, distDir } = await temporaryProject(
+      'remote-set-attribute',
+    );
     const release = await buildFixtureRelease({ projectRoot, distDir });
     const manifest = JSON.parse(
-      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+      await readFile(
+        path.join(distDir, release.assetManifestPath.slice(1)),
+        'utf8',
+      ),
     ) as { assets: Array<{ path: string; mimeType: string }> };
     const script = manifest.assets.find(
-      (asset) => asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+      (asset) =>
+        asset.mimeType === 'text/javascript' &&
+        asset.path.startsWith('assets/'),
     );
     if (script === undefined) {
       throw new Error('TEST ONLY browser script is missing.');
@@ -849,10 +943,14 @@ describe('distribution verification', () => {
   });
 
   it('rejects a mismatched unreadable asset before verification reads it', async () => {
-    const { projectRoot, distDir } = await temporaryProject('verify-sized-asset');
+    const { projectRoot, distDir } =
+      await temporaryProject('verify-sized-asset');
     const release = await buildFixtureRelease({ projectRoot, distDir });
     const manifest = JSON.parse(
-      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+      await readFile(
+        path.join(distDir, release.assetManifestPath.slice(1)),
+        'utf8',
+      ),
     ) as { assets: Array<{ path: string }> };
     const assetPath = manifest.assets[0]!.path;
     const filename = path.join(distDir, assetPath);
@@ -865,10 +963,15 @@ describe('distribution verification', () => {
   });
 
   it('rejects an oversized unreadable asset before verification reads it', async () => {
-    const { projectRoot, distDir } = await temporaryProject('verify-oversized-asset');
+    const { projectRoot, distDir } = await temporaryProject(
+      'verify-oversized-asset',
+    );
     const release = await buildFixtureRelease({ projectRoot, distDir });
     const manifest = JSON.parse(
-      await readFile(path.join(distDir, release.assetManifestPath.slice(1)), 'utf8'),
+      await readFile(
+        path.join(distDir, release.assetManifestPath.slice(1)),
+        'utf8',
+      ),
     ) as { assets: Array<{ path: string }> };
     const assetPath = manifest.assets[0]!.path;
     const filename = path.join(distDir, assetPath);
@@ -911,7 +1014,9 @@ describe('distribution verification', () => {
   });
 
   it('rejects a source-derived private value after every public hash is repaired', async () => {
-    const { projectRoot, distDir } = await temporaryProject('rehash-private-leak');
+    const { projectRoot, distDir } = await temporaryProject(
+      'rehash-private-leak',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     const privateRightsOwner =
       makeFixtureCorpus().items[0]!.translation.rights_owner;
@@ -951,20 +1056,25 @@ describe('distribution verification', () => {
     'ftp:example.test/a',
     'ftps:example.test/a',
     'javascript:alert(1)',
-  ])('rejects a coherently rehashed non-hierarchical resource: %s', async (value) => {
-    const { projectRoot, distDir } = await temporaryProject('rehash-resource');
-    await buildFixtureRelease({ projectRoot, distDir });
-    await rewriteCorpus(distDir, (item) => {
-      item['translationCredit'] = value;
-    });
+  ])(
+    'rejects a coherently rehashed non-hierarchical resource: %s',
+    async (value) => {
+      const { projectRoot, distDir } =
+        await temporaryProject('rehash-resource');
+      await buildFixtureRelease({ projectRoot, distDir });
+      await rewriteCorpus(distDir, (item) => {
+        item['translationCredit'] = value;
+      });
 
-    await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
-      /remote|resource|URI|URL/iu,
-    );
-  });
+      await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
+        /remote|resource|URI|URL/iu,
+      );
+    },
+  );
 
   it('allows coherently rehashed ordinary prose containing a colon', async () => {
-    const { projectRoot, distDir } = await temporaryProject('rehash-colon-prose');
+    const { projectRoot, distDir } =
+      await temporaryProject('rehash-colon-prose');
     await buildFixtureRelease({ projectRoot, distDir });
     await rewriteCorpus(distDir, (item) => {
       item['translationCredit'] = 'Note: this is ordinary text';
@@ -978,7 +1088,10 @@ describe('distribution verification', () => {
   it('rejects private evidence files and unexpected output', async () => {
     const { projectRoot, distDir } = await temporaryProject('unexpected');
     await buildFixtureRelease({ projectRoot, distDir });
-    await writeFile(path.join(distDir, 'rights-register.yaml'), 'private: true\n');
+    await writeFile(
+      path.join(distDir, 'rights-register.yaml'),
+      'private: true\n',
+    );
 
     await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
       /YAML|private|unexpected/iu,
@@ -996,7 +1109,9 @@ describe('distribution verification', () => {
   });
 
   it('rejects a coherently rehashed manifest missing compiled audio', async () => {
-    const { projectRoot, distDir } = await temporaryProject('missing-manifest-audio');
+    const { projectRoot, distDir } = await temporaryProject(
+      'missing-manifest-audio',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     await rewriteAssetManifest(distDir, (manifest) => {
       manifest.assets = [];
@@ -1008,9 +1123,13 @@ describe('distribution verification', () => {
   });
 
   it('rejects a coherently rehashed orphan audio manifest entry', async () => {
-    const { projectRoot, distDir } = await temporaryProject('orphan-manifest-audio');
+    const { projectRoot, distDir } = await temporaryProject(
+      'orphan-manifest-audio',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
-    const digest = createHash('sha256').update(TEST_ONLY_AUDIO_BYTES).digest('hex');
+    const digest = createHash('sha256')
+      .update(TEST_ONLY_AUDIO_BYTES)
+      .digest('hex');
     const orphanPath = `audio/orphan-${digest.slice(0, 8)}.mp3`;
     await writeFile(path.join(distDir, orphanPath), TEST_ONLY_AUDIO_BYTES);
     await rewriteAssetManifest(distDir, (manifest) => {
@@ -1029,7 +1148,9 @@ describe('distribution verification', () => {
   });
 
   it('rejects duplicate audio manifest entries', async () => {
-    const { projectRoot, distDir } = await temporaryProject('duplicate-manifest-audio');
+    const { projectRoot, distDir } = await temporaryProject(
+      'duplicate-manifest-audio',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     await rewriteAssetManifest(distDir, (manifest) => {
       manifest.assets.push(structuredClone(manifest.assets[0]!));
@@ -1050,7 +1171,8 @@ describe('distribution verification', () => {
     };
     release.buildProfile = 'production';
     release.productionEligible = true;
-    const { canonicalStringify } = await import('../../src/lib/content/canonical');
+    const { canonicalStringify } =
+      await import('../../src/lib/content/canonical');
     await writeFile(releasePath, canonicalStringify(release), 'utf8');
 
     await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
@@ -1066,7 +1188,8 @@ describe('distribution verification', () => {
       builtAt: string;
     };
     release.builtAt = '2026-07-13T10:00:00.000+10:00';
-    const { canonicalStringify } = await import('../../src/lib/content/canonical');
+    const { canonicalStringify } =
+      await import('../../src/lib/content/canonical');
     await writeFile(releasePath, canonicalStringify(release), 'utf8');
 
     await expect(verifyDist({ projectRoot, distDir })).rejects.toThrow(
@@ -1075,7 +1198,9 @@ describe('distribution verification', () => {
   });
 
   it('rejects a symlinked dist root before resolving it', async () => {
-    const { projectRoot, distDir } = await temporaryProject('verify-symlink-root');
+    const { projectRoot, distDir } = await temporaryProject(
+      'verify-symlink-root',
+    );
     await buildFixtureRelease({ projectRoot, distDir });
     const realDist = path.join(projectRoot, 'real-dist');
     await rename(distDir, realDist);

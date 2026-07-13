@@ -39,7 +39,8 @@ const STATUS_MESSAGES: Readonly<Record<OfflineStatusCode, string>> = {
   update_ready: 'A verified poetry collection update is ready.',
   activating: 'Applying the verified offline update.',
   active: 'The verified offline experience is ready.',
-  error: 'Offline preparation could not finish. The online experience is still available.',
+  error:
+    'Offline preparation could not finish. The online experience is still available.',
 };
 
 export function parseOfflineStatusDetail(
@@ -91,16 +92,14 @@ export async function registerOfflineWorker(
         ? null
         : navigator.serviceWorker
       : options.serviceWorker;
-  const eventTarget = options.eventTarget ??
+  const eventTarget =
+    options.eventTarget ??
     (typeof window === 'undefined' ? new EventTarget() : window);
-  const secureContext = options.secureContext ??
+  const secureContext =
+    options.secureContext ??
     (typeof globalThis.isSecureContext === 'boolean' &&
       globalThis.isSecureContext);
-  if (
-    serviceWorker === null ||
-    serviceWorker === undefined ||
-    !secureContext
-  ) {
+  if (serviceWorker === null || serviceWorker === undefined || !secureContext) {
     emit(eventTarget, 'unsupported');
     return null;
   }
@@ -125,11 +124,7 @@ export async function registerOfflineWorker(
     });
     const emitWaiting = () => {
       if (registration.waiting !== null) {
-        emit(
-          eventTarget,
-          'update_ready',
-          options.expectedReleaseId ?? null,
-        );
+        emit(eventTarget, 'update_ready', options.expectedReleaseId ?? null);
       }
     };
     const watchInstalling = () => {
@@ -158,9 +153,10 @@ export async function registerOfflineWorker(
   }
 }
 
-function workerStatus(
-  value: unknown,
-): { readonly code: OfflineStatusCode; readonly releaseId: string | null } | null {
+function workerStatus(value: unknown): {
+  readonly code: OfflineStatusCode;
+  readonly releaseId: string | null;
+} | null {
   if (
     typeof value !== 'object' ||
     value === null ||
@@ -203,15 +199,19 @@ export function requestOfflineActivation(
   ) {
     return false;
   }
-  const replace = options.replace ??
+  const replace =
+    options.replace ??
     (typeof window === 'undefined'
       ? undefined
       : window.location.replace.bind(window.location));
-  const currentUrl = options.currentUrl ??
+  const currentUrl =
+    options.currentUrl ??
     (typeof window === 'undefined' ? undefined : window.location.href);
-  const setTimer = options.setTimer ??
+  const setTimer =
+    options.setTimer ??
     ((callback, milliseconds) => setTimeout(callback, milliseconds));
-  const clearTimer = options.clearTimer ??
+  const clearTimer =
+    options.clearTimer ??
     ((handle) => clearTimeout(handle as ReturnType<typeof setTimeout>));
   pendingWorkerActivations.get(waiting)?.();
   let finished = false;

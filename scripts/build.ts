@@ -125,22 +125,30 @@ function parseMinimum(value: string, name: string, floor: number): number {
   }
   const parsed = Number(value);
   if (!Number.isSafeInteger(parsed) || parsed < floor) {
-    throw new Error(`${name} cannot weaken the approved minimum of ${String(floor)}.`);
+    throw new Error(
+      `${name} cannot weaken the approved minimum of ${String(floor)}.`,
+    );
   }
   return parsed;
 }
 
 function parseSourceDateEpoch(value: string): string {
   if (!/^(?:0|[1-9]\d*)$/u.test(value)) {
-    throw new Error('SOURCE_DATE_EPOCH must be a non-negative integer in seconds.');
+    throw new Error(
+      'SOURCE_DATE_EPOCH must be a non-negative integer in seconds.',
+    );
   }
   const seconds = Number(value);
   if (!Number.isSafeInteger(seconds)) {
-    throw new Error('SOURCE_DATE_EPOCH is outside the supported integer range.');
+    throw new Error(
+      'SOURCE_DATE_EPOCH is outside the supported integer range.',
+    );
   }
   const builtAt = new Date(seconds * 1_000);
   if (Number.isNaN(builtAt.valueOf())) {
-    throw new Error('SOURCE_DATE_EPOCH does not identify a valid UTC timestamp.');
+    throw new Error(
+      'SOURCE_DATE_EPOCH does not identify a valid UTC timestamp.',
+    );
   }
   return builtAt.toISOString();
 }
@@ -153,9 +161,12 @@ export function parseProductionBuildConfig(
   try {
     parsedOrigin = new URL(publicOrigin);
   } catch (error) {
-    throw new Error('DIVAN_PUBLIC_ORIGIN must be an approved absolute HTTPS origin.', {
-      cause: error,
-    });
+    throw new Error(
+      'DIVAN_PUBLIC_ORIGIN must be an approved absolute HTTPS origin.',
+      {
+        cause: error,
+      },
+    );
   }
   if (
     parsedOrigin.protocol !== 'https:' ||
@@ -166,7 +177,9 @@ export function parseProductionBuildConfig(
     parsedOrigin.hash !== '' ||
     parsedOrigin.origin !== publicOrigin
   ) {
-    throw new Error('DIVAN_PUBLIC_ORIGIN must be an approved absolute HTTPS origin.');
+    throw new Error(
+      'DIVAN_PUBLIC_ORIGIN must be an approved absolute HTTPS origin.',
+    );
   }
 
   const releaseId = requiredValue(environment, 'DIVAN_RELEASE_ID');
@@ -185,20 +198,29 @@ export function parseProductionBuildConfig(
     BASELINE_MIN_RUMI,
   );
   const brandingValue = requiredValue(environment, 'DIVAN_BRANDING_MODE');
-  if (brandingValue !== 'society_only' && brandingValue !== 'university_approved') {
+  if (
+    brandingValue !== 'society_only' &&
+    brandingValue !== 'university_approved'
+  ) {
     throw new Error(
       'DIVAN_BRANDING_MODE must be society_only or university_approved.',
     );
   }
 
-  const approvalValue = environment['DIVAN_UNIVERSITY_APPROVAL_ID']?.trim() ?? '';
+  const approvalValue =
+    environment['DIVAN_UNIVERSITY_APPROVAL_ID']?.trim() ?? '';
   if (brandingValue === 'university_approved' && approvalValue === '') {
     throw new Error(
       'University-approved branding requires a recorded university approval identifier.',
     );
   }
-  if (approvalValue !== '' && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(approvalValue)) {
-    throw new Error('University approval identifier must use lowercase kebab-case.');
+  if (
+    approvalValue !== '' &&
+    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(approvalValue)
+  ) {
+    throw new Error(
+      'University approval identifier must use lowercase kebab-case.',
+    );
   }
 
   const builtAt = parseSourceDateEpoch(
@@ -240,11 +262,15 @@ async function canonicalProjectRoot(projectRoot: string): Promise<string> {
   const resolved = path.resolve(projectRoot);
   const stat = await lstat(resolved);
   if (stat.isSymbolicLink() || !stat.isDirectory()) {
-    throw new Error('Explicit projectRoot must be a regular, non-symlink directory.');
+    throw new Error(
+      'Explicit projectRoot must be a regular, non-symlink directory.',
+    );
   }
   const canonical = await realpath(resolved);
   if (canonical !== resolved) {
-    throw new Error('Explicit projectRoot cannot traverse a symlinked directory.');
+    throw new Error(
+      'Explicit projectRoot cannot traverse a symlinked directory.',
+    );
   }
   return canonical;
 }
@@ -271,10 +297,14 @@ export async function resolveSafeOutputDirectory(
   try {
     const stat = await lstat(resolvedDist);
     if (stat.isSymbolicLink() || !stat.isDirectory()) {
-      throw new Error('Refusing to replace a symlinked or irregular distribution root.');
+      throw new Error(
+        'Refusing to replace a symlinked or irregular distribution root.',
+      );
     }
     if ((await realpath(resolvedDist)) !== expectedDist) {
-      throw new Error('Refusing to replace a distribution root reached through a symlink.');
+      throw new Error(
+        'Refusing to replace a distribution root reached through a symlink.',
+      );
     }
   } catch (error) {
     if (!isNotFound(error)) {
@@ -297,7 +327,10 @@ export interface DistributionActivationOperations {
   readonly warn: (message: string) => void;
 }
 
-function fileIdentity(stat: { readonly dev: number; readonly ino: number }): FileIdentity {
+function fileIdentity(stat: {
+  readonly dev: number;
+  readonly ino: number;
+}): FileIdentity {
   return { dev: stat.dev, ino: stat.ino };
 }
 
@@ -324,9 +357,12 @@ async function withBuildLock<T>(
       'code' in error &&
       error.code === 'EEXIST'
     ) {
-      throw new Error('Another DIVAN release build already holds the project lock.', {
-        cause: error,
-      });
+      throw new Error(
+        'Another DIVAN release build already holds the project lock.',
+        {
+          cause: error,
+        },
+      );
     }
     throw error;
   }
@@ -380,14 +416,21 @@ async function collectBrowserAssets(
 ): Promise<readonly ReleaseAssetSource[]> {
   const directoryStat = await lstat(directory);
   if (directoryStat.isSymbolicLink() || !directoryStat.isDirectory()) {
-    throw new Error('Vite output directories must be regular non-symlink directories.');
+    throw new Error(
+      'Vite output directories must be regular non-symlink directories.',
+    );
   }
 
   const assets: ReleaseAssetSource[] = [];
   const entries = await readdir(directory, { withFileTypes: true });
-  for (const entry of entries.toSorted((left, right) => left.name.localeCompare(right.name))) {
+  for (const entry of entries.toSorted((left, right) =>
+    left.name.localeCompare(right.name),
+  )) {
     const absolute = path.join(directory, entry.name);
-    const relative = path.relative(stageRoot, absolute).split(path.sep).join('/');
+    const relative = path
+      .relative(stageRoot, absolute)
+      .split(path.sep)
+      .join('/');
     if (entry.isSymbolicLink()) {
       throw new Error(`Symlinked Vite output is forbidden: ${relative}.`);
     }
@@ -434,7 +477,9 @@ export async function buildServiceWorkerBytes(
     throw new Error('Service-worker release ID must use lowercase kebab-case.');
   }
   if (!/^[a-f0-9]{64}$/u.test(contentSha256)) {
-    throw new Error('Service-worker content SHA-256 must use 64 lowercase hex characters.');
+    throw new Error(
+      'Service-worker content SHA-256 must use 64 lowercase hex characters.',
+    );
   }
   const canonicalRoot = await canonicalProjectRoot(projectRoot);
   const stageRoot = await mkdtemp(
@@ -472,7 +517,9 @@ export async function buildServiceWorkerBytes(
       entries[0]?.name !== 'service-worker.js' ||
       !entries[0].isFile()
     ) {
-      throw new Error('Service-worker build must emit exactly one fixed script.');
+      throw new Error(
+        'Service-worker build must emit exactly one fixed script.',
+      );
     }
     const workerPath = path.join(stageRoot, 'service-worker.js');
     const stat = await lstat(workerPath);
@@ -535,7 +582,8 @@ async function buildBrowserAssets(
       assets.filter((asset) => asset.path === 'index.html').length !== 1 ||
       !assets.some(
         (asset) =>
-          asset.mimeType === 'text/javascript' && asset.path.startsWith('assets/'),
+          asset.mimeType === 'text/javascript' &&
+          asset.path.startsWith('assets/'),
       ) ||
       ['manifest.webmanifest', 'offline.html', 'service-worker.js'].some(
         (requiredPath) =>
@@ -543,7 +591,9 @@ async function buildBrowserAssets(
       ) ||
       totalBytes > MAX_BROWSER_DISTRIBUTION_BYTES
     ) {
-      throw new Error('Vite output is missing the semantic shell or exceeds its budget.');
+      throw new Error(
+        'Vite output is missing the semantic shell or exceeds its budget.',
+      );
     }
     return assets;
   } finally {
@@ -586,7 +636,9 @@ async function readProductionAsset(
     current = path.join(current, segment);
     const directoryStat = await lstat(current);
     if (directoryStat.isSymbolicLink() || !directoryStat.isDirectory()) {
-      throw new Error(`Symlinked or irregular public asset directory is forbidden: ${relativePath}.`);
+      throw new Error(
+        `Symlinked or irregular public asset directory is forbidden: ${relativePath}.`,
+      );
     }
   }
 
@@ -594,7 +646,9 @@ async function readProductionAsset(
   assertContained(publicRoot, filename, 'Public asset path');
   const stat = await lstat(filename);
   if (stat.isSymbolicLink() || !stat.isFile()) {
-    throw new Error(`Symlinked or irregular public asset is forbidden: ${relativePath}.`);
+    throw new Error(
+      `Symlinked or irregular public asset is forbidden: ${relativePath}.`,
+    );
   }
   const canonical = await realpath(filename);
   assertContained(publicRoot, canonical, 'Public asset path');
@@ -608,7 +662,9 @@ async function readProductionAsset(
     collectContents: true,
   });
   if (result.contents === null) {
-    throw new Error(`Production asset contents were not collected: ${relativePath}.`);
+    throw new Error(
+      `Production asset contents were not collected: ${relativePath}.`,
+    );
   }
   return { contents: result.contents, sha256: result.sha256 };
 }
@@ -636,7 +692,9 @@ export async function loadReleaseAudioAssets(
     const candidateRoot = path.join(projectRoot, 'public-static');
     const rootStat = await lstat(candidateRoot);
     if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
-      throw new Error('Production public-static must be a regular, non-symlink directory.');
+      throw new Error(
+        'Production public-static must be a regular, non-symlink directory.',
+      );
     }
     publicRoot = await realpath(candidateRoot);
     if (publicRoot !== candidateRoot) {
@@ -675,7 +733,9 @@ export async function loadReleaseAudioAssets(
       }
       contents = fixtureMatches[0].contents.slice();
       if (new TextDecoder().decode(contents) !== 'TEST ONLY - NOT AUDIO') {
-        throw new Error('Fixture audio bytes must be the explicit TEST ONLY - NOT AUDIO sentinel.');
+        throw new Error(
+          'Fixture audio bytes must be the explicit TEST ONLY - NOT AUDIO sentinel.',
+        );
       }
       digest = createHash('sha256').update(contents).digest('hex');
     } else {
@@ -690,7 +750,9 @@ export async function loadReleaseAudioAssets(
       contents = loaded.contents;
       digest = loaded.sha256;
       if (!hasDeclaredAudioSignature(contents, registryAsset.mime_type)) {
-        throw new Error(`Production audio MIME signature mismatch for ${audioPath}.`);
+        throw new Error(
+          `Production audio MIME signature mismatch for ${audioPath}.`,
+        );
       }
     }
 
@@ -764,7 +826,10 @@ export async function activateStagedDistribution(options: {
 
   if (options.previousIdentity !== null) {
     const current = await operations.inspect(options.outputRoot);
-    if (!sameIdentity(options.previousIdentity, current) || !current.isDirectory()) {
+    if (
+      !sameIdentity(options.previousIdentity, current) ||
+      !current.isDirectory()
+    ) {
       throw new Error('Distribution identity changed before activation.');
     }
     backupRoot = path.join(
@@ -797,9 +862,12 @@ export async function activateStagedDistribution(options: {
         );
       }
     }
-    throw new Error('Distribution activation failed; the previous release was restored.', {
-      cause: activationError,
-    });
+    throw new Error(
+      'Distribution activation failed; the previous release was restored.',
+      {
+        cause: activationError,
+      },
+    );
   }
 
   if (backupRoot !== null) {
@@ -854,9 +922,12 @@ async function replaceReleaseArtifacts(
       previousIdentity,
     });
   } catch (error) {
-    throw new Error('Unable to stage and activate a complete release distribution.', {
-      cause: error,
-    });
+    throw new Error(
+      'Unable to stage and activate a complete release distribution.',
+      {
+        cause: error,
+      },
+    );
   } finally {
     await rm(stageRoot, { recursive: true, force: true });
   }
@@ -867,7 +938,8 @@ export async function buildFixtureRelease(
 ): Promise<ReleaseDescriptor> {
   return withBuildLock(options.projectRoot, async (projectRoot) => {
     // The dynamic import keeps production discovery independent from test-only inputs.
-    const { makeFixtureCorpus } = await import('../tests/fixtures/content/corpus');
+    const { makeFixtureCorpus } =
+      await import('../tests/fixtures/content/corpus');
     const fixture = makeFixtureCorpus();
     const compiled = compileCorpus({
       profile: 'fixture',
@@ -880,7 +952,9 @@ export async function buildFixtureRelease(
       compiled.rumiCount !== 16 ||
       compiled.totalCount !== 40
     ) {
-      throw new Error('Fixture build must contain exactly 24 Hafez and 16 Rumi items.');
+      throw new Error(
+        'Fixture build must contain exactly 24 Hafez and 16 Rumi items.',
+      );
     }
 
     const [audioAssets, browserAssets] = await Promise.all([
@@ -935,7 +1009,9 @@ export async function buildProductionRelease(
       compiled.hafezCount < config.minimumHafezCount ||
       compiled.rumiCount < config.minimumRumiCount
     ) {
-      throw new Error('Production corpus does not meet the configured poet minimums.');
+      throw new Error(
+        'Production corpus does not meet the configured poet minimums.',
+      );
     }
 
     const [audioAssets, browserAssets] = await Promise.all([
@@ -981,7 +1057,9 @@ function parseProfile(arguments_: readonly string[]): 'fixture' | 'production' {
 
 async function main(): Promise<void> {
   const profile = parseProfile(process.argv.slice(2));
-  const projectRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
+  const projectRoot = path.resolve(
+    fileURLToPath(new URL('..', import.meta.url)),
+  );
   const distDir = path.join(projectRoot, 'dist');
   const release =
     profile === 'fixture'
@@ -1002,7 +1080,8 @@ if (
   path.resolve(invokedPath) === path.resolve(fileURLToPath(import.meta.url))
 ) {
   main().catch((error: unknown) => {
-    const message = error instanceof Error ? error.message : 'Unknown build failure.';
+    const message =
+      error instanceof Error ? error.message : 'Unknown build failure.';
     process.stderr.write(`${message}\n`);
     process.exitCode = 1;
   });
