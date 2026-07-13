@@ -10,6 +10,10 @@
 .tmp-tests/
 node_modules/
 dist/
+content-private/*
+!content-private/README.md
+ops/cloudflared/*.json
+ops/cloudflared/config.yml
 coverage/
 playwright-report/
 test-results/
