@@ -16,8 +16,14 @@ const AUDIO_MIME_TYPES = ['audio/mpeg', 'audio/ogg'] as const;
 const HTML_PATTERN = /<(?:!--|![A-Za-z]|!\[|\?|\/?[A-Za-z][^>]*>)/u;
 const MARKDOWN_PATTERNS = [
   /(?:^|\n)(?:\s{0,3}(?:#{1,6}|>|[-+*]|\d+[.)])\s|(?: {4}| {0,3}\t)\S)/u,
+  /(?:^|\n) {0,3}(?:(?:\*[ \t]*){3,}|(?:_[ \t]*){3,}|(?:-[ \t]*){3,})(?:\n|$)/u,
   /!?\[[^\]]*\]\([^)]*\)/u,
+  /!?\[[^\]]+\]\s*\[[^\]]*\]/u,
+  /(?:^|\n)\s{0,3}\[[^\]]+\]:\s*\S/u,
+  /(?:^|\n)[^\n]+\n\s{0,3}(?:=+|-+)\s*(?:\n|$)/u,
   /(?:^|\n)\s{0,3}(?:`{3,}|~{3,})/u,
+  /(?:^|[^\p{L}\p{N}])\*(?![\s*])(?:[^*\n]*\S)?\*(?!\*)/u,
+  /(?:^|[^\p{L}\p{N}])_(?![\s_])(?:[^_\n]*\S)?_(?![\p{L}\p{N}_])/u,
   /(?:\*\*|__|~~|`)/u,
 ];
 const BIDI_CONTROL_PATTERN = /[\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/u;
@@ -114,6 +120,27 @@ function wordCount(value: string): number {
   return value.match(WORD_LIKE_PATTERN)?.length ?? 0;
 }
 
+function isSafeAudioPath(value: string): boolean {
+  if (
+    !value.startsWith('audio/') ||
+    value.startsWith('/') ||
+    value.startsWith('//') ||
+    value.includes('\\') ||
+    value.includes('?') ||
+    value.includes('#') ||
+    !/^[A-Za-z0-9._/-]+$/u.test(value)
+  ) {
+    return false;
+  }
+
+  const segments = value.split('/');
+  return (
+    segments.every(
+      (segment) => segment.length > 0 && segment !== '.' && segment !== '..',
+    ) && /\.(?:mp3|ogg)$/u.test(value)
+  );
+}
+
 const sourceSchema = z
   .object({
     workEn: nonBlankText(200),
@@ -143,7 +170,13 @@ const textSchema = z
 
 const audioSchema = z
   .object({
-    assetPath: z.string().regex(/^audio\/[A-Za-z0-9._/-]+\.(?:mp3|ogg)$/u),
+    assetPath: z
+      .string()
+      .max(300)
+      .refine(
+        isSafeAudioPath,
+        'Audio must use a safe local audio/ asset path.',
+      ),
     mimeType: z.enum(AUDIO_MIME_TYPES),
     durationSeconds: z.number().int().min(20).max(60),
     performerCredit: nonBlankText(300),
@@ -153,15 +186,11 @@ const audioSchema = z
     const expectedMime = audio.assetPath.endsWith('.mp3')
       ? 'audio/mpeg'
       : 'audio/ogg';
-    if (
-      audio.assetPath.includes('/../') ||
-      audio.assetPath.includes('/./') ||
-      audio.mimeType !== expectedMime
-    ) {
+    if (audio.mimeType !== expectedMime) {
       context.addIssue({
         code: 'custom',
-        path: ['assetPath'],
-        message: 'Audio must be a matching safe local release asset.',
+        path: ['mimeType'],
+        message: 'Audio MIME type must match the local asset extension.',
       });
     }
   });

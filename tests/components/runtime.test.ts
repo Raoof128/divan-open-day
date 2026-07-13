@@ -10,6 +10,7 @@ import {
 } from '../../src/app/runtime';
 import type { PublicContentItem } from '../../src/contracts/content';
 import type { ReleaseDescriptor } from '../../src/contracts/release';
+import { publicContentItemSchema } from '../../src/lib/content/publicSchema';
 
 const RELEASE_ID = 'test-only-release';
 const SHA_PLACEHOLDER = 'a'.repeat(64);
@@ -57,6 +58,38 @@ function rehashItem(item: PublicContentItem): PublicContentItem {
   void contentHash;
   return { ...payload, contentHash: canonicalSha256(payload) };
 }
+
+function itemWithCredit(translationCredit: string): PublicContentItem {
+  return rehashItem({ ...makeItem(), translationCredit });
+}
+
+const BUILD_RUNTIME_PARITY_CASES: readonly (readonly [
+  string,
+  PublicContentItem,
+])[] = [
+  ['block heading Markdown', itemWithCredit('# TEST ONLY credit')],
+  ['horizontal-rule Markdown', itemWithCredit('TEST ONLY\n***\ncredit')],
+  ['inline-link Markdown', itemWithCredit('TEST ONLY [credit](local)')],
+  ['reference-link Markdown', itemWithCredit('TEST ONLY [credit][ref]')],
+  ['reference-definition Markdown', itemWithCredit('TEST ONLY\n[ref]: local')],
+  ['setext-heading Markdown', itemWithCredit('TEST ONLY credit\n===')],
+  ['fenced-code Markdown', itemWithCredit('TEST ONLY\n```text')],
+  ['asterisk-emphasis Markdown', itemWithCredit('TEST ONLY *credit*')],
+  ['underscore-emphasis Markdown', itemWithCredit('TEST ONLY _credit_')],
+  ['strong Markdown', itemWithCredit('TEST ONLY **credit**')],
+  [
+    'an empty audio path segment',
+    rehashItem({
+      ...makeItem(),
+      audio: {
+        assetPath: 'audio//file.mp3',
+        mimeType: 'audio/mpeg',
+        durationSeconds: 24,
+        performerCredit: 'TEST ONLY reciter',
+      },
+    }),
+  ],
+];
 
 function sha256(value: string): string {
   return createHash('sha256').update(value, 'utf8').digest('hex');
@@ -273,6 +306,25 @@ describe('browser release runtime', () => {
       }),
     ).rejects.toBeInstanceOf(ReleaseLoadError);
   });
+
+  it.each(BUILD_RUNTIME_PARITY_CASES)(
+    'matches the build rejection for %s',
+    async (_label, item) => {
+      expect(publicContentItemSchema.safeParse(item).success).toBe(false);
+      const fixture = makeReleaseFixture([item]);
+      const fixtureFetch = createFixtureFetch(
+        fixture.release,
+        fixture.corpusJson,
+      );
+
+      await expect(
+        loadVerifiedRelease({
+          fetch: fixtureFetch.fetch,
+          crypto: globalThis.crypto,
+        }),
+      ).rejects.toBeInstanceOf(ReleaseLoadError);
+    },
+  );
 
   it('uses the privacy-safe blocking error when Web Crypto is unavailable', async () => {
     const fixture = makeReleaseFixture();

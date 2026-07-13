@@ -8,6 +8,12 @@ import type { AppState } from './state';
 
 const PUBLIC_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const HISTORY_KEYS = ['releaseId', 'selectedPoet', 'stage'] as const;
+const DURABLE_HISTORY_STAGES = [
+  'welcome',
+  'choose_poet',
+  'intention',
+  'result',
+] as const satisfies readonly AppStage[];
 
 function isPublicId(value: unknown): value is string {
   return typeof value === 'string' && PUBLIC_ID_PATTERN.test(value);
@@ -19,6 +25,21 @@ function isPoetOrNull(value: unknown): value is Poet | null {
 
 function isAppStage(value: unknown): value is AppStage {
   return APP_STAGES.some((stage) => stage === value);
+}
+
+function isDurableHistoryStage(
+  value: AppStage,
+): value is (typeof DURABLE_HISTORY_STAGES)[number] {
+  return DURABLE_HISTORY_STAGES.some((stage) => stage === value);
+}
+
+function hasCoherentPoet(
+  stage: (typeof DURABLE_HISTORY_STAGES)[number],
+  selectedPoet: Poet | null,
+): boolean {
+  return stage === 'welcome' || stage === 'choose_poet'
+    ? selectedPoet === null
+    : selectedPoet !== null;
 }
 
 function welcomeState(releaseId: string): DivanHistoryState {
@@ -41,8 +62,13 @@ function parseHistoryState(
     record['releaseId'] !== expectedReleaseId ||
     !isPublicId(record['releaseId']) ||
     !isAppStage(record['stage']) ||
+    !isDurableHistoryStage(record['stage']) ||
     !isPoetOrNull(record['selectedPoet'])
   ) {
+    return null;
+  }
+
+  if (!hasCoherentPoet(record['stage'], record['selectedPoet'])) {
     return null;
   }
 
@@ -57,8 +83,12 @@ export function createHistoryState(state: AppState): DivanHistoryState | null {
   if (
     !isPublicId(state.releaseId) ||
     !isAppStage(state.stage) ||
+    !isDurableHistoryStage(state.stage) ||
     !isPoetOrNull(state.selectedPoet)
   ) {
+    return null;
+  }
+  if (!hasCoherentPoet(state.stage, state.selectedPoet)) {
     return null;
   }
 
@@ -67,6 +97,13 @@ export function createHistoryState(state: AppState): DivanHistoryState | null {
     selectedPoet: state.selectedPoet,
     releaseId: state.releaseId,
   };
+}
+
+export function resolvePopHistoryState(
+  value: unknown,
+  releaseId: string,
+): DivanHistoryState | null {
+  return parseHistoryState(value, releaseId);
 }
 
 export function resolveBackHistoryState(

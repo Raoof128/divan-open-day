@@ -32,6 +32,13 @@ it('renders a recoverable blocking error without exposing loader details', async
   expect(document.body).not.toHaveTextContent('SECRET_TOKEN');
   expect(document.body).not.toHaveTextContent('/private/path');
 
+  act(() => {
+    window.dispatchEvent(new Event('offline'));
+  });
+  expect(screen.getByRole('status')).not.toHaveTextContent(
+    'You are offline, but your poetry experience is ready.',
+  );
+
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
   expect(loadRelease).toHaveBeenCalledTimes(2);
 });
@@ -80,11 +87,31 @@ it('announces offline readiness in one persistent polite atomic region', async (
 
   act(() => {
     window.dispatchEvent(new Event('offline'));
+    window.dispatchEvent(new Event('offline'));
   });
-  const liveRegion = screen.getByRole('status');
+  const [liveRegion] = screen.getAllByRole('status');
+  expect(screen.getAllByRole('status')).toHaveLength(1);
   expect(liveRegion).toHaveAttribute('aria-live', 'polite');
   expect(liveRegion).toHaveAttribute('aria-atomic', 'true');
   expect(liveRegion).toHaveTextContent(
+    'You are offline, but your poetry experience is ready.',
+  );
+});
+
+it('does not claim offline readiness while release verification is pending', () => {
+  render(
+    <App
+      services={{
+        loadRelease: () => new Promise(() => undefined),
+      }}
+    />,
+  );
+
+  act(() => {
+    window.dispatchEvent(new Event('offline'));
+  });
+  expect(screen.getByRole('heading', { level: 1, name: 'DIVAN' })).toBeVisible();
+  expect(screen.getByRole('status')).not.toHaveTextContent(
     'You are offline, but your poetry experience is ready.',
   );
 });

@@ -79,3 +79,13 @@
 - **Files Changed:** `index.html`, `vite.config.ts`, `src/main.tsx`, `src/vite-env.d.ts`, `src/app/App.tsx`, `src/app/runtime.ts`, `src/app/ErrorBoundary.tsx`, `src/app/core.css`, `src/components/*.tsx`, `src/scenes/*.tsx`, `tests/components/*.ts`, `tests/components/*.tsx`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; meaningful missing-module/document RED plus six runtime/audio hardening RED failures; GREEN component/runtime/document tests 25/25; inherited unit tests 38/38; inherited content tests 222/222; strict TypeScript and ESLint passed.
 - **Follow-ups:** Keep B2 visual polish, context/share/offline/deployment slices, production corpus and rights evidence, manual accessibility proof, and all independent public-launch gates closed until their owners complete and verify them.
+
+## 2026-07-13 — React core independent-review fixes
+
+**Raouf:**
+
+- **Scope:** Task 2B runtime parity, durable browser history, required disclaimer, focus stability, and verified-offline readiness.
+- **Summary:** Mirrored the full build Markdown/audio-path rejection boundary in browser-safe code and tested both parsers against one digest-valid parity table; replaced current-state Back inference with exact validated pop-state traversal; excluded `revealing`, used replace-only initial/hydrated history, and restored approved results across real Back/Forward without putting poem IDs in history or URLs; installed the required verbatim disclaimer immediately after the reveal control; kept skip tabbable without focus theft; and suppressed offline-ready during pending or rejected verification.
+- **Files Changed:** `src/app/App.tsx`, `src/app/history.ts`, `src/app/runtime.ts`, `src/scenes/IntentionScene.tsx`, `src/scenes/RevealScene.tsx`, `tests/components/appFlow.test.tsx`, `tests/components/failures.test.tsx`, `tests/components/runtime.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; focused RED failures 6 schema parity, 3 history, 2 disclaimer, 1 focus, and 2 offline gating; GREEN component tests 39/39, unit tests 38/38, content tests 222/222, strict TypeScript and ESLint passed.
+- **Follow-ups:** Final visual design, context/share/offline-cache/deployment work, approved production content, external reviews/evidence, and all public-launch gates remain outside this focused correction and blocked.

@@ -4,7 +4,7 @@ import { LiveRegion } from '../components/LiveRegion';
 import { MotionControl } from '../components/MotionControl';
 import { PoemResult } from '../components/PoemResult';
 import { SkipLink } from '../components/SkipLink';
-import type { MotionPreference } from '../contracts/app';
+import type { DivanHistoryState, MotionPreference } from '../contracts/app';
 import type { Poet } from '../contracts/content';
 import {
   createPoetShuffleBag,
@@ -29,7 +29,7 @@ import { RevealScene } from '../scenes/RevealScene';
 import { WelcomeScene } from '../scenes/WelcomeScene';
 import {
   createHistoryState,
-  resolveBackHistoryState,
+  resolvePopHistoryState,
 } from './history';
 import {
   loadVerifiedRelease,
@@ -99,22 +99,42 @@ function writeHistory(state: AppState, replace: boolean): void {
   }
 }
 
-function stateFromBack(
+function stateFromHistory(
   current: AppState,
-  releaseId: string,
+  resolved: DivanHistoryState,
+  release: VerifiedRelease,
+  currentPoemId: string | null,
 ): AppState {
-  const resolved = resolveBackHistoryState(
-    createHistoryState(current),
-    releaseId,
-  );
+  const resultItem =
+    currentPoemId === null
+      ? undefined
+      : release.itemsById.get(currentPoemId);
+  const canRestoreResult =
+    resolved.stage === 'result' &&
+    resolved.selectedPoet !== null &&
+    resultItem?.poet === resolved.selectedPoet;
   return {
-    stage: resolved.stage,
-    releaseId,
+    stage:
+      resolved.stage === 'result' && !canRestoreResult
+        ? 'intention'
+        : resolved.stage,
+    releaseId: resolved.releaseId,
     selectedPoet: resolved.selectedPoet,
-    currentPoemId: null,
+    currentPoemId: canRestoreResult ? (resultItem?.id ?? null) : null,
     motionPreference: current.motionPreference,
     statusCode: null,
     errorCode: null,
+  };
+}
+
+function approvedIdsForRelease(release: VerifiedRelease) {
+  return {
+    hafez: release.corpus.items
+      .filter((item) => item.poet === 'hafez')
+      .map((item) => item.id),
+    rumi: release.corpus.items
+      .filter((item) => item.poet === 'rumi')
+      .map((item) => item.id),
   };
 }
 
@@ -129,14 +149,17 @@ export function App({ services }: AppProps) {
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [liveMessage, setLiveMessage] = useState('');
   const [showSkip, setShowSkip] = useState(false);
+  const verifiedReleaseRef = useRef<VerifiedRelease | null>(null);
   const bagsRef = useRef<Partial<Record<Poet, PoetShuffleBag>>>({});
   const pendingPoemIdRef = useRef<string | null>(null);
+  const lastResultPoemIdRef = useRef<string | null>(null);
   const pendingCycleResetRef = useRef(false);
   const revealActiveRef = useRef(false);
   const resultTimerRef = useRef<number | null>(null);
   const skipTimerRef = useRef<number | null>(null);
   const previousStageRef = useRef(state.stage);
   const historyNavigationRef = useRef(false);
+  const historyInitializedRef = useRef(false);
 
   const dispatch = useCallback((event: AppEvent) => {
     setState((current) => appReducer(current, event));
@@ -160,14 +183,7 @@ export function App({ services }: AppProps) {
         if (cancelled) {
           return;
         }
-        const approvedIds = {
-          hafez: release.corpus.items
-            .filter((item) => item.poet === 'hafez')
-            .map((item) => item.id),
-          rumi: release.corpus.items
-            .filter((item) => item.poet === 'rumi')
-            .map((item) => item.id),
-        };
+        const approvedIds = approvedIdsForRelease(release);
         const sessionStorage = browserStorage('sessionStorage');
         const restored =
           sessionStorage === null
@@ -205,6 +221,7 @@ export function App({ services }: AppProps) {
           };
         }
 
+        verifiedReleaseRef.current = release;
         setVerifiedRelease(release);
         setState((current) => {
           const welcome = appReducer(
@@ -226,6 +243,7 @@ export function App({ services }: AppProps) {
             restored?.selectedPoet !== undefined &&
             restoredItem?.poet === restored.selectedPoet
           ) {
+            lastResultPoemIdRef.current = restoredItem.id;
             return {
               ...welcome,
               stage: 'result',
@@ -233,6 +251,7 @@ export function App({ services }: AppProps) {
               currentPoemId: restoredItem.id,
             };
           }
+          lastResultPoemIdRef.current = null;
           return welcome;
         });
       })
@@ -248,18 +267,33 @@ export function App({ services }: AppProps) {
   }, [loadAttempt, loadRelease, services?.drawPoem, services?.randomSource]);
 
   useEffect(() => {
-    if (state.stage === previousStageRef.current || state.releaseId === null) {
+    if (state.releaseId === null || state.stage === 'revealing') {
       return;
     }
-    const replace =
-      state.stage === 'welcome' || historyNavigationRef.current;
-    writeHistory(state, replace);
-    historyNavigationRef.current = false;
+    if (historyNavigationRef.current) {
+      historyNavigationRef.current = false;
+      historyInitializedRef.current = true;
+      previousStageRef.current = state.stage;
+      return;
+    }
+    if (!historyInitializedRef.current) {
+      writeHistory(state, true);
+      historyInitializedRef.current = true;
+      previousStageRef.current = state.stage;
+      return;
+    }
+    if (state.stage === previousStageRef.current) {
+      return;
+    }
+    writeHistory(state, false);
     previousStageRef.current = state.stage;
   }, [state]);
 
   useEffect(() => {
     const handleOffline = () => {
+      if (verifiedReleaseRef.current === null) {
+        return;
+      }
       dispatch({ type: 'SET_STATUS', statusCode: 'offline_ready' });
       setLiveMessage('You are offline, but your poetry experience is ready.');
     };
@@ -268,8 +302,8 @@ export function App({ services }: AppProps) {
   }, [dispatch]);
 
   useEffect(() => {
-    const handlePopState = () => {
-      if (state.releaseId === null) {
+    const handlePopState = (event: PopStateEvent) => {
+      if (state.releaseId === null || verifiedRelease === null) {
         return;
       }
       clearRevealTimers();
@@ -277,17 +311,44 @@ export function App({ services }: AppProps) {
       pendingPoemIdRef.current = null;
       setShowSkip(false);
       historyNavigationRef.current = true;
-      const next = stateFromBack(state, state.releaseId);
-      const storage = browserStorage('sessionStorage');
-      if (storage !== null) {
-        persistSelectedPoet(storage, next.selectedPoet);
-        persistCurrentPoemId(storage, null, []);
+      const resolved = resolvePopHistoryState(event.state, state.releaseId);
+      if (resolved === null) {
+        const welcome = {
+          ...createInitialAppState(state.motionPreference, 'welcome'),
+          releaseId: state.releaseId,
+        };
+        writeHistory(welcome, true);
+        setState(welcome);
+        return;
       }
-      setState(next);
+      let resultPoemId = lastResultPoemIdRef.current;
+      if (resolved.stage === 'result') {
+        const resultItem =
+          resultPoemId === null
+            ? undefined
+            : verifiedRelease.itemsById.get(resultPoemId);
+        if (resultItem?.poet !== resolved.selectedPoet) {
+          const storage = browserStorage('sessionStorage');
+          const restored =
+            storage === null
+              ? null
+              : restoreSessionState(storage, {
+                  releaseId: verifiedRelease.descriptor.releaseId,
+                  approvedIds: approvedIdsForRelease(verifiedRelease),
+                });
+          resultPoemId =
+            restored?.selectedPoet === resolved.selectedPoet
+              ? restored.currentPoemId
+              : null;
+        }
+      }
+      setState(
+        stateFromHistory(state, resolved, verifiedRelease, resultPoemId),
+      );
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [clearRevealTimers, state]);
+  }, [clearRevealTimers, state, verifiedRelease]);
 
   useEffect(() => () => clearRevealTimers(), [clearRevealTimers]);
 
@@ -296,6 +357,7 @@ export function App({ services }: AppProps) {
       return;
     }
     const poemId = pendingPoemIdRef.current;
+    lastResultPoemIdRef.current = poemId;
     clearRevealTimers();
     revealActiveRef.current = false;
     pendingPoemIdRef.current = null;
@@ -376,6 +438,7 @@ export function App({ services }: AppProps) {
       <BlockingErrorScene
         onRetry={() => {
           setBlockingError(false);
+          verifiedReleaseRef.current = null;
           setVerifiedRelease(null);
           setState(createInitialAppState(state.motionPreference));
           setLoadAttempt((attempt) => attempt + 1);
@@ -399,7 +462,9 @@ export function App({ services }: AppProps) {
               const storage = browserStorage('sessionStorage');
               if (storage !== null) {
                 persistSelectedPoet(storage, poet);
+                persistCurrentPoemId(storage, null, []);
               }
+              lastResultPoemIdRef.current = null;
               dispatch({ type: 'CHOOSE_POET', poet });
             }}
           />

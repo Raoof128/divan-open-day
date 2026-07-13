@@ -19,7 +19,8 @@ export function IntentionScene({ poet, onReveal }: IntentionSceneProps) {
         Press to reveal
       </button>
       <p className="disclaimer">
-        This is a literary reflection, not a prediction or a promise.
+        This is a cultural reflection experience. It does not predict outcomes
+        and is not medical, legal, financial, religious or professional advice.
       </p>
     </section>
   );

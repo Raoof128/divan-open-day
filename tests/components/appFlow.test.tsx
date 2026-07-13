@@ -4,6 +4,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   within,
 } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -12,6 +13,9 @@ import { SESSION_STORAGE_KEYS } from '../../src/contracts/app';
 import type { Poet } from '../../src/contracts/content';
 import { App, type AppServices } from '../../src/app/App';
 import { HAFEZ_ITEM, makeVerifiedRelease, RUMI_ITEM } from './fixtures';
+
+const DISCLAIMER =
+  'This is a cultural reflection experience. It does not predict outcomes and is not medical, legal, financial, religious or professional advice.';
 
 function oneActiveHeading(): HTMLElement {
   const headings = screen.getAllByRole('heading', { level: 1 });
@@ -93,7 +97,12 @@ describe.each([
     reachIntention(poet);
     expect(oneActiveHeading()).toHaveTextContent(intentionHeading);
     expect(screen.getAllByRole('main')).toHaveLength(1);
-    expect(screen.getByText(/not a prediction or a promise/u)).toBeVisible();
+    const revealControl = screen.getByRole('button', {
+      name: 'Press to reveal',
+    });
+    const disclaimer = screen.getByText(DISCLAIMER);
+    expect(disclaimer).toBeVisible();
+    expect(revealControl.nextElementSibling).toBe(disclaimer);
 
     await finishRevealWithSkip();
 
@@ -131,7 +140,7 @@ describe.each([
   });
 });
 
-it('prevents a second reveal activation and exposes keyboard skip by 300ms', async () => {
+it('prevents a second reveal activation and exposes skip without stealing focus', async () => {
   const drawPoem = vi.fn((poet: Poet) => ({
     id: poet === 'hafez' ? HAFEZ_ITEM.id : RUMI_ITEM.id,
     cycleReset: false,
@@ -142,6 +151,9 @@ it('prevents a second reveal activation and exposes keyboard skip by 300ms', asy
   reachIntention('hafez');
   vi.useFakeTimers();
   const reveal = screen.getByRole('button', { name: 'Press to reveal' });
+  const motionControl = screen.getByLabelText('Motion');
+  motionControl.focus();
+  expect(motionControl).toHaveFocus();
 
   fireEvent.click(reveal);
   fireEvent.click(reveal);
@@ -149,7 +161,10 @@ it('prevents a second reveal activation and exposes keyboard skip by 300ms', asy
   await act(() => vi.advanceTimersByTimeAsync(249));
   expect(screen.queryByRole('button', { name: 'Skip animation' })).toBeNull();
   await act(() => vi.advanceTimersByTimeAsync(1));
-  expect(screen.getByRole('button', { name: 'Skip animation' })).toHaveFocus();
+  const skip = screen.getByRole('button', { name: 'Skip animation' });
+  expect(skip).toHaveProperty('tabIndex', 0);
+  expect(skip).not.toHaveFocus();
+  expect(motionControl).toHaveFocus();
 });
 
 it('uses a 150ms opacity path when reduced motion is selected', async () => {
@@ -170,20 +185,102 @@ it('uses a 150ms opacity path when reduced motion is selected', async () => {
   expect(oneActiveHeading()).toHaveTextContent('Your verse');
 });
 
-it('maps Back from result to intention and then poet choice', async () => {
+it('uses durable history entries for real Back and Forward traversal', async () => {
+  const pushState = vi.spyOn(window.history, 'pushState');
   await renderLoadedApp();
   reachIntention('hafez');
   await finishRevealWithSkip();
   expect(oneActiveHeading()).toHaveTextContent('Your verse');
+  vi.useRealTimers();
 
   act(() => {
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.history.back();
+  });
+  await waitFor(() =>
+    expect(oneActiveHeading()).toHaveTextContent('Take a quiet moment.'),
+  );
+  act(() => {
+    window.history.back();
+  });
+  await waitFor(() =>
+    expect(oneActiveHeading()).toHaveTextContent('Whose words will you open?'),
+  );
+  act(() => {
+    window.history.forward();
+  });
+  await waitFor(() =>
+    expect(oneActiveHeading()).toHaveTextContent('Take a quiet moment.'),
+  );
+  act(() => {
+    window.history.forward();
+  });
+  await waitFor(() =>
+    expect(oneActiveHeading()).toHaveTextContent('Your verse'),
+  );
+
+  const pushedStages = pushState.mock.calls.map(
+    ([value]) => (value as { readonly stage: string }).stage,
+  );
+  expect(pushedStages).toEqual(['choose_poet', 'intention', 'result']);
+  expect(pushedStages).not.toContain('revealing');
+});
+
+it('uses strictly validated PopStateEvent state', async () => {
+  await renderLoadedApp();
+  fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+  act(() => {
+    window.dispatchEvent(
+      new PopStateEvent('popstate', {
+        state: {
+          stage: 'intention',
+          selectedPoet: 'hafez',
+          releaseId: 'test-only-release',
+        },
+      }),
+    );
   });
   expect(oneActiveHeading()).toHaveTextContent('Take a quiet moment.');
+
   act(() => {
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.dispatchEvent(
+      new PopStateEvent('popstate', {
+        state: {
+          stage: 'result',
+          selectedPoet: 'hafez',
+          releaseId: 'test-only-release',
+          currentPoemId: 'hafez-one',
+        },
+      }),
+    );
   });
-  expect(oneActiveHeading()).toHaveTextContent('Whose words will you open?');
+  expect(oneActiveHeading()).toHaveTextContent('A verse is waiting for you.');
+});
+
+it('hydrates a verified result with replaceState and no duplicate entry', async () => {
+  const services: Partial<AppServices> = {
+    loadRelease: () => Promise.resolve(makeVerifiedRelease()),
+    drawPoem: (poet) => ({
+      id: poet === 'hafez' ? HAFEZ_ITEM.id : RUMI_ITEM.id,
+      cycleReset: false,
+      announcementCode: null,
+      remainingInCycle: 0,
+    }),
+  };
+  const firstRender = render(<App services={services} />);
+  await screen.findByRole('button', { name: 'Begin' });
+  reachIntention('hafez');
+  await finishRevealWithSkip();
+  vi.useRealTimers();
+  const historyLength = window.history.length;
+  firstRender.unmount();
+
+  render(<App services={services} />);
+  expect(
+    await screen.findByRole('heading', { level: 1, name: 'Your verse' }),
+  ).toBeInTheDocument();
+  await act(async () => Promise.resolve());
+  expect(window.history.length).toBe(historyLength);
 });
 
 it('writes only approved public state and never visitor intention', async () => {

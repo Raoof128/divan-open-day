@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react';
-
 import type { Poet } from '../contracts/content';
 
 export interface RevealSceneProps {
@@ -15,14 +13,6 @@ export function RevealScene({
   showSkip,
   onSkip,
 }: RevealSceneProps) {
-  const skipRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (showSkip) {
-      skipRef.current?.focus();
-    }
-  }, [showSkip]);
-
   return (
     <section
       className="scene reveal-scene"
@@ -33,7 +23,7 @@ export function RevealScene({
       <h1>{poet === 'hafez' ? 'Opening the Divan' : 'Revealing a passage'}</h1>
       <p>Revealing your verse.</p>
       {showSkip ? (
-        <button ref={skipRef} type="button" onClick={onSkip}>
+        <button type="button" onClick={onSkip}>
           Skip animation
         </button>
       ) : null}
