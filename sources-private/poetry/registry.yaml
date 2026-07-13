@@ -1,0 +1,94 @@
+# DIVAN immutable poetry source registry
+#
+# Four source editions back the corpus. These are ARCHIVAL SOURCES for research,
+# provenance and human review — never shipped whole to the browser. Only short,
+# exact, human-approved excerpts enter the public corpus via the existing
+# authoring/compiler pipeline.
+#
+# Validated by src/lib/content/sourceRegistrySchema.ts. Every URL must be HTTPS
+# on an allowlisted host (archive.org, ws-export.wmcloud.org, fa/en.wikisource.org).
+schema_version: 1
+sources:
+  - id: hafez-qazvini-ghani-fa-wikisource
+    poet: hafez
+    language: fa
+    work_title: دیوان حافظ
+    edition_label: Divan of Hafez — Qazvini & Ghani edition (Persian Wikisource transcription)
+    completeness: complete
+    canonical_page_url: https://fa.wikisource.org/wiki/%D8%AF%DB%8C%D9%88%D8%A7%D9%86_%D8%AD%D8%A7%D9%81%D8%B8
+    download_artifacts:
+      - kind: epub
+        url: https://ws-export.wmcloud.org/?format=epub&lang=fa&page=%D8%AF%DB%8C%D9%88%D8%A7%D9%86_%D8%AD%D8%A7%D9%81%D8%B8
+        required: true
+        max_bytes: 30000000
+    rights:
+      original_status: >-
+        Persian Wikisource identifies the underlying work as public domain in Iran
+        and the United States.
+      transcription_licence: CC BY-SA (Wikisource transcription)
+      attribution_required: true
+      evidence_url: https://fa.wikisource.org/wiki/%D8%AF%DB%8C%D9%88%D8%A7%D9%86_%D8%AD%D8%A7%D9%81%D8%B8
+
+  - id: hafez-bell-1897-en
+    poet: hafez
+    language: en
+    work_title: Poems from the Divan of Hafiz
+    edition_label: Gertrude Lowthian Bell, 1897 (William Heinemann) — English selection
+    completeness: selection
+    canonical_page_url: https://archive.org/details/poemsfromdivanof00hafiiala
+    download_artifacts:
+      - kind: text
+        url: https://archive.org/download/poemsfromdivanof00hafiiala/poemsfromdivanof00hafiiala_djvu.txt
+        required: true
+        max_bytes: 5000000
+      - kind: pdf
+        url: https://archive.org/download/poemsfromdivanof00hafiiala/poemsfromdivanof00hafiiala.pdf
+        required: false
+        max_bytes: 80000000
+    rights:
+      original_status: >-
+        Internet Archive records the 1897 item as NOT_IN_COPYRIGHT (publication
+        date 1897).
+      transcription_licence: Public domain (Internet Archive OCR of a 1897 edition)
+      attribution_required: true
+      evidence_url: https://archive.org/details/poemsfromdivanof00hafiiala
+
+  - id: rumi-nicholson-fa-wikisource
+    poet: rumi
+    language: fa
+    work_title: مثنوی معنوی
+    edition_label: Masnavi-e Ma'navi — Nicholson Persian edition (Persian Wikisource transcription)
+    completeness: complete
+    canonical_page_url: https://fa.wikisource.org/wiki/%D9%85%D8%AB%D9%86%D9%88%DB%8C_%D9%85%D8%B9%D9%86%D9%88%DB%8C
+    download_artifacts:
+      - kind: epub
+        url: https://ws-export.wmcloud.org/?format=epub&lang=fa&page=%D9%85%D8%AB%D9%86%D9%88%DB%8C_%D9%85%D8%B9%D9%86%D9%88%DB%8C
+        required: true
+        max_bytes: 40000000
+    rights:
+      original_status: >-
+        Persian Wikisource provides the Nicholson-edition transcription and
+        identifies the underlying work as public domain.
+      transcription_licence: CC BY-SA (Wikisource transcription)
+      attribution_required: true
+      evidence_url: https://fa.wikisource.org/wiki/%D9%85%D8%AB%D9%86%D9%88%DB%8C_%D9%85%D8%B9%D9%86%D9%88%DB%8C
+
+  - id: rumi-whinfield-abridged-en
+    poet: rumi
+    language: en
+    work_title: Masnavi I Ma'navi
+    edition_label: E. H. Whinfield — abridged English translation (English Wikisource transcription)
+    completeness: abridged
+    canonical_page_url: https://en.wikisource.org/wiki/Masnavi_I_Ma%27navi
+    download_artifacts:
+      - kind: epub
+        url: https://ws-export.wmcloud.org/?format=epub&lang=en&page=Masnavi_I_Ma%27navi
+        required: true
+        max_bytes: 20000000
+    rights:
+      original_status: >-
+        English Wikisource marks both the original and the Whinfield translation
+        public domain worldwide; the translation is explicitly abridged.
+      transcription_licence: CC BY-SA (Wikisource transcription)
+      attribution_required: true
+      evidence_url: https://en.wikisource.org/wiki/Masnavi_I_Ma%27navi

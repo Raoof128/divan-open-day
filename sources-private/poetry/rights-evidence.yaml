@@ -1,0 +1,83 @@
+# DIVAN source-level rights EVIDENCE (not approvals).
+#
+# Records what the archival hosts state about each edition and the public credit
+# that would be required IF the Society's rights review approves it. Every record
+# stays `status: pending` with no reviewer until an accountable human completes
+# the review AND the artifact has been acquired (a real source_lock_reference).
+# Validated by src/lib/content/sourceRightsSchema.ts. No AI may be a reviewer.
+schema_version: 1
+records:
+  - source_id: hafez-qazvini-ghani-fa-wikisource
+    poet: hafez
+    language: fa
+    work_title: دیوان حافظ (Divan of Hafez)
+    contributor: Mohammad Qazvini and Qasem Ghani (editors); Persian Wikisource (transcription)
+    publication_year: null
+    completeness: complete
+    original_status: >-
+      Persian Wikisource identifies the underlying work as public domain in Iran
+      and the United States.
+    transcription_licence: CC BY-SA (Wikisource transcription — attribution and share-alike apply)
+    evidence_url: https://fa.wikisource.org/wiki/%D8%AF%DB%8C%D9%88%D8%A7%D9%86_%D8%AD%D8%A7%D9%81%D8%B8
+    required_public_credit: >-
+      Persian text: Divan of Hafez, Qazvini–Ghani edition, transcription from
+      Persian Wikisource (CC BY-SA).
+    source_lock_reference: null
+    rights_reviewer_id: null
+    status: pending
+
+  - source_id: hafez-bell-1897-en
+    poet: hafez
+    language: en
+    work_title: Poems from the Divan of Hafiz
+    contributor: Gertrude Lowthian Bell (translator)
+    publication_year: 1897
+    completeness: selection
+    original_status: >-
+      Internet Archive records the 1897 item as NOT_IN_COPYRIGHT.
+    transcription_licence: Public domain (Internet Archive OCR of the 1897 edition)
+    evidence_url: https://archive.org/details/poemsfromdivanof00hafiiala
+    required_public_credit: >-
+      English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz,
+      1897 (a selection, not a complete translation).
+    source_lock_reference: null
+    rights_reviewer_id: null
+    status: pending
+
+  - source_id: rumi-nicholson-fa-wikisource
+    poet: rumi
+    language: fa
+    work_title: مثنوی معنوی (Masnavi-e Ma'navi)
+    contributor: Reynold A. Nicholson (editor); Persian Wikisource (transcription)
+    publication_year: null
+    completeness: complete
+    original_status: >-
+      Persian Wikisource provides the Nicholson-edition transcription and
+      identifies the underlying work as public domain.
+    transcription_licence: CC BY-SA (Wikisource transcription — attribution and share-alike apply)
+    evidence_url: https://fa.wikisource.org/wiki/%D9%85%D8%AB%D9%86%D9%88%DB%8C_%D9%85%D8%B9%D9%86%D9%88%DB%8C
+    required_public_credit: >-
+      Persian text: Masnavi, Nicholson edition, transcription from Persian
+      Wikisource (CC BY-SA).
+    source_lock_reference: null
+    rights_reviewer_id: null
+    status: pending
+
+  - source_id: rumi-whinfield-abridged-en
+    poet: rumi
+    language: en
+    work_title: Masnavi I Ma'navi
+    contributor: E. H. Whinfield (translator)
+    publication_year: null
+    completeness: abridged
+    original_status: >-
+      English Wikisource marks both the original and the Whinfield translation
+      public domain worldwide; the translation is explicitly abridged.
+    transcription_licence: Public domain (English Wikisource transcription; CC BY-SA on the transcription)
+    evidence_url: https://en.wikisource.org/wiki/Masnavi_I_Ma%27navi
+    required_public_credit: >-
+      English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged
+      translation, not a complete rendering).
+    source_lock_reference: null
+    rights_reviewer_id: null
+    status: pending

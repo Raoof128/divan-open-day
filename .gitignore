@@ -12,6 +12,13 @@ node_modules/
 dist/
 content-private/*
 !content-private/README.md
+# Raw archival source books are never committed to ordinary Git (large, and kept
+# out of public history). Manifests, hashes and reports under sources-private/
+# ARE committed; only raw/ and extracted staging are ignored.
+sources-private/poetry/raw/**
+!sources-private/poetry/raw/.gitkeep
+sources-private/poetry/extracted/**
+!sources-private/poetry/extracted/.gitkeep
 ops/cloudflared/*.json
 ops/cloudflared/config.yml
 coverage/

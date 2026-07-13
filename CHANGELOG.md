@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-14 — Poetry source ingestion (acquisition + extraction + candidates), adapted
+
+**Raouf:**
+
+- **Scope:** Net-new source-provenance layer of the poetry ingestion plan (its Tasks 2–6, 8, 12), wired to feed the existing authoring/registry/compiler/UI pipeline. The plan's content/mapping/compiler/UI tasks already exist in-repo and more strictly, so they were not rebuilt (reconciliation in `docs/decisions/poetry-source-integration-baseline.md`). Test-first; no live downloads (owner-gated); nothing fabricated; production stays fail-closed.
+- **Summary:** Immutable source registry + strict Zod schema (four editions, HTTPS + host-allowlist only). Host-allowlisted streaming downloader with redirect revalidation, size caps, SHA-256 source-lock, HTML-for-EPUB rejection, atomic writes, lock reconciliation — unit-tested without network. Honest source rights _evidence_ (all `pending`; `approved` structurally impossible without a named human reviewer + acquired hash; "ai" rejected). Deterministic stdlib EPUB extraction (raw vs. search text separated, ZWNJ preserved, XXE/entity guard) + orchestrator. Conservative Bell OCR candidate parsing (raw kept, corrections empty, visual-verification flagged). Non-publishable machine candidate index (refused by the production compiler). Archival-leak bundle gate chained into `verify:dist`. New `poetry:*` commands + `docs/poetry-source-runbook.md`.
+- **Files Changed:** `src/lib/content/{sourceRegistrySchema,sourceRightsSchema}.ts`, `scripts/poetry/*` (6 TS + `extract-epub.py`), `sources-private/poetry/**` (registry, rights evidence, report, keeps), 7 new `tests/content/*.test.ts` + `tests/fixtures/poetry/build-fixture-epub.py`, `package.json`, `.gitignore`, `.prettierignore`, `docs/{poetry-source-runbook,rights-register-public,decisions/poetry-source-integration-baseline}.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, pnpm 10.33.0, Python 3.12.2, branch `feat/poetry-source-ingestion` off `main` @ `6a102f5`. `pnpm check` green: format/lint/typecheck 0, vitest 529/529 (41 files; +57 net-new poetry tests), `verify:dist` (incl. new leak gate) + `verify:privacy` pass, `audit --prod` clean, `build:production` + `verify:qr` fail-closed. Docker skipped (no daemon); no live network fetch performed.
+- **Follow-ups:** Owner-gated `pnpm poetry:fetch` then extract/build-candidates → Society reviewers. Public launch still needs approved corpus + rights (incl. CC BY-SA attribution for the Persian Wikisource transcriptions), cultural review, Bell OCR-vs-scan verification, and every existing §31.2 gate.
+
 ## 2026-07-13 — Frontend design audit fixes
 
 **Raouf:**

@@ -41,3 +41,15 @@ and private file paths must not appear in `dist`.
 This file must be updated only from verified human records. Do not infer or
 invent a public-domain status, licence, permission, credit, contributor,
 reviewer, rights holder, cultural approval, or University approval.
+
+## Source acquisition evidence (pending, not approved)
+
+Archival source editions considered for the corpus are recorded privately in
+`sources-private/poetry/rights-evidence.yaml` (schema:
+`src/lib/content/sourceRightsSchema.ts`) with the observed public-domain / CC BY-SA
+statements and prospective public credits. Every source record is `pending` with
+no reviewer; a record cannot become `approved` without a named human rights
+reviewer and an acquired source-lock SHA-256. None of that evidence is a public
+credit until it passes the Society's documented rights review, and the two Persian
+Wikisource transcriptions carry an outstanding CC BY-SA attribution/share-alike
+obligation that the rights reviewer must clear before publication.

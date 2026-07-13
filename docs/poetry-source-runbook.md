@@ -1,0 +1,93 @@
+# Poetry source ingestion runbook
+
+How the DIVAN source-provenance layer works and how a human operator drives it.
+This layer **acquires and stages archival sources and proposes candidate
+mappings**; it never publishes poetry. The public corpus stays fail-closed until
+the Society's reviewers approve real content through the existing
+authoring/registry/compiler pipeline (`content-private/`, `src/lib/content/`).
+
+## Pipeline overview
+
+```
+registry.yaml ──▶ poetry:fetch ──▶ raw/ + source-lock.json ──▶ poetry:verify-sources
+                                          │
+                                          ├─ poetry:extract       (EPUB → extracted/*.jsonl)
+                                          └─ poetry:extract-bell   (Bell OCR → candidates)
+                                                     │
+                                          poetry:build-candidates  (machine hints, NOT publishable)
+                                                     │
+                                   ┌───────── HUMAN REVIEW (Society) ─────────┐
+                                   │  Persian source · translation · cultural │
+                                   │  · rights · OCR-vs-scan verification      │
+                                   └───────────────────────────────────────────┘
+                                                     │
+                       content-private/ authoring records ──▶ existing compiler ──▶ dist/
+```
+
+## Commands
+
+| Command | What it does | Network |
+| --- | --- | --- |
+| `pnpm poetry:verify-sources` | Re-hash acquired files against `source-lock.json` | none |
+| `pnpm poetry:fetch` | Download the four editions into git-ignored `raw/`, write `source-lock.json` | **yes (owner-gated)** |
+| `pnpm poetry:extract` | Deterministic EPUB → `extracted/*.jsonl` (raw + search text separated) | none |
+| `pnpm poetry:extract-bell` | Parse Bell OCR into candidate sections (raw kept, no auto-correction) | none |
+| `pnpm poetry:build-candidates` | Machine candidate index (`machineGeneratedCandidate`, `publishable:false`) | none |
+| `pnpm verify:dist` | Existing dist check **+ archival-leak gate** (`inspect-public-bundle`) | none |
+
+All scripts are safe no-ops before a fetch: they print "not acquired yet".
+
+## Safety properties (enforced by tests)
+
+- **Acquisition** (`tests/content/sourceLock.test.ts`): only allowlisted HTTPS
+  hosts (`archive.org`, `ws-export.wmcloud.org`, `fa/en.wikisource.org`); every
+  redirect hop revalidated; HTTP rejected; oversize responses abort and clean up;
+  HTML-in-place-of-EPUB rejected; hash-locked files not re-downloaded; a hash
+  mismatch fails loudly. No poem text or secret is logged.
+- **Registry** (`tests/content/sourceRegistry.test.ts`): strict schema, HTTPS +
+  allowlisted URLs only, all four fixed source ids required, no duplicates.
+- **Rights** (`tests/content/poetryRights.test.ts`): a source rights record cannot
+  reach `approved` without a **named human reviewer** and an acquired source-lock
+  SHA-256; "ai" is never a valid reviewer; the committed evidence is all `pending`.
+- **Extraction** (`tests/content/extraction.test.ts`): stdlib-only, deterministic
+  (byte-identical replay), spine + heading order preserved, script/style excluded,
+  Persian raw text preserved incl. ZWNJ, search text normalised separately, and
+  EPUB XML declaring a `DOCTYPE`/`ENTITY` is refused (XXE / billion-laughs guard).
+- **Bell OCR** (`tests/content/bellOcr.test.ts`): raw OCR kept verbatim,
+  `correctedDraftLines` always empty, every candidate `requiresVisualVerification`,
+  front-matter and notes apparatus excluded, suspicious lines flagged not edited.
+- **Candidates** (`tests/content/candidateIndex.test.ts`): every record
+  `machineGeneratedCandidate:true`, `publishable:false`, `requiresHumanReview:true`,
+  `confidence:'candidate'` (never `verified`); the **production compiler refuses
+  candidate records** as authoring input.
+- **Leak gate** (`tests/content/publicBundleLeak.test.ts`): `dist/` may contain no
+  `.epub/.pdf/.djvu/.jsonl`, no lock/registry/reviewer files, no `*-candidates.json`,
+  and nothing referencing a `sources-private/`/`content-private/` path.
+
+## What must NOT be committed
+
+`sources-private/poetry/raw/**` and `sources-private/poetry/extracted/**` are
+git-ignored (large, archival). Manifests, hashes, reports, the registry and the
+rights evidence **are** committed. Never commit full books to ordinary Git.
+
+## Live fetch (owner-gated)
+
+Downloads are **not** run automatically. On an explicit go:
+
+```bash
+pnpm poetry:fetch            # pulls the four editions into raw/, writes source-lock.json
+pnpm poetry:verify-sources   # re-hash check
+find sources-private/poetry/raw -type f -print0 | xargs -0 file   # confirm EPUB/PDF/text types
+pnpm poetry:extract && pnpm poetry:extract-bell && pnpm poetry:build-candidates
+```
+
+Then hand the candidate reports and staging to the Society's reviewers. Nothing
+reaches the public corpus until they author approved records and the existing
+production compiler (with its ≥24 Hafez / ≥16 Rumi / ≥40 total gate) accepts them.
+
+## Launch gates still closed
+
+Approved corpus + rights (incl. CC BY-SA attribution for the two Persian Wikisource
+transcriptions), cultural review, Bell OCR-vs-scan verification, and every existing
+§31.2 deployment/governance/QR gate remain the human's responsibility and are never
+fabricated here.
