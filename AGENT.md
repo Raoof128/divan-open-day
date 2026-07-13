@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-13 (Australia/Sydney) — visual system and context documents
+
+**Raouf:**
+
+- **Scope:** B2 visual language, responsive scene composition, contextual document routes, bounded reveal choreography, local font use, and controlled visual/performance evidence.
+- **Summary:** Applied the locked illuminated-manuscript/night-garden direction with the exact semantic colour tokens, self-hosted pinned fonts, original script-free inline geometry, manuscript portals, distinct Hafez garden and Rumi reed/constellation treatments, illuminated results, a truthful offline-readiness badge, and full/reduced/coarse-pointer motion mappings. Added accessible `/about`, `/credits`, `/accessibility`, `/privacy`, and `/offline` views whose release data, storage boundary, cache wording, cultural distinctions, and remaining review gates stay source-backed and fail closed. No package, lock, private content, compiler/schema, share, service-worker, operations, University mark, or remote asset change was made.
+- **Files Changed:** `src/styles/**`, scoped visual components and core scenes under `src/components/**` and `src/scenes/**`, `src/pages/**`, the smallest shell/style imports in `src/app/App.tsx`, `src/app/core.css`, and `src/main.tsx`, visual/context/performance tests, `docs/asset-register.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful initial RED was 11 failures and 1 pass for absent routes, motifs, tokens, fonts, motion, and budgets. Final required gates passed: component tests 51/51, accessibility tests 18/18, performance tests 5/5, visual Playwright tests 2/2, fixture build and distribution verification, strict TypeScript, and ESLint. Playwright captured 70 core/context images across 320x568, 390x844, 844x390, 768x1024, and 1440x900 with no horizontal overflow or remote request. Built gzip evidence was HTML 644 B, CSS 4,847 B, JavaScript 91,135 B, and critical fonts 115,816 B, with zero raster-image bytes.
+- **Follow-ups:** Chromium automation and inspected screenshots are bounded evidence, not cross-browser or WCAG-conformance claims. Manual Safari/Firefox Persian shaping, Safari/Chrome/Firefox/Edge coverage, VoiceOver/TalkBack, measured contrast, 200-percent zoom, focus order, physical devices/orientation, reveal tracing, genuine approved content/rights/cultural review, integrated offline behavior, and every separate deployment/governance/QR launch gate remain blocked pending real evidence.
+
 ### 2026-07-12 (Australia/Sydney)
 
 **Raouf:**

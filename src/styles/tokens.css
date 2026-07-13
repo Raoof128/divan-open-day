@@ -1,0 +1,50 @@
+:root {
+  --ink-night: #0B1026;
+  --ink-deep: #11182D;
+  --lapis: #174A7E;
+  --lapis-light: #2E6E9E;
+  --turquoise: #2C8C8A;
+  --pomegranate: #A6192E;
+  --bright-red: #D6001C;
+  --deep-red: #76232F;
+  --gold: #D4A64A;
+  --gold-light: #E7C777;
+  --parchment: #F2E6CF;
+  --paper: #FFF9EE;
+  --cypress: #204F40;
+  --charcoal: #2E302E;
+  --muted-ink: #6E675D;
+  --error: #B42318;
+  --focus: #78D6FF;
+
+  --surface-night: var(--ink-night);
+  --surface-night-raised: var(--ink-deep);
+  --surface-paper: var(--paper);
+  --surface-parchment: var(--parchment);
+  --text-on-night: var(--paper);
+  --text-on-paper: var(--charcoal);
+  --ornament: var(--gold);
+  --ornament-bright: var(--gold-light);
+  --action: var(--pomegranate);
+  --action-strong: var(--deep-red);
+  --line-night: rgb(231 199 119 / 42%);
+  --line-paper: rgb(118 35 47 / 24%);
+
+  --font-interface: 'DIVAN Inter', Inter, system-ui, sans-serif;
+  --font-display: 'DIVAN Cormorant Garamond', Georgia, serif;
+  --font-persian: 'DIVAN Vazirmatn', Vazirmatn, Tahoma, sans-serif;
+  --font-persian-display: 'DIVAN Noto Nastaliq Urdu', 'Noto Nastaliq Urdu',
+    var(--font-persian);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --radius-small: 0.25rem;
+  --radius-paper: 0.625rem;
+  --shadow-paper: 0 1.5rem 4rem rgb(2 5 18 / 38%);
+}

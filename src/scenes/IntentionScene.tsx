@@ -1,3 +1,4 @@
+import { DecorativeGeometry } from '../components/DecorativeGeometry';
 import type { Poet } from '../contracts/content';
 
 export interface IntentionSceneProps {
@@ -8,7 +9,14 @@ export interface IntentionSceneProps {
 export function IntentionScene({ poet, onReveal }: IntentionSceneProps) {
   const isHafez = poet === 'hafez';
   return (
-    <section className="scene" data-scene="intention">
+    <section
+      className="scene scene--intention"
+      data-scene="intention"
+      data-visual-language={isHafez ? 'garden-night' : 'lamp-constellation'}
+    >
+      <DecorativeGeometry
+        motif={isHafez ? 'pomegranate-cypress' : 'reed-rosette'}
+      />
       <h1 tabIndex={-1} data-focus-target="scene-heading">
         {isHafez ? 'Take a quiet moment.' : 'Take one slow breath.'}
       </h1>

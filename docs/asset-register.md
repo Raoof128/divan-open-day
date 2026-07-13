@@ -11,6 +11,32 @@ synthetic test input only and are not a public asset record. The sole fixture
 audio-shaped file contains exactly `TEST ONLY - NOT AUDIO`; it exists only to
 prove manifest/file completeness and can never pass production MIME checks.
 
+## Bundled interface resources
+
+The following B2 resources are repository-controlled interface dependencies,
+not candidate poetry, audio, image, calligraphy, performer, or University
+assets. Their presence does not open the production-content or public-launch
+gate.
+
+- Original inline SVG geometry: `divan-eight-point-field`,
+  `divan-manuscript-corners`, `divan-pomegranate-cypress`, and
+  `divan-reed-rosette`. These script-free primitives were authored for the
+  DIVAN interface in `src/components/DecorativeGeometry.tsx`; they contain no
+  remote reference, event handler, copied calligraphy, personal attribution,
+  or third-party artwork.
+- `@fontsource/cormorant-garamond` 5.2.11, local Latin 500- and 600-normal
+  WOFF2, package-declared `OFL-1.1`.
+- `@fontsource/inter` 5.2.8, local Latin 400- and 700-normal WOFF2,
+  package-declared `OFL-1.1`.
+- `@fontsource/vazirmatn` 5.2.8, local Arabic 400-normal WOFF2,
+  package-declared `OFL-1.1`.
+- `@fontsource/noto-nastaliq-urdu` 5.2.8, local Arabic 400-normal WOFF2,
+  package-declared `OFL-1.1`; restricted by the interface to short decorative
+  Persian labels.
+
+All four font files are bundled by the pinned build, use `font-display: swap`,
+and have local fallbacks. No runtime font request leaves the built origin.
+
 ## Required private asset record
 
 Each candidate asset is recorded in private `content-private/assets.yaml` with:

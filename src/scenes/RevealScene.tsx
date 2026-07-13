@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { DecorativeGeometry } from '../components/DecorativeGeometry';
 import type { Poet } from '../contracts/content';
 
 export interface RevealSceneProps {
@@ -37,6 +38,17 @@ export function RevealScene({
       data-reveal-phase={revealPhase}
       aria-busy="true"
     >
+      <DecorativeGeometry motif="field" />
+      <div className="reveal-object" aria-hidden="true">
+        <div className="reveal-paper reveal-paper--back" />
+        <div className="reveal-paper" />
+        <div className="reveal-cover">
+          <DecorativeGeometry
+            className="reveal-ornament"
+            motif={poet === 'hafez' ? 'pomegranate-cypress' : 'reed-rosette'}
+          />
+        </div>
+      </div>
       <h1 tabIndex={-1} data-focus-target="scene-heading">
         {poet === 'hafez' ? 'Opening the Divan' : 'Revealing a passage'}
       </h1>
