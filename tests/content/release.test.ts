@@ -60,6 +60,7 @@ function makeAssetSource(
 
 function fixedBrowserSources(): ReleaseAssetSource[] {
   return [
+    ['icon.svg', 'image/svg+xml', '<svg xmlns="http://www.w3.org/2000/svg" />'],
     ['index.html', 'text/html', '<!doctype html><title>DIVAN</title>'],
     ['manifest.webmanifest', 'application/manifest+json', '{"name":"DIVAN"}'],
     ['offline.html', 'text/html', '<!doctype html><title>Offline</title>'],

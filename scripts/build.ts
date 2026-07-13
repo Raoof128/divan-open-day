@@ -564,7 +564,11 @@ async function buildBrowserAssets(
         outDir: stageRoot,
       },
     });
-    for (const filename of ['manifest.webmanifest', 'offline.html'] as const) {
+    for (const filename of [
+      'icon.svg',
+      'manifest.webmanifest',
+      'offline.html',
+    ] as const) {
       await writeFile(
         path.join(stageRoot, filename),
         await readReviewedRepositoryFile(`public/${filename}`),
@@ -585,7 +589,12 @@ async function buildBrowserAssets(
           asset.mimeType === 'text/javascript' &&
           asset.path.startsWith('assets/'),
       ) ||
-      ['manifest.webmanifest', 'offline.html', 'service-worker.js'].some(
+      [
+        'icon.svg',
+        'manifest.webmanifest',
+        'offline.html',
+        'service-worker.js',
+      ].some(
         (requiredPath) =>
           assets.filter((asset) => asset.path === requiredPath).length !== 1,
       ) ||

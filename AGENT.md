@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-13 (Australia/Sydney) — frontend design audit fixes (PWA metadata, verse hierarchy, CSS cleanup)
+
+**Raouf:**
+
+- **Scope:** Apply a file-by-file frontend design audit. UI polish and PWA wiring only; no content, rights, approvals, or production configuration fabricated; no new runtime dependency, network call, or storage.
+- **Summary:** Wired the PWA identity that was built but unlinked: added an original `icon.svg` (an eight-point *khatam* star in the night/gold palette, `any maskable`), linked the manifest + `theme-color` + icon from `index.html`, and set the manifest `background_color` to the night surface `#0B1026` so the install splash no longer flashes light. `icon.svg` is now a required fixed browser asset in both the release contract (`src/lib/content/release.ts`) and the service-worker schema (`src-sw/schemas.ts`), copied by the build and precached offline. Design: promoted the Persian verse to nastaliq (`--font-persian-display`) with generous leading; gave the result actions a hierarchy (primary "Reveal another" vs. quiet gold-outline "Save"/"Download"). Cleanup: removed the near-invisible fourth background layer (`body::before`, 1.4% hatch), fixed the undefined `--radius-control` on the skip link, scoped the deep-red `h2` rule to light surfaces only (latent invisible-heading trap on dark scenes), set `color-scheme: dark`, and adopted `--action`/`--ornament-bright` plus new `--turquoise-light`/`--ember` tokens in place of hardcoded literals.
+- **Files Changed:** `index.html`, `public/icon.svg` (new), `public/manifest.webmanifest`, `src/lib/content/release.ts`, `src-sw/schemas.ts`, `scripts/build.ts`, `src/styles/tokens.css`, `src/styles/visual.css`, `src/app/core.css`, `tests/offline/artifacts.test.ts`, `tests/offline/helpers.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0. `bash scripts/check.sh --e2e` green: `format:check` clean, `lint` 0, `typecheck` 0, `test` 472/472 (34 files), `build:fixture` + `verify:dist` pass with `icon.svg` accepted through the full contract, `verify:privacy` pass, `audit --prod` clean, Playwright e2e 5/5 (incl. locked visual matrix and axe). `build:production` and `verify:qr` remain fail-closed; Docker evidence skipped (no daemon). Result screen visually confirmed. Nastaliq applies to real Persian glyphs; the ASCII fixture cannot display it.
+- **Follow-ups:** iOS home-screen uses an SVG `apple-touch-icon`, so it falls back to a screenshot until a PNG touch icon exists; §31.2 launch gates unchanged and remain closed.
+
 ### 2026-07-13 (Australia/Sydney) — Prettier, quality-gate script, and CI
 
 **Raouf:**

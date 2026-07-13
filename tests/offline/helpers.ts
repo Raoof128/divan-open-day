@@ -139,8 +139,10 @@ export function releaseFixture(releaseId = 'release-one'): FixtureRelease {
   const app = 'console.log("DIVAN")';
   const offline = '<!doctype html><title>Offline</title>';
   const manifestDocument = '{"name":"DIVAN"}';
+  const iconDocument = '<svg xmlns="http://www.w3.org/2000/svg" />';
   const worker = 'self.addEventListener("fetch", function () {})';
   const assets = [
+    asset('icon.svg', 'image/svg+xml', iconDocument, true),
     asset('index.html', 'text/html', index, true),
     asset('assets/app-0123456789abcdef.js', 'text/javascript', app, true),
     asset('offline.html', 'text/html', offline, true),
@@ -176,6 +178,7 @@ export function releaseFixture(releaseId = 'release-one'): FixtureRelease {
     ['/release.json', jsonResponse(release)],
     [release.contentPath, new Response(corpusText)],
     [release.assetManifestPath, new Response(manifestText)],
+    ['/icon.svg', new Response(iconDocument)],
     ['/index.html', new Response(index)],
     ['/assets/app-0123456789abcdef.js', new Response(app)],
     ['/offline.html', new Response(offline)],

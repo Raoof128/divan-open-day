@@ -277,6 +277,7 @@ describe('fixture release build', () => {
       'assets',
       'audio',
       'content',
+      'icon.svg',
       'index.html',
       'manifest.webmanifest',
       'offline.html',

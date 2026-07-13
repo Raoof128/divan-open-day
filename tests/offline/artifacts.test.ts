@@ -19,10 +19,18 @@ describe('local-only offline artifacts', () => {
       start_url: '/',
       scope: '/',
       display: 'standalone',
-      background_color: '#FFF9EE',
+      background_color: '#0B1026',
       theme_color: '#0B1026',
       lang: 'en',
       dir: 'ltr',
+      icons: [
+        {
+          src: 'icon.svg',
+          sizes: 'any',
+          type: 'image/svg+xml',
+          purpose: 'any maskable',
+        },
+      ],
     });
     expect(JSON.stringify(manifest)).not.toMatch(
       /Macquarie|University|https?:/u,

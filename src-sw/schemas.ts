@@ -264,6 +264,7 @@ const MIME_TYPES = [
 ] as const;
 
 const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
+  ['icon.svg', 'image/svg+xml'],
   ['index.html', 'text/html'],
   ['manifest.webmanifest', 'application/manifest+json'],
   ['offline.html', 'text/html'],

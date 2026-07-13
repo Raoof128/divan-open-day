@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-13 — Frontend design audit fixes
+
+**Raouf:**
+
+- **Scope:** File-by-file frontend design audit applied. UI polish and PWA wiring only; no content/rights/approvals/production config fabricated; no new runtime dependency, network call, or storage.
+- **Summary:** Wired the built-but-unlinked PWA identity — new original `icon.svg` (eight-point khatam star, night/gold, `any maskable`), manifest + `theme-color` + icon links in `index.html`, and manifest `background_color` corrected to `#0B1026` so the install splash matches the dark app. `icon.svg` is now a required fixed browser asset in the release contract and the service-worker schema, copied by the build and precached. Design: Persian verse promoted to nastaliq with generous leading; result actions given a primary/secondary hierarchy. Cleanup: removed the near-invisible `body::before` hatch layer, fixed the undefined `--radius-control` on the skip link, scoped the deep-red `h2` rule to light surfaces, set `color-scheme: dark`, and replaced hardcoded color literals with `--action`/`--ornament-bright`/`--turquoise-light`/`--ember` tokens.
+- **Files Changed:** `index.html`, `public/icon.svg` (new), `public/manifest.webmanifest`, `src/lib/content/release.ts`, `src-sw/schemas.ts`, `scripts/build.ts`, `src/styles/tokens.css`, `src/styles/visual.css`, `src/app/core.css`, `tests/offline/artifacts.test.ts`, `tests/offline/helpers.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `bash scripts/check.sh --e2e` green — `format:check`/`lint` 0/`typecheck` 0, `test` 472/472, `build:fixture`+`verify:dist` pass (`icon.svg` accepted end-to-end), `verify:privacy` pass, `audit --prod` clean, Playwright 5/5. `build:production` and `verify:qr` stay fail-closed; Docker evidence skipped. Result screen visually confirmed.
+- **Follow-ups:** iOS home-screen falls back to a screenshot until a PNG `apple-touch-icon` exists; §31.2 launch gates unchanged and remain closed.
+
 ## 2026-07-13 — Prettier, quality gate, and CI
 
 **Raouf:**

@@ -33,6 +33,7 @@ const ASSET_MIME_TYPES = [
 
 const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>(
   [
+    ['icon.svg', 'image/svg+xml'],
     ['index.html', 'text/html'],
     ['manifest.webmanifest', 'application/manifest+json'],
     ['offline.html', 'text/html'],
