@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { LiveRegion } from '../components/LiveRegion';
 import { MotionControl } from '../components/MotionControl';
+import { OfflineBadge } from '../components/OfflineBadge';
 import { PoemResult } from '../components/PoemResult';
 import { SkipLink } from '../components/SkipLink';
 import type { DivanHistoryState, MotionPreference } from '../contracts/app';
@@ -38,6 +39,8 @@ import { ChoosePoetScene } from '../scenes/ChoosePoetScene';
 import { IntentionScene } from '../scenes/IntentionScene';
 import { RevealScene } from '../scenes/RevealScene';
 import { WelcomeScene } from '../scenes/WelcomeScene';
+import { ContextPage } from '../pages';
+import { contextRoute } from '../pages/routes';
 import {
   createHistoryState,
   resolvePopHistoryState,
@@ -161,6 +164,7 @@ export function App({ services }: AppProps) {
     state.motionPreference,
     systemReducedMotion,
   );
+  const activeContextRoute = contextRoute(window.location.pathname);
   const verifiedReleaseRef = useRef<VerifiedRelease | null>(null);
   const bagsRef = useRef<Partial<Record<Poet, PoetShuffleBag>>>({});
   const pendingPoemIdRef = useRef<string | null>(null);
@@ -484,7 +488,9 @@ export function App({ services }: AppProps) {
   );
 
   let scene;
-  if (blockingError) {
+  if (activeContextRoute !== null) {
+    scene = <ContextPage route={activeContextRoute} release={verifiedRelease} />;
+  } else if (blockingError) {
     scene = (
       <BlockingErrorScene
         onRetry={() => {
@@ -592,9 +598,18 @@ export function App({ services }: AppProps) {
       data-testid="app-shell"
       data-motion-preference={state.motionPreference}
       data-motion={effectiveMotion}
+      data-context-route={activeContextRoute ?? undefined}
     >
       <SkipLink />
       <header className="utility-header">
+        {activeContextRoute === null ? (
+          <span className="utility-header__spacer" aria-hidden="true" />
+        ) : (
+          <a className="wordmark" href="/" aria-label="DIVAN home">
+            DIVAN
+          </a>
+        )}
+        {state.statusCode === 'offline_ready' ? <OfflineBadge /> : null}
         <MotionControl value={state.motionPreference} onChange={handleMotionChange} />
       </header>
       <main id="main-content" ref={mainRef} tabIndex={-1}>

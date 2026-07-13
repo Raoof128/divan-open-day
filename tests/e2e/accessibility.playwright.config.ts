@@ -3,7 +3,7 @@ import path from 'node:path';
 
 export default defineConfig({
   testDir: path.resolve(process.cwd(), 'tests/e2e'),
-  testMatch: 'accessibility.spec.ts',
+  testMatch: ['accessibility.spec.ts', 'visual.spec.ts'],
   fullyParallel: false,
   forbidOnly: true,
   retries: 0,

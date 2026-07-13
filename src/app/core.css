@@ -1,6 +1,6 @@
 :root {
   color-scheme: light dark;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--font-interface, Inter, system-ui, sans-serif);
   line-height: 1.5;
 }
 
@@ -33,9 +33,9 @@ select {
 }
 
 :focus-visible {
-  outline: 3px solid #0b1026;
+  outline: 3px solid var(--ink-night, #0b1026);
   outline-offset: 3px;
-  box-shadow: 0 0 0 6px #78d6ff;
+  box-shadow: 0 0 0 6px var(--focus, #78d6ff);
 }
 
 .skip-link {
@@ -107,7 +107,7 @@ select {
 }
 
 [lang='fa'] {
-  font-family: Vazirmatn, Tahoma, sans-serif;
+  font-family: var(--font-persian, Vazirmatn, Tahoma, sans-serif);
   text-align: start;
 }
 

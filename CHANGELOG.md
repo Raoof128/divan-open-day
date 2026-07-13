@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-13 — Illuminated visual system and truthful context routes
+
+**Raouf:**
+
+- **Scope:** B2 production visual system, responsive core-stage polish, bounded motion, contextual documents, and visual/performance regression evidence.
+- **Summary:** Added the exact locked colour system; local Fontsource Cormorant Garamond, Inter, Vazirmatn, and short-label Noto Nastaliq Urdu; original sanitised inline manuscript, garden, pomegranate/cypress, reed, rosette, and constellation geometry; distinct Hafez and Rumi portals; manuscript/reveal/result surfaces; and static reduced-motion/coarse-pointer fallbacks. Added `/about`, `/credits`, `/accessibility`, `/privacy`, and `/offline` with verified-release-derived credits and evergreen, conditional cache wording that never fabricates readiness. No remote or third-party artwork, University branding, production approval, private content, package/lock, service-worker/share, or operations change was introduced.
+- **Files Changed:** `src/styles/**`, scoped visual components/scenes/pages and shell wiring, `tests/components/contextRoutes.test.tsx`, `tests/components/visualLanguage.test.tsx`, `tests/performance/visualBudgets.test.ts`, `tests/e2e/visual.spec.ts`, the Playwright test match, `docs/asset-register.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; TDD RED 11 failed/1 passed before implementation. GREEN: components 51/51, accessibility 18/18, performance 5/5, Playwright visual/motion 2/2, fixture build, dist verification, typecheck, and lint. Seventy screenshots covered all core/context states across five required baselines with no horizontal overflow or remote request. Compiled gzip sizes: HTML 644 B, CSS 4,847 B, JavaScript 91,135 B, critical fonts 115,816 B; raster images 0 B.
+- **Follow-ups:** Manual Persian shaping and typography in Safari/Firefox, physical iOS/Android/tablet/landscape and 200-percent zoom, measured contrast, focus order, screen-reader/pronunciation review, reveal performance traces, approved production content/rights/cultural review, integrated offline behavior, deployment/isolation evidence, rollback, and physical QR testing remain public-launch blockers.
+
 ## 2026-07-12 — Repository baseline
 
 **Raouf:**
