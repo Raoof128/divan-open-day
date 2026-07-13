@@ -7,6 +7,17 @@ import { SkipLink } from '../components/SkipLink';
 import type { DivanHistoryState, MotionPreference } from '../contracts/app';
 import type { Poet } from '../contracts/content';
 import {
+  FOCUS_TARGETS,
+  focusSceneTarget,
+  type FocusTarget,
+} from '../lib/accessibility/focus';
+import {
+  readSystemReducedMotion,
+  REVEAL_DURATION_MS,
+  resolveEffectiveMotion,
+  subscribeToSystemReducedMotion,
+} from '../lib/accessibility/motion';
+import {
   createPoetShuffleBag,
   type DrawResult,
   type PoetShuffleBag,
@@ -42,8 +53,6 @@ import {
   type AppState,
 } from './state';
 
-const REDUCED_REVEAL_MS = 150;
-const FULL_REVEAL_MS = 1_600;
 const SKIP_CONTROL_DELAY_MS = 250;
 
 export interface AppServices {
@@ -69,17 +78,13 @@ function initialMotionPreference(): MotionPreference {
   return storage === null ? 'system' : (readLocalMotionPreference(storage) ?? 'system');
 }
 
-function prefersReducedMotion(preference: MotionPreference): boolean {
-  if (preference === 'reduced') {
-    return true;
-  }
-  if (preference === 'full') {
-    return false;
-  }
+function browserMatchMedia(): typeof window.matchMedia | undefined {
   try {
-    return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    return typeof window.matchMedia === 'function'
+      ? window.matchMedia.bind(window)
+      : undefined;
   } catch {
-    return false;
+    return undefined;
   }
 }
 
@@ -149,6 +154,13 @@ export function App({ services }: AppProps) {
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [liveMessage, setLiveMessage] = useState('');
   const [showSkip, setShowSkip] = useState(false);
+  const [systemReducedMotion, setSystemReducedMotion] = useState(() =>
+    readSystemReducedMotion(browserMatchMedia()),
+  );
+  const effectiveMotion = resolveEffectiveMotion(
+    state.motionPreference,
+    systemReducedMotion,
+  );
   const verifiedReleaseRef = useRef<VerifiedRelease | null>(null);
   const bagsRef = useRef<Partial<Record<Poet, PoetShuffleBag>>>({});
   const pendingPoemIdRef = useRef<string | null>(null);
@@ -160,6 +172,9 @@ export function App({ services }: AppProps) {
   const previousStageRef = useRef(state.stage);
   const historyNavigationRef = useRef(false);
   const historyInitializedRef = useRef(false);
+  const focusRequestRef = useRef<FocusTarget | null>(null);
+  const lastSelectedPoetRef = useRef<Poet | null>(null);
+  const mainRef = useRef<HTMLElement>(null);
 
   const dispatch = useCallback((event: AppEvent) => {
     setState((current) => appReducer(current, event));
@@ -175,6 +190,22 @@ export function App({ services }: AppProps) {
       skipTimerRef.current = null;
     }
   }, []);
+
+  useEffect(() => {
+    return subscribeToSystemReducedMotion(
+      browserMatchMedia(),
+      setSystemReducedMotion,
+    );
+  }, []);
+
+  useEffect(() => {
+    const request = focusRequestRef.current;
+    if (request === null) {
+      return;
+    }
+    focusSceneTarget(mainRef.current, request);
+    focusRequestRef.current = null;
+  }, [blockingError, state.stage]);
 
   useEffect(() => {
     let cancelled = false;
@@ -243,6 +274,7 @@ export function App({ services }: AppProps) {
             restored?.selectedPoet !== undefined &&
             restoredItem?.poet === restored.selectedPoet
           ) {
+            lastSelectedPoetRef.current = restored.selectedPoet;
             lastResultPoemIdRef.current = restoredItem.id;
             return {
               ...welcome,
@@ -313,6 +345,7 @@ export function App({ services }: AppProps) {
       historyNavigationRef.current = true;
       const resolved = resolvePopHistoryState(event.state, state.releaseId);
       if (resolved === null) {
+        focusRequestRef.current = FOCUS_TARGETS.begin;
         const welcome = {
           ...createInitialAppState(state.motionPreference, 'welcome'),
           releaseId: state.releaseId,
@@ -321,6 +354,8 @@ export function App({ services }: AppProps) {
         setState(welcome);
         return;
       }
+      const poetBeforeNavigation =
+        state.selectedPoet ?? lastSelectedPoetRef.current;
       let resultPoemId = lastResultPoemIdRef.current;
       if (resolved.stage === 'result') {
         const resultItem =
@@ -342,9 +377,24 @@ export function App({ services }: AppProps) {
               : null;
         }
       }
-      setState(
-        stateFromHistory(state, resolved, verifiedRelease, resultPoemId),
+      const nextState = stateFromHistory(
+        state,
+        resolved,
+        verifiedRelease,
+        resultPoemId,
       );
+      if (nextState.selectedPoet !== null) {
+        lastSelectedPoetRef.current = nextState.selectedPoet;
+      }
+      focusRequestRef.current =
+        nextState.stage === 'welcome'
+          ? FOCUS_TARGETS.begin
+          : nextState.stage === 'choose_poet' && poetBeforeNavigation !== null
+            ? FOCUS_TARGETS[poetBeforeNavigation]
+            : nextState.stage === 'intention'
+              ? FOCUS_TARGETS.reveal
+              : null;
+      setState(nextState);
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -406,20 +456,19 @@ export function App({ services }: AppProps) {
       setShowSkip(false);
       setLiveMessage('Revealing your verse.');
       dispatch({ type: 'REVEAL' });
-      const reduced = prefersReducedMotion(state.motionPreference);
       skipTimerRef.current = window.setTimeout(
         () => setShowSkip(true),
         SKIP_CONTROL_DELAY_MS,
       );
       resultTimerRef.current = window.setTimeout(
         completeReveal,
-        reduced ? REDUCED_REVEAL_MS : FULL_REVEAL_MS,
+        REVEAL_DURATION_MS[effectiveMotion],
       );
     } catch {
       setBlockingError(true);
       setLiveMessage('Secure verse selection is unavailable in this browser.');
     }
-  }, [completeReveal, dispatch, services, state.motionPreference, state.selectedPoet, verifiedRelease]);
+  }, [completeReveal, dispatch, effectiveMotion, services, state.selectedPoet, verifiedRelease]);
 
   const handleMotionChange = useCallback(
     (motionPreference: MotionPreference) => {
@@ -452,13 +501,20 @@ export function App({ services }: AppProps) {
         break;
       case 'welcome':
         scene = (
-          <WelcomeScene onBegin={() => dispatch({ type: 'BEGIN' })} />
+          <WelcomeScene
+            onBegin={() => {
+              focusRequestRef.current = FOCUS_TARGETS.heading;
+              dispatch({ type: 'BEGIN' });
+            }}
+          />
         );
         break;
       case 'choose_poet':
         scene = (
           <ChoosePoetScene
             onChoose={(poet) => {
+              focusRequestRef.current = FOCUS_TARGETS.heading;
+              lastSelectedPoetRef.current = poet;
               const storage = browserStorage('sessionStorage');
               if (storage !== null) {
                 persistSelectedPoet(storage, poet);
@@ -483,7 +539,7 @@ export function App({ services }: AppProps) {
         ) : (
           <RevealScene
             poet={state.selectedPoet}
-            reducedMotion={prefersReducedMotion(state.motionPreference)}
+            reducedMotion={effectiveMotion === 'reduced'}
             showSkip={showSkip}
             onSkip={completeReveal}
           />
@@ -507,6 +563,7 @@ export function App({ services }: AppProps) {
                 setLiveMessage('Persian audio is unavailable right now.');
               }}
               onRevealAnother={() => {
+                focusRequestRef.current = FOCUS_TARGETS.reveal;
                 const storage = browserStorage('sessionStorage');
                 if (storage !== null) {
                   persistCurrentPoemId(storage, null, []);
@@ -528,15 +585,20 @@ export function App({ services }: AppProps) {
   }
 
   return (
-    <>
+    <div
+      className="app-shell"
+      data-testid="app-shell"
+      data-motion-preference={state.motionPreference}
+      data-motion={effectiveMotion}
+    >
       <SkipLink />
       <header className="utility-header">
         <MotionControl value={state.motionPreference} onChange={handleMotionChange} />
       </header>
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" ref={mainRef} tabIndex={-1}>
         {scene}
       </main>
       <LiveRegion message={liveMessage} />
-    </>
+    </div>
   );
 }

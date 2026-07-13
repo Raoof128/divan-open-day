@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<
       return (
         <main id="main-content">
           <section className="scene" role="alert">
-            <h1>The experience could not continue.</h1>
+            <h1 tabIndex={-1}>The experience could not continue.</h1>
             <p>
               Try reloading the page, or ask us at the Persian Society stall.
             </p>

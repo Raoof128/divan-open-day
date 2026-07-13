@@ -10,7 +10,6 @@
 
 body {
   margin: 0;
-  min-inline-size: 320px;
 }
 
 a,
@@ -24,6 +23,7 @@ a,
 button,
 select {
   min-block-size: 44px;
+  min-inline-size: 44px;
 }
 
 button,
@@ -33,21 +33,21 @@ select {
 }
 
 :focus-visible {
-  outline: 3px solid currentColor;
+  outline: 3px solid #0b1026;
   outline-offset: 3px;
+  box-shadow: 0 0 0 6px #78d6ff;
 }
 
 .skip-link {
-  position: absolute;
-  inset-block-start: 0.5rem;
+  position: fixed;
+  inset-block-start: -10rem;
   inset-inline-start: 0.5rem;
-  z-index: 1;
+  z-index: 100;
   padding: 0.75rem;
-  transform: translateY(-200%);
 }
 
 .skip-link:focus {
-  transform: translateY(0);
+  inset-block-start: 0.5rem;
 }
 
 .utility-header,
@@ -71,6 +71,7 @@ select {
 
 .scene {
   padding-block: 2rem 4rem;
+  overflow-wrap: anywhere;
 }
 
 .scene nav,
@@ -145,6 +146,14 @@ audio {
   transition: opacity 150ms ease;
 }
 
+.app-shell[data-motion-preference='reduced'],
+.app-shell[data-motion-preference='reduced'] *,
+.app-shell[data-motion-preference='reduced'] *::before,
+.app-shell[data-motion-preference='reduced'] *::after {
+  scroll-behavior: auto !important;
+  animation: none !important;
+}
+
 @media (max-width: 24rem) {
   dl {
     grid-template-columns: 1fr;
@@ -156,11 +165,11 @@ audio {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  .app-shell[data-motion-preference='system'],
+  .app-shell[data-motion-preference='system'] *,
+  .app-shell[data-motion-preference='system'] *::before,
+  .app-shell[data-motion-preference='system'] *::after {
     scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
   }
 }

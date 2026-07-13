@@ -20,7 +20,9 @@ export function RevealScene({
       data-motion={reducedMotion ? 'reduced' : 'full'}
       aria-busy="true"
     >
-      <h1>{poet === 'hafez' ? 'Opening the Divan' : 'Revealing a passage'}</h1>
+      <h1 tabIndex={-1} data-focus-target="scene-heading">
+        {poet === 'hafez' ? 'Opening the Divan' : 'Revealing a passage'}
+      </h1>
       <p>Revealing your verse.</p>
       {showSkip ? (
         <button type="button" onClick={onSkip}>

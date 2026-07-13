@@ -148,3 +148,12 @@
 - **Files Changed:** `ops/compose.yml`, `ops/scripts/deploy.sh`, `ops/scripts/lib.sh`, `ops/scripts/rollback.sh`, `ops/scripts/verify.sh`, `tests/security/opsConfig.test.ts`, `tests/fixtures/ops/mock-bin/docker`, `tests/fixtures/ops/mock-bin/stat`, `docs/deployment-runbook.md`, `docs/rollback-runbook.md`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED 8/43; GREEN security 43/43 with mocked deploy/rollback prerequisite and verification failures plus isolation/release mismatch negatives; content 222/222; typecheck, lint, fixture build/dist verification, Bash/POSIX syntax, diff check, Compose rendering, Caddy validation, and the expected production-package blocker passed.
 - **Follow-ups:** Re-run the healthy hardened-container and public delivery smoke on the integrated application branch. All authentic content, governance, accessibility, live infrastructure, provider logging, host isolation, security scanning, rollback rehearsal, and physical-QR gates remain closed.
+## 2026-07-13 — Accessibility hardening and browser evidence
+
+**Raouf:**
+
+- **Scope:** B5 semantic flow, focus management, reduced-motion precedence, reflow, live status, audio resilience, and accessibility automation.
+- **Summary:** Added narrow accessibility focus/motion helpers and focused shell corrections for predictable scene and Back focus, a useful skip link, one active landmark/heading flow, stored-versus-system motion behavior, two-tone focus, 44-by-44 targets, and unconstrained 320-pixel/text-spacing reflow. Added jsdom axe coverage for every core and blocking-error scene plus deterministic Chromium keyboard, browser-history, reflow, motion, skip, audio-failure, and browser-axe checks using only the conspicuous non-production fixture release.
+- **Files Changed:** `src/app/App.tsx`, `src/app/ErrorBoundary.tsx`, `src/app/core.css`, `src/components/SkipLink.tsx`, `src/scenes/*.tsx`, `src/lib/accessibility/*.ts`, `tests/accessibility/*.ts*`, `tests/e2e/accessibility*.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; resumed TDD GREEN accessibility tests 16/16, component tests 39/39, unit tests 38/38, TypeScript and ESLint passed; real Chromium Playwright checks passed 2/2. Automated results are bounded evidence and are not a WCAG-conformance claim.
+- **Follow-ups:** Manual VoiceOver/TalkBack, Persian-pronunciation, actual-device/browser, 200-percent zoom, contrast, focus-order, and unfinished context-navigation evidence remain launch blockers alongside every non-accessibility public-launch gate.
