@@ -136,6 +136,10 @@ it('keeps the poem visible and announces a native audio failure once', async () 
   expect(
     screen.getAllByText('Persian audio is unavailable right now.'),
   ).toHaveLength(2);
+  const audioSection = screen
+    .getByRole('heading', { level: 2, name: 'Listen in Persian' })
+    .closest('section')!;
+  expect(audioSection.querySelector('audio')).toBeNull();
   expect(screen.getAllByRole('status')).toHaveLength(1);
   expect(screen.queryByRole('alert')).toBeNull();
 });
@@ -168,6 +172,40 @@ it('announces offline readiness in one persistent polite atomic region', async (
   expect(liveRegion).toHaveTextContent(
     'You are offline, but your poetry experience is ready.',
   );
+});
+
+it('announces offline readiness when the worker reports active while the browser is offline', async () => {
+  Object.defineProperty(window.navigator, 'onLine', {
+    configurable: true,
+    get: () => false,
+  });
+  try {
+    render(
+      <App
+        services={{ loadRelease: () => Promise.resolve(makeVerifiedRelease()) }}
+      />,
+    );
+    await screen.findByRole('button', { name: 'Begin' });
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(OFFLINE_STATUS_EVENT, {
+          detail: {
+            code: 'active',
+            message: 'The verified offline experience is ready.',
+            releaseId: 'test-only-release',
+          },
+        }),
+      );
+    });
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'You are offline, but your poetry experience is ready.',
+    );
+    expect(screen.getByText('Ready offline')).toBeVisible();
+  } finally {
+    delete (window.navigator as { onLine?: boolean }).onLine;
+  }
 });
 
 it('does not claim offline readiness while release verification is pending', () => {

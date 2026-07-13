@@ -19,10 +19,11 @@ export function SourceCredit({ item }: SourceCreditProps) {
         <dd>{item.poet === 'hafez' ? 'Hafez' : 'Rumi'}</dd>
         <dt>Work</dt>
         <dd>
-          {item.source.workEn}{' '}
-          <span lang="fa" dir="rtl">
-            (<bdi>{item.source.workFa}</bdi>)
-          </span>
+          {item.source.workEn} (
+          <bdi lang="fa" dir="rtl">
+            {item.source.workFa}
+          </bdi>
+          )
         </dd>
         <dt>Edition reference</dt>
         <dd>

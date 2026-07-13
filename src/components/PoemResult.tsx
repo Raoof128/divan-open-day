@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { PublicContentItem } from '../contracts/content';
 import { DEFAULT_SHARE_CONFIG, type ShareConfig } from '../lib/share/shareCard';
@@ -47,6 +47,7 @@ export function PoemResult({
   onAnnounce,
 }: PoemResultProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const [stallInvitationOpen, setStallInvitationOpen] = useState(false);
 
   const shareConfig = useMemo<ShareConfig>(
     () => ({
@@ -131,21 +132,24 @@ export function PoemResult({
         {item.audio === null ? null : (
           <section aria-labelledby="audio-heading">
             <h2 id="audio-heading">Listen in Persian</h2>
-            <audio
-              aria-label="Listen in Persian"
-              controls
-              preload="metadata"
-              onError={onAudioError}
-            >
-              <source
-                src={`/${item.audio.assetPath}`}
-                type={item.audio.mimeType}
-              />
-            </audio>
-            <p>{item.audio.performerCredit}</p>
             {audioUnavailable ? (
               <p>Persian audio is unavailable right now.</p>
-            ) : null}
+            ) : (
+              <>
+                <audio
+                  aria-label="Listen in Persian"
+                  controls
+                  preload="metadata"
+                  onError={onAudioError}
+                >
+                  <source
+                    src={`/${item.audio.assetPath}`}
+                    type={item.audio.mimeType}
+                  />
+                </audio>
+                <p>{item.audio.performerCredit}</p>
+              </>
+            )}
           </section>
         )}
 
@@ -159,7 +163,29 @@ export function PoemResult({
           <button type="button" onClick={handleDownloadCard}>
             Download verse card
           </button>
+          <button
+            type="button"
+            aria-expanded={stallInvitationOpen}
+            aria-controls="stall-invitation"
+            onClick={() => setStallInvitationOpen((open) => !open)}
+          >
+            Return to the stall
+          </button>
         </div>
+
+        <p
+          id="stall-invitation"
+          className="context-note"
+          hidden={!stallInvitationOpen}
+        >
+          Come and say hello at the Persian Society stall — we’d love to hear
+          which verse you drew. A volunteer there can help you reveal another
+          verse.
+        </p>
+
+        <nav className="context-links" aria-label="Learn more">
+          <a href="/about">Learn about the poet</a>
+        </nav>
       </IlluminatedFrame>
     </article>
   );

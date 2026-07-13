@@ -136,6 +136,26 @@ describe('semantic and keyboard flow', () => {
       .closest('section');
     expect(source).not.toBeNull();
     expect(source?.querySelectorAll('bdi').length).toBeGreaterThanOrEqual(3);
+
+    // §8.3: the work credit keeps its parentheses in the LTR flow; only the
+    // Persian title is isolated, so the closing paren cannot mirror.
+    const workDd = [...(source?.querySelectorAll('dd') ?? [])].find((dd) =>
+      dd.textContent?.includes('('),
+    );
+    expect(workDd).toBeDefined();
+    expect(workDd?.closest('[dir="rtl"]')).toBeNull();
+    const workBdi = workDd?.querySelector('bdi');
+    expect(workBdi).toHaveAttribute('lang', 'fa');
+    expect(workBdi).toHaveAttribute('dir', 'rtl');
+    expect(workBdi?.textContent).not.toMatch(/[()]/u);
+    for (const node of workDd?.childNodes ?? []) {
+      if (
+        node.nodeType === Node.TEXT_NODE &&
+        /[()]/u.test(node.textContent ?? '')
+      ) {
+        expect(node.parentElement?.closest('[dir="rtl"]')).toBeNull();
+      }
+    }
   });
 
   it('makes the skip link the first useful focus target and focuses main without changing history', async () => {
@@ -316,6 +336,13 @@ describe('announcements, motion, audio, and errors', () => {
     expect(
       screen.getAllByText('Persian audio is unavailable right now.'),
     ).toHaveLength(2);
+    // §26.4: the honest failure message replaces the dead audio element.
+    expect(
+      screen.queryByLabelText('Listen in Persian', { selector: 'audio' }),
+    ).toBeNull();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Listen in Persian' }),
+    ).toBeVisible();
   });
 
   it('contains a render crash in plain language without private diagnostics', () => {
@@ -377,6 +404,11 @@ describe('automated axe scene coverage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Press to reveal' }));
     await expectNoAxeViolations(rendered.container);
     await act(() => new Promise((resolve) => window.setTimeout(resolve, 180)));
+    await expectNoAxeViolations(rendered.container);
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Return to the stall' }),
+    );
     await expectNoAxeViolations(rendered.container);
   });
 });
