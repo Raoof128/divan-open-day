@@ -50,6 +50,7 @@ export function AboutPage() {
       <nav className="context-links" aria-label="Related information">
         <a href="/credits">Credits and sources</a>
         <a href="/privacy">Privacy</a>
+        <a href="/offline">How offline works</a>
       </nav>
     </ContextLayout>
   );

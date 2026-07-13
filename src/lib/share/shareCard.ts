@@ -67,12 +67,21 @@ export function buildShareText(
   return lines.join('\n');
 }
 
+/** Logical share-card canvas, at or above the 1200×630 link-preview floor. */
+export const SHARE_CARD_WIDTH = 1200;
+export const SHARE_CARD_HEIGHT = 630;
+
 /**
  * Build a self-contained SVG share card with an original decorative frame and
  * live bilingual text. Persian shaping is preserved because the text is live
  * (not rasterised here); if a browser cannot preserve shaping when rasterising,
  * callers fall back to text copy per §15.2. Contains no remote or scripted
  * references.
+ *
+ * Legibility rules for messaging-app recompression: one focal point (the
+ * bilingual verse pair, English first), bold high-contrast type for both
+ * scripts, a credit line that stays readable at thumbnail scale, and a single
+ * bold frame instead of thin hairlines that recompression destroys.
  */
 export function buildShareCardSvg(
   item: PublicContentItem,
@@ -87,19 +96,24 @@ export function buildShareCardSvg(
   const url = escapeXml(config.siteUrl);
   const accentColor =
     item.display.accent === 'pomegranate' ? '#7b1f2b' : '#1f3a7b';
+  const attributionColor =
+    item.display.accent === 'pomegranate' ? '#e6b8bf' : '#b8c4e6';
 
   return [
-    '<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="DIVAN verse share card">',
-    '  <rect x="0" y="0" width="1080" height="1080" fill="#0f1020"/>',
-    `  <rect x="40" y="40" width="1000" height="1000" fill="none" stroke="${accentColor}" stroke-width="6"/>`,
-    `  <rect x="64" y="64" width="952" height="952" fill="none" stroke="${accentColor}" stroke-width="2"/>`,
-    `  <text x="540" y="360" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" fill="#f4ecd8">${english}</text>`,
-    `  <text x="540" y="470" text-anchor="middle" direction="rtl" font-family="Vazirmatn, Tahoma, sans-serif" font-size="52" fill="#f4ecd8" xml:lang="fa">${persian}</text>`,
-    `  <text x="540" y="700" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="30" fill="${accentColor === '#7b1f2b' ? '#e6b8bf' : '#b8c4e6'}">— ${poet}</text>`,
-    `  <text x="540" y="760" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#c9c3b0">${reference}</text>`,
-    `  <text x="540" y="800" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#c9c3b0">${credit}</text>`,
-    `  <text x="540" y="960" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#f4ecd8">${society}</text>`,
-    `  <text x="540" y="1000" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#c9c3b0">${url}</text>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${String(SHARE_CARD_WIDTH)}" height="${String(SHARE_CARD_HEIGHT)}" viewBox="0 0 ${String(SHARE_CARD_WIDTH)} ${String(SHARE_CARD_HEIGHT)}" role="img" aria-label="DIVAN verse share card">`,
+    '  <rect x="0" y="0" width="1200" height="630" fill="#0f1020"/>',
+    `  <rect x="24" y="24" width="1152" height="582" fill="none" stroke="${accentColor}" stroke-width="12"/>`,
+    `  <text x="600" y="212" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="54" font-weight="700" fill="#f4ecd8">${english}</text>`,
+    `  <text x="600" y="314" text-anchor="middle" direction="rtl" font-family="Vazirmatn, Tahoma, sans-serif" font-size="58" font-weight="700" fill="#f4ecd8" xml:lang="fa">${persian}</text>`,
+    `  <text x="600" y="398" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="34" font-weight="600" fill="${attributionColor}">— ${poet}</text>`,
+    `  <text x="600" y="466" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="26" font-weight="600" fill="#c9c3b0">${reference}</text>`,
+    `  <text x="600" y="506" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#c9c3b0">${credit}</text>`,
+    `  <text x="600" y="552" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="26" font-weight="600" fill="#f4ecd8">${society}</text>`,
+    ...(url.length > 0
+      ? [
+          `  <text x="600" y="590" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" fill="#c9c3b0">${url}</text>`,
+        ]
+      : []),
     '</svg>',
   ].join('\n');
 }
