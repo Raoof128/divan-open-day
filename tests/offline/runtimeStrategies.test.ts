@@ -7,7 +7,13 @@ import {
   RELEASE_CACHE_PREFIX,
   type TimeoutAdapter,
 } from '../../src-sw/releaseManager';
-import { FakeCacheStorage, fetchFrom, releaseFixture } from './helpers';
+import {
+  FakeCacheStorage,
+  fetchFrom,
+  jsonResponse,
+  navigationRequest,
+  releaseFixture,
+} from './helpers';
 
 async function activeManager(
   fetchImplementation?: typeof fetch,
@@ -63,7 +69,7 @@ describe('release-coherent runtime strategies', () => {
     const { subject } = await activeManager(hangingFetch, timers);
 
     const response = await subject.respond(
-      new Request('https://divan.test/', { headers: { accept: 'text/html' } }),
+      navigationRequest(),
     );
 
     await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
@@ -129,11 +135,110 @@ describe('release-coherent runtime strategies', () => {
     await candidate.delete('/index.html');
 
     const response = await second.respond(
-      new Request('https://divan.test/', { headers: { accept: 'text/html' } }),
+      navigationRequest(),
     );
 
     await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
     expect(await second.activePointer()).toEqual({
+      activeReleaseId: 'release-one',
+      previousReleaseId: null,
+    });
+  });
+
+  it('does not activate a complete ready update during ordinary navigation', async () => {
+    const caches = new FakeCacheStorage();
+    const firstFixture = releaseFixture('release-one');
+    const first = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(firstFixture.files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await first.stageCurrentRelease();
+    await first.activateRelease('release-one');
+    const secondFixture = releaseFixture('release-two');
+    const second = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(secondFixture.files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await second.stageCurrentRelease();
+
+    await second.respond(
+      navigationRequest(),
+    );
+
+    await expect(second.activePointer()).resolves.toEqual({
+      activeReleaseId: 'release-one',
+      previousReleaseId: null,
+    });
+  });
+
+  it('never activates a stale later-built candidate during navigation', async () => {
+    const caches = new FakeCacheStorage();
+    const first = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(releaseFixture('release-one').files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await first.stageCurrentRelease();
+    await first.activateRelease('release-one');
+
+    const current = releaseFixture('release-current');
+    const currentManager = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(current.files),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await currentManager.stageCurrentRelease();
+
+    const stale = releaseFixture('release-stale');
+    const staleFiles = new Map(stale.files);
+    staleFiles.set(
+      '/release.json',
+      jsonResponse({
+        ...stale.release,
+        builtAt: '2036-07-13T00:00:00.000Z',
+      }),
+    );
+    const staleManager = new OfflineReleaseManager({
+      caches,
+      fetch: fetchFrom(staleFiles),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+    await staleManager.stageCurrentRelease();
+
+    await currentManager.respond(navigationRequest());
+
+    await expect(currentManager.activePointer()).resolves.toEqual({
+      activeReleaseId: 'release-one',
+      previousReleaseId: null,
+    });
+  });
+
+  it('treats an Accept text/html scripted fetch as ordinary network traffic', async () => {
+    const fixture = releaseFixture();
+    const calls: { path: string; init?: RequestInit }[] = [];
+    const network = fetchFrom(
+      new Map(fixture.files).set('/scripted', new Response('scripted response')),
+      calls,
+    );
+    const { subject } = await activeManager(network);
+
+    const response = await subject.respond(
+      new Request('https://divan.test/scripted', {
+        headers: { accept: 'text/html' },
+        mode: 'cors',
+      }),
+    );
+
+    await expect(response.text()).resolves.toBe('scripted response');
+    expect(calls.at(-1)?.path).toBe('/scripted');
+    await expect(subject.activePointer()).resolves.toEqual({
       activeReleaseId: 'release-one',
       previousReleaseId: null,
     });

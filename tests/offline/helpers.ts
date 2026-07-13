@@ -39,12 +39,24 @@ export function redirected(response: Response): Response {
 export class FakeCache {
   public readonly entries = new Map<string, Response>();
 
+  public constructor(
+    private readonly recordRejectedPartialPut: () => void = () => undefined,
+  ) {}
+
   public match(request: RequestInfo | URL): Promise<Response | undefined> {
     const response = this.entries.get(cacheKey(request));
     return Promise.resolve(response?.clone());
   }
 
   public put(request: RequestInfo | URL, response: Response): Promise<void> {
+    // Browser CacheStorage rejects 206 responses. Keeping the test double
+    // faithful prevents partial bodies from looking cacheable in unit tests.
+    if (response.status === 206) {
+      this.recordRejectedPartialPut();
+      return Promise.reject(
+        new TypeError('Cache.put does not accept partial responses.'),
+      );
+    }
     this.entries.set(cacheKey(request), response.clone());
     return Promise.resolve();
   }
@@ -56,13 +68,16 @@ export class FakeCache {
 
 export class FakeCacheStorage implements CacheStorageLike {
   public readonly stores = new Map<string, FakeCache>();
+  public rejectedPartialPutAttempts = 0;
 
   public open(cacheName: string): Promise<FakeCache> {
     const existing = this.stores.get(cacheName);
     if (existing !== undefined) {
       return Promise.resolve(existing);
     }
-    const cache = new FakeCache();
+    const cache = new FakeCache(() => {
+      this.rejectedPartialPutAttempts += 1;
+    });
     this.stores.set(cacheName, cache);
     return Promise.resolve(cache);
   }
@@ -74,6 +89,16 @@ export class FakeCacheStorage implements CacheStorageLike {
   public keys(): Promise<string[]> {
     return Promise.resolve([...this.stores.keys()]);
   }
+}
+
+export function navigationRequest(url = 'https://divan.test/'): Request {
+  const request = new Request(url, {
+    headers: { accept: 'text/html' },
+  });
+  // Node's Request constructor forbids mode=navigate, so the adapter models
+  // the browser-owned FetchEvent request without weakening production logic.
+  Object.defineProperty(request, 'mode', { value: 'navigate' });
+  return request;
 }
 
 function cacheKey(request: RequestInfo | URL): string {

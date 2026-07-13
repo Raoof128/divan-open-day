@@ -262,6 +262,28 @@ describe('atomic release staging', () => {
     );
   });
 
+  it('rejects a partial required response before CacheStorage sees it', async () => {
+    const fixture = releaseFixture();
+    const files = new Map(fixture.files);
+    files.set(
+      '/index.html',
+      new Response('<!doctype html><title>DIVAN</title>', {
+        status: 206,
+        headers: {
+          'content-range': 'bytes 0-39/40',
+          'content-type': 'text/html; charset=utf-8',
+        },
+      }),
+    );
+    const caches = new FakeCacheStorage();
+    const { subject } = manager(fixture, caches, fetchFrom(files));
+
+    await expect(subject.stageCurrentRelease()).rejects.toThrow(/staging/iu);
+
+    expect(caches.rejectedPartialPutAttempts).toBe(0);
+    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(false);
+  });
+
   it.each([
     ['wrong counts', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.release, itemCount: 3 })],
     ['wrong content path', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.release, contentPath: `/content/${'a'.repeat(64)}.json` })],

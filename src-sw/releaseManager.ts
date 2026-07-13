@@ -109,36 +109,6 @@ export class OfflineReleaseManager {
     return this.#serialized(() => this.#activateRelease(releaseId));
   }
 
-  public activateNewestReadyCandidate(): Promise<void> {
-    return this.#serialized(async () => {
-      const pointer = await this.activePointer();
-      const candidates: ReadyRecord[] = [];
-      for (const cacheName of await this.#caches.keys()) {
-        if (!cacheName.startsWith(RELEASE_CACHE_PREFIX)) {
-          continue;
-        }
-        const ready = await this.#readReady(
-          cacheName.slice(RELEASE_CACHE_PREFIX.length),
-        );
-        if (
-          ready !== null &&
-          ready.releaseId !== pointer?.activeReleaseId &&
-          ready.releaseId !== pointer?.previousReleaseId
-        ) {
-          candidates.push(ready);
-        }
-      }
-      const newest = candidates.toSorted((left, right) =>
-        left.builtAt === right.builtAt
-          ? left.releaseId.localeCompare(right.releaseId)
-          : left.builtAt.localeCompare(right.builtAt),
-      ).at(-1);
-      if (newest !== undefined) {
-        await this.#activateRelease(newest.releaseId);
-      }
-    });
-  }
-
   public async activePointer(): Promise<ReleasePointer | null> {
     if (!(await this.#caches.keys()).includes(POINTER_CACHE_NAME)) {
       return null;
@@ -182,11 +152,6 @@ export class OfflineReleaseManager {
       return this.#releasePointerResponse(request);
     }
     if (this.#isNavigation(request)) {
-      try {
-        await this.activateNewestReadyCandidate();
-      } catch {
-        // A failed candidate must never prevent the current complete release from navigating.
-      }
       return this.#navigationResponse(request);
     }
 
@@ -491,8 +456,8 @@ export class OfflineReleaseManager {
       credentials: 'same-origin',
       redirect: 'error',
     });
-    if (!response.ok) {
-      throw new Error('Required release response was not successful.');
+    if (response.status !== 200) {
+      throw new Error('Required release response must use exact HTTP 200.');
     }
     if (response.redirected) {
       throw new Error('Redirected release responses are forbidden.');
@@ -737,10 +702,7 @@ export class OfflineReleaseManager {
   }
 
   #isNavigation(request: Request): boolean {
-    return (
-      request.mode === 'navigate' ||
-      (request.headers.get('accept')?.includes('text/html') ?? false)
-    );
+    return request.mode === 'navigate';
   }
 
   #isDirectAudioRequest(request: Request): boolean {
