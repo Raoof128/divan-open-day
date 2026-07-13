@@ -21,6 +21,7 @@ import {
   buildFixtureRelease,
   buildProductionRelease,
   buildServiceWorkerBytes,
+  injectFontPreloadLinks,
   loadReleaseAudioAssets,
   parseProductionBuildConfig,
   resolveSafeOutputDirectory,
@@ -230,6 +231,155 @@ afterEach(async () => {
       .splice(0)
       .map((directory) => rm(directory, { recursive: true, force: true })),
   );
+});
+
+describe('document metadata alignment', () => {
+  it('uses one bilingual description in index.html and the manifest', async () => {
+    const html = await readFile(path.join(process.cwd(), 'index.html'), 'utf8');
+    const manifest = JSON.parse(
+      await readFile(
+        path.join(process.cwd(), 'public', 'manifest.webmanifest'),
+        'utf8',
+      ),
+    ) as { description: string };
+    const metaDescription =
+      /<meta\s+name="description"\s+content="([^"]+)"/u.exec(html)?.[1];
+
+    expect(metaDescription).toBe(manifest.description);
+    expect(metaDescription).toContain('bilingual');
+  });
+
+  it('opts the viewport into safe-area layout with viewport-fit=cover', async () => {
+    const html = await readFile(path.join(process.cwd(), 'index.html'), 'utf8');
+    const viewport = /<meta\s+name="viewport"\s+content="([^"]+)"/u.exec(
+      html,
+    )?.[1];
+
+    expect(viewport).toContain('width=device-width');
+    expect(viewport).toContain('viewport-fit=cover');
+  });
+});
+
+describe('font preload injection', () => {
+  const preloadPattern =
+    /<link rel="preload" as="font" type="font\/woff2" crossorigin href="(\/assets\/[^"]+\.woff2)" \/>/gu;
+  const fontAssets = [
+    'assets/inter-latin-400-normal-0123456789abcdef.woff2',
+    'assets/cormorant-garamond-latin-500-normal-0123456789abcdef.woff2',
+    'assets/vazirmatn-arabic-400-normal-0123456789abcdef.woff2',
+  ];
+
+  it('injects exactly the one approved local font preload', () => {
+    const html = '<html><head><title>DIVAN</title></head><body></body></html>';
+    const injected = injectFontPreloadLinks(html, [
+      ...fontAssets,
+      'assets/index-0123456789abcdef.js',
+      'assets/noto-nastaliq-urdu-arabic-400-normal-0123456789abcdef.woff2',
+      'assets/inter-latin-700-normal-0123456789abcdef.woff2',
+    ]);
+    const preloads = [...injected.matchAll(preloadPattern)].map(
+      (match) => match[1],
+    );
+
+    // Only the welcome headline display face is preloaded; more faces contend
+    // with the render-critical entry script on slow connections.
+    expect(preloads).toEqual([
+      '/assets/cormorant-garamond-latin-500-normal-0123456789abcdef.woff2',
+    ]);
+    expect(injected.indexOf('</head>')).toBeGreaterThan(
+      injected.indexOf('preload'),
+    );
+  });
+
+  it('leaves builds without the approved faces byte-identical', () => {
+    const html = '<html><head><title>DIVAN</title></head><body></body></html>';
+    expect(
+      injectFontPreloadLinks(html, ['assets/index-0123456789abcdef.js']),
+    ).toBe(html);
+  });
+
+  it('rejects ambiguous hashed matches and headless documents', () => {
+    const html = '<html><head></head><body></body></html>';
+    expect(() =>
+      injectFontPreloadLinks(html, [
+        'assets/cormorant-garamond-latin-500-normal-0123456789abcdef.woff2',
+        'assets/cormorant-garamond-latin-500-normal-fedcba9876543210.woff2',
+      ]),
+    ).toThrow(/multiple/iu);
+    expect(() =>
+      injectFontPreloadLinks('<html><body></body></html>', fontAssets),
+    ).toThrow(/head/iu);
+  });
+
+  it('preloads the emitted hashed faces in a built distribution', async () => {
+    const { projectRoot, distDir } = await temporaryProject('font-preloads');
+    const stems = [
+      'inter-latin-400-normal',
+      'cormorant-garamond-latin-500-normal',
+      'vazirmatn-arabic-400-normal',
+    ];
+    for (const stem of stems) {
+      await writeFile(
+        path.join(projectRoot, 'src', `${stem}.woff2`),
+        Uint8Array.from([
+          0x77,
+          0x4f,
+          0x46,
+          0x32,
+          ...new TextEncoder().encode(`TEST ONLY NOT A FONT ${stem}`),
+        ]),
+      );
+    }
+    await writeFile(
+      path.join(projectRoot, 'src', 'screen.css'),
+      stems
+        .map(
+          (stem, index) =>
+            `@font-face { font-family: 'TestOnly${String(index)}'; src: url('./${stem}.woff2') format('woff2'); }`,
+        )
+        .join('\n'),
+      'utf8',
+    );
+
+    const release = await buildFixtureRelease({ projectRoot, distDir });
+    const html = await readFile(path.join(distDir, 'index.html'), 'utf8');
+    const manifest = JSON.parse(
+      await readFile(
+        path.join(distDir, release.assetManifestPath.slice(1)),
+        'utf8',
+      ),
+    ) as { assets: Array<{ path: string }> };
+    const preloads = [
+      ...html.matchAll(
+        /<link rel="preload" as="font" type="font\/woff2" crossorigin href="\/(assets\/[^"]+\.woff2)" \/>/gu,
+      ),
+    ].map((match) => match[1]);
+
+    // Only the display face is preloaded; the other emitted faces stay on
+    // swap discovery so the entry script keeps network priority.
+    expect(preloads).toHaveLength(1);
+    expect(preloads[0]).toMatch(
+      /^assets\/cormorant-garamond-latin-500-normal-[a-f0-9]{16}\.woff2$/u,
+    );
+    for (const preloadPath of preloads) {
+      expect(manifest.assets.some((asset) => asset.path === preloadPath)).toBe(
+        true,
+      );
+    }
+    // Preloading changes index.html bytes only; the dist membership stays the
+    // exact locked file set.
+    expect((await readdir(distDir)).toSorted()).toEqual([
+      'assets',
+      'audio',
+      'content',
+      'icon.svg',
+      'index.html',
+      'manifest.webmanifest',
+      'offline.html',
+      'release.json',
+      'service-worker.js',
+    ]);
+  });
 });
 
 describe('fixture release build', () => {

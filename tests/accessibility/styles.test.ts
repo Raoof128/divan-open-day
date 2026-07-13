@@ -7,6 +7,10 @@ async function coreCss(): Promise<string> {
   return readFile(resolve(process.cwd(), 'src/app/core.css'), 'utf8');
 }
 
+async function visualCss(): Promise<string> {
+  return readFile(resolve(process.cwd(), 'src/styles/visual.css'), 'utf8');
+}
+
 function rule(css: string, selector: string): string {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
   return (
@@ -74,5 +78,76 @@ describe('CSS accessibility guardrails', () => {
     expect(entering).toMatch(/opacity:\s*0\s*;/u);
     expect(visible).toMatch(/opacity:\s*1\s*;/u);
     expect(visible).toMatch(/transition:\s*opacity\s+120ms\b/u);
+  });
+
+  it('keeps the illuminated spine bar clear of text at every width', async () => {
+    const css = await visualCss();
+    const frame = rule(css, '.illuminated-frame');
+
+    // Bar right edge sits at 1.62rem; start padding must never drop below 2rem.
+    expect(frame).toMatch(
+      /padding-inline-start:\s*max\(2rem,\s*clamp\(1\.25rem,\s*5vw,\s*4rem\)\)/u,
+    );
+    expect(frame).toMatch(
+      /padding-inline-end:\s*clamp\(1\.25rem,\s*5vw,\s*4rem\)/u,
+    );
+
+    const narrow =
+      /@media\s*\(max-width:\s*24rem\)\s*\{(?<body>[\s\S]*?)\n\}/u.exec(css)
+        ?.groups?.['body'] ?? '';
+    expect(narrow).toMatch(
+      /\.illuminated-frame\s*\{[^}]*padding-inline:\s*2rem\s+1\.25rem/u,
+    );
+  });
+
+  it('renders links on light surfaces (context documents and the result card) in an accessible dark colour', async () => {
+    const css = await visualCss();
+    // Gold on paper measures 1.56:1; both light surfaces — the context
+    // document and the parchment result card — must share the dark rule.
+    const links = rule(css, '.context-document a,\n.poem-result a');
+    expect(links).toMatch(/color:\s*var\(--deep-red\)/u);
+    expect(links).toMatch(/text-decoration-color:/u);
+  });
+
+  it('keys result-card accents to each poet visual language', async () => {
+    const css = await visualCss();
+    expect(css).toMatch(
+      /\.poem-result\[data-visual-language='lamp-constellation'\][^{]*\.illuminated-frame::after\s*\{[^}]*var\(--lapis\)/u,
+    );
+    expect(css).toMatch(
+      /\.poem-result\[data-visual-language='lamp-constellation'\][^{]*\.illuminated-frame::before\s*\{[^}]*rgb\(23 74 126/u,
+    );
+    expect(css).toMatch(
+      /\.poem-result\[data-visual-language='lamp-constellation'\][^{]*\.illuminated-frame__ornament\s*\{[^}]*color:\s*var\(--lapis\)/u,
+    );
+  });
+
+  it('gives the Persian welcome line typographic parity with the headline', async () => {
+    const css = await visualCss();
+    const persian = rule(css, '.welcome-persian');
+    expect(persian).toMatch(
+      /font-size:\s*clamp\(1\.5rem,\s*4\.5vw,\s*2\.2rem\)/u,
+    );
+  });
+
+  it('never lets Persian connected script inherit letter tracking', async () => {
+    const css = await coreCss();
+    const fa = rule(css, "[lang='fa']");
+    expect(fa).toMatch(/letter-spacing:\s*0\s*;/u);
+  });
+
+  it('hardens fixed chrome against display cutouts with safe-area padding', async () => {
+    // Physical env() names: the logical safe-area-inset-inline-* variants are
+    // not shipped, and an unknown env() name invalidates the declaration.
+    const css = await coreCss();
+    expect(rule(css, '.skip-link')).toMatch(
+      /max\(0\.5rem,\s*env\(safe-area-inset-left\)\)/u,
+    );
+    expect(rule(css, '.skip-link:focus')).toMatch(
+      /max\(0\.5rem,\s*env\(safe-area-inset-top\)\)/u,
+    );
+    expect(rule(css, '.utility-header')).toMatch(/env\(safe-area-inset-top\)/u);
+    expect(rule(css, '.scene')).toMatch(/env\(safe-area-inset-left\)/u);
+    expect(rule(css, '.scene')).toMatch(/env\(safe-area-inset-right\)/u);
   });
 });

@@ -240,10 +240,11 @@ body {
 }
 
 .welcome-persian {
-  margin-block: var(--space-4) var(--space-5);
+  margin-block: var(--space-5) var(--space-6);
   color: var(--gold-light);
   font-family: var(--font-persian);
-  font-size: clamp(1.25rem, 4vw, 1.8rem);
+  font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+  line-height: 1.8;
 }
 
 .primary-action,
@@ -478,7 +479,12 @@ button:active {
 
 .illuminated-frame {
   position: relative;
-  padding: clamp(1.25rem, 5vw, 4rem);
+  padding-block: clamp(1.25rem, 5vw, 4rem);
+
+  /* The spine bar's right edge sits at 1.62rem; start padding must stay
+     ahead of it (>= 2rem) at every viewport width. */
+  padding-inline-start: max(2rem, clamp(1.25rem, 5vw, 4rem));
+  padding-inline-end: clamp(1.25rem, 5vw, 4rem);
   background:
     linear-gradient(rgb(255 249 238 / 92%), rgb(242 230 207 / 94%)),
     repeating-linear-gradient(0deg, transparent 0 4px, rgb(46 48 46 / 2%) 5px);
@@ -516,6 +522,29 @@ button:active {
   opacity: 0.55;
 }
 
+/* Poet-keyed accents (design 6.2): Hafez keeps the garden-night
+   pomegranate/gold/cypress defaults above; Rumi's lamp-constellation card
+   shifts the same structures to lapis and turquoise. Body text and the
+   parchment surface are unchanged. Lapis on --paper measures 8.65:1. */
+.poem-result[data-visual-language='lamp-constellation']
+  .illuminated-frame::after {
+  background: linear-gradient(var(--lapis), var(--turquoise), var(--gold));
+}
+
+.poem-result[data-visual-language='lamp-constellation']
+  .illuminated-frame::before {
+  border-color: rgb(23 74 126 / 30%);
+}
+
+.poem-result[data-visual-language='lamp-constellation']
+  .illuminated-frame__ornament {
+  color: var(--lapis);
+}
+
+.poem-result[data-visual-language='lamp-constellation'] h2 {
+  color: var(--lapis);
+}
+
 .poem-result > .illuminated-frame > section {
   margin-block: 2rem;
 }
@@ -550,6 +579,14 @@ button:active {
   justify-content: center;
 }
 
+/* The learn-more invitation belongs to the composed action zone: centred
+   with the pills above it, not a stray footer link. */
+.poem-result .context-links {
+  justify-content: center;
+  padding-block-start: var(--space-4);
+  border-block-start: 0;
+}
+
 .context-page {
   inline-size: min(100% - 2rem, 52rem);
   margin-inline: auto;
@@ -568,6 +605,14 @@ button:active {
 
 .context-page h1 {
   color: var(--ink-deep);
+}
+
+/* Gold links fail contrast on light paper (1.56:1); deep red reads at
+   9.77:1 on --paper. Night-surface links elsewhere stay gold. */
+.context-document a,
+.poem-result a {
+  color: var(--deep-red);
+  text-decoration-color: rgb(118 35 47 / 45%);
 }
 
 .context-page p,
@@ -633,6 +678,16 @@ button:active {
   color: var(--error);
 }
 
+/* On wide portals the square corner motif centres under the headline, so
+   its star vertices cross the letterforms; quieten and inset it there. */
+@media (min-width: 48rem) {
+  .manuscript-portal__corners {
+    inset: 1.1rem;
+    inline-size: calc(100% - 2.2rem);
+    opacity: 0.38;
+  }
+}
+
 @media (max-width: 45rem) {
   .poet-options {
     grid-template-columns: 1fr;
@@ -673,9 +728,13 @@ button:active {
     font-size: clamp(2.3rem, 15vw, 3.4rem);
   }
 
-  .context-document,
-  .illuminated-frame {
+  .context-document {
     padding-inline: 1.25rem;
+  }
+
+  /* Start padding stays >= 2rem so the spine bar never paints over text. */
+  .illuminated-frame {
+    padding-inline: 2rem 1.25rem;
   }
 
   .manuscript-portal__corners {

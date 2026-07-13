@@ -155,20 +155,123 @@ it('prevents a second reveal activation and exposes skip without stealing focus'
   reachIntention('hafez');
   vi.useFakeTimers();
   const reveal = screen.getByRole('button', { name: 'Press to reveal' });
-  const motionControl = screen.getByLabelText('Motion');
-  motionControl.focus();
-  expect(motionControl).toHaveFocus();
+  reveal.focus();
+  expect(reveal).toHaveFocus();
 
   fireEvent.click(reveal);
   fireEvent.click(reveal);
   expect(drawPoem).toHaveBeenCalledTimes(1);
+  const revealHeading = oneActiveHeading();
+  expect(revealHeading).toHaveFocus();
   await act(() => vi.advanceTimersByTimeAsync(99));
   expect(screen.queryByRole('button', { name: 'Skip animation' })).toBeNull();
   await act(() => vi.advanceTimersByTimeAsync(1));
   const skip = screen.getByRole('button', { name: 'Skip animation' });
   expect(skip).toHaveProperty('tabIndex', 0);
   expect(skip).not.toHaveFocus();
-  expect(motionControl).toHaveFocus();
+  expect(revealHeading).toHaveFocus();
+});
+
+it('moves focus to the reveal heading while revealing and to the result heading afterwards', async () => {
+  await renderLoadedApp();
+  reachIntention('hafez');
+  vi.useFakeTimers();
+  const reveal = screen.getByRole('button', { name: 'Press to reveal' });
+  reveal.focus();
+
+  fireEvent.click(reveal);
+
+  const revealHeading = oneActiveHeading();
+  expect(revealHeading).toHaveTextContent('Opening the Divan');
+  expect(revealHeading).toHaveFocus();
+  expect(document.activeElement).not.toBe(document.body);
+
+  await act(() => vi.advanceTimersByTimeAsync(1600));
+
+  const resultHeading = oneActiveHeading();
+  expect(resultHeading).toHaveTextContent('Your verse');
+  expect(resultHeading).toHaveFocus();
+});
+
+it('completes the reveal to the result exactly once when Escape is pressed', async () => {
+  const pushState = vi.spyOn(window.history, 'pushState');
+  await renderLoadedApp();
+  reachIntention('hafez');
+  vi.useFakeTimers();
+  fireEvent.click(screen.getByRole('button', { name: 'Press to reveal' }));
+  expect(oneActiveHeading()).toHaveTextContent('Opening the Divan');
+
+  fireEvent.keyDown(window, { key: 'Escape' });
+  await act(async () => Promise.resolve());
+  expect(oneActiveHeading()).toHaveTextContent('Your verse');
+
+  fireEvent.keyDown(window, { key: 'Escape' });
+  await act(async () => Promise.resolve());
+  expect(oneActiveHeading()).toHaveTextContent('Your verse');
+
+  const resultPushes = pushState.mock.calls.filter(
+    ([value]) => (value as { readonly stage?: string }).stage === 'result',
+  );
+  expect(resultPushes).toHaveLength(1);
+});
+
+describe('session restore matrix (§5.3)', () => {
+  interface RestoreCase {
+    readonly name: string;
+    readonly poet: Poet | null;
+    readonly poemId: string | null;
+    readonly heading: string;
+  }
+
+  it.each<RestoreCase>([
+    {
+      name: 'a stored poet and matching poem restore the result',
+      poet: 'hafez',
+      poemId: HAFEZ_ITEM.id,
+      heading: 'Your verse',
+    },
+    {
+      name: 'a stored poet without a poem restores the intention stage',
+      poet: 'rumi',
+      poemId: null,
+      heading: 'Take one slow breath.',
+    },
+    {
+      name: 'no stored poet restores the welcome stage',
+      poet: null,
+      poemId: null,
+      heading: 'A verse is waiting for you.',
+    },
+  ])('$name', async ({ poet, poemId, heading }) => {
+    window.sessionStorage.setItem(
+      SESSION_STORAGE_KEYS.releaseId,
+      'test-only-release',
+    );
+    if (poet !== null) {
+      window.sessionStorage.setItem(SESSION_STORAGE_KEYS.selectedPoet, poet);
+    }
+    if (poemId !== null) {
+      window.sessionStorage.setItem(SESSION_STORAGE_KEYS.currentPoemId, poemId);
+    }
+
+    render(
+      <App
+        services={{ loadRelease: () => Promise.resolve(makeVerifiedRelease()) }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: heading }),
+    ).toBeInTheDocument();
+  });
+});
+
+it('replaces an unknown deep path with the root URL at release-ready', async () => {
+  window.history.replaceState(null, '', '/mystery/deep-path');
+  await renderLoadedApp();
+
+  expect(window.location.pathname).toBe('/');
+  expect(oneActiveHeading()).toHaveTextContent('A verse is waiting for you.');
 });
 
 it('uses a 150ms opacity path when reduced motion is selected', async () => {

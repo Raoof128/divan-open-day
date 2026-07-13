@@ -43,12 +43,16 @@ describe('local-only offline artifacts', () => {
     expect(offline).toContain('<html lang="en" dir="ltr">');
     expect(offline).toContain('<h1>DIVAN is not ready offline yet</h1>');
     expect(offline).toContain('Persian Society');
+    // The recovery page owns the before-first-successful-load scenario and
+    // points at the in-app offline page for the how-it-works explanation.
+    expect(offline).toMatch(/before the poetry\s+experience has loaded/u);
+    expect(offline).toContain('“When you are offline” page');
     expect(offline).not.toMatch(
       /<script|<style|https?:|Macquarie|University/iu,
     );
     expect(
       [...offline.matchAll(/href="([^"]+)"/gu)].map((match) => match[1]),
-    ).toEqual(['/', '/about', '/privacy', '/accessibility']);
+    ).toEqual(['/', '/about', '/privacy', '/accessibility', '/credits']);
   });
 
   it('exports a hand-controlled worker installer for the root build seam', () => {

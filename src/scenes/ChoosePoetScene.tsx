@@ -22,7 +22,7 @@ export function ChoosePoetScene({ onChoose }: ChoosePoetSceneProps) {
         >
           <DecorativeGeometry motif="pomegranate-cypress" />
           <strong>Open the Divan</strong>
-          <span>Hafez — A tradition-inspired reading from Hafez.</span>
+          <span>Hafez — A tradition-inspired reading.</span>
           <span className="poet-label-fa" lang="fa" dir="rtl">
             فال حافظ
           </span>

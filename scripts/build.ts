@@ -37,6 +37,18 @@ import { readBoundedAssetFile } from './content/readAssetFile';
 import { verifyDist } from './verify-dist';
 
 const FIXTURE_RELEASE_ID = 'test-only-fixture-release';
+/**
+ * Hashed woff2 faces preloaded from the emitted index.html so first paint does
+ * not wait for CSS parsing before critical font discovery. Only the welcome
+ * headline display face is listed: preloading more faces contends with the
+ * render-critical entry script on slow connections (measured +420 ms FCP when
+ * three faces were preloaded), while the remaining faces load with
+ * `font-display: swap` and shift no layout. Noto Nastaliq Urdu stays lazy by
+ * design.
+ */
+const PRELOADED_FONT_FILE_STEMS = [
+  'cormorant-garamond-latin-500-normal',
+] as const;
 const FIXTURE_BUILT_AT = '2026-07-13T00:00:00.000Z';
 const RELEASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const BASELINE_MIN_HAFEZ = 24;
@@ -538,6 +550,61 @@ export async function buildServiceWorkerBytes(
   }
 }
 
+/**
+ * Inject local font preload links for the approved critical faces into an
+ * emitted index.html. Assets are matched against the hashed Vite output paths;
+ * a face absent from the build (for example in minimal test projects) is
+ * skipped rather than fabricated. All injected hrefs are root-relative local
+ * paths, keeping the distribution free of remote resources.
+ */
+export function injectFontPreloadLinks(
+  html: string,
+  assetPaths: readonly string[],
+): string {
+  const links: string[] = [];
+  for (const stem of PRELOADED_FONT_FILE_STEMS) {
+    const pattern = new RegExp(`^assets/${stem}-[a-f0-9]{16}\\.woff2$`, 'u');
+    const matches = assetPaths.filter((assetPath) => pattern.test(assetPath));
+    if (matches.length > 1) {
+      throw new Error(`Multiple hashed font assets match ${stem}.`);
+    }
+    const match = matches[0];
+    if (match !== undefined) {
+      links.push(
+        `    <link rel="preload" as="font" type="font/woff2" crossorigin href="/${match}" />`,
+      );
+    }
+  }
+  if (links.length === 0) {
+    return html;
+  }
+  const headClose = html.indexOf('</head>');
+  if (headClose === -1) {
+    throw new Error('Emitted index.html is missing its head element.');
+  }
+  return `${html.slice(0, headClose)}${links.join('\n')}\n  ${html.slice(headClose)}`;
+}
+
+async function injectStagedFontPreloads(stageRoot: string): Promise<void> {
+  let emittedAssetNames: readonly string[] = [];
+  try {
+    emittedAssetNames = await readdir(path.join(stageRoot, 'assets'));
+  } catch (error) {
+    if (!isNotFound(error)) {
+      throw error;
+    }
+  }
+  const indexPath = path.join(stageRoot, 'index.html');
+  const html = await readFile(indexPath, 'utf8');
+  const injected = injectFontPreloadLinks(
+    html,
+    emittedAssetNames.map((name) => `assets/${name}`),
+  );
+  if (injected !== html) {
+    await writeFile(indexPath, injected, 'utf8');
+  }
+}
+
 async function buildBrowserAssets(
   projectRoot: string,
   releaseId: string,
@@ -564,6 +631,7 @@ async function buildBrowserAssets(
         outDir: stageRoot,
       },
     });
+    await injectStagedFontPreloads(stageRoot);
     for (const filename of [
       'icon.svg',
       'manifest.webmanifest',

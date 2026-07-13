@@ -188,3 +188,5 @@ Operator evidence must additionally cover:
 - public experience, warm/offline behavior, failed-update retention, accessibility matrix, and the release ID expected by the approved evidence pack.
 
 Do not claim any listed operator gate from repository tests. Preserve the previous immutable image and evidence until the event rollback window closes.
+
+Before launch with a real corpus: subset Noto Nastaliq Urdu to the approved corpus glyphs (159 KB full face currently downloads at first Persian display paint) and re-measure Reveal-screen LCP/CLS per §21.2; add fallback metric overrides if swap shift is observed.

@@ -120,3 +120,66 @@ describe('PoemResult share actions', () => {
     expect(screen.getByText('An English line')).toBeInTheDocument();
   });
 });
+
+describe('PoemResult secondary context actions (§7.6)', () => {
+  function renderWithDefaults(): void {
+    renderResult(
+      {
+        shareVerse: vi.fn().mockResolvedValue('shared'),
+        downloadShareCard: vi.fn(),
+      },
+      vi.fn(),
+    );
+  }
+
+  it('offers a "Learn about the poet" link to the About page after the primary action', () => {
+    renderWithDefaults();
+
+    const learnLink = screen.getByRole('link', {
+      name: 'Learn about the poet',
+    });
+    expect(learnLink).toHaveAttribute('href', '/about');
+
+    const actions = document.querySelector('.result-actions');
+    expect(actions).not.toBeNull();
+    const firstButton = actions?.querySelector('button');
+    expect(firstButton).toHaveTextContent('Reveal another');
+    expect(
+      (actions as Element).compareDocumentPosition(learnLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('discloses a generic Society stall invitation without any location or tracking detail', async () => {
+    renderWithDefaults();
+
+    const toggle = screen.getByRole('button', { name: 'Return to the stall' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    const panelId = toggle.getAttribute('aria-controls');
+    expect(panelId).not.toBeNull();
+    const panel = document.getElementById(panelId ?? '');
+    expect(panel).not.toBeNull();
+    expect(panel).not.toBeVisible();
+
+    await userEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(panel).toBeVisible();
+    const invitation = panel?.textContent ?? '';
+    expect(invitation).toMatch(/Persian Society stall/u);
+    expect(invitation).toMatch(/volunteer/iu);
+    // Generic invitation only: no stall number, room, map, or coordinates.
+    expect(invitation).not.toMatch(/\d/u);
+    expect(invitation).not.toMatch(
+      /map|location|room|building|floor|geolocation|gps/iu,
+    );
+    // The primary action still leads the row.
+    expect(
+      screen.getByRole('button', { name: 'Reveal another' }),
+    ).toBeEnabled();
+
+    await userEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(panel).not.toBeVisible();
+  });
+});

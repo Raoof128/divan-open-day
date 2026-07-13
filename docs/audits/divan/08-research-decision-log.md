@@ -1,0 +1,24 @@
+# DIVAN — Research Decision Log
+
+**Date:** 2026-07-14 · **Companion to:** 01-visual-research.md (full source table with access dates), 06-consolidated-issue-ledger.md, 07-remediation-plan.md.
+
+All sources were consulted 2026-07-13 (see 01 §1 for URLs). Patterns and principles only — no external layout, illustration, animation, code, or asset was copied. No unlicensed asset was recommended or used.
+
+| #   | Source (see 01 §1)                                 | Principle                                                                         | Decision                 | Where applied                                                                                                                               |
+| --- | -------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1  | W3C inline bidi markup                             | Isolate opposite-direction runs; keep neutral punctuation in the surrounding flow | **Adopted**              | L-06: provenance parentheses moved to LTR flow; only the Persian work title is isolated in `<bdi lang="fa" dir="rtl">` (`SourceCredit.tsx`) |
+| S2  | W3C ALReq                                          | Persian is not mirrored Latin; leading/justification differ                       | **Adopted (guard)**      | L-16: structural `letter-spacing: 0` under `[lang='fa']`; verse line-height 2.5 confirmed; no full justification anywhere                   |
+| S3  | 2026 Arabic/RTL typography field guide             | Body leading ≥1.7, zero tracking, ≥16px mobile                                    | **Adopted (verified)**   | Verified against existing CSS; codified by the new styles test                                                                              |
+| S4  | W3C alreq-gap                                      | No nastaliq generic fallback exists; confine nastaliq to short display            | **Confirmed existing**   | No change needed; §8.1 discipline already honoured. Production risk recorded (L-19, runbook note: subset + re-measure)                      |
+| S5  | MDN reduced-motion + accessible-animation practice | Short, skippable, never sole info channel                                         | **Confirmed + extended** | Escape now mirrors Skip (UX-10); reveal-stage focus fixed (L-05); no motion added                                                           |
+| S6  | AI-slop anti-pattern catalogues                    | Distinctive display type, restraint, negation lists                               | **Adopted as rubric**    | 01 §3 verdict: DIVAN passes; two BORDERLINE guards (glow discipline, radius intent) recorded, no code change required                       |
+| S7  | Aga Khan Museum bilingual manuscript portal        | Bilingual parity register; provenance as trust signal                             | **Adopted (nudge)**      | L-15: welcome Persian line lifted toward parity; provenance block kept prominent                                                            |
+| S8  | Museum multi-tier content practice                 | Visitor-chosen depth; core stays uncluttered                                      | **Adopted**              | L-02: "Learn about the poet" as one deliberate step from the result to About; stall invitation as a disclosure, not inline clutter          |
+| S9  | OG/share-card compression guidance                 | 1200×630, one focal point, bold type, no hairlines                                | **Adopted**              | L-18: share card reworked — 1200×630, single 12px frame, 700-weight verse pair, ≥24px 600-weight credits, hairlines removed                 |
+| S10 | Fāl-e Hafez cultural sources                       | Reflection, not fortune-telling; respect the practice                             | **Confirmed existing**   | Framing untouched; stall-invitation copy kept non-predictive and welcoming                                                                  |
+
+## Decisions made against research (with rationale)
+
+- **Did not** move to per-poet routes or deeper poet pages (S8 suggests optional depth): About covers both poets; inventing per-poet content would require reviewed cultural copy that does not exist — deferred to the content pipeline rather than fabricated.
+- **Did not** preload the nastaliq face (S9/S4 tension): 159 KB would burden the welcome path for a face the fixture never paints; recorded as a production-corpus task (subset first, then decide preload timing at poet-choice).
+- **Did not** chase trend patterns (view transitions, scroll-driven animation): outside the approved §9 motion vocabulary; reveal already exceeds current accessible-motion practice.

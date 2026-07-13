@@ -19,5 +19,8 @@ playwright-report/
 test-results/
 *.log
 .DS_Store
+CLAUDE.md
+.claude/
 *.tsbuildinfo
 docs/evidence/runtime/
+docs/audits/divan/screenshots/

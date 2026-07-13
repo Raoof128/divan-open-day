@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-14 — Full UI/UX audit gauntlet and remediation (multi-agent)
+
+**Raouf:**
+
+- **Scope:** Repository-wide UI/UX, accessibility, responsive, performance, and privacy audit + repair against the design authority, executed as a staged multi-agent gauntlet (5 read-only auditors → verified ledger + plan → 3 worktree-isolated writers with disjoint file ownership → lead integration → 5 adversarial final reviewers → repair loop). No content, rights, approvals, or production configuration fabricated.
+- **Summary:** Closed all four High defects — spine-bar glyph clipping on every phone width (padding floor, style-test-pinned); missing §7.6 "Return to the stall" (generic disclosure) and "Learn about the poet" result actions; 1.56:1 gold-on-paper link contrast (now deep red, 9.77:1); visually identical poet result cards (Rumi keyed lapis/turquoise, contrast preserved). Plus: reveal-stage focus fix, bidi parenthesis fix, honest audio-failure removal, poet-preserving refresh restore, §26.2 offline-reload announcement, unknown-path URL cleanup, scoped Escape-to-skip, `[lang='fa']` tracking guard, safe-area + `viewport-fit=cover`, welcome polish, metadata alignment, offline copy reconciliation, compression-surviving 1200×630 share card, single display-face font preload (FCP contained, LCP 1464→~1212 ms), `role="group"` actions cluster, offline-ready extraction. Full evidence in `docs/audits/divan/` (audits, ledger, plan, research log, final reviews, verification report).
+- **Files Changed:** 14 src/build/doc files + 8 test files (+27 net-new tests, none weakened) + `docs/audits/divan/**` + `.gitignore` + `AGENT.md` + `CHANGELOG.md` (see AGENT.md entry for the full list).
+- **Verification:** Node 22.16.0, branch `feat/ui-ux-gauntlet-r1` @ `67958c9`. `scripts/check.sh --e2e` green — lint/typecheck 0, vitest 499/499, Playwright 5/5, `verify:dist`/`verify:privacy` pass, `audit --prod` clean, `build:production` + `verify:qr` fail-closed as intended. axe 0 violations on all ten surfaces; zero external requests/cookies; LCP ~1212 ms / CLS 0.0053 throttled-mobile. Five adversarial reviewers report 0 unresolved Blocker/Critical/High.
+- **Follow-ups:** §31.2 launch gates unchanged and closed. Production-corpus runbook tasks: subset Noto Nastaliq + re-measure reveal, re-check RTL clearance/wrapping with real verse; kiosk idle-reset remains a deployment decision.
+
 ## 2026-07-13 — Frontend design audit fixes
 
 **Raouf:**
