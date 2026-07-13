@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import type { PublicContentItem } from '../../src/contracts/content';
 import {
   DEFAULT_SHARE_CONFIG,
+  SHARE_CARD_HEIGHT,
+  SHARE_CARD_WIDTH,
   buildShareCardSvg,
   buildShareText,
 } from '../../src/lib/share/shareCard';
@@ -91,6 +93,75 @@ describe('buildShareCardSvg', () => {
     expect(svg).not.toMatch(/\bsrc\s*=/u);
     expect(svg).not.toMatch(/<image\b/u);
     expect(svg).not.toMatch(/url\(/u); // no CSS url() references
+  });
+
+  it('meets the 1200×630 logical link-preview floor', () => {
+    const svg = buildShareCardSvg(item, config);
+    expect(SHARE_CARD_WIDTH).toBeGreaterThanOrEqual(1200);
+    expect(SHARE_CARD_HEIGHT).toBeGreaterThanOrEqual(630);
+    expect(svg).toContain(
+      `width="${String(SHARE_CARD_WIDTH)}" height="${String(SHARE_CARD_HEIGHT)}"`,
+    );
+    expect(svg).toContain(
+      `viewBox="0 0 ${String(SHARE_CARD_WIDTH)} ${String(SHARE_CARD_HEIGHT)}"`,
+    );
+  });
+
+  it('places the English excerpt before the Persian excerpt', () => {
+    const svg = buildShareCardSvg(item, config);
+    const englishIndex = svg.indexOf('First English line');
+    const persianIndex = svg.indexOf('خط اول فارسی');
+    expect(englishIndex).toBeGreaterThan(-1);
+    expect(persianIndex).toBeGreaterThan(englishIndex);
+  });
+
+  it('carries the credit line, Society identity, and source reference', () => {
+    const svg = buildShareCardSvg(item, config);
+    expect(svg).toContain('Translated by the Society');
+    expect(svg).toContain('Test Society');
+    expect(svg).toContain('Ghazal 1, lines 1-2');
+  });
+
+  it('keeps every text bold and above the thumbnail legibility floor', () => {
+    const svg = buildShareCardSvg(item, config);
+    const textCount = [...svg.matchAll(/<text\b/gu)].length;
+    const weights = [...svg.matchAll(/font-weight="(\d+)"/gu)].map((match) =>
+      Number(match[1]),
+    );
+    const sizes = [...svg.matchAll(/font-size="(\d+)"/gu)].map((match) =>
+      Number(match[1]),
+    );
+    expect(textCount).toBeGreaterThan(0);
+    expect(weights).toHaveLength(textCount);
+    expect(sizes).toHaveLength(textCount);
+    for (const weight of weights) {
+      expect(weight).toBeGreaterThanOrEqual(600);
+    }
+    for (const size of sizes) {
+      expect(size).toBeGreaterThanOrEqual(24);
+    }
+    // The bilingual verse pair is the single focal point: both excerpt sizes
+    // clear a display-size floor above every supporting line.
+    const sorted = sizes.toSorted((left, right) => right - left);
+    expect(sorted[0] ?? 0).toBeGreaterThanOrEqual(48);
+    expect(sorted[1] ?? 0).toBeGreaterThanOrEqual(48);
+  });
+
+  it('draws no thin hairline strokes that recompression destroys', () => {
+    const svg = buildShareCardSvg(item, config);
+    const strokes = [...svg.matchAll(/stroke-width="(\d+(?:\.\d+)?)"/gu)].map(
+      (match) => Number(match[1]),
+    );
+    expect(strokes.length).toBeGreaterThan(0);
+    for (const strokeWidth of strokes) {
+      expect(strokeWidth).toBeGreaterThanOrEqual(8);
+    }
+  });
+
+  it('omits the URL line entirely when no approved short URL exists', () => {
+    const svg = buildShareCardSvg(item, DEFAULT_SHARE_CONFIG);
+    expect(svg).not.toMatch(/>\s*<\/text>/u);
+    expect(svg).toContain(DEFAULT_SHARE_CONFIG.society);
   });
 
   it('escapes angle brackets in content to prevent markup injection', () => {
