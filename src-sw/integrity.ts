@@ -38,10 +38,33 @@ export function responseFromBytes(
   bytes: Uint8Array,
   response: Response,
 ): Response {
+  const headers = new Headers(response.headers);
+  // Fetch exposes decoded bytes but can retain transfer/encoding metadata for
+  // the wire representation. Replaying those headers with reconstructed bytes
+  // would misdescribe the cached body and can break Cache matching.
+  for (const name of [
+    'accept-ranges',
+    'connection',
+    'content-encoding',
+    'content-length',
+    'content-range',
+    'keep-alive',
+    'proxy-authenticate',
+    'proxy-authorization',
+    'set-cookie',
+    'set-cookie2',
+    'te',
+    'trailer',
+    'transfer-encoding',
+    'upgrade',
+    'vary',
+  ]) {
+    headers.delete(name);
+  }
   return new Response(bytes.slice(), {
     status: response.status,
     statusText: response.statusText,
-    headers: response.headers,
+    headers,
   });
 }
 

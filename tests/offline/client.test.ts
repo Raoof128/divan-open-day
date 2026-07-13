@@ -41,7 +41,47 @@ describe('nonblocking service-worker client', () => {
 
   it('requests explicit activation only from a waiting worker', () => {
     const postMessage = vi.fn();
-    requestOfflineActivation({ waiting: { postMessage } } as unknown as ServiceWorkerRegistration);
-    expect(postMessage).toHaveBeenCalledWith({ type: 'ACTIVATE_READY_RELEASE' });
+    expect(
+      requestOfflineActivation(
+        { waiting: { postMessage } } as unknown as ServiceWorkerRegistration,
+        'release-one',
+      ),
+    ).toBe(true);
+    expect(postMessage).toHaveBeenCalledWith({
+      type: 'ACTIVATE_READY_RELEASE',
+      releaseId: 'release-one',
+    });
+  });
+
+  it('emits the worker activating status with its exact target release', async () => {
+    const events: CustomEvent[] = [];
+    const target = new EventTarget();
+    target.addEventListener(OFFLINE_STATUS_EVENT, (event) =>
+      events.push(event as CustomEvent),
+    );
+    let onMessage: ((event: MessageEvent) => void) | undefined;
+    const serviceWorker = {
+      addEventListener: vi.fn(
+        (_type: string, listener: (event: MessageEvent) => void) => {
+          onMessage = listener;
+        },
+      ),
+      register: vi.fn().mockResolvedValue({ waiting: null }),
+    } as unknown as ServiceWorkerContainer;
+    await registerOfflineWorker({ serviceWorker, eventTarget: target });
+
+    onMessage?.({
+      data: {
+        source: 'divan-service-worker',
+        code: 'activating',
+        releaseId: 'release-one',
+      },
+    } as MessageEvent);
+
+    expect(events.at(-1)?.detail).toEqual({
+      code: 'activating',
+      message: 'Applying the verified offline update.',
+      releaseId: 'release-one',
+    });
   });
 });

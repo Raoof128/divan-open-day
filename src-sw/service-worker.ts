@@ -41,7 +41,7 @@ export interface DivanWorkerScope {
   skipWaiting(): Promise<void>;
 }
 
-type WorkerStatusCode = 'update_ready' | 'active' | 'error';
+type WorkerStatusCode = 'update_ready' | 'activating' | 'active' | 'error';
 
 export function installDivanServiceWorker(scope: DivanWorkerScope): void {
   const manager = new OfflineReleaseManager({
@@ -51,10 +51,13 @@ export function installDivanServiceWorker(scope: DivanWorkerScope): void {
     origin: scope.location.origin,
   });
 
-  const notify = async (code: WorkerStatusCode): Promise<void> => {
+  const notify = async (
+    code: WorkerStatusCode,
+    releaseId: string | null,
+  ): Promise<void> => {
     const clients = await scope.clients.matchAll({ type: 'window' });
     for (const client of clients) {
-      client.postMessage({ source: 'divan-service-worker', code });
+      client.postMessage({ source: 'divan-service-worker', code, releaseId });
     }
   };
 
@@ -62,9 +65,14 @@ export function installDivanServiceWorker(scope: DivanWorkerScope): void {
     event.waitUntil(
       manager
         .stageCurrentRelease()
-        .then((result) => notify(result.status === 'active' ? 'active' : 'update_ready'))
+        .then((result) =>
+          notify(
+            result.status === 'active' ? 'active' : 'update_ready',
+            result.releaseId,
+          ),
+        )
         .catch(async () => {
-          await notify('error');
+          await notify('error', null);
           throw new Error('Verified offline release staging failed.');
         }),
     );
@@ -78,27 +86,39 @@ export function installDivanServiceWorker(scope: DivanWorkerScope): void {
     if (!isActivationMessage(event.data)) {
       return;
     }
-    event.waitUntil(
-      manager
-        .activateNewestReadyCandidate()
-        .then(async () => {
-          await notify('active');
-          await scope.skipWaiting();
-        })
-        .catch(() => notify('error')),
-    );
+    const activation = event.data;
+    event.waitUntil((async () => {
+      try {
+        await notify('activating', activation.releaseId);
+        await manager.activateRelease(activation.releaseId);
+        const pointer = await manager.activePointer();
+        if (pointer?.activeReleaseId !== activation.releaseId) {
+          throw new Error('Requested release did not become active.');
+        }
+        await scope.skipWaiting();
+        await notify('active', activation.releaseId);
+      } catch {
+        await notify('error', activation.releaseId);
+      }
+    })());
   });
 }
 
 function isActivationMessage(
   value: unknown,
-): value is { readonly type: 'ACTIVATE_READY_RELEASE' } {
+): value is {
+  readonly type: 'ACTIVATE_READY_RELEASE';
+  readonly releaseId: string;
+} {
   return (
     typeof value === 'object' &&
     value !== null &&
-    Object.keys(value).length === 1 &&
+    Object.keys(value).length === 2 &&
     'type' in value &&
-    value.type === 'ACTIVATE_READY_RELEASE'
+    value.type === 'ACTIVATE_READY_RELEASE' &&
+    'releaseId' in value &&
+    typeof value.releaseId === 'string' &&
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value.releaseId)
   );
 }
 

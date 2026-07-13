@@ -228,15 +228,24 @@ export class OfflineReleaseManager {
     }
 
     const cacheName = this.#cacheName(descriptor.releaseId);
+    const isProtectedRollback =
+      pointer?.previousReleaseId === descriptor.releaseId;
     const existingReady = await this.#readReady(descriptor.releaseId);
     if (existingReady !== null) {
       if (!this.#sameRelease(existingReady, descriptor)) {
-        await this.#caches.delete(cacheName);
+        if (!isProtectedRollback) {
+          await this.#caches.delete(cacheName);
+        }
         throw new Error('A release ID cannot be reused with different hashes.');
       }
       if (await this.#candidateComplete(existingReady)) {
         return { status: 'ready', releaseId: descriptor.releaseId };
       }
+    }
+    if (isProtectedRollback) {
+      throw new Error(
+        'Protected rollback release metadata is incoherent or incomplete.',
+      );
     }
 
     await this.#caches.delete(cacheName);
@@ -497,11 +506,20 @@ export class OfflineReleaseManager {
     const declaredLength = response.headers.get('content-length');
     if (declaredLength !== null) {
       const parsedLength = Number(declaredLength);
+      const contentEncoding = response.headers.get('content-encoding');
+      const hasEncodedWireRepresentation =
+        contentEncoding !== null &&
+        contentEncoding.trim().length > 0 &&
+        contentEncoding
+          .split(',')
+          .some((encoding) => encoding.trim().toLowerCase() !== 'identity');
       if (
         !Number.isSafeInteger(parsedLength) ||
         parsedLength <= 0 ||
         parsedLength > maximumBytes ||
-        (expectedBytes !== undefined && parsedLength !== expectedBytes)
+        (expectedBytes !== undefined &&
+          !hasEncodedWireRepresentation &&
+          parsedLength !== expectedBytes)
       ) {
         throw new Error('Required release response declares an invalid byte size.');
       }

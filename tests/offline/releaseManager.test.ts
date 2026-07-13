@@ -191,6 +191,77 @@ describe('atomic release staging', () => {
     await expect(subject.stageCurrentRelease()).rejects.toThrow(/reused|reuse/iu);
   });
 
+  it('preserves active and previous rollback caches when a previous ID is reused with changed metadata', async () => {
+    const caches = new FakeCacheStorage();
+    const first = manager(releaseFixture('release-one'), caches).subject;
+    await first.stageCurrentRelease();
+    await first.activateRelease('release-one');
+    const second = manager(releaseFixture('release-two'), caches).subject;
+    await second.stageCurrentRelease();
+    await second.activateRelease('release-two');
+    const reused = releaseFixture('release-one');
+    const files = new Map(reused.files);
+    files.set(
+      '/release.json',
+      jsonResponse({
+        ...reused.release,
+        builtAt: '2026-07-13T00:00:01.000Z',
+      }),
+    );
+    const subject = manager(reused, caches, fetchFrom(files)).subject;
+
+    await expect(subject.stageCurrentRelease()).rejects.toThrow(/reuse|rollback/iu);
+
+    expect(await subject.activePointer()).toEqual({
+      activeReleaseId: 'release-two',
+      previousReleaseId: 'release-one',
+    });
+    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-two`)).toBe(true);
+    expect(caches.stores.has(`${RELEASE_CACHE_PREFIX}release-one`)).toBe(true);
+  });
+
+  it('accepts decoded bytes with a compressed wire length and sanitizes reconstructed headers', async () => {
+    const fixture = releaseFixture();
+    const files = new Map(fixture.files);
+    files.set(
+      '/index.html',
+      new Response('<!doctype html><title>DIVAN</title>', {
+        headers: {
+          'content-encoding': 'gzip',
+          'content-length': '17',
+          'content-security-policy': "default-src 'self'",
+          'content-type': 'text/html; charset=utf-8',
+          'transfer-encoding': 'chunked',
+          vary: 'accept-encoding',
+        },
+      }),
+    );
+    const { caches, subject } = manager(
+      fixture,
+      new FakeCacheStorage(),
+      fetchFrom(files),
+    );
+
+    await expect(subject.stageCurrentRelease()).resolves.toEqual({
+      status: 'ready',
+      releaseId: 'release-one',
+    });
+
+    const candidate = await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);
+    const reconstructed = await candidate.match('/index.html');
+    expect(reconstructed).toBeDefined();
+    await expect(reconstructed?.text()).resolves.toBe(
+      '<!doctype html><title>DIVAN</title>',
+    );
+    expect(reconstructed?.headers.get('content-encoding')).toBeNull();
+    expect(reconstructed?.headers.get('content-length')).toBeNull();
+    expect(reconstructed?.headers.get('transfer-encoding')).toBeNull();
+    expect(reconstructed?.headers.get('vary')).toBeNull();
+    expect(reconstructed?.headers.get('content-security-policy')).toBe(
+      "default-src 'self'",
+    );
+  });
+
   it.each([
     ['wrong counts', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.release, itemCount: 3 })],
     ['wrong content path', (fixture: ReturnType<typeof releaseFixture>) => ({ ...fixture.release, contentPath: `/content/${'a'.repeat(64)}.json` })],

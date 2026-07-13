@@ -197,3 +197,13 @@
 - **Files Changed:** `src-sw/cacheTypes.ts`, `src-sw/integrity.ts`, `src-sw/schemas.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `public/manifest.webmanifest`, `public/offline.html`, `tests/offline/*.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED captured the three absent worker/client suites before implementation; GREEN offline 34/34, inherited content 234/234, strict TypeScript, and ESLint all passed.
 - **Follow-ups:** Bundle and register the reviewed worker in the root build, then prove the assembled distribution and real HTTPS/browser/device install, warm-offline, timeout, failed-update, refresh, storage, audio, and rollback paths. Production content, rights/reviews, governance, deployment, and physical-event gates remain independently blocked.
+
+## 2026-07-13 — Offline-core review fixes
+
+**Raouf:**
+
+- **Scope:** Exact activation targets, rollback retention, compressed responses, worker statuses, and lifecycle tests.
+- **Summary:** Added release IDs to verified worker statuses and activation messages, activated only the requested ready release including the retained rollback release, emitted and consumed `activating`, and prevented active status after a failed target. Preserved active/previous caches when a release ID is reused incoherently. Accepted decoded bodies whose compressed wire length differs from manifest bytes, kept decoded size/SHA verification, removed stale transfer/encoding headers from reconstructed responses, and added direct install/message/fetch worker event tests.
+- **Files Changed:** `src-sw/integrity.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `tests/offline/client.test.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/serviceWorker.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; seven behavior-specific RED failures became GREEN offline 40/40; inherited content 234/234, strict TypeScript, and ESLint passed.
+- **Follow-ups:** Complete root bundling/registration and real HTTPS browser/device lifecycle evidence before any offline or public-launch readiness claim.

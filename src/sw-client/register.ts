@@ -12,6 +12,7 @@ export type OfflineStatusCode =
 export interface OfflineStatusDetail {
   readonly code: OfflineStatusCode;
   readonly message: string;
+  readonly releaseId: string | null;
 }
 
 export interface RegisterOfflineWorkerOptions {
@@ -32,10 +33,11 @@ const STATUS_MESSAGES: Readonly<Record<OfflineStatusCode, string>> = {
 function emit(
   target: EventTarget,
   code: OfflineStatusCode,
+  releaseId: string | null = null,
 ): void {
   target.dispatchEvent(
     new CustomEvent<OfflineStatusDetail>(OFFLINE_STATUS_EVENT, {
-      detail: { code, message: STATUS_MESSAGES[code] },
+      detail: { code, message: STATUS_MESSAGES[code], releaseId },
     }),
   );
 }
@@ -57,9 +59,9 @@ export async function registerOfflineWorker(
   }
   if (typeof serviceWorker.addEventListener === 'function') {
     serviceWorker.addEventListener('message', (event) => {
-      const code = workerStatusCode(event.data);
-      if (code !== null) {
-        emit(eventTarget, code);
+      const status = workerStatus(event.data);
+      if (status !== null) {
+        emit(eventTarget, status.code, status.releaseId);
       }
     });
   }
@@ -78,31 +80,48 @@ export async function registerOfflineWorker(
   }
 }
 
-function workerStatusCode(value: unknown): OfflineStatusCode | null {
+function workerStatus(
+  value: unknown,
+): { readonly code: OfflineStatusCode; readonly releaseId: string | null } | null {
   if (
     typeof value !== 'object' ||
     value === null ||
-    Object.keys(value).length !== 2 ||
+    Object.keys(value).length !== 3 ||
     !('source' in value) ||
     value.source !== 'divan-service-worker' ||
-    !('code' in value)
+    !('code' in value) ||
+    !('releaseId' in value) ||
+    !(
+      value.releaseId === null ||
+      (typeof value.releaseId === 'string' &&
+        /^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value.releaseId))
+    )
   ) {
     return null;
   }
   return value.code === 'update_ready' ||
+    value.code === 'activating' ||
     value.code === 'active' ||
     value.code === 'error'
-    ? value.code
+    ? { code: value.code, releaseId: value.releaseId }
     : null;
 }
 
 export function requestOfflineActivation(
   registration: ServiceWorkerRegistration,
-): void {
-  if (registration.waiting === null) {
-    return;
+  releaseId: string,
+): boolean {
+  if (
+    registration.waiting === null ||
+    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(releaseId)
+  ) {
+    return false;
   }
-  registration.waiting.postMessage({ type: 'ACTIVATE_READY_RELEASE' });
+  registration.waiting.postMessage({
+    type: 'ACTIVATE_READY_RELEASE',
+    releaseId,
+  });
+  return true;
 }
 
 export async function checkForOfflineUpdate(
