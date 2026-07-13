@@ -69,3 +69,13 @@
 - **Files Changed:** `src/app/state.ts`, `src/app/history.ts`, `src/lib/draw/secureRandom.ts`, `src/lib/draw/shuffleBag.ts`, `src/lib/storage/session.ts`, `tests/unit/state.test.ts`, `tests/unit/history.test.ts`, `tests/unit/secureRandom.test.ts`, `tests/unit/shuffleBag.test.ts`, `tests/unit/storage.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; meaningful RED produced 12 reducer/random assertion failures, 11 history/storage/shuffle assertion failures, and three security-review regression failures; final unit suite passed 38/38, content tests passed 222/222, strict TypeScript passed, and ESLint passed with zero warnings or errors.
 - **Follow-ups:** Wire the domain layer into the separately owned React/browser shell with injected native storage and crypto adapters; production and public launch remain independently blocked pending genuine content, rights, human review, accessibility, security, deployment, rollback, isolation, and QR evidence.
+
+## 2026-07-13 — Accessible React core flow
+
+**Raouf:**
+
+- **Scope:** B1 browser release runtime and semantic React core experience.
+- **Summary:** Added a strict no-store, no-redirect release/corpus loader with Web Crypto verification and privacy-safe blocking recovery; composed the reviewed reducer, history, storage, and shuffle domains into the locked Hafez/Rumi flow; preserved one active scene and `h1`, English-before-Persian live RTL content, bidi-safe provenance, one persistent polite live region, bounded full/reduced reveal timing, keyboard skip, result focus, native optional audio, and safe Back/retry behavior; and added only minimal responsive accessibility CSS pending B2 visual ownership.
+- **Files Changed:** `index.html`, `vite.config.ts`, `src/main.tsx`, `src/vite-env.d.ts`, `src/app/App.tsx`, `src/app/runtime.ts`, `src/app/ErrorBoundary.tsx`, `src/app/core.css`, `src/components/*.tsx`, `src/scenes/*.tsx`, `tests/components/*.ts`, `tests/components/*.tsx`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful missing-module/document RED plus six runtime/audio hardening RED failures; GREEN component/runtime/document tests 25/25; inherited unit tests 38/38; inherited content tests 222/222; strict TypeScript and ESLint passed.
+- **Follow-ups:** Keep B2 visual polish, context/share/offline/deployment slices, production corpus and rights evidence, manual accessibility proof, and all independent public-launch gates closed until their owners complete and verify them.
