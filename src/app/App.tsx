@@ -199,7 +199,9 @@ export function App({ services }: AppProps) {
   }, []);
 
   useEffect(() => {
-    const request = focusRequestRef.current;
+    const request = blockingError
+      ? FOCUS_TARGETS.heading
+      : focusRequestRef.current;
     if (request === null) {
       return;
     }

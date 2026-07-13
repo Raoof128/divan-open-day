@@ -142,8 +142,13 @@ audio {
   border: 0;
 }
 
-.reveal-scene {
-  transition: opacity 150ms ease;
+.reveal-scene[data-motion='reduced'][data-reveal-phase='entering'] {
+  opacity: 0;
+}
+
+.reveal-scene[data-motion='reduced'][data-reveal-phase='visible'] {
+  opacity: 1;
+  transition: opacity 120ms ease;
 }
 
 .app-shell[data-motion-preference='reduced'],

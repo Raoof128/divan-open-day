@@ -196,6 +196,34 @@ describe('semantic and keyboard flow', () => {
 });
 
 describe('announcements, motion, audio, and errors', () => {
+  it('renders distinct reduced-motion opacity phases before the result mounts', async () => {
+    let revealFrame: FrameRequestCallback | undefined;
+    vi.stubGlobal(
+      'requestAnimationFrame',
+      vi.fn((callback: FrameRequestCallback) => {
+        revealFrame = callback;
+        return 1;
+      }),
+    );
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    window.localStorage.setItem('divan.motionPreference', 'reduced');
+    await renderLoadedApp();
+    await reachIntentionByKeyboard('hafez');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Press to reveal' }));
+    const revealScene = document.querySelector<HTMLElement>(
+      '[data-scene="revealing"]',
+    );
+    expect(revealScene).not.toBeNull();
+    expect(revealScene).toHaveAttribute('data-reveal-phase', 'entering');
+    expect(revealFrame).toBeTypeOf('function');
+
+    act(() => revealFrame?.(16));
+
+    expect(revealScene).toHaveAttribute('data-reveal-phase', 'visible');
+    expect(screen.queryByRole('heading', { level: 1, name: 'Your verse' })).toBeNull();
+  });
+
   it('deduplicates an offline change in one polite atomic live region', async () => {
     await renderLoadedApp();
     const liveRegion = screen.getByRole('status');

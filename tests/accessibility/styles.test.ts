@@ -56,4 +56,20 @@ describe('CSS accessibility guardrails', () => {
     expect(reducedMedia).not.toMatch(/^\s*\*,/mu);
     expect(css).toContain("[data-motion-preference='reduced']");
   });
+
+  it('changes reduced reveal opacity over a bounded 120 to 180 millisecond transition', async () => {
+    const css = await coreCss();
+    const entering = rule(
+      css,
+      ".reveal-scene[data-motion='reduced'][data-reveal-phase='entering']",
+    );
+    const visible = rule(
+      css,
+      ".reveal-scene[data-motion='reduced'][data-reveal-phase='visible']",
+    );
+
+    expect(entering).toMatch(/opacity:\s*0\s*;/u);
+    expect(visible).toMatch(/opacity:\s*1\s*;/u);
+    expect(visible).toMatch(/transition:\s*opacity\s+120ms\b/u);
+  });
 });

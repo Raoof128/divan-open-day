@@ -147,6 +147,38 @@ test('honours motion precedence and preserves the result when native audio fails
   await page.goto('/');
   await expect(page.getByTestId('app-shell')).toHaveAttribute('data-motion', 'reduced');
 
+  await page.getByRole('button', { name: 'Begin' }).click();
+  await page.getByRole('button', { name: /Open the Divan.*Hafez/u }).click();
+  await page.getByRole('button', { name: 'Press to reveal' }).click();
+  const reducedReveal = page.locator('[data-scene="revealing"]');
+  const opacityTransition = await reducedReveal.evaluate(async (element) => {
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    });
+    const transition = element
+      .getAnimations()
+      .find(
+        (animation) =>
+          animation instanceof CSSTransition &&
+          animation.transitionProperty === 'opacity',
+      );
+    const effect = transition?.effect;
+    const keyframes = effect instanceof KeyframeEffect ? effect.getKeyframes() : [];
+    return {
+      duration: effect?.getTiming().duration ?? null,
+      startOpacity: keyframes.at(0)?.['opacity'] ?? null,
+      endOpacity: keyframes.at(-1)?.['opacity'] ?? null,
+    };
+  });
+  expect(opacityTransition).toEqual({
+    duration: 120,
+    startOpacity: '0',
+    endOpacity: '1',
+  });
+  await expect(page.getByRole('heading', { level: 1, name: 'Your verse' })).toBeFocused();
+
+  await page.evaluate(() => window.sessionStorage.clear());
+  await page.reload();
   await page.getByLabel('Motion').selectOption('full');
   await expect(page.getByTestId('app-shell')).toHaveAttribute('data-motion', 'full');
   await page.getByRole('button', { name: 'Begin' }).click();

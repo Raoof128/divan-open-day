@@ -43,6 +43,47 @@ it('renders a recoverable blocking error without exposing loader details', async
   expect(loadRelease).toHaveBeenCalledTimes(2);
 });
 
+it.each([
+  {
+    name: 'an invalid draw result',
+    drawPoem: () => ({
+      id: 'missing-approved-poem',
+      cycleReset: false,
+      announcementCode: null,
+      remainingInCycle: 0,
+    }),
+  },
+  {
+    name: 'a secure-random exception',
+    drawPoem: () => {
+      throw new Error('private random-provider detail');
+    },
+  },
+])('focuses the mounted blocking-error heading after $name', async ({ drawPoem }) => {
+  render(
+    <App
+      services={{
+        loadRelease: () => Promise.resolve(makeVerifiedRelease([HAFEZ_ITEM])),
+        drawPoem,
+      }}
+    />,
+  );
+  await screen.findByRole('button', { name: 'Begin' });
+  fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+  fireEvent.click(screen.getByRole('button', { name: /Open the Divan.*Hafez/u }));
+  const reveal = screen.getByRole('button', { name: 'Press to reveal' });
+  reveal.focus();
+
+  fireEvent.click(reveal);
+
+  const heading = await screen.findByRole('heading', {
+    level: 1,
+    name: 'The experience could not finish loading.',
+  });
+  expect(heading).toHaveFocus();
+  expect(document.body).not.toHaveTextContent('private random-provider detail');
+});
+
 it('keeps the poem visible and announces a native audio failure once', async () => {
   render(
     <App

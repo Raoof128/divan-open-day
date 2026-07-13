@@ -157,3 +157,13 @@
 - **Files Changed:** `src/app/App.tsx`, `src/app/ErrorBoundary.tsx`, `src/app/core.css`, `src/components/SkipLink.tsx`, `src/scenes/*.tsx`, `src/lib/accessibility/*.ts`, `tests/accessibility/*.ts*`, `tests/e2e/accessibility*.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; resumed TDD GREEN accessibility tests 16/16, component tests 39/39, unit tests 38/38, TypeScript and ESLint passed; real Chromium Playwright checks passed 2/2. Automated results are bounded evidence and are not a WCAG-conformance claim.
 - **Follow-ups:** Manual VoiceOver/TalkBack, Persian-pronunciation, actual-device/browser, 200-percent zoom, contrast, focus-order, and unfinished context-navigation evidence remain launch blockers alongside every non-accessibility public-launch gate.
+
+## 2026-07-13 — Accessibility review fixes
+
+**Raouf:**
+
+- **Scope:** Reduced-motion rendering, blocking-error focus, and deterministic default E2E setup.
+- **Summary:** Made reduced reveal motion visibly interpolate opacity from zero to one over 120 ms before result mounting, without changing the full-motion path; moved focus to the mounted error heading when an invalid draw or random-provider exception blocks the experience; and made the default Playwright command build fixture release data before running only the accessibility spec from a clean checkout.
+- **Files Changed:** `src/app/App.tsx`, `src/app/core.css`, `src/scenes/RevealScene.tsx`, `tests/accessibility/appAccessibility.test.tsx`, `tests/accessibility/styles.test.ts`, `tests/components/failures.test.tsx`, `tests/e2e/accessibility.playwright.config.ts`, `tests/e2e/accessibility.spec.ts`, `playwright.config.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED reproduced the non-rendering transition and both body-focus failures; GREEN focused tests 25/25, accessibility 18/18, components 41/41, unit 38/38, TypeScript and ESLint passed. The default E2E command listed exactly two tests in one file, Chromium passed 2/2, and a clean-dist rerun rebuilt fixture release output before passing 2/2 again.
+- **Follow-ups:** Automated checks remain bounded evidence, not WCAG conformance; all manual accessibility and independent public-launch gates remain blocked pending reviewed evidence.
