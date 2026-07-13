@@ -20,6 +20,7 @@ import {
   activateStagedDistribution,
   buildFixtureRelease,
   buildProductionRelease,
+  buildServiceWorkerBytes,
   loadReleaseAudioAssets,
   parseProductionBuildConfig,
   resolveSafeOutputDirectory,
@@ -222,6 +223,32 @@ afterEach(async () => {
 });
 
 describe('fixture release build', () => {
+  it('versions genuine service-worker output by exact release content identity', async () => {
+    const first = await buildServiceWorkerBytes(
+      process.cwd(),
+      'test-only-release-one',
+      'a'.repeat(64),
+    );
+    const repeated = await buildServiceWorkerBytes(
+      process.cwd(),
+      'test-only-release-one',
+      'a'.repeat(64),
+    );
+    const second = await buildServiceWorkerBytes(
+      process.cwd(),
+      'test-only-release-one',
+      'b'.repeat(64),
+    );
+
+    expect(first).toEqual(repeated);
+    expect(createHash('sha256').update(first).digest('hex')).not.toBe(
+      createHash('sha256').update(second).digest('hex'),
+    );
+    expect(new TextDecoder().decode(first)).toContain('test-only-release-one');
+    expect(new TextDecoder().decode(first)).toContain('a'.repeat(64));
+    expect(new TextDecoder().decode(second)).toContain('b'.repeat(64));
+  });
+
   it('writes and verifies an exact 24/16/40 non-production distribution', async () => {
     const { projectRoot, distDir } = await temporaryProject('fixture');
 

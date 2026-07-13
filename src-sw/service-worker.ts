@@ -1,6 +1,23 @@
 import type { CacheStorageLike, CryptoLike } from './cacheTypes';
 import { OfflineReleaseManager } from './releaseManager';
 
+declare const __DIVAN_RELEASE_ID__: string | undefined;
+declare const __DIVAN_CONTENT_SHA256__: string | undefined;
+
+export interface WorkerReleaseIdentity {
+  readonly releaseId: string;
+  readonly contentSha256: string;
+}
+
+const COMPILED_RELEASE_IDENTITY: WorkerReleaseIdentity | null =
+  typeof __DIVAN_RELEASE_ID__ === 'string' &&
+  typeof __DIVAN_CONTENT_SHA256__ === 'string'
+    ? {
+        releaseId: __DIVAN_RELEASE_ID__,
+        contentSha256: __DIVAN_CONTENT_SHA256__,
+      }
+    : null;
+
 interface ExtendableEventLike {
   waitUntil(promise: Promise<unknown>): void;
 }
@@ -48,7 +65,10 @@ export interface DivanWorkerScope {
 
 type WorkerStatusCode = 'update_ready' | 'activating' | 'active' | 'error';
 
-export function installDivanServiceWorker(scope: DivanWorkerScope): void {
+export function installDivanServiceWorker(
+  scope: DivanWorkerScope,
+  expectedRelease: WorkerReleaseIdentity | null = COMPILED_RELEASE_IDENTITY,
+): void {
   const manager = new OfflineReleaseManager({
     caches: scope.caches,
     crypto: scope.crypto,
@@ -71,6 +91,13 @@ export function installDivanServiceWorker(scope: DivanWorkerScope): void {
       manager
         .stageCurrentRelease()
         .then(async (result) => {
+          if (
+            expectedRelease !== null &&
+            (result.releaseId !== expectedRelease.releaseId ||
+              result.contentSha256 !== expectedRelease.contentSha256)
+          ) {
+            throw new Error('Service-worker release identity mismatch.');
+          }
           if (
             result.status === 'ready' &&
             (await manager.activePointer()) === null

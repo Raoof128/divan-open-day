@@ -4,9 +4,12 @@ import { createServer, type ServerResponse } from 'node:http';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
 
+import { buildServiceWorkerBytes } from '../../scripts/build';
+
 interface ReleaseDocument {
   readonly releaseId: string;
   readonly contentPath: string;
+  readonly contentSha256: string;
   readonly assetManifestPath: string;
   readonly [key: string]: unknown;
 }
@@ -84,14 +87,13 @@ function parseJson<T>(bytes: Buffer | undefined, label: string): T {
   return JSON.parse(bytes.toString('utf8')) as T;
 }
 
-function createVariant(
+async function createVariant(
   baseFiles: ReadonlyMap<string, Buffer>,
   baseRelease: ReleaseDocument,
   releaseId: string,
   builtAt: string,
-  marker: string,
   broken: boolean,
-): Variant {
+): Promise<Variant> {
   const files = new Map(baseFiles);
   const baseCorpus = parseJson<Record<string, unknown>>(
     baseFiles.get(baseRelease.contentPath),
@@ -111,10 +113,9 @@ function createVariant(
     ),
   );
   manifest.releaseId = releaseId;
-  const workerBytes = Buffer.concat([
-    baseFiles.get('/service-worker.js') ?? Buffer.alloc(0),
-    Buffer.from(`\n/* ${marker} */\n`),
-  ]);
+  const workerBytes = Buffer.from(
+    await buildServiceWorkerBytes(process.cwd(), releaseId, contentSha256),
+  );
   if (workerBytes.byteLength === 0) {
     throw new Error('Missing base service worker.');
   }
@@ -193,6 +194,17 @@ const baseRelease = parseJson<ReleaseDocument>(
   baseFiles.get('/release.json'),
   'base release',
 );
+const rebuiltBaseWorker = Buffer.from(
+  await buildServiceWorkerBytes(
+    process.cwd(),
+    baseRelease.releaseId,
+    baseRelease.contentSha256,
+  ),
+);
+const baseWorker = baseFiles.get('/service-worker.js');
+if (baseWorker === undefined || !rebuiltBaseWorker.equals(baseWorker)) {
+  throw new Error('Fixture worker bytes are not the genuine release-versioned build.');
+}
 const variants = new Map<string, Variant>([
   [
     'one',
@@ -200,23 +212,21 @@ const variants = new Map<string, Variant>([
   ],
   [
     'two',
-    createVariant(
+    await createVariant(
       baseFiles,
       baseRelease,
       'test-only-fixture-release-two',
       '2026-07-13T00:00:01.000Z',
-      'test-only release two',
       false,
     ),
   ],
   [
     'broken',
-    createVariant(
+    await createVariant(
       baseFiles,
       baseRelease,
       'test-only-fixture-release-broken',
       '2026-07-13T00:00:02.000Z',
-      'test-only broken release',
       true,
     ),
   ],

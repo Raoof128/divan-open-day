@@ -227,3 +227,13 @@
 - **Files Changed:** `src-sw/releaseManager.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/runtimeStrategies.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, meaningful RED reproduced an activation reported as failed after its pointer had committed and an HTTP 206 navigation returned as live content. GREEN focused release/runtime tests passed 38/38, offline tests passed 52/52, and the full Vitest suite passed 429/429 across 27 files, including stale-cache deletion failure and pending-marker deletion retry coverage. Strict TypeScript, zero-warning ESLint, fixture build/dist verification, three Chromium Playwright flows, diff hygiene, and the staged gitleaks scan passed.
 - **Follow-ups:** Retain the existing real-browser, device, storage-pressure, production-content, rights, governance, deployment, accessibility, and physical-QR launch blockers until genuine evidence exists.
+
+## 2026-07-13 — Version service workers by release content
+
+**Raouf:**
+
+- **Scope:** Service-worker byte identity and genuine release-update evidence.
+- **Summary:** Embedded the exact public release ID and canonical public-corpus SHA-256 in every fixed worker build, rejected install-time release mismatches, and replaced synthetic E2E worker comments with genuine Vite builds for each update and rollback variant. Content changes now trigger browser worker installation even when source code is unchanged or a release ID is mistakenly reused.
+- **Files Changed:** `scripts/build.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, focused content/offline/component/E2E tests, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** RED reproduced identical worker output; GREEN focused tests passed 85/85, typecheck/lint passed, fixture build/dist verification passed, emitted identities were verified, and Chromium offline lifecycle passed 1/1 with genuine versioned workers.
+- **Follow-ups:** Run the final integrated gauntlet and independent re-review; all external launch gates remain closed.

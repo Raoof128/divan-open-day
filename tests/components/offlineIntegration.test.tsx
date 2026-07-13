@@ -1,4 +1,11 @@
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import { App, type AppServices } from '../../src/app/App';
@@ -55,7 +62,7 @@ it('registers only after browser release verification and exposes explicit activ
     resolveRelease?.(makeVerifiedRelease());
   });
   await screen.findByRole('button', { name: 'Begin' });
-  expect(registerOfflineWorker).toHaveBeenCalledOnce();
+  await waitFor(() => expect(registerOfflineWorker).toHaveBeenCalledOnce());
   expect(registerOfflineWorker).toHaveBeenCalledWith(
     expect.objectContaining({
       eventTarget: window,

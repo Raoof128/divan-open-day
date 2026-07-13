@@ -9,6 +9,7 @@ import {
 import {
   installDivanServiceWorker,
   type DivanWorkerScope,
+  type WorkerReleaseIdentity,
 } from '../../src-sw/service-worker';
 import {
   FakeCacheStorage,
@@ -28,6 +29,7 @@ class WorkerHarness {
   public constructor(
     files: ReadonlyMap<string, Response>,
     caches = new FakeCacheStorage(),
+    expectedRelease: WorkerReleaseIdentity | null = null,
   ) {
     this.scope = {
       location: new URL('https://divan.test/service-worker.js') as unknown as Location,
@@ -46,7 +48,7 @@ class WorkerHarness {
       },
       skipWaiting: this.skipWaiting,
     };
-    installDivanServiceWorker(this.scope);
+    installDivanServiceWorker(this.scope, expectedRelease);
   }
 
   public async install(): Promise<void> {
@@ -128,6 +130,27 @@ async function pointer(
 }
 
 describe('service-worker lifecycle harness', () => {
+  it('rejects a release pointer that does not match the versioned worker', async () => {
+    const fixture = releaseFixture('release-one');
+    const caches = new FakeCacheStorage();
+    const harness = new WorkerHarness(fixture.files, caches, {
+      releaseId: 'release-one',
+      contentSha256: 'f'.repeat(64),
+    });
+
+    await expect(harness.install()).rejects.toThrow(
+      'Verified offline release staging failed.',
+    );
+    await expect(pointer('release-one', caches)).resolves.toBeNull();
+    expect(harness.notifications).toEqual([
+      {
+        source: 'divan-service-worker',
+        code: 'error',
+        releaseId: null,
+      },
+    ]);
+  });
+
   it('stages on install and routes fetch through the verified active release', async () => {
     const fixture = releaseFixture('release-one');
     const caches = new FakeCacheStorage();

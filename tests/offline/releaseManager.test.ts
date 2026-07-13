@@ -49,7 +49,11 @@ describe('atomic release staging', () => {
 
     const result = await subject.stageCurrentRelease();
 
-    expect(result).toEqual({ status: 'ready', releaseId: 'release-one' });
+    expect(result).toEqual({
+      status: 'ready',
+      releaseId: 'release-one',
+      contentSha256: fixture.release['contentSha256'],
+    });
     const candidate = await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);
     expect(await candidate.match(READY_PATH)).toBeDefined();
     expect(await candidate.match('/index.html')).toBeDefined();
@@ -248,6 +252,7 @@ describe('atomic release staging', () => {
     await expect(subject.stageCurrentRelease()).resolves.toEqual({
       status: 'ready',
       releaseId: 'release-one',
+      contentSha256: fixture.release['contentSha256'],
     });
 
     const candidate = await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);

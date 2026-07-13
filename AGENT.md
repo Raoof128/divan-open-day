@@ -255,3 +255,13 @@
 - **Files Changed:** `src-sw/releaseManager.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/runtimeStrategies.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, meaningful RED reproduced an activation reported as failed after its pointer had committed and an HTTP 206 navigation returned as live content. GREEN focused release/runtime tests passed 38/38, offline tests passed 52/52, and the full Vitest suite passed 429/429 across 27 files, including stale-cache deletion failure and pending-marker deletion retry coverage. Strict TypeScript, zero-warning ESLint, fixture build/dist verification, three Chromium Playwright flows, diff hygiene, and the staged gitleaks scan passed.
 - **Follow-ups:** Retain the existing real-browser, device, storage-pressure, production-content, rights, governance, deployment, accessibility, and physical-QR launch blockers until genuine evidence exists.
+
+### 2026-07-13 (Australia/Sydney) — release-versioned worker closure
+
+**Raouf:**
+
+- **Scope:** Critical B4 service-worker update identity, genuine multi-release browser evidence, and concurrent component-test stability.
+- **Summary:** Versioned every compiled worker by both the exact public release ID and canonical public-corpus SHA-256, and made install fail closed when fetched release identity differs from the worker build. This guarantees corpus-only changes produce different worker bytes even if an operator incorrectly reuses a release ID. Replaced the E2E server's hand-appended comment with genuine Vite worker builds for each served release and required the checked distribution worker to byte-match a clean rebuild. Stabilised the post-verification registration assertion with an awaited effect boundary.
+- **Files Changed:** `scripts/build.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `tests/components/offlineIntegration.test.tsx`, `tests/content/buildRelease.test.ts`, `tests/e2e/offline-server.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/serviceWorker.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Meaningful RED proved genuine worker output lacked release versioning. Under Node 22.16.0, focused content/offline tests passed 85/85, strict TypeScript and zero-warning ESLint passed, the fixture build and distribution verifier passed, emitted worker bytes contained the exact release and content identities, and the real Chromium offline lifecycle passed 1/1 using only genuine versioned worker outputs.
+- **Follow-ups:** Rerun the full combined suite and independent B4 review after integration with B2/public-readiness; retain manual cross-browser, device, storage-pressure, approved-content, deployment, accessibility, governance, and physical-QR gates.

@@ -69,8 +69,16 @@ type ReadyRecord = z.infer<typeof readyRecordSchema>;
 export type ReleasePointer = z.infer<typeof pointerSchema>;
 
 export type StageResult =
-  | { readonly status: 'active'; readonly releaseId: string }
-  | { readonly status: 'ready'; readonly releaseId: string };
+  | {
+      readonly status: 'active';
+      readonly releaseId: string;
+      readonly contentSha256: string;
+    }
+  | {
+      readonly status: 'ready';
+      readonly releaseId: string;
+      readonly contentSha256: string;
+    };
 
 export interface OfflineReleaseManagerOptions {
   readonly caches: CacheStorageLike;
@@ -227,7 +235,11 @@ export class OfflineReleaseManager {
         throw new Error('Active release metadata is incoherent.');
       }
       await this.#clearPending();
-      return { status: 'active', releaseId: descriptor.releaseId };
+      return {
+        status: 'active',
+        releaseId: descriptor.releaseId,
+        contentSha256: descriptor.contentSha256,
+      };
     }
 
     const cacheName = this.#cacheName(descriptor.releaseId);
@@ -243,7 +255,11 @@ export class OfflineReleaseManager {
       }
       if (await this.#candidateComplete(existingReady)) {
         await this.#writePending(descriptor.releaseId);
-        return { status: 'ready', releaseId: descriptor.releaseId };
+        return {
+          status: 'ready',
+          releaseId: descriptor.releaseId,
+          contentSha256: descriptor.contentSha256,
+        };
       }
     }
     if (isProtectedRollback) {
@@ -321,7 +337,11 @@ export class OfflineReleaseManager {
       await candidate.put(READY_PATH, this.#jsonResponse(ready));
       // The exact pending target is persisted only after the complete marker.
       await this.#writePending(descriptor.releaseId);
-      return { status: 'ready', releaseId: descriptor.releaseId };
+      return {
+        status: 'ready',
+        releaseId: descriptor.releaseId,
+        contentSha256: descriptor.contentSha256,
+      };
     } catch (error) {
       await this.#caches.delete(cacheName);
       throw new Error('Offline release staging failed.', { cause: error });

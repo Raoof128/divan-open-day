@@ -20,6 +20,7 @@ import { build as viteBuild } from 'vite';
 
 import type { BuildProfile, ReleaseDescriptor } from '../src/contracts/release';
 import { MAX_RELEASE_ASSET_BYTES } from '../src/contracts/release';
+import { canonicalSha256 } from '../src/lib/content/canonical';
 import {
   compileCorpus,
   type CompiledCorpus,
@@ -37,6 +38,7 @@ import { verifyDist } from './verify-dist';
 
 const FIXTURE_RELEASE_ID = 'test-only-fixture-release';
 const FIXTURE_BUILT_AT = '2026-07-13T00:00:00.000Z';
+const RELEASE_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const BASELINE_MIN_HAFEZ = 24;
 const BASELINE_MIN_RUMI = 16;
 const MAX_BROWSER_DISTRIBUTION_BYTES = 150_000_000;
@@ -423,8 +425,76 @@ async function collectBrowserAssets(
   return assets;
 }
 
+export async function buildServiceWorkerBytes(
+  projectRoot: string,
+  releaseId: string,
+  contentSha256: string,
+): Promise<Uint8Array> {
+  if (!RELEASE_ID_PATTERN.test(releaseId)) {
+    throw new Error('Service-worker release ID must use lowercase kebab-case.');
+  }
+  if (!/^[a-f0-9]{64}$/u.test(contentSha256)) {
+    throw new Error('Service-worker content SHA-256 must use 64 lowercase hex characters.');
+  }
+  const canonicalRoot = await canonicalProjectRoot(projectRoot);
+  const stageRoot = await mkdtemp(
+    path.join(canonicalRoot, '.divan-worker-stage-'),
+  );
+  try {
+    await viteBuild({
+      root: canonicalRoot,
+      configFile: false,
+      publicDir: false,
+      envDir: false,
+      define: {
+        __DIVAN_RELEASE_ID__: JSON.stringify(releaseId),
+        __DIVAN_CONTENT_SHA256__: JSON.stringify(contentSha256),
+      },
+      logLevel: 'silent',
+      build: {
+        target: 'es2022',
+        emptyOutDir: false,
+        outDir: stageRoot,
+        sourcemap: false,
+        rollupOptions: {
+          input: repositoryFilePath('src-sw/service-worker.ts'),
+          output: {
+            entryFileNames: 'service-worker.js',
+            format: 'iife',
+            name: 'DivanServiceWorker',
+          },
+        },
+      },
+    });
+    const entries = await readdir(stageRoot, { withFileTypes: true });
+    if (
+      entries.length !== 1 ||
+      entries[0]?.name !== 'service-worker.js' ||
+      !entries[0].isFile()
+    ) {
+      throw new Error('Service-worker build must emit exactly one fixed script.');
+    }
+    const workerPath = path.join(stageRoot, 'service-worker.js');
+    const stat = await lstat(workerPath);
+    if (
+      stat.isSymbolicLink() ||
+      !stat.isFile() ||
+      stat.size <= 0 ||
+      stat.size > MAX_RELEASE_ASSET_BYTES ||
+      (await realpath(workerPath)) !== workerPath
+    ) {
+      throw new Error('Service-worker output is invalid.');
+    }
+    return new Uint8Array(await readFile(workerPath));
+  } finally {
+    await rm(stageRoot, { recursive: true, force: true });
+  }
+}
+
 async function buildBrowserAssets(
   projectRoot: string,
+  releaseId: string,
+  contentSha256: string,
 ): Promise<readonly ReleaseAssetSource[]> {
   const configPath = viteConfigPath();
   const configStat = await lstat(configPath);
@@ -454,27 +524,11 @@ async function buildBrowserAssets(
         { flag: 'wx' },
       );
     }
-    await viteBuild({
-      root: projectRoot,
-      configFile: false,
-      publicDir: false,
-      envDir: false,
-      logLevel: 'silent',
-      build: {
-        target: 'es2022',
-        emptyOutDir: false,
-        outDir: stageRoot,
-        sourcemap: false,
-        rollupOptions: {
-          input: repositoryFilePath('src-sw/service-worker.ts'),
-          output: {
-            entryFileNames: 'service-worker.js',
-            format: 'iife',
-            name: 'DivanServiceWorker',
-          },
-        },
-      },
-    });
+    await writeFile(
+      path.join(stageRoot, 'service-worker.js'),
+      await buildServiceWorkerBytes(projectRoot, releaseId, contentSha256),
+      { flag: 'wx' },
+    );
     const assets = await collectBrowserAssets(stageRoot);
     const totalBytes = assets.reduce((total, asset) => total + asset.bytes, 0);
     if (
@@ -837,7 +891,15 @@ export async function buildFixtureRelease(
         registries: fixture.registries,
         fixtureFiles: fixture.assetFiles,
       }),
-      buildBrowserAssets(projectRoot),
+      buildBrowserAssets(
+        projectRoot,
+        FIXTURE_RELEASE_ID,
+        canonicalSha256({
+          schemaVersion: 2,
+          releaseId: FIXTURE_RELEASE_ID,
+          items: compiled.items,
+        }),
+      ),
     ]);
 
     const artifacts = createReleaseArtifacts({
@@ -883,7 +945,15 @@ export async function buildProductionRelease(
         corpus: compiled,
         registries: loaded.registries,
       }),
-      buildBrowserAssets(projectRoot),
+      buildBrowserAssets(
+        projectRoot,
+        config.releaseId,
+        canonicalSha256({
+          schemaVersion: 2,
+          releaseId: config.releaseId,
+          items: compiled.items,
+        }),
+      ),
     ]);
 
     const artifacts = createReleaseArtifacts({
