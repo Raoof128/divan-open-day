@@ -17,9 +17,8 @@ export const SOURCE_EDITION_IDS = [
 export type SourceEditionId = (typeof SOURCE_EDITION_IDS)[number];
 
 /**
- * Hosts the acquisition layer is permitted to contact. Every registry URL and
- * every redirect target must resolve to one of these. `sacred-texts.com` is a
- * human cross-reading source only and is intentionally excluded from the
+ * Canonical hosts the registry declares download/evidence URLs on. `sacred-texts.com`
+ * is a human cross-reading source only and is intentionally excluded from the
  * download allowlist.
  */
 export const ALLOWED_SOURCE_HOSTS = [
@@ -29,12 +28,30 @@ export const ALLOWED_SOURCE_HOSTS = [
   'en.wikisource.org',
 ] as const;
 
-const ALLOWED_HOST_SET: ReadonlySet<string> = new Set(ALLOWED_SOURCE_HOSTS);
+/**
+ * Registrable domains the acquisition layer is permitted to contact. A URL is
+ * allowed when its host equals one of these OR is a subdomain of one. This
+ * accommodates legitimate CDN/datanode redirects (e.g. archive.org 302s to
+ * `iaNNNNNN.us.archive.org`; Wikisource/ws-export assets on `upload.wikimedia.org`)
+ * while still rejecting look-alikes such as `evilarchive.org` (no leading dot).
+ */
+export const ALLOWED_SOURCE_DOMAINS = [
+  'archive.org',
+  'wmcloud.org',
+  'wikisource.org',
+  'wikimedia.org',
+] as const;
+
+function hostIsAllowed(host: string): boolean {
+  return ALLOWED_SOURCE_DOMAINS.some(
+    (domain) => host === domain || host.endsWith(`.${domain}`),
+  );
+}
 
 /**
- * True only for an absolute HTTPS URL whose host is on the allowlist. Exported
- * so the downloader can reuse the exact same host policy at fetch and redirect
- * time.
+ * True only for an absolute HTTPS URL whose host is on (or under) the allowlist.
+ * Exported so the downloader reuses the exact same host policy at fetch and
+ * redirect time.
  */
 export function isAllowlistedHttpsUrl(value: string): boolean {
   let url: URL;
@@ -43,7 +60,7 @@ export function isAllowlistedHttpsUrl(value: string): boolean {
   } catch {
     return false;
   }
-  return url.protocol === 'https:' && ALLOWED_HOST_SET.has(url.hostname);
+  return url.protocol === 'https:' && hostIsAllowed(url.hostname);
 }
 
 const allowlistedHttpsUrl = z

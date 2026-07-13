@@ -28,8 +28,12 @@ export interface BellCandidate {
   readonly suspiciousLineIndexes: number[];
 }
 
-const ROMAN_HEADING = /^\s*([IVXLCDM]+\.)\s*$/u;
-const NOTES_HEADING = /^\s*(NOTES|GLOSSARY|APPENDIX|INDEX)\s*$/u;
+// Bell numbers poems with roman numerals; the 1897 OCR renders them WITHOUT a
+// trailing period (e.g. a bare "II"), so the period is optional. Everything
+// before the first numeral (library plate, title, dedication, introduction) is
+// front matter and is skipped by the "no current section" rule.
+const ROMAN_HEADING = /^\s*([IVXLCDM]{1,7})\.?\s*$/u;
+const NOTES_HEADING = /^\s*(NOTES|GLOSSARY|APPENDIX|INDEX|CONTENTS)\s*$/u;
 const PAGE_NUMBER = /^\s*(\d{1,4})\s*$/u;
 const SENTINELS = /(TEST ONLY|NOT POETRY|NOT TRANSLATION|SYNTHETIC)/u;
 

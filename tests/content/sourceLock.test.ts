@@ -100,6 +100,20 @@ describe('assertAllowedUrl', () => {
   it('rejects non-allowlisted hosts', () => {
     expect(() => assertAllowedUrl('https://evil.example.com/x')).toThrow();
   });
+
+  it('accepts CDN/datanode subdomains of an allowed domain', () => {
+    expect(() =>
+      assertAllowedUrl('https://ia903005.us.archive.org/download/x/y.txt'),
+    ).not.toThrow();
+    expect(() =>
+      assertAllowedUrl('https://upload.wikimedia.org/wikisource/x'),
+    ).not.toThrow();
+  });
+
+  it('rejects a look-alike domain with no leading dot', () => {
+    expect(() => assertAllowedUrl('https://evilarchive.org/x')).toThrow();
+    expect(() => assertAllowedUrl('https://archive.org.evil.com/x')).toThrow();
+  });
 });
 
 describe('downloadArtifact', () => {

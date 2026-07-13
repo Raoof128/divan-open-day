@@ -47,16 +47,16 @@ describe('parseBellOcr', () => {
     expect(first.requiresVisualVerification).toBe(true);
   });
 
-  it('captures roman-numeral headings', () => {
+  it('captures roman-numeral headings (normalised to the bare numeral)', () => {
     const headings = candidates.map((c) => c.heading);
-    expect(headings).toContain('I.');
-    expect(headings).toContain('II.');
+    expect(headings).toContain('I');
+    expect(headings).toContain('II');
   });
 
   it('links page-number cues seen before a section', () => {
     // "12" precedes section I; "13" precedes section II.
-    const first = candidates.find((c) => c.heading === 'I.');
-    const second = candidates.find((c) => c.heading === 'II.');
+    const first = candidates.find((c) => c.heading === 'I');
+    const second = candidates.find((c) => c.heading === 'II');
     expect(first?.pdfPageStart).toBe(12);
     expect(second?.pdfPageStart).toBe(13);
   });

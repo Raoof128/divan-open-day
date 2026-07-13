@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — poetry source ingestion: live run + real-data fixes
+
+**Raouf:**
+
+- **Scope:** Owner authorised the live pipeline ("literature approved; run the full pipeline and ingest all data… keep fixing until correct"). Ran real fetch + extraction against the archival hosts and fixed every defect real data surfaced, in a loop. No poetry, translation, rights approval, or reviewer identity fabricated — ingestion produces private staging + machine candidates only; the public corpus stays empty and `build:production` stays fail-closed. Verse text is git-ignored; only code, hashes, a text-free summary, and docs are committed.
+- **Summary:** Fetched all four sources (source-lock.json written). Fixes driven by real data: (1) archival redirects — allowlist switched from exact hosts to registrable-domain **suffix** matching so `*.archive.org` datanodes resolve while look-alikes (`evilarchive.org`) are still rejected; (2) Bell 1897 OCR returned 0 because real poem numbers are bare (`II`, not `II.`) — relaxed the roman-numeral heading, now 33 candidate poems with front matter skipped; (3) the Persian Masnavi EPUB was only a section **index** (titles, no verse) — built `poetry:fetch-masnavi` to pull real couplets from Wikisource ProofreadPage `<span class="beyt">` across ~1001 subpages, ordered by scan page, **resumable** (per-section disk checkpoint + `--assemble-only`), rate-limited with 429 backoff after the first burst tripped Wikimedia's limit; ingested 85+ sections / ~5,000 hemistich lines (continuing toward the full set on resume); (4) candidate matching — token overlap is ~0 across scripts, so replaced it with a curated **transliterated proper-noun / recurring-image** bilingual scorer + colophon/TOC noise filters (246/255 Rumi candidates now carry real signal, e.g. Solomon↔سلیمان). Hafez Divan (589 pages → 1,816 blocks) and Whinfield (6 books → 397 blocks) verified as genuine verse.
+- **Files Changed:** `src/lib/content/sourceRegistrySchema.ts` (domain-suffix allowlist), `scripts/poetry/fetch-masnavi-sections.ts` (new), `scripts/poetry/extract-hafez-bell.ts` (bare-numeral headings), `scripts/poetry/extract-sources.ts` (skip index-only Rumi EPUB), `scripts/poetry/build-candidate-index.ts` (bilingual scorer, adapters, anchor, noise filters), `tests/content/masnaviSections.test.ts` (new), `tests/content/bellOcr.test.ts`, `tests/content/sourceLock.test.ts` (subdomain cases), `sources-private/poetry/source-lock.json` + `reports/candidates-summary.json` (committed), `.gitignore` (candidate JSONs), `docs/poetry-source-runbook.md`, `package.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, pnpm 10.33.0, Python 3.12.2, branch `feat/poetry-source-ingestion`. `pnpm check` green: format/lint/typecheck 0, vitest 536/536 (42 files; +7 Masnavi tests), `verify:dist` (+ leak gate) + `verify:privacy` pass, `audit --prod` clean, `build:production` + `verify:qr` fail-closed. Candidate quality spot-checked; source-lock has 5 verified artefacts.
+- **Follow-ups:** `poetry:fetch-masnavi` resumes to complete all ~1001 Masnavi sections (rate-limited). Human pairing/approval of excerpts and every §31.2 launch gate remain outstanding and unfabricated.
+
 ### 2026-07-14 (Australia/Sydney) — poetry source ingestion (acquisition + extraction + candidates), adapted
 
 **Raouf:**

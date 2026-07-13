@@ -26,16 +26,27 @@ registry.yaml ──▶ poetry:fetch ──▶ raw/ + source-lock.json ──▶
 
 ## Commands
 
-| Command | What it does | Network |
-| --- | --- | --- |
-| `pnpm poetry:verify-sources` | Re-hash acquired files against `source-lock.json` | none |
-| `pnpm poetry:fetch` | Download the four editions into git-ignored `raw/`, write `source-lock.json` | **yes (owner-gated)** |
-| `pnpm poetry:extract` | Deterministic EPUB → `extracted/*.jsonl` (raw + search text separated) | none |
-| `pnpm poetry:extract-bell` | Parse Bell OCR into candidate sections (raw kept, no auto-correction) | none |
-| `pnpm poetry:build-candidates` | Machine candidate index (`machineGeneratedCandidate`, `publishable:false`) | none |
-| `pnpm verify:dist` | Existing dist check **+ archival-leak gate** (`inspect-public-bundle`) | none |
+| Command                        | What it does                                                                   | Network               |
+| ------------------------------ | ------------------------------------------------------------------------------ | --------------------- |
+| `pnpm poetry:verify-sources`   | Re-hash acquired files against `source-lock.json`                              | none                  |
+| `pnpm poetry:fetch`            | Download the four editions into git-ignored `raw/`, write `source-lock.json`   | **yes (owner-gated)** |
+| `pnpm poetry:extract`          | Deterministic EPUB → `extracted/*.jsonl` (raw + search text separated)         | none                  |
+| `pnpm poetry:fetch-masnavi`    | Persian Masnavi verse from Wikisource ProofreadPage sections → `rumi-fa.jsonl` | **yes (owner-gated)** |
+| `pnpm poetry:extract-bell`     | Parse Bell OCR into candidate sections (raw kept, no auto-correction)          | none                  |
+| `pnpm poetry:build-candidates` | Machine candidate index (`machineGeneratedCandidate`, `publishable:false`)     | none                  |
+| `pnpm verify:dist`             | Existing dist check **+ archival-leak gate** (`inspect-public-bundle`)         | none                  |
 
 All scripts are safe no-ops before a fetch: they print "not acquired yet".
+
+### Why the Persian Masnavi needs a separate step
+
+The `مثنوی معنوی` root page on Persian Wikisource is only a **section index**, so
+its EPUB export contains section _titles_, not couplets (the verse lives in ~1000
+ProofreadPage subpages, each wrapping hemistichs in `<span class="beyt">`).
+`poetry:extract` therefore skips it, and `poetry:fetch-masnavi` fetches the real
+verse per section (rate-limited, ordered by scan page) and owns `rumi-fa.jsonl`.
+The Bell 1897 English is a _selection_ and the Whinfield English is _abridged_, so
+their coverage is intentionally partial — human review pairs excerpts.
 
 ## Safety properties (enforced by tests)
 
@@ -78,8 +89,15 @@ Downloads are **not** run automatically. On an explicit go:
 pnpm poetry:fetch            # pulls the four editions into raw/, writes source-lock.json
 pnpm poetry:verify-sources   # re-hash check
 find sources-private/poetry/raw -type f -print0 | xargs -0 file   # confirm EPUB/PDF/text types
-pnpm poetry:extract && pnpm poetry:extract-bell && pnpm poetry:build-candidates
+pnpm poetry:extract && pnpm poetry:extract-bell
+pnpm poetry:fetch-masnavi   # Persian Masnavi verse (resumable; re-run to finish all sections)
+pnpm poetry:build-candidates
 ```
+
+`poetry:fetch-masnavi` is **resumable**: each section is checkpointed under
+`raw/.../.section-cache/`, so re-running skips completed work and only the
+rate-limited remainder is retried. `--assemble-only` rebuilds `rumi-fa.jsonl` from
+the cache without any network.
 
 Then hand the candidate reports and staging to the Society's reviewers. Nothing
 reaches the public corpus until they author approved records and the existing

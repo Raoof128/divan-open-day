@@ -1,0 +1,30 @@
+{
+  "note": "Machine candidate index summary. NOT public content. Excerpt-bearing *-candidates.json are git-ignored; every candidate is publishable:false and requiresHumanReview.",
+  "method": "transliterated proper-noun / recurring-image bilingual matching (weak ranking hint only)",
+  "staging": {
+    "hafez_fa_blocks": 1816,
+    "rumi_fa_sections": 85,
+    "bell_en_candidates": 33,
+    "whinfield_en_blocks": 397
+  },
+  "candidates": {
+    "hafez": {
+      "count": 99,
+      "withSignal": 99,
+      "maxScore": 7,
+      "generatedFrom": {
+        "persian": "hafez-fa.jsonl",
+        "english": "hafez-bell-en.jsonl"
+      }
+    },
+    "rumi": {
+      "count": 255,
+      "withSignal": 246,
+      "maxScore": 10,
+      "generatedFrom": {
+        "persian": "rumi-fa.jsonl",
+        "english": "rumi-whinfield-en.jsonl"
+      }
+    }
+  }
+}

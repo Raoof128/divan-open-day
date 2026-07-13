@@ -28,12 +28,22 @@ function main(): void {
 
   const outputName: Record<string, string> = {
     'hafez-qazvini-ghani-fa-wikisource': 'hafez-fa.jsonl',
-    'rumi-nicholson-fa-wikisource': 'rumi-fa.jsonl',
     'rumi-whinfield-abridged-en': 'rumi-whinfield-en.jsonl',
   };
 
+  // The Persian Masnavi root export is only a section INDEX (titles, no verse):
+  // its real couplets are fetched per-section by `poetry:fetch-masnavi`, which
+  // owns rumi-fa.jsonl. Skip it here so the EPUB index never overwrites verse.
+  const EPUB_INDEX_ONLY = new Set(['rumi-nicholson-fa-wikisource']);
+
   let extracted = 0;
   for (const source of registry.sources) {
+    if (EPUB_INDEX_ONLY.has(source.id)) {
+      process.stdout.write(
+        `• ${source.id}: index-only EPUB — verse comes from \`pnpm poetry:fetch-masnavi\`; skipping.\n`,
+      );
+      continue;
+    }
     const epubArtifact = source.download_artifacts.find(
       (artifact) => artifact.kind === 'epub',
     );

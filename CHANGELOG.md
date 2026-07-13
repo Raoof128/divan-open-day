@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-14 — Poetry source ingestion: live run + real-data fixes
+
+**Raouf:**
+
+- **Scope:** Owner-authorised live run of the ingestion pipeline. Fetched + extracted the real sources and fixed every real-data defect in a loop. Nothing fabricated; verse stays git-ignored private staging; public corpus stays fail-closed.
+- **Summary:** All four sources fetched (`source-lock.json`, 5 artefacts). Fixes: archival-redirect allowlist now matches registrable-domain **suffixes** (`*.archive.org` datanodes OK, look-alikes rejected); Bell OCR parser handles bare roman numerals (33 candidate poems); the Persian Masnavi EPUB was index-only, so added a **resumable, rate-limited** Wikisource ProofreadPage section fetcher (`poetry:fetch-masnavi`, `<span class="beyt">` verse, scan-page order, per-section checkpoint + `--assemble-only`) — 85+ sections / ~5,000 lines ingested, continuing on resume; candidate scoring replaced with a **transliterated proper-noun bilingual** matcher (token overlap is 0 across scripts) plus colophon/TOC filters. Hafez Divan (1,816 blocks) and Whinfield (397 blocks) verified as genuine verse.
+- **Files Changed:** `src/lib/content/sourceRegistrySchema.ts`, `scripts/poetry/{fetch-masnavi-sections(new),extract-hafez-bell,extract-sources,build-candidate-index}.ts`, `tests/content/{masnaviSections(new),bellOcr,sourceLock}.test.ts`, `sources-private/poetry/{source-lock.json,reports/candidates-summary.json}`, `.gitignore`, `docs/poetry-source-runbook.md`, `package.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0. `pnpm check` green — format/lint/typecheck 0, vitest 536/536 (42 files), `verify:dist`(+leak gate)/`verify:privacy` pass, `audit --prod` clean, `build:production`+`verify:qr` fail-closed.
+- **Follow-ups:** Resume `poetry:fetch-masnavi` to finish all ~1001 sections; human excerpt pairing/approval and §31.2 gates remain outstanding.
+
 ## 2026-07-14 — Poetry source ingestion (acquisition + extraction + candidates), adapted
 
 **Raouf:**

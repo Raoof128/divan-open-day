@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-13T22:26:16.767Z",
+  "entries": [
+    {
+      "source_id": "hafez-bell-1897-en",
+      "artifact_kind": "pdf",
+      "file": "raw/hafez-bell-1897-en/source.pdf",
+      "requested_url": "https://archive.org/download/poemsfromdivanof00hafiiala/poemsfromdivanof00hafiiala.pdf",
+      "final_url": "https://ia803105.us.archive.org/27/items/poemsfromdivanof00hafiiala/poemsfromdivanof00hafiiala.pdf",
+      "sha256": "99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145",
+      "bytes": 5509900,
+      "content_type": "application/pdf",
+      "retrieved_at": "2026-07-13T22:26:16.767Z"
+    },
+    {
+      "source_id": "hafez-bell-1897-en",
+      "artifact_kind": "text",
+      "file": "raw/hafez-bell-1897-en/source.txt",
+      "requested_url": "https://archive.org/download/poemsfromdivanof00hafiiala/poemsfromdivanof00hafiiala_djvu.txt",
+      "final_url": "https://dn760102.eu.archive.org/0/items/poemsfromdivanof00hafiiala/poemsfromdivanof00hafiiala_djvu.txt",
+      "sha256": "e736637afead8bac3771c06ae04c3852409c58fe9c5749dcb294a64cab468f00",
+      "bytes": 237054,
+      "content_type": "text/plain; charset=utf-8",
+      "retrieved_at": "2026-07-13T22:26:16.767Z"
+    },
+    {
+      "source_id": "hafez-qazvini-ghani-fa-wikisource",
+      "artifact_kind": "epub",
+      "file": "raw/hafez-qazvini-ghani-fa-wikisource/source.epub",
+      "requested_url": "https://ws-export.wmcloud.org/?format=epub&lang=fa&page=%D8%AF%DB%8C%D9%88%D8%A7%D9%86_%D8%AD%D8%A7%D9%81%D8%B8",
+      "final_url": "https://ws-export.wmcloud.org/?format=epub&lang=fa&page=%D8%AF%DB%8C%D9%88%D8%A7%D9%86_%D8%AD%D8%A7%D9%81%D8%B8",
+      "sha256": "a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b",
+      "bytes": 1113136,
+      "content_type": "application/epub+zip",
+      "retrieved_at": "2026-07-13T22:26:16.767Z"
+    },
+    {
+      "source_id": "rumi-nicholson-fa-wikisource",
+      "artifact_kind": "epub",
+      "file": "raw/rumi-nicholson-fa-wikisource/source.epub",
+      "requested_url": "https://ws-export.wmcloud.org/?format=epub&lang=fa&page=%D9%85%D8%AB%D9%86%D9%88%DB%8C_%D9%85%D8%B9%D9%86%D9%88%DB%8C",
+      "final_url": "https://ws-export.wmcloud.org/?format=epub&lang=fa&page=%D9%85%D8%AB%D9%86%D9%88%DB%8C_%D9%85%D8%B9%D9%86%D9%88%DB%8C",
+      "sha256": "04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7",
+      "bytes": 31666,
+      "content_type": "application/epub+zip",
+      "retrieved_at": "2026-07-13T22:26:16.767Z"
+    },
+    {
+      "source_id": "rumi-whinfield-abridged-en",
+      "artifact_kind": "epub",
+      "file": "raw/rumi-whinfield-abridged-en/source.epub",
+      "requested_url": "https://ws-export.wmcloud.org/?format=epub&lang=en&page=Masnavi_I_Ma%27navi",
+      "final_url": "https://ws-export.wmcloud.org/?format=epub&lang=en&page=Masnavi_I_Ma%27navi",
+      "sha256": "d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d",
+      "bytes": 265490,
+      "content_type": "application/epub+zip",
+      "retrieved_at": "2026-07-13T22:26:16.767Z"
+    }
+  ]
+}
