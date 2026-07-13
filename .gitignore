@@ -7,6 +7,7 @@
 .divan-*-stage-*
 .divan-dist-backup-*
 .pnpm-store/
+.tmp-tests/
 node_modules/
 dist/
 coverage/

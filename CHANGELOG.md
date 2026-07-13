@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-13 — Test-harness hygiene and resume handoff
+
+**Raouf:**
+
+- **Scope:** Make the full local suite reliably green on a clean checkout and hand the work off. No product behavior changed.
+- **Summary:** Excluded Playwright end-to-end specs from vitest (`tests/e2e/**`), so `pnpm test` stops collecting `accessibility.spec.ts` and failing on `test.beforeEach`; raised vitest `testTimeout`/`hookTimeout` to 30 s so ops/release tests that spawn real builds and shell scripts via `execFileSync` stop timing out at 5 s under concurrent load; ignored the determinism test's leftover `.tmp-tests/` output in ESLint and git so lint stops erroring on nested build JavaScript. Added `RESUME.md` with stage status, the verified baseline, and the next task.
+- **Files Changed:** `vitest.config.ts`, `eslint.config.js`, `.gitignore`, `RESUME.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `pnpm typecheck` 0, `pnpm lint` 0, `pnpm test` 377/377 (21 files), `pnpm test:content` 234/234, `pnpm build:fixture` + `pnpm verify:dist` passed, `pnpm build:production` retained exit 1 with `no approved production corpus exists in content-private`.
+- **Follow-ups:** Resume at Task 7 (Wave C verification) then Task 8 (final gauntlet + `docs/verification-report.md`); all content, rights, cultural, manual-accessibility, deployment, rollback, and physical-QR launch gates remain blocked.
+
 ## 2026-07-12 — Repository baseline
 
 **Raouf:**
