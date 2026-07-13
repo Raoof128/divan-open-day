@@ -1,0 +1,85 @@
+name: divan
+
+services:
+  divan-web:
+    image: ${DIVAN_WEB_IMAGE:?set DIVAN_WEB_IMAGE to an immutable registry reference}
+    restart: unless-stopped
+    read_only: true
+    user: '10001:10001'
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+      - /data:rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700
+      - /config:rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700
+    expose:
+      - '8080'
+    networks:
+      - divan_origin
+    healthcheck:
+      test: ['CMD', '/usr/local/bin/divan-health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 128
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.7.0@sha256:5e49861633763e8933475477c20bae6039ed47f32c1d267a34babc347f28f0df
+    restart: unless-stopped
+    read_only: true
+    user: '65532:65532'
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    command:
+      - tunnel
+      - --loglevel
+      - error
+      - --config
+      - /etc/cloudflared/config.yml
+      - run
+    volumes:
+      - type: bind
+        source: ${DIVAN_TUNNEL_CONFIG_FILE:?set DIVAN_TUNNEL_CONFIG_FILE}
+        target: /etc/cloudflared/config.yml
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${DIVAN_TUNNEL_CREDENTIALS_FILE:?set DIVAN_TUNNEL_CREDENTIALS_FILE}
+        target: /run/secrets/divan-tunnel.json
+        read_only: true
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=8m,mode=1777
+    networks:
+      - divan_origin
+      - divan_egress
+    depends_on:
+      divan-web:
+        condition: service_healthy
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 64
+
+networks:
+  divan_origin:
+    name: divan_origin
+    internal: true
+    driver: bridge
+    labels:
+      org.persiansocietyeoi.divan.network-role: origin
+      org.persiansocietyeoi.divan.scope: dedicated
+  divan_egress:
+    name: divan_egress
+    driver: bridge
+    labels:
+      org.persiansocietyeoi.divan.network-role: egress
+      org.persiansocietyeoi.divan.scope: dedicated

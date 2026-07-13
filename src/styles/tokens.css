@@ -1,0 +1,52 @@
+:root {
+  --ink-night: #0b1026;
+  --ink-deep: #11182d;
+  --lapis: #174a7e;
+  --lapis-light: #2e6e9e;
+  --turquoise: #2c8c8a;
+  --turquoise-light: #9fd8d6;
+  --pomegranate: #a6192e;
+  --bright-red: #d6001c;
+  --deep-red: #76232f;
+  --ember: #3c0f1b;
+  --gold: #d4a64a;
+  --gold-light: #e7c777;
+  --parchment: #f2e6cf;
+  --paper: #fff9ee;
+  --cypress: #204f40;
+  --charcoal: #2e302e;
+  --muted-ink: #6e675d;
+  --error: #b42318;
+  --focus: #78d6ff;
+
+  --surface-night: var(--ink-night);
+  --surface-night-raised: var(--ink-deep);
+  --surface-paper: var(--paper);
+  --surface-parchment: var(--parchment);
+  --text-on-night: var(--paper);
+  --text-on-paper: var(--charcoal);
+  --ornament: var(--gold);
+  --ornament-bright: var(--gold-light);
+  --action: var(--pomegranate);
+  --action-strong: var(--deep-red);
+  --line-night: rgb(231 199 119 / 42%);
+  --line-paper: rgb(118 35 47 / 24%);
+
+  --font-interface: 'DIVAN Inter', Inter, system-ui, sans-serif;
+  --font-display: 'DIVAN Cormorant Garamond', Georgia, serif;
+  --font-persian: 'DIVAN Vazirmatn', Vazirmatn, Tahoma, sans-serif;
+  --font-persian-display:
+    'DIVAN Noto Nastaliq Urdu', 'Noto Nastaliq Urdu', var(--font-persian);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --radius-small: 0.25rem;
+  --radius-paper: 0.625rem;
+  --shadow-paper: 0 1.5rem 4rem rgb(2 5 18 / 38%);
+}

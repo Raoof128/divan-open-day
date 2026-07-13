@@ -1,0 +1,54 @@
+#!/bin/sh
+set -eu
+
+log_action() {
+  printf '%s\n' "$1" >>"$MOCK_ACTION_LOG"
+}
+
+if [ "${1-}" = compose ]; then
+  shift
+  if [ "${1-}" = version ]; then
+    exit 0
+  fi
+  if [ "${1-}" = -f ]; then
+    shift 2
+  fi
+  action=${1-}
+  case "$action" in
+    config) exit 0 ;;
+    pull) log_action "PULL:${DIVAN_WEB_IMAGE-}"; exit 0 ;;
+    up) log_action "UP:${DIVAN_WEB_IMAGE-}"; exit 0 ;;
+    stop) log_action 'STOP'; exit 0 ;;
+    ps) exit 0 ;;
+    exec) exit 1 ;;
+  esac
+fi
+
+if [ "${1-}" = image ] && [ "${2-}" = inspect ]; then
+  image=${5-}
+  format=${4-}
+  if [ "$image" = "${MOCK_INVALID_IMAGE-}" ]; then
+    case "${MOCK_INVALID_REASON-}" in
+      absent) exit 1 ;;
+      fixture)
+        case "$format" in
+          *divan-build-mode*) printf '%s\n' fixture; exit 0 ;;
+        esac
+        ;;
+      digest)
+        case "$format" in
+          *RepoDigests*) printf '%s\n' 'registry.invalid/divan@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'; exit 0 ;;
+        esac
+        ;;
+    esac
+  fi
+  case "$format" in
+    *divan-build-mode*) printf '%s\n' production ;;
+    *RepoDigests*) printf '%s\n' "$image" ;;
+    *'{{.Id}}'*) printf '%s\n' 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ;;
+    *) printf '%s\n' '' ;;
+  esac
+  exit 0
+fi
+
+exit 1

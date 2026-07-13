@@ -1,0 +1,9 @@
+tunnel: 00000000-0000-4000-8000-000000000000
+credentials-file: /run/secrets/divan-tunnel.json
+ingress:
+  - hostname: divan.test.invalid
+    path: ^/healthz$
+    service: http_status:404
+  - hostname: divan.test.invalid
+    service: http://divan-web:8080
+  - service: http_status:404

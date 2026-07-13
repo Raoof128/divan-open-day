@@ -1,0 +1,19 @@
+# Generated / vendored
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.tmp-tests/
+.worktrees/
+.pnpm-store/
+pnpm-lock.yaml
+
+# Authoritative / append-only documents (avoid prose churn)
+2026-07-12-divan-open-day-agent-ready-design-v2-audited.md
+AGENT.md
+CHANGELOG.md
+THIRD_PARTY_NOTICES.md
+
+# Private content boundary
+content-private/

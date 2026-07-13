@@ -1,0 +1,10 @@
+tunnel: __DIVAN_TUNNEL_ID__
+credentials-file: /run/secrets/divan-tunnel.json
+
+ingress:
+  - hostname: __DIVAN_PUBLIC_HOSTNAME__
+    path: ^/healthz$
+    service: http_status:404
+  - hostname: __DIVAN_PUBLIC_HOSTNAME__
+    service: http://divan-web:8080
+  - service: http_status:404

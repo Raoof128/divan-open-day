@@ -1,0 +1,21 @@
+{
+  "name": "DIVAN — Persian Poetry Experience",
+  "short_name": "DIVAN",
+  "description": "A private, bilingual Persian poetry experience from the Persian Society.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0B1026",
+  "theme_color": "#0B1026",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

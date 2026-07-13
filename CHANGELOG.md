@@ -1,5 +1,55 @@
 # Changelog
 
+## 2026-07-13 — Frontend design audit fixes
+
+**Raouf:**
+
+- **Scope:** File-by-file frontend design audit applied. UI polish and PWA wiring only; no content/rights/approvals/production config fabricated; no new runtime dependency, network call, or storage.
+- **Summary:** Wired the built-but-unlinked PWA identity — new original `icon.svg` (eight-point khatam star, night/gold, `any maskable`), manifest + `theme-color` + icon links in `index.html`, and manifest `background_color` corrected to `#0B1026` so the install splash matches the dark app. `icon.svg` is now a required fixed browser asset in the release contract and the service-worker schema, copied by the build and precached. Design: Persian verse promoted to nastaliq with generous leading; result actions given a primary/secondary hierarchy. Cleanup: removed the near-invisible `body::before` hatch layer, fixed the undefined `--radius-control` on the skip link, scoped the deep-red `h2` rule to light surfaces, set `color-scheme: dark`, and replaced hardcoded color literals with `--action`/`--ornament-bright`/`--turquoise-light`/`--ember` tokens.
+- **Files Changed:** `index.html`, `public/icon.svg` (new), `public/manifest.webmanifest`, `src/lib/content/release.ts`, `src-sw/schemas.ts`, `scripts/build.ts`, `src/styles/tokens.css`, `src/styles/visual.css`, `src/app/core.css`, `tests/offline/artifacts.test.ts`, `tests/offline/helpers.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `bash scripts/check.sh --e2e` green — `format:check`/`lint` 0/`typecheck` 0, `test` 472/472, `build:fixture`+`verify:dist` pass (`icon.svg` accepted end-to-end), `verify:privacy` pass, `audit --prod` clean, Playwright 5/5. `build:production` and `verify:qr` stay fail-closed; Docker evidence skipped. Result screen visually confirmed.
+- **Follow-ups:** iOS home-screen falls back to a screenshot until a PNG `apple-touch-icon` exists; §31.2 launch gates unchanged and remain closed.
+
+## 2026-07-13 — Prettier, quality gate, and CI
+
+**Raouf:**
+
+- **Scope:** Repository professionalisation. No product behaviour changed.
+- **Summary:** Added Prettier + `eslint-config-prettier` (wired last so ESLint and Prettier do not conflict) with config/ignore files and `format`/`format:check` scripts, and applied formatting repo-wide (append-only logs and the design authority excluded). Added `scripts/check.sh` — one command running the §30.1 gauntlet with fail-closed launch-gate reporting and `--quick`/`--e2e`/`--ci` modes — exposed as `pnpm check`. Added `.github/workflows/ci.yml` (runs `check.sh --ci` incl. Playwright on `main` pushes and all PRs), `.editorconfig`, a PR template, `CONTRIBUTING.md`, and README badges.
+- **Files Changed:** `package.json`, `pnpm-lock.yaml`, `eslint.config.js`, `.prettierrc.json`, `.prettierignore`, `.editorconfig`, `scripts/check.sh`, `.github/workflows/ci.yml`, `.github/pull_request_template.md`, `CONTRIBUTING.md`, `README.md`, repo-wide formatting, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; post-format `typecheck` 0, `lint` 0, `test` 472/472, `format:check` clean, `scripts/check.sh` passes with launch gates fail-closed. CI workflow uses only static commands (no untrusted input in `run` steps).
+- **Follow-ups:** Docker-host and §31.2 launch gates unchanged. Consider requiring the CI `Quality gate` check via branch protection on `main`.
+
+## 2026-07-13 — Full integration, Wave C verification, share card, and evidence
+
+**Raouf:**
+
+- **Scope:** Finish the interrupted stage integration, verify independently, close confirmed defects, and record Task 8 evidence. No design decision reopened; no production content/rights/approvals fabricated.
+- **Summary:** The integration branch had B1/B2C/B3/B5/B6 but not B2 (visual) or B4 (offline/service-worker). Merged `agent/b2-visual`, `agent/b4-integration`, and `agent/public-readiness`; ran a six-dimension adversarial review swarm (11 confirmed defects, intended gates separated); implemented the local share card (§15 / criterion 16) and the previously-dangling `verify:*` scripts; fixed two B2↔B4 e2e interaction bugs and the `compose.yaml`→`compose.yml` doc typo; corrected the overstated `RESUME.md`; added `docs/verification-report.md`.
+- **Files Changed:** stage merges; `src/lib/share/*`, `src/components/PoemResult.tsx`, `src/app/App.tsx`, `tests/share/*`, `tests/components/shareAction.test.tsx`; `scripts/verify-privacy.ts`, `scripts/ops/*`, `scripts/qr/verify-qr.ts`; `tests/e2e/visual.spec.ts`, `tests/e2e/offline-server.ts`; `docs/implementation-plan.md`, `docs/verification-report.md`, `RESUME.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, commit `c552189`. typecheck 0, lint 0, vitest 472/472 (34 files), Playwright e2e 5/5, security 52, content 236; `verify:dist`/`verify:privacy`/ops `verify:*` pass; `audit --prod` clean; budgets within §21.3; `build:production` and `verify:qr` fail closed as intended.
+- **Follow-ups:** Docker-host image/scan/live-verify evidence is environment-blocked here; all §31.2 launch gates (corpus/rights, cultural, manual AT, hostname/mark approval, live deploy, rollback rehearsal, physical QR) remain closed.
+
+## 2026-07-13 — Test-harness hygiene and resume handoff
+
+**Raouf:**
+
+- **Scope:** Make the full local suite reliably green on a clean checkout and hand the work off. No product behavior changed.
+- **Summary:** Excluded Playwright end-to-end specs from vitest (`tests/e2e/**`), so `pnpm test` stops collecting `accessibility.spec.ts` and failing on `test.beforeEach`; raised vitest `testTimeout`/`hookTimeout` to 30 s so ops/release tests that spawn real builds and shell scripts via `execFileSync` stop timing out at 5 s under concurrent load; ignored the determinism test's leftover `.tmp-tests/` output in ESLint and git so lint stops erroring on nested build JavaScript. Added `RESUME.md` with stage status, the verified baseline, and the next task.
+- **Files Changed:** `vitest.config.ts`, `eslint.config.js`, `.gitignore`, `RESUME.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `pnpm typecheck` 0, `pnpm lint` 0, `pnpm test` 377/377 (21 files), `pnpm test:content` 234/234, `pnpm build:fixture` + `pnpm verify:dist` passed, `pnpm build:production` retained exit 1 with `no approved production corpus exists in content-private`.
+- **Follow-ups:** Resume at Task 7 (Wave C verification) then Task 8 (final gauntlet + `docs/verification-report.md`); all content, rights, cultural, manual-accessibility, deployment, rollback, and physical-QR launch gates remain blocked.
+
+## 2026-07-13 — Illuminated visual system and truthful context routes
+
+**Raouf:**
+
+- **Scope:** B2 production visual system, responsive core-stage polish, bounded motion, contextual documents, and visual/performance regression evidence.
+- **Summary:** Added the exact locked colour system; local Fontsource Cormorant Garamond, Inter, Vazirmatn, and short-label Noto Nastaliq Urdu; original sanitised inline manuscript, garden, pomegranate/cypress, reed, rosette, and constellation geometry; distinct Hafez and Rumi portals; manuscript/reveal/result surfaces; and static reduced-motion/coarse-pointer fallbacks. Added `/about`, `/credits`, `/accessibility`, `/privacy`, and `/offline` with verified-release-derived credits and evergreen, conditional cache wording that never fabricates readiness. No remote or third-party artwork, University branding, production approval, private content, package/lock, service-worker/share, or operations change was introduced.
+- **Files Changed:** `src/styles/**`, scoped visual components/scenes/pages and shell wiring, `tests/components/contextRoutes.test.tsx`, `tests/components/visualLanguage.test.tsx`, `tests/performance/visualBudgets.test.ts`, `tests/e2e/visual.spec.ts`, the Playwright test match, `docs/asset-register.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; TDD RED 11 failed/1 passed before implementation. GREEN: components 51/51, accessibility 18/18, performance 5/5, Playwright visual/motion 2/2, fixture build, dist verification, typecheck, and lint. Seventy screenshots covered all core/context states across five required baselines with no horizontal overflow or remote request. Compiled gzip sizes: HTML 644 B, CSS 4,847 B, JavaScript 91,135 B, critical fonts 115,816 B; raster images 0 B.
+- **Follow-ups:** Manual Persian shaping and typography in Safari/Firefox, physical iOS/Android/tablet/landscape and 200-percent zoom, measured contrast, focus order, screen-reader/pronunciation review, reveal performance traces, approved production content/rights/cultural review, integrated offline behavior, deployment/isolation evidence, rollback, and physical QR testing remain public-launch blockers.
+
 ## 2026-07-12 — Repository baseline
 
 **Raouf:**
@@ -9,3 +59,249 @@
 - **Files Changed:** `.gitignore`, `.dockerignore`, `AGENT.md`, `CHANGELOG.md`, `docs/implementation-plan.md`.
 - **Verification:** The initial commit is created on `main` with `.env` excluded; feature work proceeds on `feat/divan-open-day-r1` and isolated writer branches.
 - **Follow-ups:** Build and independently verify every local acceptance criterion while keeping unavailable production, rights, human-review, and physical-event gates closed.
+
+## 2026-07-13 — Permission effective-date enforcement
+
+**Raouf:**
+
+- **Scope:** Shared permission registry contract and corpus compiler evidence timing.
+- **Summary:** Required real ISO permission effective dates, rejected incoherent effective/expiry intervals, and rejected permissions that are not yet effective on the injected corpus build date without merging that rule into final-approval timing. Updated only conspicuous synthetic fixtures; no production rights or approval evidence was added.
+- **Files Changed:** `src/lib/content/registrySchemas.ts`, `src/lib/content/compileCorpus.ts`, `tests/content/registrySchemas.test.ts`, `tests/content/compileCorpus.test.ts`, `tests/fixtures/content/corpus.ts`, `content-private/README.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; focused registry/compiler tests 58/58; full content tests 141/141; strict TypeScript typecheck passed; ESLint passed with zero warnings or errors.
+- **Follow-ups:** Production compilation and public launch remain blocked until authentic human permission records and every independent release gate are verified.
+
+## 2026-07-13 — Deterministic content release build
+
+**Raouf:**
+
+- **Scope:** B3 private content loader, release compiler, fixture build, and distribution verification.
+- **Summary:** Added strict YAML and filesystem boundaries, canonical content-addressed corpus and asset-manifest generation, exact non-production fixture output, secure production configuration parsing, the expected missing-corpus stop gate, and public-dist tamper/private-leak verification. Added editor, asset, and public-rights guidance that explicitly records the absence of approved production records.
+- **Files Changed:** `scripts/content/loadContent.ts`, `src/lib/content/release.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/contentLoader.test.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `docs/content-style-guide.md`, `docs/asset-register.md`, `docs/rights-register-public.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful module-absence RED followed by embedded-URL and non-UTC timestamp RED; focused release-layer tests 25/25; full content suite 166/166; typecheck, lint, fixture build, and dist verification passed. `build:production` exited 1 with `Production build blocked: no approved production corpus exists in content-private.`
+- **Follow-ups:** Keep production compilation and public launch closed until authentic content, asset, permission, approval, cultural-review, accessibility, security, deployment, rollback, and physical-QR evidence exists and passes every independent gate.
+
+## 2026-07-13 — Release build security review fixes
+
+**Raouf:**
+
+- **Scope:** B3 asset completeness, filesystem replacement safety, private-source leakage, remote resources, and distribution verification.
+- **Summary:** Made compiled audio, the asset manifest, and emitted bytes an exact verified join; limited production asset loading to canonical non-symlink `public-static/`; added only an explicit fixture `TEST ONLY - NOT AUDIO` payload; constrained destructive replacement to `<explicit projectRoot>/dist`; rejected all URI schemes using `://` and protocol-relative values; loaded exact private-only values from the matching fixture or production source records while preserving intended public credits and paths; and rejected symlinked dist roots before `realpath`.
+- **Files Changed:** `scripts/build.ts`, `scripts/content/loadContent.ts`, `scripts/verify-dist.ts`, `src/contracts/release.ts`, `src/lib/content/release.ts`, `tests/content/buildRelease.test.ts`, `tests/content/compileCorpus.test.ts`, `tests/content/contentLoader.test.ts`, `tests/content/release.test.ts`, `tests/fixtures/content/corpus.ts`, `docs/asset-register.md`, `docs/content-style-guide.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful RED captured 10 original reviewer gaps plus six production asset-loading gaps; focused tests 46/46; full content tests 187/187; fixture build and dist verification passed; typecheck and lint passed; production build retained the exact required exit-1 missing-corpus message.
+- **Follow-ups:** No production content or asset has been created or approved; keep all production and public-launch gates closed pending authentic human evidence and complete independent verification.
+
+## 2026-07-13 — Bounded asset reads and resource-scheme rejection
+
+**Raouf:**
+
+- **Scope:** Final B3 release-size, file-read, and resource-value controls.
+- **Summary:** Reused one 100,000,000-byte maximum across private registry and public asset-manifest schemas, rejected invalid filesystem size/type/symlink metadata before content reads, hashed asset files in bounded chunks, capped production content collection, and blocked `data:`, `blob:`, `mailto:`, `file:`, `tel:`, `ws:`, `wss:`, `ssh:`, and `sftp:` alongside existing remote forms while allowing ordinary prose such as `Note: this is text`.
+- **Files Changed:** `src/contracts/release.ts`, `src/lib/content/registrySchemas.ts`, `src/lib/content/release.ts`, `src/lib/content/remoteResource.ts`, `scripts/content/readAssetFile.ts`, `scripts/content/loadContent.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/registrySchemas.test.ts`, `tests/content/release.test.ts`, `tests/content/contentLoader.test.ts`, `tests/content/buildRelease.test.ts`, `docs/asset-register.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED captured 19 schema/resource failures and two pre-read `EACCES` failures; GREEN focused tests 106/106 and full content tests 212/212; fixture build, dist verification, typecheck, and lint passed; production build preserved the exact expected exit-1 blocker.
+- **Follow-ups:** The production corpus and production assets remain absent by design; public launch stays blocked pending genuine evidence and every separate launch gate.
+
+## 2026-07-13 — Bare-colon URL resource rejection
+
+**Raouf:**
+
+- **Scope:** Final narrow B3 URL predicate fix.
+- **Summary:** Extended the existing explicit dangerous-scheme list to reject bare-colon `https:`, `http:`, `ftp:`, `ftps:`, and `javascript:` values in both source loading and public-dist verification without adopting an overbroad arbitrary `word:` rule.
+- **Files Changed:** `src/lib/content/remoteResource.ts`, `tests/content/contentLoader.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED reproduced 10 loader/verifier acceptances; GREEN direct tests 74/74 and full content tests 222/222; fixture build, dist verification, typecheck, and lint passed; production build preserved the exact required exit-1 blocker.
+- **Follow-ups:** No production content or approval was added; all production and public-launch gates remain closed.
+
+## 2026-07-13 — Application domain and secure local draw
+
+**Raouf:**
+
+- **Scope:** B1 state machine, browser-history records, storage boundaries, secure integer selection, and per-poet shuffle bags.
+- **Summary:** Implemented the locked application-stage reducer with stale-data recovery, exact three-field history state, release-matched session restoration using only the six approved keys, local motion preference persistence, Web Crypto rejection sampling across the full 1 through 2^32 contract, and Fisher-Yates bags restricted to approved active IDs. Bags return each eligible ID once per cycle, expose reset metadata, fail closed when empty, and persist only public remaining IDs while the release still matches.
+- **Files Changed:** `src/app/state.ts`, `src/app/history.ts`, `src/lib/draw/secureRandom.ts`, `src/lib/draw/shuffleBag.ts`, `src/lib/storage/session.ts`, `tests/unit/state.test.ts`, `tests/unit/history.test.ts`, `tests/unit/secureRandom.test.ts`, `tests/unit/shuffleBag.test.ts`, `tests/unit/storage.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful RED produced 12 reducer/random assertion failures, 11 history/storage/shuffle assertion failures, and three security-review regression failures; final unit suite passed 38/38, content tests passed 222/222, strict TypeScript passed, and ESLint passed with zero warnings or errors.
+- **Follow-ups:** Wire the domain layer into the separately owned React/browser shell with injected native storage and crypto adapters; production and public launch remain independently blocked pending genuine content, rights, human review, accessibility, security, deployment, rollback, isolation, and QR evidence.
+
+## 2026-07-13 — Accessible React core flow
+
+**Raouf:**
+
+- **Scope:** B1 browser release runtime and semantic React core experience.
+- **Summary:** Added a strict no-store, no-redirect release/corpus loader with Web Crypto verification and privacy-safe blocking recovery; composed the reviewed reducer, history, storage, and shuffle domains into the locked Hafez/Rumi flow; preserved one active scene and `h1`, English-before-Persian live RTL content, bidi-safe provenance, one persistent polite live region, bounded full/reduced reveal timing, keyboard skip, result focus, native optional audio, and safe Back/retry behavior; and added only minimal responsive accessibility CSS pending B2 visual ownership.
+- **Files Changed:** `index.html`, `vite.config.ts`, `src/main.tsx`, `src/vite-env.d.ts`, `src/app/App.tsx`, `src/app/runtime.ts`, `src/app/ErrorBoundary.tsx`, `src/app/core.css`, `src/components/*.tsx`, `src/scenes/*.tsx`, `tests/components/*.ts`, `tests/components/*.tsx`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful missing-module/document RED plus six runtime/audio hardening RED failures; GREEN component/runtime/document tests 25/25; inherited unit tests 38/38; inherited content tests 222/222; strict TypeScript and ESLint passed.
+- **Follow-ups:** Keep B2 visual polish, context/share/offline/deployment slices, production corpus and rights evidence, manual accessibility proof, and all independent public-launch gates closed until their owners complete and verify them.
+
+## 2026-07-13 — React core independent-review fixes
+
+**Raouf:**
+
+- **Scope:** Task 2B runtime parity, durable browser history, required disclaimer, focus stability, and verified-offline readiness.
+- **Summary:** Mirrored the full build Markdown/audio-path rejection boundary in browser-safe code and tested both parsers against one digest-valid parity table; replaced current-state Back inference with exact validated pop-state traversal; excluded `revealing`, used replace-only initial/hydrated history, and restored approved results across real Back/Forward without putting poem IDs in history or URLs; installed the required verbatim disclaimer immediately after the reveal control; kept skip tabbable without focus theft; and suppressed offline-ready during pending or rejected verification.
+- **Files Changed:** `src/app/App.tsx`, `src/app/history.ts`, `src/app/runtime.ts`, `src/scenes/IntentionScene.tsx`, `src/scenes/RevealScene.tsx`, `tests/components/appFlow.test.tsx`, `tests/components/failures.test.tsx`, `tests/components/runtime.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; focused RED failures 6 schema parity, 3 history, 2 disclaimer, 1 focus, and 2 offline gating; GREEN component tests 39/39, unit tests 38/38, content tests 222/222, strict TypeScript and ESLint passed.
+- **Follow-ups:** Final visual design, context/share/offline-cache/deployment work, approved production content, external reviews/evidence, and all public-launch gates remain outside this focused correction and blocked.
+
+## 2026-07-13 — Atomic Vite and content distribution assembly
+
+**Raouf:**
+
+- **Scope:** Complete static browser/content build integration and non-destructive activation.
+- **Summary:** Added deterministic local-only Vite output with no source maps or environment loading; allowlisted fixed and content-hashed browser assets with exact MIME, byte and SHA-256 records; expanded distribution verification to semantic HTML, UTF-8, local runtime resources, media signatures and private-source leak checks; and changed activation to verify a private staged tree before identity-checked rename/restore handling. No service-worker placeholder or production content was created.
+- **Files Changed:** `.gitignore`, `vite.config.ts`, `src/contracts/release.ts`, `src/lib/content/release.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/release.test.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; focused browser-shell, inline-script, private-leak, remote-runtime and previous-dist preservation RED/GREEN tests; full content suite 227/227; components 25/25; unit 38/38; typecheck and lint passed; repeated fixture tree hashes matched; fixture build/dist verification passed; production build retained the exact expected exit-1 approved-content blocker without replacing the good dist.
+- **Follow-ups:** Add and independently verify the real B4 offline release before requiring its worker/manifest/offline files, and keep every production/public launch gate closed until external evidence is complete.
+
+## 2026-07-13 — Static assembly review fixes
+
+**Raouf:**
+
+- **Scope:** Environment isolation, embedded remote-resource coverage, and activation-status correctness.
+- **Summary:** Replaced Vite's default environment prefix with an explicit public-only namespace, rejected additional remote HTML embeds/SVG resources/JavaScript network forms after coherent rehashing, tested previous-dist restoration on activation failure, and kept verified activation successful when only obsolete-backup cleanup needs manual maintenance.
+- **Files Changed:** `vite.config.ts`, `scripts/build.ts`, `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; adversarial environment/iframe/SVG RED reproduced all three gaps; focused fixes 5/5, full content 232/232, typecheck/lint and real fixture build/dist verification passed.
+- **Follow-ups:** Obtain independent re-review before integration and retain the production/offline/external launch gates.
+
+## 2026-07-13 — Browser URL-bearing resource closure
+
+**Raouf:**
+
+- **Scope:** Final narrow static-distribution remote-resource correction.
+- **Summary:** Validated URL-bearing attributes generically in emitted HTML, including inline SVG, and blocked literal remote DOM resource assignment through compiled JavaScript `setAttribute` calls.
+- **Files Changed:** `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; two adversarial RED cases became GREEN 2/2; content 234/234, typecheck/lint, fixture build, and dist verification passed.
+- **Follow-ups:** Integrate only after final independent approval; retain every separate release and launch gate.
+## 2026-07-13 — Isolated production delivery controls
+
+**Raouf:**
+
+- **Scope:** B6 immutable container, static delivery headers, tunnel isolation, digest-only deployment/rollback, and operator documentation.
+- **Summary:** Added a digest-pinned BuildKit frontend and multi-stage image whose default production build fails closed, an unprivileged Caddy runtime with its unnecessary low-port file capability removed, exact security/cache behavior with disabled access logs, content-aware internal health, two explicitly named Compose networks with no host ports, a fixed-order tunnel template and validated renderer, and strict scripts that preserve verified image state and restore failed candidate or rollback attempts without server-side builds. Documented only the approved sanitized host snapshot, both multi-platform and x86_64 image digests, recovery boundaries, and unresolved launch gates.
+- **Files Changed:** `ops/Dockerfile`, `ops/Caddyfile`, `ops/compose.yml`, `ops/cloudflared/config.yml.example`, `ops/scripts/*.sh`, `tests/security/opsConfig.test.ts`, `tests/fixtures/ops/*`, `docs/deployment-runbook.md`, `docs/rollback-runbook.md`, `docs/phase-0-environment-decisions.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; security TDD RED 16 initial failures plus focused capability/cache/input/state failures; GREEN 22/22 security tests; unchanged 222/222 content tests; typecheck and lint passed; Compose config and cloudflared ingress validated; explicit fixture image build and hardened container smoke passed with exact CSP/cache/health behavior; default production image build failed at the expected absent-approved-corpus gate.
+- **Follow-ups:** Production/public launch remains blocked until a genuine approved image and corpus, dedicated domain/tunnel, provider-log/firewall/host decisions, SBOM and scan evidence, unchanged-neighbour proof, live deployment and rollback rehearsal, and every independent governance, accessibility, cultural, rights, security, and physical-QR gate has evidence. No live system was contacted or changed.
+
+## 2026-07-13 — Delivery-control review hardening
+
+**Raouf:**
+
+- **Scope:** Independent review fixes for immutable production activation, cloudflared file ownership, bounded restoration, exact runtime isolation, public release/header/cache verification, and health/state safety.
+- **Summary:** Required production labels plus production-eligible release bytes, fixed the tunnel-file ownership contract so mode-`0400` UID/GID `65532:65532` files do not require operator read permission, verified exact image IDs/repository digests and complete runtime hardening for both containers, and made failed deploy/rollback restoration stop the DIVAN stack. Public verification now uses HTTPS-only bounded requests, reconciles release/content/manifest identity and hashes, checks exact browser headers and cache policies, and proves both hashed and unhashed missing paths stay no-store 404s. Caddy grants immutable caching only when a matching content-addressed file exists.
+- **Files Changed:** `ops/Caddyfile`, `ops/compose.yml`, `ops/scripts/container-health.sh`, `ops/scripts/deploy.sh`, `ops/scripts/lib.sh`, `ops/scripts/render-tunnel-config.sh`, `ops/scripts/rollback.sh`, `ops/scripts/verify.sh`, `tests/security/opsConfig.test.ts`, `docs/deployment-runbook.md`, `docs/rollback-runbook.md`, `docs/phase-0-environment-decisions.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; two meaningful RED rounds failed 3/32 tests each; final operations tests passed 32/32 and content tests 222/222; typecheck, lint, fixture build/dist verification, Bash/POSIX syntax, diff hygiene, Compose config, and Caddy validation passed. The fixture image was rebuilt and rejected by production health with exit 1. Both package and Docker default production builds failed with the exact missing-approved-corpus blocker. Full healthy-image runtime smoke is deferred only until these ops changes are integrated with the already completed application build that supplies `index.html`.
+- **Follow-ups:** Run the definitive local hardened-container/header smoke after integration. Production and public launch remain blocked by authentic corpus/rights/reviews, domain/tunnel/provider-log decisions, host/firewall and unchanged-neighbour evidence, SBOM/scans, live rollback rehearsal, accessibility/device/governance approval, and physical-QR testing.
+
+## 2026-07-13 — Fail-closed activation and runtime release binding
+
+**Raouf:**
+
+- **Scope:** Critical activation/restoration error handling and exact mount, network, tmpfs, and public-release runtime verification.
+- **Summary:** Moved restore-image pull/label/digest validation ahead of activation and replaced scattered post-failure stops with an armed exit/signal handler that remains active until a candidate or restoration is fully verified. Exact runtime checks now reject swapped tunnel source files, any web bind/volume, tmpfs drift, wrong network driver/internal/role/ownership state, and unrelated network members. Public verification compares fetched `release.json` with the exact running container's `/srv/release.json` identity and SHA byte for byte.
+- **Files Changed:** `ops/compose.yml`, `ops/scripts/deploy.sh`, `ops/scripts/lib.sh`, `ops/scripts/rollback.sh`, `ops/scripts/verify.sh`, `tests/security/opsConfig.test.ts`, `tests/fixtures/ops/mock-bin/docker`, `tests/fixtures/ops/mock-bin/stat`, `docs/deployment-runbook.md`, `docs/rollback-runbook.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED 8/43; GREEN security 43/43 with mocked deploy/rollback prerequisite and verification failures plus isolation/release mismatch negatives; content 222/222; typecheck, lint, fixture build/dist verification, Bash/POSIX syntax, diff check, Compose rendering, Caddy validation, and the expected production-package blocker passed.
+- **Follow-ups:** Re-run the healthy hardened-container and public delivery smoke on the integrated application branch. All authentic content, governance, accessibility, live infrastructure, provider logging, host isolation, security scanning, rollback rehearsal, and physical-QR gates remain closed.
+## 2026-07-13 — Accessibility hardening and browser evidence
+
+**Raouf:**
+
+- **Scope:** B5 semantic flow, focus management, reduced-motion precedence, reflow, live status, audio resilience, and accessibility automation.
+- **Summary:** Added narrow accessibility focus/motion helpers and focused shell corrections for predictable scene and Back focus, a useful skip link, one active landmark/heading flow, stored-versus-system motion behavior, two-tone focus, 44-by-44 targets, and unconstrained 320-pixel/text-spacing reflow. Added jsdom axe coverage for every core and blocking-error scene plus deterministic Chromium keyboard, browser-history, reflow, motion, skip, audio-failure, and browser-axe checks using only the conspicuous non-production fixture release.
+- **Files Changed:** `src/app/App.tsx`, `src/app/ErrorBoundary.tsx`, `src/app/core.css`, `src/components/SkipLink.tsx`, `src/scenes/*.tsx`, `src/lib/accessibility/*.ts`, `tests/accessibility/*.ts*`, `tests/e2e/accessibility*.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; resumed TDD GREEN accessibility tests 16/16, component tests 39/39, unit tests 38/38, TypeScript and ESLint passed; real Chromium Playwright checks passed 2/2. Automated results are bounded evidence and are not a WCAG-conformance claim.
+- **Follow-ups:** Manual VoiceOver/TalkBack, Persian-pronunciation, actual-device/browser, 200-percent zoom, contrast, focus-order, and unfinished context-navigation evidence remain launch blockers alongside every non-accessibility public-launch gate.
+
+## 2026-07-13 — Accessibility review fixes
+
+**Raouf:**
+
+- **Scope:** Reduced-motion rendering, blocking-error focus, and deterministic default E2E setup.
+- **Summary:** Made reduced reveal motion visibly interpolate opacity from zero to one over 120 ms before result mounting, without changing the full-motion path; moved focus to the mounted error heading when an invalid draw or random-provider exception blocks the experience; and made the default Playwright command build fixture release data before running only the accessibility spec from a clean checkout.
+- **Files Changed:** `src/app/App.tsx`, `src/app/core.css`, `src/scenes/RevealScene.tsx`, `tests/accessibility/appAccessibility.test.tsx`, `tests/accessibility/styles.test.ts`, `tests/components/failures.test.tsx`, `tests/e2e/accessibility.playwright.config.ts`, `tests/e2e/accessibility.spec.ts`, `playwright.config.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED reproduced the non-rendering transition and both body-focus failures; GREEN focused tests 25/25, accessibility 18/18, components 41/41, unit 38/38, TypeScript and ESLint passed. The default E2E command listed exactly two tests in one file, Chromium passed 2/2, and a clean-dist rerun rebuilt fixture release output before passing 2/2 again.
+- **Follow-ups:** Automated checks remain bounded evidence, not WCAG conformance; all manual accessibility and independent public-launch gates remain blocked pending reviewed evidence.
+
+## 2026-07-13 — Stabilize skip availability timing
+
+**Raouf:**
+
+- **Scope:** B5 skip-control timing margin and browser measurement.
+- **Summary:** Reduced skip-control availability from 250 ms to 200 ms, preserving the design's within-300-ms requirement while adding scheduling margin. Updated deterministic tests to enforce the 199/200 ms boundary and Chromium coverage to measure elapsed time from the actual DOM activation event instead of relying on a timeout equal to the requirement.
+- **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `tests/e2e/accessibility.spec.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED reproduced absence at 200 ms under the old delay; GREEN component tests 41/41 twice, accessibility tests 18/18 twice, and corrected Chromium tests 2/2 twice with measured skip availability at most 300 ms. Strict TypeScript and ESLint passed.
+- **Follow-ups:** This change supplies automated timing evidence only; manual accessibility and every independent public-launch gate remain unchanged and blocked.
+
+## 2026-07-13 — Increase skip timing margin under load
+
+**Raouf:**
+
+- **Scope:** Final B5 concurrent-load skip timing correction.
+- **Summary:** Reduced skip availability from 200 ms to 100 ms after concurrent execution reproduced a browser-visible result beyond 300 ms. Updated the deterministic boundary to 99/100 ms and retained the unchanged actual-DOM elapsed assertion of at most 300 ms.
+- **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED failed at the 100 ms boundary under the prior setting; GREEN focused behavior passed, five consecutive Chromium runs passed 2/2 under concurrent load, components passed 41/41, accessibility passed 18/18, and TypeScript plus ESLint passed.
+- **Follow-ups:** Manual accessibility evidence and all independent production/public-launch gates remain unchanged and blocked.
+
+## 2026-07-13 — Align offline and production delivery contracts
+
+**Raouf:**
+
+- **Scope:** Exact offline recovery delivery, production Docker compiler inputs, and schema-parity immutable caching.
+- **Summary:** Served `/offline.html` as its own verified static file with no-cache and noindex headers instead of rewriting it to `index.html`; retained `/offline` as the SPA route; aligned Caddy's existing-file immutable matcher with all build-valid content-addressed manifests, Vite assets, and nested audio/font/image/icon paths; and exposed only the public production compiler inputs as explicit Docker arguments. The deployment runbook now provides the complete approved production command and labels every value as public provenance while preserving the expected no-argument fail-closed build.
+- **Files Changed:** `ops/Caddyfile`, `ops/Dockerfile`, `docs/deployment-runbook.md`, `tests/security/opsConfig.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** TDD RED 3/46 became GREEN 46/46; content 234/234, TypeScript, ESLint, shell syntax, diff hygiene, pinned-Caddy validation, and Compose rendering passed. The fixture image built and ran locally with no network or host port, retained its fixture label/flags, and was rejected by production health; the default Docker production build retained the exact missing-approved-corpus failure.
+- **Follow-ups:** Perform the final recovery-file byte/header smoke after B4 integration. Production and public launch remain blocked by authentic content and reviews, explicit approved build values, immutable registry evidence, external governance/accessibility/security gates, live isolated deployment and rollback proof, and physical Open Day testing.
+## 2026-07-13 — Atomic offline release core
+
+**Raouf:**
+
+- **Scope:** Browser-safe B4 release verification, candidate cache staging, deferred activation, coherent runtime routing, service-worker client events, web manifest, and offline recovery document.
+- **Summary:** Implemented strict canonical descriptor, full corpus, item-hash, asset-manifest, and corpus/audio joins without importing Node-only content code. Required assets are status/length/SHA-verified through bounded reads and staged under one release ID; the ready marker is written last; failures remove only the candidate; one atomic pointer retains active plus the immediately previous complete release. Navigation cannot mix release HTML, cache lookups never search another release, health and worker paths have no cached fallback, all-audio precaching is rejected, and optional audio caching requires a direct browser audio request. Client failures remain nonblocking and sanitized; the local-only manifest and semantic recovery page make no remote or unapproved University-brand claim.
+- **Files Changed:** `src-sw/cacheTypes.ts`, `src-sw/integrity.ts`, `src-sw/schemas.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `public/manifest.webmanifest`, `public/offline.html`, `tests/offline/*.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; RED captured the three absent worker/client suites before implementation; GREEN offline 34/34, inherited content 234/234, strict TypeScript, and ESLint all passed.
+- **Follow-ups:** Bundle and register the reviewed worker in the root build, then prove the assembled distribution and real HTTPS/browser/device install, warm-offline, timeout, failed-update, refresh, storage, audio, and rollback paths. Production content, rights/reviews, governance, deployment, and physical-event gates remain independently blocked.
+
+## 2026-07-13 — Offline-core review fixes
+
+**Raouf:**
+
+- **Scope:** Exact activation targets, rollback retention, compressed responses, worker statuses, and lifecycle tests.
+- **Summary:** Added release IDs to verified worker statuses and activation messages, activated only the requested ready release including the retained rollback release, emitted and consumed `activating`, and prevented active status after a failed target. Preserved active/previous caches when a release ID is reused incoherently. Accepted decoded bodies whose compressed wire length differs from manifest bytes, kept decoded size/SHA verification, removed stale transfer/encoding headers from reconstructed responses, and added direct install/message/fetch worker event tests.
+- **Files Changed:** `src-sw/integrity.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/sw-client/register.ts`, `tests/offline/client.test.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/serviceWorker.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; seven behavior-specific RED failures became GREEN offline 40/40; inherited content 234/234, strict TypeScript, and ESLint passed.
+- **Follow-ups:** Complete root bundling/registration and real HTTPS browser/device lifecycle evidence before any offline or public-launch readiness claim.
+
+### 2026-07-13 (Australia/Sydney) — complete offline integration and lifecycle evidence
+
+**Raouf:**
+
+- **Scope:** B4 fixed-worker build integration, exact pending-release activation, secure client registration, accessible update control, coherent first install/update/rollback behavior, and real-browser outage evidence.
+- **Summary:** The release builder now emits one fixed classic-IIFE `service-worker.js` plus the reviewed manifest and script-free recovery page, requires all four fixed browser assets in the signed manifest, and stages only exact HTTP 200 decoded bodies. A ready release persists one exact pending target; only a real `mode=navigate` request or explicit matching waiting-worker action can activate it, while scripted HTML-accepting fetches, stale later-built caches, partial responses, failed pointer writes, and failed installs cannot replace the active release. First install bootstraps the exact verified candidate, later activation retains one rollback release, typed release-matched statuses register only after browser release verification, and URL replacement is bound to the exact waiting worker reaching `activated` with retry/redundancy/timeout cleanup. Offline-ready copy is announced only for the exact active verified release.
+- **Files Changed:** `scripts/build.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, `src/app/App.tsx`, `src/lib/content/release.ts`, `src/sw-client/register.ts`, `tests/accessibility/appAccessibility.test.tsx`, `tests/components/failures.test.tsx`, `tests/components/offlineIntegration.test.tsx`, `tests/content/buildRelease.test.ts`, `tests/content/release.test.ts`, `tests/e2e/accessibility.playwright.config.ts`, `tests/e2e/offline-server.ts`, `tests/e2e/offline.spec.ts`, `tests/offline/*.ts`, `vitest.config.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, meaningful RED covered missing fixed outputs, pre-verification registration, insecure registration, implicit/stale activation, scripted-fetch misclassification, HTTP 206 reaching CacheStorage, first-install pointer absence, activation-listener accumulation, and Playwright specs leaking into Vitest. GREEN passed all 426 Vitest tests across 27 files, including 49 offline and 235 content tests; strict TypeScript and zero-warning ESLint passed; fixture build and `verify:dist` passed. Chromium Playwright passed all 3 tests, with the offline test proving install/control, compressed-body staging, no audio precache, warm-offline reload, network-only `/healthz`, exact clean-navigation update, failed-update retention, explicit waiting-worker activation, controller-driven navigation, and rollback.
+- **Follow-ups:** `pnpm verify:privacy` remains an inherited external blocker because the referenced B6B `scripts/verify-privacy.ts` is absent; it was not fabricated in B4. Keep Safari, Firefox, Edge, iOS, Android, storage-pressure/eviction, actual HTTPS/domain, production corpus/rights, governance, deployment, rollback rehearsal, accessibility/device, and physical-QR gates blocked until genuine evidence exists. No live system, secret, DNS, firewall, registry, or production content was changed by this slice.
+
+### 2026-07-13 (Australia/Sydney) — committed activation maintenance closure
+
+**Raouf:**
+
+- **Scope:** B4 committed-release cleanup semantics and exact navigation response acceptance.
+- **Summary:** Made the atomic active-pointer write the final activation commit boundary. Pending-marker and stale-cache cleanup now run as non-fatal, idempotent maintenance; a failed marker deletion leaves the candidate intact and an explicit same-target retry clears it before stale caches are considered. Navigation accepts only an exact HTTP 200 response for the verified running release, so matching partial-content responses fall back to the active cached shell.
+- **Files Changed:** `src-sw/releaseManager.ts`, `tests/offline/releaseManager.test.ts`, `tests/offline/runtimeStrategies.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0, meaningful RED reproduced an activation reported as failed after its pointer had committed and an HTTP 206 navigation returned as live content. GREEN focused release/runtime tests passed 38/38, offline tests passed 52/52, and the full Vitest suite passed 429/429 across 27 files, including stale-cache deletion failure and pending-marker deletion retry coverage. Strict TypeScript, zero-warning ESLint, fixture build/dist verification, three Chromium Playwright flows, diff hygiene, and the staged gitleaks scan passed.
+- **Follow-ups:** Retain the existing real-browser, device, storage-pressure, production-content, rights, governance, deployment, accessibility, and physical-QR launch blockers until genuine evidence exists.
+
+## 2026-07-13 — Version service workers by release content
+
+**Raouf:**
+
+- **Scope:** Service-worker byte identity and genuine release-update evidence.
+- **Summary:** Embedded the exact public release ID and canonical public-corpus SHA-256 in every fixed worker build, rejected install-time release mismatches, and replaced synthetic E2E worker comments with genuine Vite builds for each update and rollback variant. Content changes now trigger browser worker installation even when source code is unchanged or a release ID is mistakenly reused.
+- **Files Changed:** `scripts/build.ts`, `src-sw/releaseManager.ts`, `src-sw/service-worker.ts`, focused content/offline/component/E2E tests, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** RED reproduced identical worker output; GREEN focused tests passed 85/85, typecheck/lint passed, fixture build/dist verification passed, emitted identities were verified, and Chromium offline lifecycle passed 1/1 with genuine versioned workers.
+- **Follow-ups:** Run the final integrated gauntlet and independent re-review; all external launch gates remain closed.
+## 2026-07-13 — Public source governance
+
+**Raouf:**
+
+- **Scope:** Public repository orientation, source-rights boundary, security reporting, third-party font notices, and removal of deployment-host detail from public documentation.
+- **Summary:** Added an honest work-in-progress README, GitHub private vulnerability reporting policy, exact installed OFL 1.1 font notices, a Node runtime pin, repository metadata, and repository-wide ownership. Kept the repository all rights reserved with no open-source licence grant, replaced host discovery with private evidence gates, and renamed the synthetic operations sentinel so it cannot be mistaken for a credential.
+- **Files Changed:** `README.md`, `SECURITY.md`, `THIRD_PARTY_NOTICES.md`, `.node-version`, `.github/CODEOWNERS`, `package.json`, `docs/phase-0-environment-decisions.md`, `tests/fixtures/ops/*`, `tests/security/opsConfig.test.ts`, `tests/security/publicReadiness.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Under Node 22.16.0 and pnpm 10.33.0, TDD RED first produced six missing-public-readiness failures and a separate preview-command failure; GREEN passed the focused suite 6/6, security tests 49/49, content tests 234/234, strict TypeScript, zero-warning ESLint, and diff/prose hygiene. The frozen lockfile installed from the offline pnpm store without changing dependency versions. Gitleaks found no leaks in the exact staged snapshot or the 59-commit all-history scan.
+- **Follow-ups:** Before any public push, rewrite non-public author and committer email metadata in repository history and rescan the rewritten history; keep GitHub private vulnerability reporting disabled until the owner deliberately enables it. Production content, rights, reviews, live infrastructure, accessibility evidence, and every other launch gate remain blocked.
