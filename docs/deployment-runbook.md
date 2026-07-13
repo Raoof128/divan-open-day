@@ -20,6 +20,41 @@ Use a clean tagged checkout and exact lockfile. The default image build is inten
 docker build -f ops/Dockerfile -t divan-open-day:production .
 ```
 
+The no-argument command above must continue to fail closed whenever approved
+content or any required public release input is absent. Once the corpus and all
+independent approvals exist, set the non-secret, evidence-backed build inputs:
+
+```bash
+DIVAN_PUBLIC_ORIGIN='https://approved-hostname.example'
+DIVAN_RELEASE_ID='approved-release-id'
+DIVAN_MIN_HAFEZ_COUNT='24'
+DIVAN_MIN_RUMI_COUNT='16'
+DIVAN_BRANDING_MODE='society_only'
+DIVAN_UNIVERSITY_APPROVAL_ID=''
+SOURCE_DATE_EPOCH='1783814400'
+```
+
+These values become public build provenance. Never pass credentials, tokens,
+host addresses, private permission records, or tunnel identity as build args.
+Build the approved production image with every compiler input explicit:
+
+```bash
+docker build \
+  --build-arg DIVAN_PUBLIC_ORIGIN="$DIVAN_PUBLIC_ORIGIN" \
+  --build-arg DIVAN_RELEASE_ID="$DIVAN_RELEASE_ID" \
+  --build-arg DIVAN_MIN_HAFEZ_COUNT="$DIVAN_MIN_HAFEZ_COUNT" \
+  --build-arg DIVAN_MIN_RUMI_COUNT="$DIVAN_MIN_RUMI_COUNT" \
+  --build-arg DIVAN_BRANDING_MODE="$DIVAN_BRANDING_MODE" \
+  --build-arg DIVAN_UNIVERSITY_APPROVAL_ID="$DIVAN_UNIVERSITY_APPROVAL_ID" \
+  --build-arg SOURCE_DATE_EPOCH="$SOURCE_DATE_EPOCH" \
+  -f ops/Dockerfile \
+  -t divan-open-day:production .
+```
+
+The example timestamp and identities above are syntax-only, not approval or
+launch evidence. Use `university_approved` only with a reviewed non-secret
+approval reference; otherwise retain `society_only` and an empty approval ID.
+
 The only local fixture build is an explicit non-production action. Never push or deploy it:
 
 ```bash

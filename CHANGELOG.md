@@ -187,3 +187,13 @@
 - **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; RED failed at the 100 ms boundary under the prior setting; GREEN focused behavior passed, five consecutive Chromium runs passed 2/2 under concurrent load, components passed 41/41, accessibility passed 18/18, and TypeScript plus ESLint passed.
 - **Follow-ups:** Manual accessibility evidence and all independent production/public-launch gates remain unchanged and blocked.
+
+## 2026-07-13 — Align offline and production delivery contracts
+
+**Raouf:**
+
+- **Scope:** Exact offline recovery delivery, production Docker compiler inputs, and schema-parity immutable caching.
+- **Summary:** Served `/offline.html` as its own verified static file with no-cache and noindex headers instead of rewriting it to `index.html`; retained `/offline` as the SPA route; aligned Caddy's existing-file immutable matcher with all build-valid content-addressed manifests, Vite assets, and nested audio/font/image/icon paths; and exposed only the public production compiler inputs as explicit Docker arguments. The deployment runbook now provides the complete approved production command and labels every value as public provenance while preserving the expected no-argument fail-closed build.
+- **Files Changed:** `ops/Caddyfile`, `ops/Dockerfile`, `docs/deployment-runbook.md`, `tests/security/opsConfig.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** TDD RED 3/46 became GREEN 46/46; content 234/234, TypeScript, ESLint, shell syntax, diff hygiene, pinned-Caddy validation, and Compose rendering passed. The fixture image built and ran locally with no network or host port, retained its fixture label/flags, and was rejected by production health; the default Docker production build retained the exact missing-approved-corpus failure.
+- **Follow-ups:** Perform the final recovery-file byte/header smoke after B4 integration. Production and public launch remain blocked by authentic content and reviews, explicit approved build values, immutable registry evidence, external governance/accessibility/security gates, live isolated deployment and rollback proof, and physical Open Day testing.

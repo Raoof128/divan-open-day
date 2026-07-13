@@ -215,3 +215,13 @@
 - **Files Changed:** `src/app/App.tsx`, `tests/components/appFlow.test.tsx`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Under Node 22.16.0, meaningful RED reproduced absence at the new 100 ms boundary with the prior product setting; focused GREEN passed at 99/100 ms. Five consecutive measured Chromium runs passed 2/2 under the active concurrent workload, followed by full component tests 41/41, accessibility tests 18/18, strict TypeScript, and zero-warning ESLint.
 - **Follow-ups:** This closes the automated skip-timing flake only; all manual accessibility and every independent production/public-launch gate remain unchanged and blocked pending reviewed evidence.
+
+### 2026-07-13 (Australia/Sydney) — offline delivery integration fixes
+
+**Raouf:**
+
+- **Scope:** B6 static recovery routing, production image build inputs, and immutable asset-cache parity with the release schema.
+- **Summary:** Stopped Caddy from rewriting the integrity-checked `/offline.html` recovery artefact to the SPA, assigned the exact file no-cache and noindex handling while retaining `/offline` as an application route, and expanded immutable matching to the complete verified release-path contract including nested audio/font/image/icon paths and underscore or embedded digest prefixes. Added only the seven non-secret production compiler inputs as Docker build arguments and documented the exact explicit approved-image command without weakening the no-argument production gate or fixture isolation.
+- **Files Changed:** `ops/Caddyfile`, `ops/Dockerfile`, `docs/deployment-runbook.md`, `tests/security/opsConfig.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; meaningful RED failed exactly 3/46 ops tests for the three integration defects, focused GREEN passed 46/46, content passed 234/234, strict TypeScript and zero-warning ESLint passed, Bash/POSIX syntax and diff hygiene passed, pinned Caddy accepted the configuration, Compose rendered without mutation, the explicit fixture image built and passed an isolated no-egress/no-host-port smoke while production health rejected it, and the default Docker production build failed at the exact absent-approved-corpus gate.
+- **Follow-ups:** Re-run the `/offline.html` byte/header smoke after the reviewed B4 artefact is integrated; no production content, image, hostname, tunnel, provider-log decision, live deployment, rollback rehearsal, external approval, or physical-event evidence was created, so every corresponding launch gate remains blocked.

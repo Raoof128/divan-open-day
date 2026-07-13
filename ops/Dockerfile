@@ -14,6 +14,15 @@ RUN corepack enable \
 COPY . .
 
 ARG DIVAN_BUILD_MODE
+# These are public, reproducible release inputs. Secrets and infrastructure
+# credentials must never be accepted as image build arguments.
+ARG DIVAN_PUBLIC_ORIGIN
+ARG DIVAN_RELEASE_ID
+ARG DIVAN_MIN_HAFEZ_COUNT
+ARG DIVAN_MIN_RUMI_COUNT
+ARG DIVAN_BRANDING_MODE
+ARG DIVAN_UNIVERSITY_APPROVAL_ID
+ARG SOURCE_DATE_EPOCH
 RUN case "$DIVAN_BUILD_MODE" in \
       production) pnpm build:production ;; \
       fixture) pnpm build:fixture ;; \

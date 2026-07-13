@@ -84,6 +84,34 @@ describe('production image contract', () => {
     expect(dockerfile).toContain('pnpm verify:dist');
   });
 
+  test('accepts every validated non-secret production build input without defaults', () => {
+    const dockerfile = readProjectFile('ops/Dockerfile');
+    const runbook = readProjectFile('docs/deployment-runbook.md');
+    const productionInputs = [
+      'DIVAN_PUBLIC_ORIGIN',
+      'DIVAN_RELEASE_ID',
+      'DIVAN_MIN_HAFEZ_COUNT',
+      'DIVAN_MIN_RUMI_COUNT',
+      'DIVAN_BRANDING_MODE',
+      'DIVAN_UNIVERSITY_APPROVAL_ID',
+      'SOURCE_DATE_EPOCH',
+    ] as const;
+
+    for (const input of productionInputs) {
+      expect(dockerfile).toMatch(new RegExp(`^ARG ${input}$`, 'mu'));
+      expect(runbook).toContain(`--build-arg ${input}="$${input}"`);
+    }
+    expect(dockerfile).not.toMatch(
+      /^ARG .*(?:PASSWORD|SECRET|TOKEN|DROPLET|SSH|TUNNEL)/gimu,
+    );
+    expect(runbook).toContain(
+      'docker build -f ops/Dockerfile -t divan-open-day:production .',
+    );
+    expect(runbook).toContain(
+      'The no-argument command above must continue to fail closed',
+    );
+  });
+
   test('copies only verified public output into an unprivileged Caddy runtime', () => {
     const dockerfile = readProjectFile('ops/Dockerfile');
 
@@ -162,6 +190,47 @@ describe('static origin delivery contract', () => {
     expect(caddyfile).toMatch(/@documents[\s\S]*rewrite \* \/index\.html/su);
     expect(caddyfile).toMatch(/@staticAssets[\s\S]*file_server/su);
     expect(caddyfile).not.toMatch(/browse/u);
+  });
+
+  test('serves the offline recovery file exactly without rewriting it to the SPA', () => {
+    const caddyfile = readProjectFile('ops/Caddyfile');
+    const staticPaths = caddyfile.match(/@staticAssets path ([^\n]+)/u)?.[1] ?? '';
+    const documentPaths = caddyfile.match(/@documents path ([^\n]+)/u)?.[1] ?? '';
+    const noCachePaths = caddyfile.match(/@noCacheFiles \{\s*path ([^\n]+)/u)?.[1] ?? '';
+    const technicalPaths = caddyfile.match(/@technical path ([^\n]+)/u)?.[1] ?? '';
+
+    expect(staticPaths.split(/\s+/u)).toContain('/offline.html');
+    expect(documentPaths.split(/\s+/u)).not.toContain('/offline.html');
+    expect(documentPaths.split(/\s+/u)).toContain('/offline');
+    expect(noCachePaths.split(/\s+/u)).toContain('/offline.html');
+    expect(technicalPaths.split(/\s+/u)).toContain('/offline.html');
+  });
+
+  test('immutably caches every schema-valid content-addressed asset path only', () => {
+    const caddyfile = readProjectFile('ops/Caddyfile');
+    const source = caddyfile.match(/path_regexp immutable ([^\n]+)/u)?.[1];
+    expect(source).toBeDefined();
+    const immutable = new RegExp(source!);
+
+    expect([
+      `/content/${'a'.repeat(64)}.json`,
+      `/assets/${'b'.repeat(64)}.json`,
+      '/assets/main-0123456789abcdef.js',
+      '/audio/poets/hafez/reading_sample_0123abcd.mp3',
+      '/audio/0123abcd-opening.ogg',
+      '/fonts/persian/display_font0123abcd.woff2',
+      '/images/manuscripts/page_0123abcd.webp',
+      '/icons/ui/_ornament-0123abcd.svg',
+    ].every((path) => immutable.test(path))).toBe(true);
+
+    expect([
+      '/assets/not-content-addressed.js',
+      '/audio/poets/reading.mp3',
+      '/audio/.hidden-0123abcd.mp3',
+      '/images/page-0123abcd.html',
+      `/content/${'a'.repeat(63)}.json`,
+      '/offline.html',
+    ].some((path) => immutable.test(path))).toBe(false);
   });
 });
 
