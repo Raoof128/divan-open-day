@@ -119,3 +119,12 @@
 - **Files Changed:** `scripts/verify-dist.ts`, `tests/content/buildRelease.test.ts`, `AGENT.md`, and `CHANGELOG.md`.
 - **Verification:** Node 22.16.0; two adversarial RED cases became GREEN 2/2; content 234/234, typecheck/lint, fixture build, and dist verification passed.
 - **Follow-ups:** Integrate only after final independent approval; retain every separate release and launch gate.
+## 2026-07-13 — Isolated production delivery controls
+
+**Raouf:**
+
+- **Scope:** B6 immutable container, static delivery headers, tunnel isolation, digest-only deployment/rollback, and operator documentation.
+- **Summary:** Added a digest-pinned BuildKit frontend and multi-stage image whose default production build fails closed, an unprivileged Caddy runtime with its unnecessary low-port file capability removed, exact security/cache behavior with disabled access logs, content-aware internal health, two explicitly named Compose networks with no host ports, a fixed-order tunnel template and validated renderer, and strict scripts that preserve verified image state and restore failed candidate or rollback attempts without server-side builds. Documented only the approved sanitized host snapshot, both multi-platform and x86_64 image digests, recovery boundaries, and unresolved launch gates.
+- **Files Changed:** `ops/Dockerfile`, `ops/Caddyfile`, `ops/compose.yml`, `ops/cloudflared/config.yml.example`, `ops/scripts/*.sh`, `tests/security/opsConfig.test.ts`, `tests/fixtures/ops/*`, `docs/deployment-runbook.md`, `docs/rollback-runbook.md`, `docs/phase-0-environment-decisions.md`, `AGENT.md`, and `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; security TDD RED 16 initial failures plus focused capability/cache/input/state failures; GREEN 22/22 security tests; unchanged 222/222 content tests; typecheck and lint passed; Compose config and cloudflared ingress validated; explicit fixture image build and hardened container smoke passed with exact CSP/cache/health behavior; default production image build failed at the expected absent-approved-corpus gate.
+- **Follow-ups:** Production/public launch remains blocked until a genuine approved image and corpus, dedicated domain/tunnel, provider-log/firewall/host decisions, SBOM and scan evidence, unchanged-neighbour proof, live deployment and rollback rehearsal, and every independent governance, accessibility, cultural, rights, security, and physical-QR gate has evidence. No live system was contacted or changed.

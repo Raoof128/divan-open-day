@@ -1,0 +1,148 @@
+# DIVAN deployment runbook
+
+Status: **operator procedure; not evidence that deployment occurred**. Run only after every content, governance, cultural, accessibility, security, domain, tunnel, provider-log, rollback, and physical-QR gate has an approved record.
+
+## Safety and ownership boundaries
+
+- Use a dedicated non-root sudo deployment identity with SSH key authentication. Password SSH and root SSH login must be disabled and verified before launch.
+- Treat Docker access as root-equivalent. Only the dedicated operator may own the deployment directory and evidence.
+- Keep DIVAN in its own deployment directory and Compose project. Never join an existing service's network, mount its volume, read its environment, reuse its route, or copy its credentials.
+- Provision the tunnel credentials outside Git with mode `0400`, owned by the deployment identity. The web container never receives a credential mount.
+- Back up the administrator SSH private key and the separate encrypted-backup recovery key material to an approved password manager before launch. The public repository intentionally omits local credential paths. Losing both the SSH key and its approved backup locks out remote administration; losing encrypted-backup key material makes those backups unrecoverable. A console password is emergency console access, not an SSH fallback.
+- Confirm automated host backups, monitoring, disk/memory alerts, MFA, security updates, and recovery ownership. A Droplet backup does not replace Git tag, lockfile, content approvals, registry digest, and verification evidence.
+- Never print or paste credential contents. Record only non-sensitive check results, release IDs, commit/tag, and immutable digests.
+
+## 1. Build and inspect off-host
+
+Use a clean tagged checkout and exact lockfile. The default image build is intentionally production-only and fails when an approved production corpus is absent:
+
+```bash
+docker build -f ops/Dockerfile -t divan-open-day:production .
+```
+
+The only local fixture build is an explicit non-production action. Never push or deploy it:
+
+```bash
+docker build --build-arg DIVAN_BUILD_MODE=fixture -f ops/Dockerfile -t divan-open-day:fixture .
+```
+
+Before registry publication, run all repository checks, generate an SBOM, scan dependencies and the final image, inspect the image labels, and prove the final filesystem contains no source, authoring records, source maps, Git data, credentials, or private evidence. Push only the approved production image and record the registry-returned digest.
+
+## 2. Provision release files
+
+Create the dedicated deployment layout with owner-only permissions. The exact host root is an operational decision; examples below use a neutral shell variable rather than a live path:
+
+```bash
+install -d -m 0700 "$DIVAN_DEPLOY_ROOT/runtime" "$DIVAN_DEPLOY_ROOT/state" "$DIVAN_DEPLOY_ROOT/evidence"
+install -m 0400 /secure/operator-source/tunnel.json "$DIVAN_DEPLOY_ROOT/runtime/tunnel.json"
+```
+
+Render the non-secret configuration from approved environment-provided identity values:
+
+```bash
+ops/scripts/render-tunnel-config.sh \
+  --hostname "$DIVAN_PUBLIC_HOSTNAME" \
+  --tunnel-id "$DIVAN_TUNNEL_ID" \
+  --output "$DIVAN_DEPLOY_ROOT/runtime/config.yml"
+```
+
+The renderer accepts only a lowercase DNS name and canonical UUID, writes mode `0600`, uses the fixed in-container credential path, denies public `/healthz` before the origin route, and retains a final 404 catch-all. Review the rendered file without recording its identity in public evidence.
+
+## 3. Preflight without mutation
+
+Set an immutable production image reference returned by the approved registry:
+
+```bash
+DIVAN_IMAGE='approved-registry.example/divan@sha256:<64-lowercase-hex>'
+DIVAN_CONFIG="$DIVAN_DEPLOY_ROOT/runtime/config.yml"
+DIVAN_CREDENTIALS="$DIVAN_DEPLOY_ROOT/runtime/tunnel.json"
+DIVAN_STATE="$DIVAN_DEPLOY_ROOT/state"
+DIVAN_ORIGIN='https://approved-hostname.example'
+```
+
+The values above are syntax examples, not usable identities. First exercise argument validation without Docker changes:
+
+```bash
+ops/scripts/preflight.sh \
+  --image "$DIVAN_IMAGE" \
+  --state-dir "$DIVAN_STATE" \
+  --config "$DIVAN_CONFIG" \
+  --credentials "$DIVAN_CREDENTIALS" \
+  --public-origin "$DIVAN_ORIGIN" \
+  --dry-run
+```
+
+Then run the real non-mutating preflight:
+
+```bash
+ops/scripts/preflight.sh \
+  --image "$DIVAN_IMAGE" \
+  --state-dir "$DIVAN_STATE" \
+  --config "$DIVAN_CONFIG" \
+  --credentials "$DIVAN_CREDENTIALS" \
+  --public-origin "$DIVAN_ORIGIN"
+```
+
+Separately record host version, capacity, firewall, Docker network, direct-IP, tunnel ownership, and neighbouring-service baselines. Stop if any baseline is unhealthy or DIVAN would share an existing network, volume, secret, or route.
+
+## 4. Activate an immutable candidate
+
+Preview the exact action:
+
+```bash
+ops/scripts/deploy.sh \
+  --image "$DIVAN_IMAGE" \
+  --state-dir "$DIVAN_STATE" \
+  --config "$DIVAN_CONFIG" \
+  --credentials "$DIVAN_CREDENTIALS" \
+  --public-origin "$DIVAN_ORIGIN" \
+  --dry-run
+```
+
+Activate only after approval:
+
+```bash
+ops/scripts/deploy.sh \
+  --image "$DIVAN_IMAGE" \
+  --state-dir "$DIVAN_STATE" \
+  --config "$DIVAN_CONFIG" \
+  --credentials "$DIVAN_CREDENTIALS" \
+  --public-origin "$DIVAN_ORIGIN"
+```
+
+The script rejects mutable references and unsafe paths, runs no server-side build, records the prior digest, pulls by digest, starts with `--no-build`, waits for health, verifies private isolation and public delivery, and restores the previous digest if candidate verification fails.
+
+## 5. Verification and evidence
+
+Run the verifier again as a separate operator step:
+
+```bash
+ops/scripts/verify.sh \
+  --image "$DIVAN_IMAGE" \
+  --state-dir "$DIVAN_STATE" \
+  --config "$DIVAN_CONFIG" \
+  --credentials "$DIVAN_CREDENTIALS" \
+  --public-origin "$DIVAN_ORIGIN"
+```
+
+Automated checks cover:
+
+- Compose rendering, two running containers, and private release health;
+- verified content checksum/count relationship inside the web container;
+- non-root user, read-only root, all capabilities dropped, exact network membership, and no host-published web port;
+- public `/healthz` returns 404;
+- public CSP, `nosniff`, and document cache headers.
+
+Operator evidence must additionally cover:
+
+- external port scan and direct-IP requests showing no application response;
+- immutable asset, release pointer, service-worker, manifest, and document cache rules at the edge;
+- CSP has no inline/third-party exceptions and no third-party request occurs;
+- no cookies, analytics, visitor identifiers, request-body logs, or static access logs;
+- Cloudflare and DigitalOcean logging fields/access/retention decision;
+- container CPU, memory, PID, tmpfs, security and network settings via `docker inspect`;
+- approved SBOM and vulnerability scans;
+- unchanged nginx, UFW, Docker networks, existing containers, and neighbouring-service health baselines;
+- public experience, warm/offline behavior, failed-update retention, accessibility matrix, and the release ID expected by the approved evidence pack.
+
+Do not claim any listed operator gate from repository tests. Preserve the previous immutable image and evidence until the event rollback window closes.
