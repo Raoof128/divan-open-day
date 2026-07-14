@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — complete the MIT licence (README alignment + binding tests)
+
+**Raouf:**
+
+- **Scope:** Finish the MIT licence added earlier today; the owner confirmed MIT is the intended position. The licence stays and the repository is made to agree with it. No product behaviour changed.
+- **Summary:** `176b360` shipped `LICENSE` + `"license": "MIT"` while `README.md` still said "All rights reserved. No licence is granted…", a position enforced by `tests/security/publicReadiness.test.ts:37`. The branch was red from that commit onward (535/536); the entry's "no code/tests affected" claim was false — only `format:check` had been run. README licence section rewritten: repository source code is **MIT**; the Persian poetry/translations, the four third-party source editions (Wikisource = CC BY-SA, attribution required), and the Society/University marks are **excluded from the grant**. The obsolete assertion is replaced by two stronger tests that bind `LICENSE` + `package.json` + `README.md` into a single coherent grant and hold the carve-out. Mutation-checked: removing the licence field, reinstating the old README wording, or deleting the carve-out each fail.
+- **Files Changed:** `README.md`, `tests/security/publicReadiness.test.ts`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, `pnpm check`; vitest 538/538. Recorded in `CHANGELOG.md`.
+- **Follow-ups:** MIT is scoped to this repository's own code. Poetry rights remain independent and outstanding: all four sources `status: pending`, no approved corpus, `build:production` fail-closed.
+
 ### 2026-07-14 (Australia/Sydney) — add MIT license
 
 **Raouf:**

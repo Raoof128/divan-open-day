@@ -105,9 +105,18 @@ and font acknowledgements appear in the
 
 ## Source availability and licence
 
-Repository-authored material is source-visible for review. All rights reserved.
-No licence is granted to copy, modify, redistribute, or deploy that material
-unless an authorised rights holder gives written permission. Third-party
-components remain under their own licences; publication of this repository
-does not change those terms. Persian Society names and marks are not licensed
-for reuse.
+Repository-authored source code is released under the MIT Licence — see
+[LICENSE](LICENSE). That grant covers this repository's own code only.
+
+It does not extend to, and no licence is granted for:
+
+- **Persian poetry, translations, and reflections.** No approved corpus exists
+  in this repository, and the four source editions are third-party works that
+  keep their own terms (for example, the Persian Wikisource transcriptions are
+  CC BY-SA and require attribution). Reusing them is a matter between you and
+  those rights holders.
+- **Persian Society names and marks**, and any University mark. These are not
+  licensed for reuse.
+
+Third-party components remain under their own licences; publication of this
+repository does not change those terms.

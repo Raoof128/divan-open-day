@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-14 — Complete the MIT licence: align README and bind the grant with tests
+
+**Raouf:**
+
+- **Scope:** Finish the MIT licence added earlier today. The licence stays; the repository is made to agree with it. No product behaviour change.
+- **Summary:** `176b360` added `LICENSE` + `"license": "MIT"` but left `README.md` stating the opposite ("All rights reserved. No licence is granted to copy, modify, redistribute, or deploy"). `tests/security/publicReadiness.test.ts:37` guards that position with `not.toHaveProperty('license')`, so the branch was **red from `176b360` onward** (535/536) — the licence entry's "no code/tests affected" claim was false, as only `format:check` was run. Rewrote the README licence section: repository-authored **source code is MIT**, while the Persian poetry/translations, the four third-party source editions (Wikisource transcriptions are CC BY-SA and need attribution), and Persian Society/University marks are explicitly **excluded from the grant**. Replaced the obsolete assertion with two stronger tests binding `LICENSE` + `package.json` + `README.md` into one coherent grant, and asserting the poetry/marks carve-out survives. Verified by mutation: dropping the `license` field, restoring the old README wording, or deleting the carve-out each fail the suite.
+- **Files Changed:** `README.md`, `tests/security/publicReadiness.test.ts`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, `pnpm check` — see footer. Vitest 538/538 (+2 net-new licence tests); the `publicReadiness` failure introduced by `176b360` is resolved without weakening any gate.
+- **Follow-ups:** MIT covers this repository's code only. Poetry-source rights are unaffected and independent — all four sources remain `status: pending`, no approved corpus exists, and `build:production` stays fail-closed.
+
 ## 2026-07-14 — Add MIT license
 
 **Raouf:**
