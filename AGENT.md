@@ -28,6 +28,15 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — git-ignore CLAUDE.md
+
+**Raouf:**
+
+- **Scope:** One line in `.gitignore`; no code or behaviour change.
+- **Summary:** `CLAUDE.md` declares itself git-ignored on line 3 but was never listed in `.gitignore`, so it stayed untracked and unignored. Now ignored, matching its own text.
+- **Files Changed:** `.gitignore`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `git check-ignore -v CLAUDE.md` → `.gitignore:36`.
+
 ### 2026-07-14 (Australia/Sydney) — approval-identity gate pinned
 
 **Raouf:**

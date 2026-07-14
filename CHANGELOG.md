@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-14 — Git-ignore CLAUDE.md, as it always claimed to be
+
+**Raouf:**
+
+- **Scope:** One line in `.gitignore`. No code, no behaviour, no content change.
+- **Summary:** `CLAUDE.md` states on line 3 that it is "**git-ignored** (local, not committed)", but it was never actually listed in `.gitignore` — so it sat untracked and unignored, contradicting itself and appearing in every `git status`. Ignored it, which is what the file said all along.
+- **Files Changed:** `.gitignore`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `git check-ignore -v CLAUDE.md` resolves to `.gitignore:36`; `git status` is clean but for the untracked audit screenshots, deliberately left alone.
+
 ## 2026-07-14 — Pin the approval-identity gate against the packet v1 defect
 
 **Raouf:**

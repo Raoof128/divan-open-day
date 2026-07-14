@@ -31,3 +31,6 @@ test-results/
 .DS_Store
 *.tsbuildinfo
 docs/evidence/runtime/
+
+# Local Claude Code working guidance; not shared project state (see CLAUDE.md line 3).
+CLAUDE.md
