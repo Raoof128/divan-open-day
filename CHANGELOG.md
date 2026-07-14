@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-14 — Pin the approval-identity gate against the packet v1 defect
+
+**Raouf:**
+
+- **Scope:** One regression test. No behaviour change — the identity requirement already held; it was simply unpinned.
+- **Summary:** Packet v1 accepted eight pairings with its `reviewer` field set to the empty string. An approval that names nobody is not an approval: there is no one to have been wrong, and nothing to revoke. `approvalRecordSchema.approved_by` already rejects it via the shared kebab-case identifier schema. Pinned against that concrete incident so it cannot be relaxed quietly.
+- **Files Changed:** `tests/content/reviewIdentityGate.test.ts` (new), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `pnpm test` 588/588 (47 files; +19 net-new across today's alignment repair), typecheck 0, lint 0. `pnpm build:production` still fails closed ("no approved production corpus exists in content-private").
+- **Known limitation:** A single-character identity ("a") is accepted, and the test says so rather than asserting otherwise. The shared `identifierSchema` enforces lowercase kebab-case but no minimum length, and it backs every registry ID, so tightening it for approvers alone belongs in its own change rather than smuggled into a test.
+
 ## 2026-07-14 — Verse-only inventory and source-aware alignment (phases 2-3)
 
 **Raouf:**

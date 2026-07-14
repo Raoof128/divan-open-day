@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — approval-identity gate pinned
+
+**Raouf:**
+
+- **Scope:** One regression test; no behaviour change.
+- **Summary:** Packet v1 accepted eight pairings with an empty `reviewer`. `approved_by` already rejects that; now pinned against the incident.
+- **Files Changed:** `tests/content/reviewIdentityGate.test.ts` (new), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm test` 588/588 (+19 today), typecheck 0, lint 0; `build:production` still fails closed.
+- **Known limitation:** A 1-char identity passes; the shared identifierSchema has no min length and backs every registry ID. Stated in the test, not papered over.
+
 ### 2026-07-14 (Australia/Sydney) — verse-only inventory + source-aware alignment (phases 2-3)
 
 **Raouf:**
