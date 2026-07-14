@@ -3,9 +3,14 @@
   "method": "transliterated proper-noun / recurring-image bilingual matching (weak ranking hint only)",
   "staging": {
     "hafez_fa_blocks": 1816,
-    "rumi_fa_sections": 85,
+    "rumi_fa_sections": 971,
     "bell_en_candidates": 33,
     "whinfield_en_blocks": 397
+  },
+  "masnavi_full_ingest": {
+    "sections_cached": 1001,
+    "verse_sections": 971,
+    "beyt_lines": 51614
   },
   "candidates": {
     "hafez": {
@@ -18,9 +23,9 @@
       }
     },
     "rumi": {
-      "count": 255,
-      "withSignal": 246,
-      "maxScore": 10,
+      "count": 2913,
+      "withSignal": 2874,
+      "maxScore": 17,
       "generatedFrom": {
         "persian": "rumi-fa.jsonl",
         "english": "rumi-whinfield-en.jsonl"
