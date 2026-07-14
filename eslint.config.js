@@ -7,6 +7,8 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   {
     ignores: [
+      // Local editor/tooling state, git-ignored and outside the TS project.
+      '.remember/**',
       '.tmp-tests/**',
       '.worktrees/**',
       'coverage/**',

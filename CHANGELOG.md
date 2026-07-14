@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-14 — English block classification: stop prose arguments becoming poetry
+
+**Raouf:**
+
+- **Scope:** Phase 1 of the alignment-pipeline repair mandated by the preflight audit. Classification only — no pairing, verdict, approval, or corpus change. The human approval gate is untouched and stays required.
+- **Summary:** The 2026-07-14 preflight found eight pairings that attached Persian verse to Whinfield's **prose story argument**, all eight accepted by a human reviewer. Root cause was the pairing unit, not reviewer inattention: the English side was the whole story-body block, whose first line is the argument and whose remaining lines are the verse — which the review packet never displayed. Whinfield's EPUB is flat (`<br/>`-separated, one `<p>` per story), so no markup distinguishes argument from verse; the split has to be structural. Added `classify-english-blocks.ts`: a closed enum (`verse_translation`, `prose_summary`, `commentary`, `heading`, `footnote`, `editorial_apparatus`, `uncertain`) with only `verse_translation` pairable. Signals are structural, never thematic — prose is never re-read as verse because it discusses the same story. Thresholds are measured, not guessed: across 8,004 extracted lines the distribution is strongly bimodal (verse p50 47, p90 56 characters; prose mean 571), with an empty band between ~70 and ~150. `NOTES:` is handled positionally, so footnote bodies short enough to look like verse are still apparatus. Section titles are peeled off the front of a verse run by terminal punctuation: of the 127 short lines directly following an argument, 103 end in a full stop and are titles, while verse landing there ends mid-clause ("Second causes only operate in subordination to,").
+- **Result:** Over the live extraction — 643 segments: 108 `verse_translation` (6,983 verse lines, 93 carrying a section title), 85 `prose_summary`, 184 `heading`, 86 `editorial_apparatus`, 81 `footnote`, 44 `commentary`, 55 `uncertain`. Whinfield's genuine verse, never previously offered to the reviewer, is now the only pairable English.
+- **Files Changed:** `scripts/poetry/classify-english-blocks.ts` (new), `tests/content/englishBlockClassification.test.ts` (new), `eslint.config.js`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0. `pnpm vitest run tests/content` 338/338 (20 files; +7 net-new), `pnpm typecheck` 0, `pnpm lint` 0. Regression tests pin all eight defective English blocks as `prose_summary` and unpairable, and keep the reed-flute Prologue and Bell's lineated verse eligible.
+- **Known limitation:** A section title sitting **between** two verse sections has no prose anchor before it and no markup to find it by, so it stays inside its verse run. That is a boundary imprecision within verse, not a category error — excerpt boundaries are settled downstream by review. Not guessed at.
+- **Follow-ups:** Phases 2-9 (verse-only inventory, source-aware matching, canonical records, machine alignment, packet, gates). `eslint.config.js` now ignores `.remember/**` — a git-ignored local plugin artefact outside the TS project that was failing `pnpm lint`.
+
 ## 2026-07-14 — Machine alignment verification: require proof a pairing corresponds
 
 **Raouf:**

@@ -28,6 +28,18 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — English block classification (alignment repair, phase 1)
+
+**Raouf:**
+
+- **Scope:** Phase 1 of the pipeline repair the preflight audit mandated. Classification only; no pairing, verdict, or approval. The human gate stays required — the preflight proved machine and human review catch different failure classes.
+- **Summary:** Eight pairings had attached Persian verse to Whinfield's prose story argument, all human-accepted. The cause was the pairing unit: the English side was a whole story-body block whose first line is the argument and whose rest is verse the packet never showed. New `scripts/poetry/classify-english-blocks.ts` segments blocks into a closed enum; only `verse_translation` may be the English side of a pairing. Signals are structural (measured bimodal line lengths, `NOTES:` position, terminal punctuation), never thematic.
+- **Result:** 643 segments over the live extraction — 108 verse (6,983 lines, 93 titled), 85 prose arguments, 184 headings, 86 apparatus, 81 footnotes, 44 commentary, 55 uncertain.
+- **Files Changed:** `scripts/poetry/classify-english-blocks.ts` (new), `tests/content/englishBlockClassification.test.ts` (new), `eslint.config.js`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `pnpm vitest run tests/content` 338/338 (+7), typecheck 0, lint 0. All eight defective blocks pinned unpairable by test.
+- **Known limitation:** Titles interior to a verse run are not detectable without markup and remain in the run; boundary imprecision, not a category error.
+- **Follow-ups:** Phases 2-9. Corpus still 0 canonical records; launch gates stay closed.
+
 ### 2026-07-14 (Australia/Sydney) — machine alignment verification gate (production)
 
 **Raouf:**
