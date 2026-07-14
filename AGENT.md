@@ -28,6 +28,17 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — machine alignment verification gate (production)
+
+**Raouf:**
+
+- **Scope:** Build only the net-new parts of the bilingual-alignment plan; skip what the compiler already enforces. The plan's per-record audit was **not** performed and no verdicts were authored — `content-private/` contains zero canonical records, so there is nothing to review. No poetry, pairing, verdict, reviewer, or approval was fabricated.
+- **Summary:** Closed a genuine gap: the compiler bound a human approval to `canonicalSha256(item)` but **never required evidence that anyone checked the English excerpt actually translates the Persian beside it** (the only prior "alignment" was `z.enum(['line','stanza'])` — a display layout). New `machineAlignmentSchema.ts` holds a strict, identity-free attestation bound to the item digest and both source snapshots, with cross-field rules that make dishonest records unrepresentable (`pass` ⇒ high confidence + ≥3 anchors; low confidence never eligible; `mismatch`/`insufficient_evidence` ⇒ blocked; `composite_correspondence` unreleasable as one excerpt; blocked ⇒ must state a reason; reapproval-pending ⇒ never eligible). Wired production-only; registry defaults empty so production fails closed. Machine alignment never substitutes for human approval — production now needs both.
+- **Files Changed:** `src/lib/content/machineAlignmentSchema.ts` (new), `src/lib/content/{compileCorpus,registrySchemas}.ts`, `tests/content/{machineAlignment,machineAlignmentGate}.test.ts` (new), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, `pnpm check`; vitest 569/569 (+31). Wiring proven empirically (sentinel gate temporarily neutralised → production compile fails on the missing alignment record). Compiled corpus leaks no anchor/evidence/model/classification data. Details in `CHANGELOG.md`.
+- **Known limitation:** the gate is unit-tested via an exported `validateItemAlignment`, not end-to-end: production compilation of the fixture corpus is impossible by design. Building a corpus that evades the sentinel gate was rejected as it would ship a bypass template.
+- **Follow-ups:** Gate is inert until canonical records exist. Rights unchanged — all four sources `status: pending`.
+
 ### 2026-07-14 (Australia/Sydney) — complete the MIT licence (README alignment + binding tests)
 
 **Raouf:**

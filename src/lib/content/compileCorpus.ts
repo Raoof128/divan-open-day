@@ -355,6 +355,63 @@ function validateItemEvidence(
   requireAudioAsset(item, registries, contributors, permissions, buildDate);
 }
 
+/**
+ * Production-only. Human approval proves an accountable person signed the exact
+ * canonical item; it does not prove anyone checked that the English excerpt is
+ * actually a translation of the Persian it sits beside. This requires that
+ * independent evidence, bound to the same digest.
+ *
+ * Exported for direct testing: fixtures are rejected from production by the
+ * sentinel gate before this ever runs, so the only honest way to exercise it is
+ * to call it. The alternative — a test corpus built to evade the sentinel gate —
+ * would ship a worked example of bypassing production protection.
+ */
+export function validateItemAlignment(
+  item: AuthoringContentItem,
+  registries: RegistryBundle,
+  buildDate: string,
+): void {
+  const alignment = registries.alignments.alignments.find(
+    (record) => record.item_id === item.id,
+  );
+
+  if (alignment === undefined) {
+    throw new Error(
+      `Item ${item.id} is missing machine alignment verification of its Persian-English pairing.`,
+    );
+  }
+
+  // A verdict is about exact content. Edit the item and the verdict is void.
+  if (alignment.authoring_sha256 !== canonicalSha256(item)) {
+    throw new Error(
+      `Item ${item.id} machine alignment SHA-256 digest does not match the canonical authoring item.`,
+    );
+  }
+
+  if (!alignment.release_eligible) {
+    throw new Error(
+      `Item ${item.id} machine alignment verdict ${alignment.verdict} is not release eligible.`,
+    );
+  }
+
+  if (alignment.human_reapproval_required) {
+    throw new Error(
+      `Item ${item.id} machine alignment requires renewed human approval before release.`,
+    );
+  }
+
+  if (alignment.reviewed_at > buildDate) {
+    throw new Error(`Item ${item.id} machine alignment is future-effective.`);
+  }
+
+  // The verdict must have been reached against the edition the item cites.
+  if (alignment.persian_source_id !== item.source.edition_id) {
+    throw new Error(
+      `Item ${item.id} machine alignment is bound to a different Persian edition.`,
+    );
+  }
+}
+
 function assertProductionMinimums(
   items: readonly AuthoringContentItem[],
 ): void {
@@ -423,6 +480,9 @@ export function compileCorpus(input: CompileCorpusInput): CompiledCorpus {
 
   const compiledItems = compilableItems.map((item) => {
     validateItemEvidence(item, registries, buildDate);
+    if (input.profile === 'production') {
+      validateItemAlignment(item, registries, buildDate);
+    }
     return compileItem(item);
   });
   compiledItems.sort((left, right) => compareCodeUnits(left.id, right.id));

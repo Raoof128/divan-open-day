@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-14 — Machine alignment verification: require proof a pairing corresponds
+
+**Raouf:**
+
+- **Scope:** The net-new part of the bilingual-alignment plan — the parts that did not already exist. The plan's per-record audit was **not** performed and no verdicts were authored: `content-private/` holds zero canonical records, so there is nothing to review (see Follow-ups). Existing gates were left alone rather than duplicated.
+- **Summary:** Closed a real gap. `compileCorpus` proved a human approved an item and bound that approval to `canonicalSha256(item)`, but **nothing required that anyone had verified the English excerpt is actually a translation of the Persian beside it** — the only prior "alignment" in the codebase was `z.enum(['line','stanza'])`, a display layout. A final approver could sign a mispaired record and it would compile. Added `machineAlignmentSchema.ts`: a strict, reviewer-identity-free attestation (verdict × classification × confidence × anchors) bound to the item digest and both source snapshot digests. Cross-field rules make dishonest records unrepresentable: `pass` demands high confidence and ≥3 independent anchors (one shared "love/heart/wine" is what a keyword scorer already yields); low confidence can never be release-eligible; `mismatch`/`insufficient_evidence` must be blocked; `composite_correspondence` (non-contiguous spans, common in Whinfield/Bell) cannot be released as one excerpt; blocked records must state a reason; a record needing reapproval is never eligible. Wired as a **production-only** gate refusing missing, stale-digest, blocked, reapproval-pending, future-effective, or wrong-edition records. Registry defaults to empty, so production fails closed.
+- **Files Changed:** `src/lib/content/machineAlignmentSchema.ts` (new), `src/lib/content/{compileCorpus,registrySchemas}.ts`, `tests/content/{machineAlignment,machineAlignmentGate}.test.ts` (new), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, `pnpm check` — vitest 569/569 (44 files; +31 net-new), typecheck/lint 0, `verify:dist`(+leak gate)/`verify:privacy` pass, `build:production`+`verify:qr` still fail-closed. Fixture builds unaffected (40 items). A compiled corpus carries no anchor, evidence, model, or classification data. Wiring verified empirically: with the sentinel gate temporarily neutralised, a production compile fails `Item … is missing machine alignment verification of its Persian-English pairing`.
+- **Known limitation:** `validateItemAlignment` is exported and unit-tested directly. Production compilation of the fixture corpus is impossible by design (the sentinel gate fires first), so the gate is not covered end-to-end — the same pre-existing limitation as `validateItemEvidence`. The alternative, a test corpus built to evade the sentinel gate, would ship a worked example of bypassing production protection and was rejected.
+- **Follow-ups:** No machine alignment record has been authored, because no canonical record exists to bind one to. This gate is inert until real items exist, and it can never substitute for human approval — production requires both. Poetry rights unchanged: all four sources `status: pending`.
+
 ## 2026-07-14 — Complete the MIT licence: align README and bind the grant with tests
 
 **Raouf:**

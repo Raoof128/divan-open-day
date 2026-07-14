@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { POETS } from '../../contracts/content';
 import { MAX_RELEASE_ASSET_BYTES } from '../../contracts/release';
+import { machineAlignmentRegistrySchema } from './machineAlignmentSchema';
 
 export const PUBLIC_USES = [
   'website_display',
@@ -595,6 +596,12 @@ export const registryBundleSchema = z
     permissions: permissionRegistrySchema,
     approvals: approvalRegistrySchema,
     assets: assetRegistrySchema,
+    // Defaults to empty so fixtures need not carry alignment evidence. An empty
+    // registry fails production closed: every item requires its own record.
+    alignments: machineAlignmentRegistrySchema.default({
+      schema_version: 1,
+      alignments: [],
+    }),
   })
   .strict();
 
