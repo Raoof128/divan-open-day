@@ -28,6 +28,18 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — verse-only inventory + source-aware alignment (phases 2-3)
+
+**Raouf:**
+
+- **Scope:** Candidate generation only. No verdicts, records, or approvals; human gate untouched and still required.
+- **Summary:** English blocks are classified before ranking, so only `verse_translation` is pairable and prose arguments are structurally excluded (with reason + digest recorded). Ranking replaced: section-title alignment (story heading ∪ verse-section title vs Nicholson section title), word-boundary matched, generic devotional vocabulary excluded from the lexicon.
+- **Result:** 108 pairable verse segments, 535 excluded; 47 units rank candidates, 61 no signal. Matcher independently confirms the Moses/Solomon transposition (seq 121 absent from candidates; seq 65 ranks first).
+- **Files Changed:** `scripts/poetry/{align-verse-sections,build-verse-candidates}.ts` (new), `tests/content/alignVerseSections.test.ts` (new), `docs/audits/divan/2026-07-14-review-conflicts.md` (new), `sources-private/poetry/reports/candidates-summary.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; tests/content 346/346 (+8), typecheck 0, lint 0.
+- **Known limitation:** Score-1 hits unreliable (عمر homograph; Arab-and-wife vs Arab-and-dog). 61/108 have no title signal. Persian book boundaries not derivable and not invented.
+- **Follow-ups:** Phases 4-5, 7 outstanding. Corpus 0 records; gates closed.
+
 ### 2026-07-14 (Australia/Sydney) — English block classification (alignment repair, phase 1)
 
 **Raouf:**

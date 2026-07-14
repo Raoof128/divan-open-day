@@ -31,5 +31,27 @@
         "english": "rumi-whinfield-en.jsonl"
       }
     }
+  },
+  "englishClassification": {
+    "note": "Added 2026-07-14 after the preflight audit found eight pairings whose English side was Whinfield's prose story argument, not verse. Only verse_translation may be paired.",
+    "segments": 643,
+    "pairableVerseSegments": 108,
+    "excludedSegments": 535,
+    "excludedByClassification": {
+      "uncertain": 55,
+      "heading": 184,
+      "editorial_apparatus": 86,
+      "footnote": 81,
+      "prose_summary": 85,
+      "commentary": 44
+    }
+  },
+  "verseCandidates": {
+    "method": "section-title-alignment (story heading + verse-section title vs Nicholson section title)",
+    "supersedes": "transliterated proper-noun body overlap for Rumi",
+    "unitsWithCandidates": 47,
+    "unitsWithNoSignal": 61,
+    "persianSections": 971,
+    "caveat": "Single-anchor (score 1) hits are unreliable and must not be treated as identification: عمر is both the name Omar and the common noun \"life\", and \"The Arab and his Wife\" ranks the Arab-and-dog story on the shared term اعرابی alone. Ranking is a review hint only."
   }
 }
