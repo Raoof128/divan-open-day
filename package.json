@@ -2,6 +2,7 @@
   "name": "divan-open-day",
   "version": "0.1.0",
   "description": "Work-in-progress source for the DIVAN Persian poetry Open Day experience.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "repository": {

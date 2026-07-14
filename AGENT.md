@@ -28,6 +28,15 @@
 
 ## Raouf change log
 
+### 2026-07-14 (Australia/Sydney) — add MIT license
+
+**Raouf:**
+
+- **Scope:** Add an open-source licence for the codebase. No product behaviour changed.
+- **Summary:** Added a standard `LICENSE` (MIT, © 2026 Raouf Abedini) and set `"license": "MIT"` in `package.json`. Covers this repository's own source; it does not relicense third-party poetry sources (e.g. the Wikisource CC BY-SA transcriptions), which carry their own terms and are never committed here.
+- **Files Changed:** `LICENSE` (new), `package.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm format:check` clean; no code/tests affected.
+
 ### 2026-07-14 (Australia/Sydney) — poetry source ingestion: live run + real-data fixes
 
 **Raouf:**
