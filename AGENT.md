@@ -28,6 +28,17 @@
 
 ## Raouf change log
 
+### 2026-07-15 (Australia/Sydney) — recover the Hafez Persian verse
+
+**Raouf:**
+
+- **Scope:** New Hafez ghazal extractor + its regression suite + audit record. No schema, compiler, gate or public-output change.
+- **Summary:** Hafez scored zero candidates for the life of the project and every earlier report — including the 2026-07-14 preflight — diagnosed that as a matching failure. It was not. The Persian ghazal bodies were **never extracted**. `extract-epub.py` harvests block tags (`p`, `h1`-`h6`, `li`, `blockquote`); the Qazvini-Ghani edition sets every ghazal as a table with hemistichs in `<span class="beyt">` inside `<td>`, so all of it was discarded while the footnote apparatus (in `<p>`) came through and became the entire "corpus". Added `extract-hafez-ghazals.py`, which reads the ghazal structure directly and recovers **486 citable ghazals / 3,649 couplets**, each carrying its own edition number read from the source rather than inferred from file order. `BLOCK_TAGS` was deliberately **not** widened: that would change the Rumi extraction and invalidate its 971 section digests.
+- **Three source defects handled without invention:** the spine lists documents twice (read each once); the source numbers two different poems the same (`c127`/`c128` both `۱۲۳` — flagged `numberAmbiguous` and excluded rather than renumbered, since the "obvious" fix would invent a poem number); unnumbered qasidas/masnavis/rubaiyat skipped, not renumbered.
+- **Not done, and why:** the target of 24 Hafez / 16 Rumi / 40 records was not met and the named-human gate was **not** removed. Removing it would be strictly negative — the gate is not what blocks release, an empty corpus is (`loadContent.ts:433`), so removing it buys nothing and costs the protection. Bell's English is raw OCR (`requiresVisualVerification` on 33/33, `correctedDraftLines` empty on all 33, `easb` for "east" in the verse); transcribing it from the local scan is blocked by the platform — 9 of 14 readers returned `400 Output blocked by content filtering policy`, yielding 1 complete poem from 14 agents.
+- **Files Changed:** `scripts/poetry/extract-hafez-ghazals.py`, `tests/content/hafezGhazalExtraction.test.ts`, `tests/fixtures/poetry/build-ghazal-fixture-epub.py`, `docs/audits/divan/2026-07-15-hafez-verse-recovery.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green; new suite 10/10, including a test that the original extractor drops this verse while capturing the footnote. Ghazal ۸۸ verified by hand against the raw markup → `c92`, 9 couplets. `pnpm build:production` still fails closed. Launch gates untouched.
+
 ### 2026-07-14 (Australia/Sydney) — git-ignore CLAUDE.md
 
 **Raouf:**
