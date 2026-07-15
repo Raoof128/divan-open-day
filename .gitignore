@@ -19,6 +19,9 @@ sources-private/poetry/raw/**
 !sources-private/poetry/raw/.gitkeep
 sources-private/poetry/extracted/**
 !sources-private/poetry/extracted/.gitkeep
+# Bell OCR reconstruction: rendered page images and per-page OCR text are a
+# derivative of the whole scanned book. Never commit them.
+sources-private/poetry/bell-ocr/**
 # Candidate reports carry verse excerpts — keep them out of Git; the text-free
 # candidates-summary.json is committed instead.
 sources-private/poetry/reports/*-candidates.json

@@ -28,6 +28,17 @@
 
 ## Raouf change log
 
+### 2026-07-15 (Australia/Sydney) — reconstruct Bell locally; 15 Rumi pairings verified
+
+**Raouf:**
+
+- **Scope:** Bell reconstruction script + regression suite + audit; Rumi alignment evidence to private reports. No schema, compiler, gate or public-output change.
+- **Summary:** Model transcription of the Bell scan is blocked by the platform (`400 Output blocked by content filtering policy` on 9/14 readers). Fixed by never routing the text through the model: `pdftoppm` + `tesseract` render and OCR locally, straight to files. Archive OCR reads `easb`; fresh local OCR reads `east`. Two independent engines now corroborate **1,270/1,340 lines (94.8%)** across 40 poems (5 fully clean, 33 within two lines). Rumi: aligners proposed 47/47 with zero exclusions — not credible given the prior human pass went 8/8 wrong — and three-lens adversarial refutation cut it to **15 verified / 5 refuted / 27 unverified** (session limit, 10.3M subagent tokens). Zero content-filter blocks across 189 agents: the filter targets bulk transcription, not short structured verdicts.
+- **Three defects found, all mine:** prose introduction split in as "poem I" (fixed via running head; verse starts scan p71, not 67); punctuation-sensitive comparison flagged 396 good lines (words-only → 70); the printed page number `111` split a poem (headings are Roman, page numbers Arabic). Damaged numerals (`Il`=II, `Ul`=III) are recorded verbatim and flagged, never renumbered from sequence — Bell's numeral is not a Hafez citation, so the English side is cited by scan page instead.
+- **Not done:** Rumi 15 of 16, Hafez 0 of 24, total 15 of 40. Verified pairings are alignment evidence, not canonical records. The reviewer-union gate is scoped but not built while the corpus is below threshold.
+- **Files Changed:** `scripts/poetry/reconstruct-bell.ts`, `tests/content/bellReconstruction.test.ts`, `docs/audits/divan/2026-07-15-bell-reconstruction-and-rumi-alignment.md`, `.gitignore`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green; new suite 14/14; OCR workspace git-ignored before first write; `build:production` still fails closed.
+
 ### 2026-07-15 (Australia/Sydney) — recover the Hafez Persian verse
 
 **Raouf:**
