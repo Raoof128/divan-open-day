@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-07-16 — Correct the Rumi count to 21 verified, and retract seq 717
+
+**Raouf:**
+
+- **Scope:** Corrects the 2026-07-15 entry below and the audit it points to, plus the private alignment evidence file. No code, schema, compiler, release-gate or public-output change.
+- **The 27 "unverified" were never unverified.** Yesterday's entry reported **15 verified / 5 refuted / 27 unverified**, attributing the 27 to refuters that never returned before the session limit hit. That reading was wrong. The refuters had returned; their verdicts were sitting in the agent transcripts, unaggregated. Recovering them was a local join — map each `agentId` to its `CLAIM:` line and re-apply the same gate — at a cost of **zero new agents and zero tokens**. Corrected: **21 verified / 14 refuted / 6 insufficient** of 47 examined. No verdict was re-derived, softened, or re-run toward a preferred answer.
+- **Seq 717 is retracted.** It was among the original 15, passing on 3 votes. A 4th vote returned and refuted it. Nothing about the pairing changed — only the number of skeptics who examined it. This is the clearest evidence in the run that the vote threshold does real work rather than ceremony, and it means the earlier figure was not just incomplete but **wrong in the direction that matters**: it published a pairing that further review rejects. The recovery was run through the identical gate, which is precisely why it retracted 717 instead of confirming the number I had already published.
+- **Vote strength is now recorded per pairing** (6 votes: 2 pairings, 5: 5, 4: 9, 3: 4, 2: 1). 20 of the 21 carry ≥3 independent refutation attempts; the lone 2-vote pass is flagged as the weakest evidence in the set and should be read as provisional — seq 717 shows what a low-vote pass risks.
+- **Rumi is over threshold: 21 of 16**, with 5 pairings of margin. **Hafez is 0 of 24** and is now the entire remaining gap (total **21 of 40**).
+- **Not done:** verified pairings remain alignment evidence, not canonical records — they assert that this English renders that Persian, and do not select excerpt boundaries, write reflections, or establish rights. No authoring item exists, so `pnpm build:production` still fails closed at `loadContent.ts:433`, correctly and untouched. The reviewer-union gate is still scoped but unbuilt while the total corpus is below threshold.
+- **Files Changed:** `docs/audits/divan/2026-07-15-bell-reconstruction-and-rumi-alignment.md`, `sources-private/poetry/reports/rumi-alignment-candidates.json` (git-ignored), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green. Evidence file confirmed matched by `.gitignore:27` before writing. `pnpm build:production` still fails closed; launch gates untouched.
+
 ## 2026-07-15 — Reconstruct Bell locally; 15 Rumi pairings survive adversarial review
 
 **Raouf:**

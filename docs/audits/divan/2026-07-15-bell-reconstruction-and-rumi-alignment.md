@@ -2,9 +2,15 @@
 
 **Date:** 2026-07-15
 **Branch:** `feat/poetry-source-ingestion`
-**Outcome:** Bell's English is recoverable and largely recovered; 15 Rumi
-pairings are machine-verified against adversarial review. Below thresholds. The
-gates stay closed.
+**Outcome:** Bell's English is recoverable and largely recovered; 21 Rumi
+pairings are machine-verified against adversarial review. Rumi is over its
+threshold of 16; Hafez is not started. The gates stay closed.
+
+**Amended 2026-07-16.** This document first reported 15 verified with 27
+candidates untested. The refuter votes for those 27 had in fact completed before
+the session limit and were recoverable from the agent transcripts; §2 is
+rewritten against the full vote set. The count rises to 21 — and one of the
+original 15 (**seq 717**) is retracted. See §2.1.
 
 ## 1. Bell's English is recoverable — via local OCR, not model transcription
 
@@ -87,7 +93,7 @@ reliably.
 
 Pinned by `tests/content/bellReconstruction.test.ts` (14 tests).
 
-## 2. Rumi machine alignment: 15 verified of 47 examined
+## 2. Rumi machine alignment: 21 verified of 47 examined
 
 Method: section-title candidate ranking → bilingual aligner → **three-lens
 adversarial refutation** (generic-anchors / materially-different / a-better-
@@ -102,19 +108,51 @@ analysis.
 |---|---|
 | Examined | 47 |
 | Proposed by aligners | 47 |
-| **Verified (≥2 refuters, zero refutations)** | **15** |
-| Genuinely refuted | 5 |
-| **Unverified — refuters never returned (session limit)** | **27** |
+| **Verified (≥2 refuters, zero refutations)** | **21** |
+| Genuinely refuted | 14 |
+| **Insufficient evidence — only 1 refuter returned** | **6** |
 
 **The aligners proposed 47 of 47 with zero exclusions.** That number is not
 credible on its own — the previous human pass accepted 8 of 8 and every one was
-wrong. Adversarial review cut it to 15.
+wrong. Adversarial review cut it to 21, refusing 14 outright and declining to
+rule on 6.
 
-The 27 are **untested, not disproven**. The run hit
-`You've hit your session limit` after 10.3M subagent tokens. The gate is
-fail-closed (verification requires ≥2 refuters to actually return), so they
-correctly did not pass — but they carry no evidence either way and should be
-re-run.
+Verification strength varies and is recorded per pairing:
+
+| Refuter votes | 6 | 5 | 4 | 3 | 2 |
+|---|---|---|---|---|---|
+| Verified pairings | 2 | 5 | 9 | 4 | 1 |
+
+20 of the 21 carry ≥3 independent refutation attempts. The single 2-vote pass is
+the weakest evidence in the set and is flagged as such in the record.
+
+The 6 insufficient are **undecided, not disproven** — one refuter each. The gate
+is fail-closed (≥2 must return), so they correctly did not pass.
+
+### 2.1 The retraction: seq 717
+
+**Seq 717 was among the original 15 and is now refuted.** It passed on 3 votes;
+a 4th vote returned and refuted it. Nothing about the pairing changed — only the
+number of skeptics who looked at it.
+
+This is the clearest evidence in the run that the vote threshold is doing real
+work rather than ceremony. A pairing that had cleared adversarial review at 3
+votes did not survive 4. It also means the earlier "15 verified" figure was not
+merely incomplete but **wrong in one direction that matters**: it published a
+pairing that further review rejects. Weak-evidence passes should be read as
+provisional, not as findings.
+
+### 2.2 How the 27 were resolved without new agents
+
+The 27 were reported untested because the run hit `You've hit your session limit`
+after 10.3M subagent tokens. That framing was wrong: the refuters had returned;
+their verdicts were sitting in the agent transcripts, unaggregated. Recovery was
+a local join — map `agentId` → the `CLAIM:` line in each transcript, re-apply the
+same gate — costing **zero new agents and zero tokens**.
+
+No verdict was re-derived, softened, or re-run to a preferred answer. The gate
+applied to the recovered votes is the identical one, which is why it retracted
+seq 717 rather than confirming the earlier number.
 
 ### What the skeptics caught
 
@@ -125,6 +163,7 @@ re-run.
 | 667 | Section identity holds; "abridged" understated **2×** — Persian has 3 couplets, Whinfield 11, so **8 are unsupported** |
 | 669 | All six anchors verify verbatim; refuted on **scope**, not identity |
 | **757** | **Anchors #1/#2 cite text from `s0` (prose_summary), not `s2` (verse)** |
+| **717** | **Passed at 3 votes; the 4th refuted it. Retracted — see §2.1** |
 
 757 is the packet-v1 defect resurfacing. The classifier bars prose from
 *pairing*, but the aligner still read the whole block and reached into the prose
@@ -134,11 +173,10 @@ single pass.
 
 ## Exact remaining gap
 
-- Rumi: **15 of 16** verified — one short, with 27 untested candidates in
-  reserve.
+- Rumi: **21 of 16** verified — over threshold, with 5 pairings of margin.
 - Hafez: **0 of 24**. Persian solved (486 ghazals); English now 94.8%
   corroborated with 5 poems fully clean and 33 within two lines of clean.
-- Total: **15 of 40**.
+- Total: **21 of 40**. Hafez alignment is the whole remaining gap.
 
 Verified pairings are **machine alignment evidence, not canonical records**. No
 authoring item exists yet, so `build:production` still fails closed at
@@ -149,7 +187,11 @@ authoring item exists yet, so `build:production` still fails closed at
 - **A verified pairing is not a record.** It asserts that this English renders
   that Persian. It does not select excerpt boundaries, write a reflection, or
   establish rights.
-- **The 27 unverified are a gap in evidence, not a finding.** Re-run them.
+- **A 2-vote pass is weak.** One verified pairing rests on two refuters, and seq
+  717 shows exactly what that risks: 3 votes were not enough to hold. Treat
+  low-vote passes as provisional until a canonical record is authored against
+  them.
+- **The 6 undecided are a gap in evidence, not a finding.** One refuter each.
 - **Corroboration is not proof.** Two OCR engines agreeing on a word is strong,
   but they read the same scan. The page image remains the arbiter for the 70
   disputed lines.

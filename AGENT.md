@@ -28,6 +28,17 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — correct the Rumi count to 21; retract seq 717
+
+**Raouf:**
+
+- **Scope:** Audit correction + the alignment evidence file it describes. No code, schema, compiler, gate or public-output change.
+- **Summary:** The 2026-07-15 entry reported **15 verified / 27 unverified**, attributing the 27 to refuters that never returned before the session limit. That was wrong. The refuters *had* returned; their verdicts were sitting unaggregated in the agent transcripts. Recovering them was a local join (`agentId` → the `CLAIM:` line) re-applying the identical gate — **zero new agents, zero tokens**. Corrected outcome: **21 verified / 14 refuted / 6 insufficient (1 vote each)** of 47 examined. Rumi is now **over** its threshold of 16.
+- **The retraction:** **seq 717 was among the original 15 and is now refuted.** It passed on 3 votes; the 4th vote refuted it. Nothing about the pairing changed — only how many skeptics looked. The earlier figure was therefore not merely incomplete but wrong in the direction that matters: it published a pairing that further review rejects. Vote strength is now recorded per pairing (6:2, 5:5, 4:9, 3:4, 2:1); 20 of 21 carry ≥3 refutation attempts, and the single 2-vote pass is flagged as the weakest evidence in the set.
+- **Not done:** Hafez remains **0 of 24** and is now the entire gap (total **21 of 40**). Verified pairings are still alignment evidence, not canonical records — no authoring item exists, so `build:production` still fails closed at `loadContent.ts:433`, correctly and untouched. The reviewer-union gate remains unbuilt.
+- **Files Changed:** `docs/audits/divan/2026-07-15-bell-reconstruction-and-rumi-alignment.md`, `sources-private/poetry/reports/rumi-alignment-candidates.json` (git-ignored), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green; `build:production` still fails closed; evidence file confirmed git-ignored by `.gitignore:27` before writing.
+
 ### 2026-07-15 (Australia/Sydney) — reconstruct Bell locally; 15 Rumi pairings verified
 
 **Raouf:**
