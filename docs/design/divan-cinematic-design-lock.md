@@ -10,18 +10,18 @@ The repository palette already encodes the illuminated-miniature direction. The 
 directional tokens map onto existing `tokens.css` custom properties; no new colour token is
 introduced (the visual-budget colour-once lock stays untouched):
 
-| Pack intent      | Repository token                  |
-| ---------------- | --------------------------------- |
-| Lapis night      | `--ink-night` #0b1026             |
-| Deep lapis       | `--ink-deep` #11182d / `--lapis`  |
-| Manuscript gold  | `--gold` #d4a64a                  |
-| Quiet gold       | `--gold-light` #e7c777 (accents)  |
-| Pomegranate      | `--pomegranate` #a6192e           |
-| Warm parchment   | `--parchment` #f2e6cf             |
-| Aged parchment   | `--paper` #fff9ee (paper surface) |
-| Charcoal ink     | `--charcoal` #2e302e              |
-| Brass light      | `--gold` + opacity layering       |
-| Cypress          | `--cypress` #204f40               |
+| Pack intent     | Repository token                  |
+| --------------- | --------------------------------- |
+| Lapis night     | `--ink-night` #0b1026             |
+| Deep lapis      | `--ink-deep` #11182d / `--lapis`  |
+| Manuscript gold | `--gold` #d4a64a                  |
+| Quiet gold      | `--gold-light` #e7c777 (accents)  |
+| Pomegranate     | `--pomegranate` #a6192e           |
+| Warm parchment  | `--parchment` #f2e6cf             |
+| Aged parchment  | `--paper` #fff9ee (paper surface) |
+| Charcoal ink    | `--charcoal` #2e302e              |
+| Brass light     | `--gold` + opacity layering       |
+| Cypress         | `--cypress` #204f40               |
 
 Generation prompts reference these hex values so the stills agree with the live UI.
 
@@ -58,14 +58,14 @@ composition which comes fully to rest in the final second. Duration 7–8 s mast
 
 ## 3. Asset roles, filenames, budgets
 
-| Role              | Path (dist)                       | Source                        | Budget    | Offline |
-| ----------------- | --------------------------------- | ----------------------------- | --------- | ------- |
-| poster-mobile     | `images/divan-poster-mobile.webp` | garden 9:16 still             | ≤ 220 KiB | yes     |
-| poster-desktop    | `images/divan-poster-desktop.webp`| garden 16:9 still             | ≤ 320 KiB | yes     |
-| decorative        | `images/divan-alcove-mobile.webp` | alcove 9:16 still             | ≤ 600 KiB | yes     |
-| decorative        | `images/divan-alcove-desktop.webp`| alcove 16:9 still             | (shared)  | yes     |
-| cinematic-mobile  | `video/divan-cinematic-mobile.mp4`| ffmpeg glide, 9:16 ≈ 720×1560 | ≤ 3 MiB   | **no**  |
-| cinematic-desktop | `video/divan-cinematic-desktop.mp4`| ffmpeg glide, 16:9 1280×720  | ≤ 6 MiB   | **no**  |
+| Role              | Path (dist)                         | Source                        | Budget    | Offline |
+| ----------------- | ----------------------------------- | ----------------------------- | --------- | ------- |
+| poster-mobile     | `images/divan-poster-mobile.webp`   | garden 9:16 still             | ≤ 220 KiB | yes     |
+| poster-desktop    | `images/divan-poster-desktop.webp`  | garden 16:9 still             | ≤ 320 KiB | yes     |
+| decorative        | `images/divan-alcove-mobile.webp`   | alcove 9:16 still             | ≤ 600 KiB | yes     |
+| decorative        | `images/divan-alcove-desktop.webp`  | alcove 16:9 still             | (shared)  | yes     |
+| cinematic-mobile  | `video/divan-cinematic-mobile.mp4`  | ffmpeg glide, 9:16 ≈ 720×1560 | ≤ 3 MiB   | **no**  |
+| cinematic-desktop | `video/divan-cinematic-desktop.mp4` | ffmpeg glide, 16:9 1280×720   | ≤ 6 MiB   | **no**  |
 
 - Raw masters (PNG stills, generation records) stay outside `public/` under a git-ignored
   evidence path; only derivatives ship.
@@ -86,7 +86,7 @@ Raouf provided `OPENAI_API_TOKEN` and `GEMINI_API_TOKEN` in the git-ignored repo
    Four finals: garden 9:16 / 16:9, alcove 9:16 / 16:9. (~$0.17 each at high.)
 2. **Video — Gemini API, model `gemini-omni-flash-preview`**
    (`POST /v1beta/interactions`, image-to-video, `response_format {type: video,
-   aspect_ratio, delivery: uri}`): both stills passed as image inputs with the §2 motion
+aspect_ratio, delivery: uri}`): both stills passed as image inputs with the §2 motion
    prompt — begin on the garden composition, glide through the arch, settle on the alcove
    composition. Native 9:16 and 16:9 runs. Poll `files/{id}` until ACTIVE, download,
    then ffmpeg delivery encodes.
@@ -101,23 +101,23 @@ Raouf provided `OPENAI_API_TOKEN` and `GEMINI_API_TOKEN` in the git-ignored repo
    plus per-shot lines from §2 and hex anchors from §1. Negative constraints folded into
    the prompt text (Omni Flash has no separate negative-prompt field).
 5. Raw masters + provenance records live under git-ignored `docs/evidence/runtime/
-   cinematic-masters/`; only encoded derivatives ship.
+cinematic-masters/`; only encoded derivatives ship.
 
 ## 5. Component and state naming (repository-native)
 
-| Pack name              | Repository implementation                                     |
-| ---------------------- | ------------------------------------------------------------- |
-| CinematicThreshold     | `src/components/CinematicThreshold.tsx` (inside WelcomeScene) |
-| CinematicPoster        | poster `<img>` layer within CinematicThreshold                 |
-| ScrollScrubController  | `src/lib/cinematic/scrollScrub.ts` (pure logic + hook)         |
-| CinematicSkip          | "Skip entrance" button (semantic, first in DOM after skip link)|
-| ThresholdHandoff       | crossfade contract in CinematicThreshold + BookStage backdrop  |
+| Pack name              | Repository implementation                                                   |
+| ---------------------- | --------------------------------------------------------------------------- |
+| CinematicThreshold     | `src/components/CinematicThreshold.tsx` (inside WelcomeScene)               |
+| CinematicPoster        | poster `<img>` layer within CinematicThreshold                              |
+| ScrollScrubController  | `src/lib/cinematic/scrollScrub.ts` (pure logic + hook)                      |
+| CinematicSkip          | "Skip entrance" button (semantic, first in DOM after skip link)             |
+| ThresholdHandoff       | crossfade contract in CinematicThreshold + BookStage backdrop               |
 | BookStage/BookCover/…  | `src/components/BookStage.tsx` layered upgrade of RevealScene reveal object |
-| CandleScene            | `src/components/CandleScene.tsx` (CSS/SVG)                     |
-| ButterflyField         | `src/components/ButterflyField.tsx` (max 2, deterministic)     |
-| PoetryMotes            | `src/components/PoetryMotes.tsx` (abstract only)               |
-| MediaCapabilityProfile | `src/lib/cinematic/capability.ts`                              |
-| MotionPreferences      | existing MotionControl + resolveEffectiveMotion (unchanged)    |
+| CandleScene            | `src/components/CandleScene.tsx` (CSS/SVG)                                  |
+| ButterflyField         | `src/components/ButterflyField.tsx` (max 2, deterministic)                  |
+| PoetryMotes            | `src/components/PoetryMotes.tsx` (abstract only)                            |
+| MediaCapabilityProfile | `src/lib/cinematic/capability.ts`                                           |
+| MotionPreferences      | existing MotionControl + resolveEffectiveMotion (unchanged)                 |
 
 State: the app reducer stages remain authoritative
 (`boot → welcome → choose_poet → intention → revealing → result`). The threshold owns a

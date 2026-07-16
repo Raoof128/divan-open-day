@@ -770,3 +770,111 @@ button:active {
     border: 2px solid ButtonText;
   }
 }
+
+/* ── Cinematic threshold ─────────────────────────────────────────────── */
+
+.scene.cinematic-threshold {
+  --cinematic-progress: 0;
+  align-content: start;
+}
+
+.cinematic-threshold[data-cinematic-scrub='true'] {
+  min-block-size: 260vh;
+}
+
+.cinematic-threshold .cinematic-media {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--ink-night);
+}
+
+.cinematic-media__poster,
+.cinematic-media__video {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cinematic-media__video {
+  opacity: 0;
+}
+
+[data-cinematic-state='playing'] .cinematic-media__video {
+  opacity: 1;
+}
+
+.cinematic-threshold .cinematic-corridor {
+  display: grid;
+}
+
+.cinematic-card {
+  position: sticky;
+  inset-block-start: 0;
+  display: grid;
+  align-content: end;
+  justify-items: stretch;
+  min-block-size: 88vh;
+  padding-block-end: max(var(--space-5), env(safe-area-inset-bottom));
+  opacity: calc(1 - var(--cinematic-progress) * 2.4);
+}
+
+.cinematic-card .manuscript-portal {
+  background: color-mix(in srgb, var(--ink-night) 82%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.cinematic-threshold .cinematic-skip {
+  position: fixed;
+  inset-block-end: max(var(--space-4), env(safe-area-inset-bottom));
+  inset-inline-end: max(var(--space-4), env(safe-area-inset-right));
+  z-index: 5;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-paper);
+  background: color-mix(in srgb, var(--ink-night) 88%, transparent);
+  color: var(--gold-light);
+}
+
+/* ── Book stage backdrop ─────────────────────────────────────────────── */
+
+.book-stage {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink-night);
+}
+
+.book-stage__backdrop {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+  animation: book-stage-settle 640ms ease-out both;
+}
+
+.book-stage__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--ink-night) 68%, transparent),
+    color-mix(in srgb, var(--ink-night) 30%, transparent) 42%,
+    color-mix(in srgb, var(--ink-night) 78%, transparent)
+  );
+}
+
+@keyframes book-stage-settle {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

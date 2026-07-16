@@ -32,14 +32,14 @@ responses are retained locally under git-ignored `docs/evidence/runtime/cinemati
 
 ## Released derivatives (ffmpeg 8, libx264 / cwebp)
 
-| Role              | File                                 | Treatment                                                    |
-| ----------------- | ------------------------------------ | ------------------------------------------------------------ |
-| poster-mobile     | `public/images/divan-poster-mobile.webp`  | first decoded frame of the 9:16 master, webp q82        |
-| poster-desktop    | `public/images/divan-poster-desktop.webp` | first decoded frame of the 16:9 master, webp q82         |
-| backdrop-mobile   | `public/images/divan-alcove-mobile.webp`  | **actual final rendered frame** of the 9:16 master, webp q82 |
-| backdrop-desktop  | `public/images/divan-alcove-desktop.webp` | **actual final rendered frame** of the 16:9 master, webp q82 |
+| Role              | File                                       | Treatment                                                                                                                        |
+| ----------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| poster-mobile     | `public/images/divan-poster-mobile.webp`   | first decoded frame of the 9:16 master, webp q82                                                                                 |
+| poster-desktop    | `public/images/divan-poster-desktop.webp`  | first decoded frame of the 16:9 master, webp q82                                                                                 |
+| backdrop-mobile   | `public/images/divan-alcove-mobile.webp`   | **actual final rendered frame** of the 9:16 master, webp q82                                                                     |
+| backdrop-desktop  | `public/images/divan-alcove-desktop.webp`  | **actual final rendered frame** of the 16:9 master, webp q82                                                                     |
 | cinematic-mobile  | `public/video/divan-cinematic-mobile.mp4`  | `-an -c:v libx264 -profile high -pix_fmt yuv420p -crf 22 -preset slow -g 24 -keyint_min 24 -sc_threshold 0 -movflags +faststart` |
-| cinematic-desktop | `public/video/divan-cinematic-desktop.mp4` | same at `-crf 21`                                        |
+| cinematic-desktop | `public/video/divan-cinematic-desktop.mp4` | same at `-crf 21`                                                                                                                |
 
 ## Handoff verification (measured)
 
