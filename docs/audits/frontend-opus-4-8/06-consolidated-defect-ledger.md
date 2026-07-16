@@ -275,6 +275,73 @@ and the terminal frame paints before handoff. Until then this is an open questio
 
 ---
 
+## F-03 — "Choose another poet" then browser Back leaves view and storage disagreeing
+
+| Field | Value |
+| --- | --- |
+| **Severity** | **Low** |
+| **Status** | Open — reported, not repaired |
+| **Surface** | `src/lib/navigation/flowNavigation.ts:29-54` (writer); `src/app/history.ts` (contract) |
+| **Affected** | A visitor who presses "← Choose another poet" from a result, then browser Back |
+| **Test coverage** | `flowNavigation.ts` has **no test importing it**, despite backing the control PR #5 shipped specifically to add |
+
+### Reproduction (rendered, Chromium 390×844)
+
+| Step | `h1` | storage `selectedPoet` | storage `currentPoemId` | `history.state` |
+| --- | --- | --- | --- | --- |
+| 1. at result | Your verse | `hafez` | `test-only-hafez-19` | `{stage:'result', selectedPoet:'hafez'}` |
+| 2. Choose another poet | Whose words will you open? | `null` | `null` | `{stage:'choose_poet', selectedPoet:null}` |
+| 3. **browser Back** | **Your verse** | **`null`** | **`null`** | `{stage:'result', selectedPoet:'hafez'}` |
+| 4. Forward | Whose words will you open? | `null` | `null` | `{stage:'choose_poet'}` |
+| 5. Reload | **A verse is waiting for you.** | `null` | `null` | `{stage:'welcome'}` |
+
+At step 3 the **same verse is re-rendered** (`SAME VERSE RE-SHOWN? true`) from React memory
+(`lastResultPoemIdRef`), with the full result control set, while storage holds nothing. Pressing
+"Reveal another" from there lands on intention with `selectedPoet: null` still in storage.
+Zero page errors throughout.
+
+### Root cause
+
+`returnToPoetSelection` clears `selectedPoet` and `currentPoemId` from `sessionStorage` and then
+`pushState`s a **new** `choose_poet` entry. The previous entry is untouched and still says
+`{stage:'result', selectedPoet:'hafez'}`. Browser Back restores that entry faithfully — correct
+history semantics — but the storage it depends on was already emptied. `DivanHistoryState`
+deliberately carries no `currentPoemId` (a sound privacy choice: no poem ID in history or URL), so
+history alone cannot re-establish the poem. The two stores are written by different owners at
+different times with no reconciliation.
+
+### Why Low, not Medium
+
+No page error, no crash, no data loss the visitor notices in the moment — Back arguably *should*
+return them to the verse they were reading. The concrete harm is narrow: at step 3 the app promises
+a restorable result but a refresh silently drops them at **welcome** (step 5), contradicting the
+restore contract the prior audit verified as L-10 ("refresh restores the result poem"). Severity
+reflects real user impact, not tidiness.
+
+### Proposed minimal repair (not applied)
+
+Prefer `history.replaceState` over `pushState` in `returnToPoetSelection`, so leaving the poet does
+not leave a resurrectable result entry behind the visitor. This matches the intent — the poem was
+deliberately discarded — and keeps the §5.3 back contract
+(RESULT→INTENTION→CHOOSE_POET→WELCOME) intact rather than inserting a forward/back pair that
+re-enters a cleared state. Requires checking against `tests/components/poetSelectionNavigation.test.tsx`.
+
+### Regression-test plan
+
+`flowNavigation.ts` currently has no direct test. Add one asserting that after
+`returnToPoetSelection`, no reachable history entry resolves to a `result` stage whose
+`currentPoemId` is absent from storage. This closes the coverage gap the Phase 2 inventory flagged.
+
+### Risk of repair
+
+**Medium — higher than the defect.** `replaceState` changes the history stack shape and could
+affect the verified §5.3 back contract and the restore matrix (prior L-10). Must not be applied
+without re-running `tests/components/poetSelectionNavigation.test.tsx`, the offline lifecycle e2e,
+and the rendered back/forward walk. Given severity Low and repair risk Medium, **deferring is
+defensible**; the decision belongs to the maintainer, not this audit.
+
+---
+
 ## Verified sound — no defect (Phase 6, real corpus)
 
 Recorded so later phases need not re-derive them.
@@ -352,10 +419,11 @@ supported a false High finding, which is exactly what rule 14 warns about.
 | --- | --- | --- |
 | F-01 Persian heading uses unbundled system font | **Low** | **FIXED** — test-first, verified |
 | F-02 Reducer discards poem on unhandled event | **Low** (was High hypothesis; disproved) | Open, repair proposed, not applied |
+| F-03 Choose-another-poet + Back desyncs view from storage | **Low** | Open — repair risk (Medium) exceeds the defect; deferral defensible |
 | O-01 Cinematic Begin traversal | **Resolved — not a defect** | Headed browser confirms correct traversal |
 | M-01 Stale fixture SW | Methodology, **not a defect** | Resolved (profile cleared) |
 
-**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 2.**
+**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 3** (1 fixed, 2 open).
 
 Two candidate findings were **investigated and withdrawn** rather than banked: the reducer
 double-tap (disproved — every dispatch site guarded) and the skip-link overlay (disproved —
