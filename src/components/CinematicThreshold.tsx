@@ -88,7 +88,12 @@ export function CinematicThreshold({
     if (arrivedRef.current) {
       return;
     }
-    if (!scrubbing) {
+    const section = sectionRef.current;
+    if (
+      !scrubbing ||
+      section === null ||
+      section.offsetHeight <= window.innerHeight
+    ) {
       arrive();
       return;
     }
@@ -224,7 +229,7 @@ export function CinematicThreshold({
       className="scene scene--welcome cinematic-threshold"
       data-scene="welcome"
       data-cinematic-state={videoFailed ? 'poster' : thresholdState}
-      data-cinematic-scrub={thresholdState === 'playing' ? 'true' : undefined}
+      data-cinematic-scrub={scrubbing ? 'true' : undefined}
       onClickCapture={handleClickCapture}
     >
       <div className="cinematic-media" aria-hidden="true">
