@@ -227,6 +227,9 @@ describe('static origin delivery contract', () => {
     expect(caddyfile).toContain('public, max-age=3600');
     expect(caddyfile).toContain('?Cache-Control "no-store"');
     expect(caddyfile).toMatch(
+      /handle_errors\s*\{[\s\S]*header Cache-Control "no-store"[\s\S]*respond "\{err\.status_code\} \{err\.status_text\}"/u,
+    );
+    expect(caddyfile).toMatch(
       /@immutable\s*\{[\s\S]*path_regexp[\s\S]*file[\s\S]*\}/u,
     );
     expect(caddyfile).toMatch(/@documents[\s\S]*rewrite \* \/index\.html/su);
@@ -617,6 +620,10 @@ describe('safe deployment controls', () => {
     expect(rollback).toContain('require_production_image "$previous_image"');
     expect(rollback).toContain('require_production_image "$current_image"');
     expect(verify).toContain('require_running_image "$web_id" "$COMMON_IMAGE"');
+    expect(verify).toContain(
+      'docker cp "$web_id:/srv/release.json" "$work_dir/running-release.json"',
+    );
+    expect(verify).not.toContain('compose exec -T divan-web cat');
     expect(verify).toContain('buildProfile');
     expect(verify).toContain('productionEligible');
     expect(verify).toContain('hafez_count == 60');
@@ -630,6 +637,8 @@ describe('safe deployment controls', () => {
     expect(verify).toContain("--proto '=https'");
     expect(verify).toContain('--connect-timeout 5');
     expect(verify).toContain('--max-time 20');
+    expect(verify).toContain('--retry-max-time 30');
+    expect(verify).toContain('wait_for_public_health');
     expect(verify).toContain('Referrer-Policy');
     expect(verify).toContain('Cross-Origin-Opener-Policy');
     expect(verify).toContain('Cross-Origin-Resource-Policy');
@@ -654,9 +663,8 @@ describe('safe deployment controls', () => {
     expect(verify).toContain('no-new-privileges');
     expect(verify).toContain('PortBindings');
     expect(verify).toContain('65532:65532');
-    expect(verify).toContain(
-      '{"2019/tcp":null,"443/tcp":null,"443/udp":null,"80/tcp":null,"8080/tcp":null}',
-    );
+    expect(verify).toContain('{"8080/tcp":null}');
+    expect(verify.match(/sed '\/\^\$\/d'/gu)).toHaveLength(5);
     expect(verify).toContain('"$image" == "$DIVAN_TUNNEL_IMAGE"');
   });
 
