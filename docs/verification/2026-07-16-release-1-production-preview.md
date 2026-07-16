@@ -1,16 +1,21 @@
-# Release 1 protected production-preview verification
+# Release 1 production verification
 
 Date: 2026-07-16 (Australia/Sydney)
 
 ## Verdict
 
-Release 1 is **PASS for a protected production preview** and **NOT APPROVED for
-public launch**. The exact tagged source and immutable image are deployed at
-`divan.raoufabedini.dev`, but Cloudflare Access deliberately returns its login
-redirect to unauthorised visitors and a final deny-everyone policy remains in
-place. No public-launch claim is made while the physical QR, physical-device,
+Release 1 passed its technical deployment checks. It was initially published as
+a protected production preview because physical QR, physical-device,
 assistive-technology, provider-log/retention, and approved off-device credential
-backup gates remain open.
+backup gates remained open.
+
+After that protected-preview handoff, the repository owner explicitly instructed
+the operator to make `divan.raoufabedini.dev` publicly available. The single
+hostname-matched Cloudflare Access application was deleted through the
+authenticated API. Anonymous requests now reach the application directly. This
+is an **owner-authorised public-access override**, not a claim that the missing
+manual or governance evidence passed, and not the design authority's `PUBLIC
+PRODUCTION PASS` verdict.
 
 This closeout did not change poetry, corpus selection, source evidence,
 translations, release compilation, service-worker behaviour, University
@@ -141,9 +146,10 @@ ops/scripts/rollback.sh --state-dir "$DIVAN_STATE" \
   preventing a broad service-worker edge TTL. Existing hashed assets remain
   immutable; documents, release pointers, service worker, and 404s retain their
   reviewed cache contracts.
-- Exactly one explicit `Deny all until launch gates close` Access policy remains,
-  with no bypass policy. Local and independent remote probes returned HTTP 302 to
-  Access after the policy was restored.
+- At protected-preview handoff, exactly one explicit `Deny all until launch gates
+close` Access policy remained, with no bypass policy. Local and independent
+  probes returned HTTP 302. The later owner-authorised public-access override is
+  recorded below.
 - Rollback rehearsal passed, restored the tagged `v1.0.3` reference, and preserved
   the same approved digest. Because this is the first verified production image,
   the rehearsal exercised state/reference restoration with the same bytes rather
@@ -184,8 +190,8 @@ containing the individual PDFs, SVGs, and manifest. The combined PDF SHA-256 is
 
 The digital QR pack is **PASS**. The physical scan matrix remains **BLOCKED**
 until printed samples are tested on iOS and Android at the documented distances
-and lighting levels. While Access deny-all remains active, scans correctly reach
-the protected Access boundary rather than a public visitor experience.
+and lighting levels. After the owner-authorised Access removal, the encoded URL
+reaches the public visitor experience directly.
 
 ## Manual experience evidence
 
@@ -205,7 +211,8 @@ changed runtime packaging, QR output, and explicit missing-file handling only.
 
 ## Open gates and honest limitations
 
-- Public launch remains closed by the Access deny-all policy.
+- The hostname is publicly reachable by explicit owner instruction; the Access
+  safety interlock is no longer present.
 - Printed iOS/Android QR distance/lighting evidence is not yet available.
 - The manual phone walk is Chromium emulation on macOS, not physical iOS/Android,
   Safari/Firefox, screen-reader, switch-control, or voice-control evidence.
@@ -220,3 +227,28 @@ changed runtime packaging, QR output, and explicit missing-file handling only.
   contract tests and the live procedures passed.
 - This repository has no `docs/open-day-checklist.md`; the design authority,
   deployment/rollback runbooks, and this report are the evidence sources.
+
+## Owner-authorised public-access override
+
+The change was deliberately limited to the one Cloudflare Access application
+whose domain exactly matched `divan.raoufabedini.dev`. The tunnel, DNS route,
+cache rule, TLS, immutable image, Droplet containers, and unrelated services were
+not changed.
+
+Cloudflare's application list returned exactly one DIVAN match before deletion
+and zero afterwards. The authenticated delete request succeeded. A fresh
+anonymous verification then proved:
+
+- root: HTTP 200 with no redirect, Access header, or `Set-Cookie`;
+- `/healthz`: HTTP 404;
+- an unhashed missing path: HTTP 404 with `Cache-Control: no-store`;
+- release ID: `divan-release-1-v1-0-3`;
+- counts: 60 Hafez / 60 Rumi / 120 total;
+- CSP, `nosniff`, referrer, COOP, CORP, and permissions headers present;
+- root, `release.json`, and `service-worker.js`: `no-cache, must-revalidate`;
+- web manifest: one-hour public cache;
+- content and asset manifests: one-year immutable cache.
+
+The still-open manual, physical, provider-governance, and off-device-backup gates
+remain listed above. Public reachability must not be misreported as evidence that
+those gates passed.

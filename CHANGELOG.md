@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-16 — Make the deployed DIVAN hostname publicly reachable
+
+**Raouf:**
+
+- Removed the single Cloudflare Access application matching `divan.raoufabedini.dev` after explicit owner instruction; no tunnel, DNS, cache, TLS, image, Droplet, application, corpus, service-worker, QR, or unrelated-service configuration changed.
+- Verified anonymously that root returns HTTP 200 without a login redirect or cookie, `/healthz` and missing paths remain 404, the exact `divan-release-1-v1-0-3` 60/60/120 release is served, and the reviewed security/cache headers remain intact.
+- Recorded this as an owner-authorised public-access override rather than claiming the still-missing printed-device, manual accessibility, provider logging/retention, or approved off-device-backup gates passed.
+
 ## 2026-07-16 — Release 1 protected production preview
 
 **Raouf:**
