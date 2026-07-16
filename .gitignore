@@ -52,3 +52,4 @@ CLAUDE.md
 *.tsbuildinfo
 docs/evidence/runtime/
 docs/audits/divan/screenshots/
+docs/audits/frontend-opus-4-8/evidence/
