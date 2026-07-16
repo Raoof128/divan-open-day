@@ -1,8 +1,11 @@
 # 06 — Consolidated Defect Ledger
 
-**Status: PARTIAL.** Phase 6 has run for one viewport (390×844) and one flow (Hafez, full-motion,
-online). The viewport matrix, WebKit/Firefox engines, Rumi flow, cinematic scrub, offline, and
-reduced-motion routes have **not** run. This ledger is not final and carries no verdict.
+**Status: PARTIAL.** Phase 6 has now run: the full 10-viewport matrix, three engines
+(Chromium/WebKit/Firefox), axe across four scenes, and the reduced-motion, offline, and cinematic
+routes — all against the **real 120-record production corpus**. Still outstanding: Phase 4's
+file-by-file ledger (126 of 127 rows `PENDING`), Phase 5 cross-file audit, share/save/download
+fallbacks, history back/forward, deliberate release-mismatch testing, and 200% zoom. **No verdict
+is claimed.**
 
 ## Prior-art reconciliation (goal Phase 0)
 
@@ -188,6 +191,37 @@ Return `state` unchanged for an unhandled event on an already-valid state; reser
 
 ---
 
+## O-01 — OPEN QUESTION: cinematic Begin traversal not observable headless
+
+**Not filed as a defect. Evidence is insufficient and the likely cause is the test environment.**
+
+`tests/components/cinematicBegin.test.tsx` states the contract explicitly:
+
+> `it('smoothly traverses the scroll corridor instead of arriving immediately')`
+> — asserts `scrollIntoView({ behavior: 'smooth', block: 'end' })`, announces "Entering the
+> reading alcove.", and `expect(onArrive).not.toHaveBeenCalled()`.
+
+Observed in **headless** Chromium at 390×844, sampling the DOM after clicking Begin:
+
+| t | `h1` | video | `document.scrollHeight` |
+| --- | --- | --- | ---: |
+| 0 (welcome) | "A verse is waiting for you." | `readyState:4, paused` | 2274 |
+| **300 ms** | **"Whose words will you open?"** | `null` | 1107 |
+
+Begin reaches the poet chooser within 300 ms; the 2274px scroll corridor collapses to 1107px and
+the video element is gone — indistinguishable from Skip.
+
+**Why this is not reported as a defect:** headless Chromium does not animate
+`scrollIntoView({ behavior: 'smooth' })` — it jumps. A jump drives the scroll-scrub straight to its
+terminal frame, which legitimately fires arrival. The observation is therefore consistent with
+**correct** code in an environment that cannot render the traversal. Filing it would repeat exactly
+the error rule 14 warns about, in reverse: treating a rendering artifact as a defect.
+
+**To resolve:** re-run Begin in a **headed** browser and confirm the corridor is visibly traversed
+and the terminal frame paints before handoff. Until then this is an open question, not a finding.
+
+---
+
 ## Verified sound — no defect (Phase 6, real corpus)
 
 Recorded so later phases need not re-derive them.
@@ -212,15 +246,76 @@ Recorded so later phases need not re-derive them.
 | Provenance | Ghazal 94; Qazvini-Ghani (CC BY-SA); Clarke 1891 public-domain | **Pass** |
 | Non-predictive disclaimer | Present on intention | **Pass** |
 
+### Accessibility — axe across three engines (real corpus)
+
+axe-core **4.12.1**, injected from local `node_modules` (no CDN — privacy and CSP intact), tags
+`wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa`, at 390×844:
+
+| Engine | welcome | choose_poet | intention | result |
+| --- | :-: | :-: | :-: | :-: |
+| Chromium | 0 | 0 | 0 | 0 |
+| WebKit | 0 | 0 | 0 | 0 |
+| Firefox | 0 | 0 | 0 | 0 |
+
+**0 violations, 12/12 scene-engine cells.** This extends the prior audit's fixture-only axe result
+to the real Persian corpus. Per `divan-accessibility-qa` and goal rule 14, axe success is
+**necessary but not sufficient** and does not establish WCAG conformance.
+
+### Responsive — full 10-viewport matrix (real corpus, Chromium)
+
+Every viewport walked welcome → Skip → Hafez → intention → reveal → result:
+
+| Viewport | Horizontal overflow | Persian line clipping |
+| --- | :-: | :-: |
+| 320×568 · 360×640 · 360×800 · 375×667 · 390×844 | **0** | **0** |
+| 412×915 · 768×1024 · 1024×768 · 1280×800 · 1440×900 | **0** | **0** |
+
+**Zero horizontal overflow and zero Persian line clipping at all 10 viewports**, including 320px —
+the narrowest, and the case the prior audit could not test without real Persian. At 320px the only
+element extending past the viewport is `candle-scene__glow` (57.6px overhang), a decorative radial
+bleed that produces **no** document scroll; permitted by `divan-atmosphere-effects`.
+
+### Route coverage (real corpus)
+
+| Route | Result |
+| --- | --- |
+| **Reduced motion**, full flow | **Pass** — reached the verse, Persian rendered, focus `H1:"Your verse"`, **video never requested once**, 0 page errors |
+| **Reduced-motion welcome** | **Pass** — only `Begin` offered (nothing to skip), **0 `<video>` elements created**, poster shown. Matches "do not load scrubbed video automatically" exactly |
+| **Full-motion welcome** | **Pass** — `Begin` + `Skip entrance` present from the first frame; video element created but **no media downloaded at load** (deferred to intent); poster immediate |
+| **Cinematic media deferral** | **Pass** — `divan-cinematic-mobile.mp4` requested only after Begin, never at load |
+| **Offline after first load** | **Pass** — SW activated; welcome renders offline; full flow reaches a **real Persian verse offline** (`دست در حلقهٔ آن زلف دوتا نتوان کرد`); 0 page errors |
+| **Offline control set** | **Pass** — only `Begin` offered offline (no video ⇒ no Skip), degrading exactly as the media-failure contract requires: no error wall |
+| Cinematic Begin traversal | **Open — see O-01** (headless cannot render it) |
+
 **Skip-link note (goal rule 14).** The full-page screenshot shows "Skip to main content" painted
 mid-page over the Source note. It is **not a defect** — a `position: fixed` element renders once at
 its viewport offset inside a tall full-page capture. Verified by measurement: off-screen at
 `top: -160px` unfocused, `top: 8px` focused. Recorded because the screenshot alone would have
 supported a false High finding, which is exactly what rule 14 warns about.
 
+## Findings summary
+
+| ID | Severity | Status |
+| --- | --- | --- |
+| F-01 Persian heading uses unbundled system font | **Low** | Open, repair proposed, not applied |
+| F-02 Reducer discards poem on unhandled event | **Low** (was High hypothesis; disproved) | Open, repair proposed, not applied |
+| O-01 Cinematic Begin traversal | Open question, **not a defect** | Needs headed browser |
+| M-01 Stale fixture SW | Methodology, **not a defect** | Resolved (profile cleared) |
+
+**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 2.**
+
+Two candidate findings were **investigated and withdrawn** rather than banked: the reducer
+double-tap (disproved — every dispatch site guarded) and the skip-link overlay (disproved —
+`position: fixed` capture artifact). A third (O-01) is held open rather than filed on
+environment-contaminated evidence.
+
 ## Honest limitations of this phase
 
-- **One viewport (390×844), one engine (Chromium), one flow (Hafez, full-motion, online).**
+- **Phase 4 is 1 of 127 rows.** This ledger is not a substitute for the file-by-file audit.
+- **Not yet exercised:** share / save / download fallbacks, history back/forward, refresh-restore,
+  200% zoom, forced-colours, Save-Data, deliberate release-mismatch and failed-update retention,
+  landscape, memory across repeated draws, and the Rumi flow end-to-end (Rumi verses rendered
+  incidentally, but the flow was not walked deliberately).
 - **LCP render delay is 802 ms of the 815 ms** (98%), against the LCP skill's <10% target. TTFB is
   13 ms because this is **localhost** — not a public-network figure. The dominance is architectural
   (client-rendered SPA; the LCP text cannot paint before JS executes) and an SSR migration is
@@ -228,7 +323,7 @@ supported a false High finding, which is exactly what rule 14 warns about.
   ("don't prioritise 0 ms-impact changes") this is **informational, not a defect**.
 - Measurements are **throttled-Chromium proxies on a local preview**, not the public site and not
   device-certified. No physical-device, VoiceOver, TalkBack, or Safari-hardware evidence exists.
-- **axe has not been run** in this phase.
+- axe HAS now run (3 engines x 4 scenes, 0 violations) but remains necessary-not-sufficient.
 - Only **1 of 120** records has been rendered. Long-line and typography extremes across the full
   corpus are unexercised.
 - Screenshots are local and regenerable, gitignored per the convention already set by
