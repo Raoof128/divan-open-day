@@ -191,7 +191,37 @@ Return `state` unchanged for an unhandled event on an already-valid state; reser
 
 ---
 
-## O-01 — OPEN QUESTION: cinematic Begin traversal not observable headless
+## O-01 — RESOLVED: cinematic Begin traversal is correct (was a headless artifact)
+
+**Resolved. Not a defect.** Re-run in a **headed** browser (Chrome for Testing 149.0.7827.55,
+installed for this purpose) confirms the traversal is real and the headless observation was an
+environment artifact, as hypothesised:
+
+| t | scrollY | `document.scrollHeight` | video | `h1` |
+| ---: | ---: | ---: | --- | --- |
+| 0 | 0 | 2274 | `rs:4, t:0` | "A verse is waiting for you." |
+| 339 ms | **542** | 2274 | `rs:1, **t:2.533**` | "A verse is waiting for you." |
+| 542 ms | **649** | 2274 | `rs:1, t:2.533` | "A verse is waiting for you." |
+| **947 ms** | 5 | **1139** | `null` | **"Whose words will you open?"** |
+
+Begin animates the scroll corridor (`scrollY` 0 → 542 → 649) and **scrubs the video**
+(`currentTime` 0 → 2.533) before handing off to the chooser at ~950 ms. `readyState` dropping 4 → 1
+is the in-progress seek, expected while scrubbing. The corridor then collapses 2274 → 1139 px.
+
+This satisfies the `divan-cinematic-threshold` contract: a ~1 s threshold, "short enough to feel
+like a threshold, not a trailer", with Skip available from the first frame.
+
+**Root cause of the false alarm:** headless Chromium does not animate
+`scrollIntoView({ behavior: 'smooth' })` — it jumps, driving the scrub straight to its terminal
+frame and firing arrival within 300 ms. The code was correct throughout. Recorded because a less
+careful pass would have filed this as a High ("Begin bypasses the cinematic") against working code.
+
+**Still unverified at this sampling resolution (200 ms):** whether the *exact terminal frame*
+paints before handoff. Arrival was observed while `scrollY` was 649 of a possible ~1430; the smooth
+scroll may have completed between samples. The handoff-continuity requirement therefore remains
+**unproven, not disproven** — it needs frame-accurate sampling or a `requestAnimationFrame` probe.
+
+### Superseded original entry
 
 **Not filed as a defect. Evidence is insufficient and the likely cause is the test environment.**
 
@@ -285,7 +315,7 @@ bleed that produces **no** document scroll; permitted by `divan-atmosphere-effec
 | **Cinematic media deferral** | **Pass** — `divan-cinematic-mobile.mp4` requested only after Begin, never at load |
 | **Offline after first load** | **Pass** — SW activated; welcome renders offline; full flow reaches a **real Persian verse offline** (`دست در حلقهٔ آن زلف دوتا نتوان کرد`); 0 page errors |
 | **Offline control set** | **Pass** — only `Begin` offered offline (no video ⇒ no Skip), degrading exactly as the media-failure contract requires: no error wall |
-| Cinematic Begin traversal | **Open — see O-01** (headless cannot render it) |
+| **Cinematic Begin traversal** | **Pass (headed)** — corridor animated `scrollY` 0→649, video scrubbed `t` 0→2.533, handoff at ~950 ms. See O-01 |
 
 **Skip-link note (goal rule 14).** The full-page screenshot shows "Skip to main content" painted
 mid-page over the Source note. It is **not a defect** — a `position: fixed` element renders once at
@@ -299,15 +329,15 @@ supported a false High finding, which is exactly what rule 14 warns about.
 | --- | --- | --- |
 | F-01 Persian heading uses unbundled system font | **Low** | Open, repair proposed, not applied |
 | F-02 Reducer discards poem on unhandled event | **Low** (was High hypothesis; disproved) | Open, repair proposed, not applied |
-| O-01 Cinematic Begin traversal | Open question, **not a defect** | Needs headed browser |
+| O-01 Cinematic Begin traversal | **Resolved — not a defect** | Headed browser confirms correct traversal |
 | M-01 Stale fixture SW | Methodology, **not a defect** | Resolved (profile cleared) |
 
 **Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 2.**
 
 Two candidate findings were **investigated and withdrawn** rather than banked: the reducer
 double-tap (disproved — every dispatch site guarded) and the skip-link overlay (disproved —
-`position: fixed` capture artifact). A third (O-01) is held open rather than filed on
-environment-contaminated evidence.
+`position: fixed` capture artifact). A third (O-01) was held open rather than filed on
+environment-contaminated evidence, then **resolved as correct** by re-running headed.
 
 ## Honest limitations of this phase
 
