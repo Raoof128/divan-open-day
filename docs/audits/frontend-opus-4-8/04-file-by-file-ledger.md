@@ -1,6 +1,6 @@
 # 04 — File-by-File Ledger
 
-**Status: IN PROGRESS — 11 of 127 rows touched (9 resolved, 2 partial). 116 remain `PENDING`.**
+**Status: IN PROGRESS — 12 of 127 rows touched (9 resolved, 3 partial). 115 remain `PENDING`.**
 
 This ledger is the goal's primary artefact and is far from complete. Every row below was **read in
 full** by the primary agent, not sampled and not delegated. A `NO DEFECT` verdict is recorded only
@@ -244,6 +244,65 @@ Recorded so the next reader does not mistake it for a bug, or repeat this invest
 
 ---
 
+## `src-sw/schemas.ts` — 388 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **partial — the asset/MIME contract (lines 267-310); the rest PENDING** |
+| Purpose | Independent service-worker-side release validation |
+| Lenses | T, S, O |
+| Tests | **none directly** |
+| Verdict | **NO live defect** — one **Informational** finding (I-02); row stays `PENDING` |
+
+`FIXED_MIME` was compared entry-by-entry against `FIXED_BROWSER_ASSETS` in
+`src/lib/content/release.ts`. **They are identical** — 11 paths, same MIME types, same order. The
+drift `CLAUDE.md` warns about is **not** present. Verified, not assumed.
+
+`VITE_ASSET_PATTERN` (`/^assets\/…-[a-f0-9]{16}\.(css|js|woff2|avif|png|svg|webp)$/u`) correctly
+omits `mp4`: hashed Vite assets are never video, and the two cinematic masters are served from
+fixed `public/` paths already covered by `FIXED_MIME`. Not a gap.
+
+### I-02 (Informational) — the fixed asset list exists in four hand-maintained copies with no cross-check
+
+`CLAUDE.md` documents this as a known trap ("**Two asset schemas must stay in sync**… a mismatch
+shows up as *Offline release staging failed*"). The audit found the coupling is **wider than two**
+and is protected by **nothing but discipline**:
+
+| # | Location | Symbol |
+| --- | --- | --- |
+| 1 | `src/lib/content/release.ts` | `FIXED_BROWSER_ASSETS` (11 entries) |
+| 2 | `src-sw/schemas.ts` | `FIXED_MIME` (11 entries) |
+| 3 | `tests/content/release.test.ts` | `fixedBrowserSources()` (11 entries) |
+| 4 | `scripts/build.ts` | `public/` allow-list (appears at ~638 and ~671) |
+
+**Both maps are module-private and neither is exported. No test imports either. No test asserts the
+copies agree.** Verified by grep: `FIXED_MIME|FIXED_BROWSER_ASSETS` appears nowhere under `tests/`
+or `scripts/`.
+
+**Why this is Informational, not a defect.** The copies agree today — measured, not assumed — so
+there is no current user-facing fault. Severity must reflect real impact, and the impact is zero
+right now.
+
+**Why it is worth recording anyway.** The failure mode is asymmetric: a future author adding an
+asset updates three of four copies, every existing test still passes (they build their manifests
+from copy 3, which they just updated), and the drift ships. It surfaces to visitors as
+"Offline release staging failed" — an offline-breaking error with no compile-time or test-time
+signal. This is the same *cross-boundary coupling* shape that produced F-03, which is why it was
+audited ahead of path order.
+
+**Proposed repair (test-only, not applied).** Export the two maps and add a test asserting
+`FIXED_MIME` and `FIXED_BROWSER_ASSETS` are entry-for-entry equal, and that
+`fixedBrowserSources()` covers exactly the same key set. This is additive, changes no runtime
+behaviour, and converts a silent runtime failure into a build-time one. It does **not** require the
+structural unification a "single source of truth" refactor implies — goal rule 4 bars redesign on
+best-practice grounds alone, and a shared module spanning the app/SW boundary would be a real
+architectural change deserving its own decision.
+
+**Not applied here** because Phase 8 authorised only F-01, and because adding it belongs with the
+maintainer's judgement about the app/SW boundary.
+
+---
+
 ## `src/components/PoemResult.tsx` — 206 lines
 
 | Field | Value |
@@ -282,14 +341,14 @@ z-index, safe-area, scroll locking, forced-colours, hover/active/disabled states
 | Metric | Count |
 | --- | ---: |
 | Rows resolved (full read + verdict) | **9** |
-| Rows partially read, still `PENDING` | 2 |
-| Rows untouched `PENDING` | **116** |
+| Rows partially read, still `PENDING` | 3 |
+| Rows untouched `PENDING` | **115** |
 | Total | 127 |
 | Defects found in resolved rows | 2 (F-02, F-03) |
-| Informational notes | 1 (I-01) |
+| Informational notes | 2 (I-01, I-02) |
 | `NO DEFECT` verdicts | 7 |
 
-**The audit cannot pass in this state.** 116 rows have not been opened. Any later reader must treat
+**The audit cannot pass in this state.** 115 rows have not been opened. Any later reader must treat
 the absence of a finding for those files as **unaudited**, not as evidence of soundness.
 
 ### Signal from the ordering
@@ -309,7 +368,13 @@ preference write/read mismatch (I-01 — verified written to localStorage only, 
 and the reducer double-tap (F-02 — every dispatch site guarded). Recording the disproofs matters as
 much as the findings.
 
-**Next, by risk rather than by path order:** `src-sw/schemas.ts` (388L, no direct test, and the
-independent SW-side validator that `CLAUDE.md` warns must stay in sync with
-`src/lib/content/release.ts` `FIXED_BROWSER_ASSETS`), then `src-sw/releaseManager.ts` (871L), then
-`App.tsx` (795L) where the focus, history, and release races concentrate.
+**The cross-boundary-coupling hypothesis held.** Auditing `src-sw/schemas.ts` ahead of path order
+— chosen because it is the far side of a coupling, not because it lacked tests — produced I-02 on
+the first read. Coupling, not missing coverage, is the better predictor in this codebase. Both
+findings so far (F-03, I-02) sit on a boundary where two owners must agree with no mechanism
+forcing it.
+
+**Next, on the same reasoning:** `src-sw/releaseManager.ts` (871L — the other side of the release
+contract), then `App.tsx` (795L), where the focus, history, and release-replacement races
+concentrate and where F-03's counterpart writer lives. Then the remaining ~1000 unaudited lines of
+`visual.css`.
