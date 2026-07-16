@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — Release 1 runtime image hardening
+
+**Raouf:**
+
+- **Scope:** Repaired the Release 1 web and tunnel runtime images after mandatory final-image scans rejected the initially pinned vendor images. No poetry, corpus, source evidence, translation, frontend behavior, service worker, University branding, QR approval, or unrelated Droplet service changed.
+- **Summary:** Rebased cloudflared onto a `scratch` image containing only the exact statically linked official 2026.7.2 binary and CA roots. Rebuilt Caddy 2.11.4 from its authenticated Go module with fixed Go 1.26.5, compiled the exact 60/60/120 health contract into a static verifier, and moved the web runtime to `scratch`. The final web image has no shell, package manager, or OS libraries and still runs as UID/GID 10001 with a read-only filesystem and no capabilities.
+- **Files Changed:** `ops/Dockerfile`, `ops/Dockerfile.cloudflared`, `ops/healthcheck/main.go`, `ops/compose.yml`, `ops/scripts/lib.sh`, current image-pin/runbook documentation, focused security regressions, `AGENT.md`, and `CHANGELOG.md`; the obsolete shell health verifier was removed.
+- **Verification:** The candidate production image built exactly 60 Hafez + 60 Rumi = 120 records, passed the public-bundle leak check, and ran its compiled verifier as UID 10001 with a read-only filesystem, all capabilities dropped, and no container network. Docker Scout reported 0 Critical / 0 High / 0 Medium / 0 Low. OSV reported only `GO-2026-5932` as unscored/no-fix; dependency-graph inspection proved the affected `golang.org/x/crypto/openpgp` packages are absent from the compiled Caddy command. The scratch cloudflared image reported 0 Critical / 0 High / 0 Medium / 0 Low and is pinned by immutable GHCR digest.
+- **Follow-ups:** Publish only the clean tagged image, retain the initial `v1.0.0` source tag as superseded evidence, deploy through the dedicated key-only `eoiadmin` identity, and keep public launch blocked until live Access/tunnel/rollback plus manual accessibility/device and physical-QR evidence are complete.
+
 ### 2026-07-16 (Australia/Sydney) — Release 1 production gate preparation
 
 **Raouf:**

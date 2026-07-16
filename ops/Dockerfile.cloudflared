@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+
+FROM cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d AS source
+
+# The official binary is statically linked. Retain its exact bytes and the CA
+# roots required for outbound TLS, while excluding the source image's unused
+# glibc and zlib packages from the production tunnel runtime.
+FROM scratch
+COPY --from=source /usr/local/bin/cloudflared /usr/local/bin/cloudflared
+COPY --from=source /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+
+USER 65532:65532
+ENTRYPOINT ["/usr/local/bin/cloudflared"]

@@ -3,7 +3,7 @@
 readonly OPS_SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly OPS_ROOT="$(cd -- "$OPS_SCRIPT_DIR/.." && pwd -P)"
 readonly COMPOSE_FILE="$OPS_ROOT/compose.yml"
-readonly DIVAN_TUNNEL_IMAGE='cloudflare/cloudflared:2026.7.0@sha256:5e49861633763e8933475477c20bae6039ed47f32c1d267a34babc347f28f0df'
+readonly DIVAN_TUNNEL_IMAGE='ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.1@sha256:80c6b602be5657a9af7843736137099f1e7f23ad1de1c00855c539c41bcc9460'
 
 COMMON_IMAGE=''
 COMMON_STATE_DIR=''
