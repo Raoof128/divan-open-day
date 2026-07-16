@@ -2,7 +2,9 @@
 
 > Handoff note for the next session. Read this first, then `AGENT.md`,
 > `docs/verification-report.md`, `docs/implementation-plan.md`, and `CHANGELOG.md`.
-> Last updated: 2026-07-13 (Australia/Sydney), commit `c552189`.
+> Historical implementation handoff. For the current release state, read
+> `docs/verification-report.md` and
+> `docs/verification/2026-07-16-final-120-corpus-report.md`.
 
 ## Where we are
 
@@ -42,7 +44,7 @@
 | `pnpm verify:privacy`                                     | pass                                                               |
 | `pnpm verify:container/headers/origin-isolation/rollback` | pass (docker-free static groups)                                   |
 | `pnpm audit --prod`                                       | no known vulnerabilities                                           |
-| `pnpm build:production`                                   | exit 1 — **intended** fail-closed (no approved corpus)             |
+| `pnpm build:production`                                   | historical: no corpus; current exact-120 production build passes   |
 | `pnpm verify:qr`                                          | exit 1 — **intended** fail-closed (Phase-7 gate)                   |
 | Bundle budgets (§21.3)                                    | JS 118 KB gz / CSS 4.8 KB / HTML 657 B / total 752 KB — all within |
 
@@ -54,9 +56,9 @@ Full evidence and the §31.1 acceptance-criteria matrix: **`docs/verification-re
   container scan (`syft`), live `docker compose config`, and `ops/scripts/verify.sh`
   runtime evidence. The config is statically verified by `tests/security` (52 tests).
   Re-run these on a host with Docker.
-- **§31.2 public-launch gates (cannot be closed by an agent):** approved production
-  corpus + rights/permissions (production build is designed to fail without it),
-  cultural review, manual assistive-tech evidence (VoiceOver/TalkBack/devices, 200%
+- **§31.2 public-launch gates:** the exact-120 source-bound corpus now builds;
+  independent governance/rights decisions, cultural review, manual assistive-tech
+  evidence (VoiceOver/TalkBack/devices, 200%
   zoom, measured contrast), final hostname/short URL + University-mark approval,
   live deployment/tunnel/provider-logging, rollback rehearsal, physical QR/print.
 
@@ -66,5 +68,5 @@ Full evidence and the §31.1 acceptance-criteria matrix: **`docs/verification-re
 pnpm install --frozen-lockfile
 pnpm typecheck && pnpm lint && pnpm test && pnpm test:e2e
 pnpm build:fixture && pnpm verify:dist && pnpm verify:privacy
-pnpm build:production   # expect exit 1 fail-closed until an approved corpus exists
+pnpm build:production   # current exact-120 production package must pass
 ```

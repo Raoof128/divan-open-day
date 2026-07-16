@@ -151,6 +151,9 @@ describe('production image contract', () => {
     expect(health).toContain(
       '[ "$asset_manifest_path" = "/assets/${asset_manifest_sha}.json" ] || exit 1',
     );
+    expect(health).toContain('[ "$hafez_count" -eq 60 ] || exit 1');
+    expect(health).toContain('[ "$rumi_count" -eq 60 ] || exit 1');
+    expect(health).toContain('[ "$item_count" -eq 120 ] || exit 1');
     expect(health).toContain('wget -q -T 5');
     expect(health).not.toMatch(
       /\[ -f \/srv\/index\.html \] \|\| \[ -f "\$release_file" \]/u,
@@ -589,6 +592,9 @@ describe('safe deployment controls', () => {
     expect(verify).toContain('require_running_image "$web_id" "$COMMON_IMAGE"');
     expect(verify).toContain('buildProfile');
     expect(verify).toContain('productionEligible');
+    expect(verify).toContain('hafez_count == 60');
+    expect(verify).toContain('rumi_count == 60');
+    expect(verify).toContain('item_count == 120');
   });
 
   test('bounds every HTTPS request and verifies the complete public contract', () => {

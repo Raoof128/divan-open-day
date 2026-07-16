@@ -216,4 +216,22 @@ describe('public operational evidence boundary', () => {
       ),
     ).toBe(false);
   });
+
+  test('requires the exact production release and a pinned OSV CI scan', () => {
+    const check = readProjectFile('scripts/check.sh');
+    const workflow = readProjectFile('.github/workflows/ci.yml');
+
+    expect(check).toContain(
+      "DIVAN_PUBLIC_ORIGIN='https://divan.raoufabedini.dev'",
+    );
+    expect(check).toContain("DIVAN_MIN_HAFEZ_COUNT='60'");
+    expect(check).toContain("DIVAN_MIN_RUMI_COUNT='60'");
+    expect(check).toContain("step 'build:production' production_build");
+    expect(check).not.toContain("gate_closed 'build:production'");
+    expect(workflow).toContain('name: OSV dependency scan');
+    expect(workflow).toContain(
+      'osv-scanner-reusable.yml@8dc09193bb540e09b23da07ad7e30bd33bf87018',
+    );
+    expect(workflow).toContain('needs: osv-scan');
+  });
 });

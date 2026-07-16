@@ -27,8 +27,8 @@ independent approvals exist, set the non-secret, evidence-backed build inputs:
 ```bash
 DIVAN_PUBLIC_ORIGIN='https://approved-hostname.example'
 DIVAN_RELEASE_ID='approved-release-id'
-DIVAN_MIN_HAFEZ_COUNT='24'
-DIVAN_MIN_RUMI_COUNT='16'
+DIVAN_MIN_HAFEZ_COUNT='60'
+DIVAN_MIN_RUMI_COUNT='60'
 DIVAN_BRANDING_MODE='society_only'
 DIVAN_UNIVERSITY_APPROVAL_ID=''
 SOURCE_DATE_EPOCH='1783814400'
