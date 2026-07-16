@@ -46,22 +46,22 @@ depth of 6). The deduplicated, registry-backed count is what this document uses.
 | --- | --- | --- | --- | --- |
 | `frontend-design` | plugin `frontend-design@claude-plugins-official` | **yes** | **READ IN FULL + INVOKED** | Applied as review rubric only — see conflict C1 |
 | `frontend-design` | user skill `~/.claude/skills/frontend-design` | **yes** | duplicate of the above | same content surface |
-| `webapp-testing` | `~/.claude/skills/webapp-testing` | **yes** | classified, **not yet read** | Playwright interaction/screenshot toolkit — Phase 6 |
-| `chrome-devtools-mcp:chrome-devtools` | plugin `chrome-devtools-mcp@1.6.0` | **yes** | classified, **not yet read** | primary rendered-evidence runtime — Phase 6 |
-| `chrome-devtools-mcp:a11y-debugging` | same plugin | **yes** | classified, **not yet read** | Phase 4.4 / 6 |
-| `chrome-devtools-mcp:debug-optimize-lcp` | same plugin | **yes** | classified, **not yet read** | Phase 4.7 |
-| `chrome-devtools-mcp:memory-leak-debugging` | same plugin | **yes** | classified, **not yet read** | Phase 4.7 — memory across repeated draws |
-| `chrome-devtools-mcp:chrome-devtools-cli` | same plugin | **yes** | classified, **not yet read** | Phase 6 fallback |
-| `chrome-devtools-mcp:troubleshooting` | same plugin | **yes** | classified, **not yet read** | contingency only |
-| `cloudflare:web-perf` | plugin `cloudflare@1.0.0` | **yes** | classified, **not yet read** | Core Web Vitals — Phase 4.7. **Audit-only**: goal rule 5 forbids touching Cloudflare config |
-| `scroll-world` | plugin `scroll-world@0.2.0` | **yes** | classified, **not yet read** | scroll-scrub cinematic — see conflict C2 |
-| `test-creator` | `~/.claude/skills/test-creator` | **yes** | classified, **not yet read** | Phase 8 regression tests |
+| `webapp-testing` | `~/.claude/skills/webapp-testing` (95L) | **yes** | **READ IN FULL** | Phase 6. Playwright-via-Python; `scripts/with_server.py` to be used as a black box, per its own instruction not to ingest script source. Key rule adopted: wait for `networkidle` before DOM inspection. |
+| `chrome-devtools-mcp:chrome-devtools` | plugin `chrome-devtools-mcp@**1.6.0**` (72L) | **yes** | **READ IN FULL** | Phase 6 primary runtime. Adopted: navigate → wait → snapshot → interact ordering; `take_snapshot` (a11y tree) for automation, `take_screenshot` only for visual state; `filePath` for large outputs to protect context. |
+| `chrome-devtools-mcp:a11y-debugging` | same plugin (89L) | **yes** | **READ IN FULL** | Phase 4.4 / 6. Adopted: a11y tree is source of truth over DOM; `list_console_messages types:["issue"]` for native contrast/label audits; `jq`/node filter on Lighthouse JSON rather than reading the report. Tap-target floor cited as 48×48 (web.dev) — see conflict C4. |
+| `chrome-devtools-mcp:debug-optimize-lcp` | same plugin (121L) | **yes** | **READ IN FULL** | Phase 4.7. Adopted: LCP subpart breakdown (TTFB ~40% / load delay <10% / load duration ~40% / render delay <10%); `emulate` Fast 3G + 4× CPU throttle. |
+| `chrome-devtools-mcp:memory-leak-debugging` | same plugin (58L) | **yes** | **READ IN FULL** | Phase 4.7 — memory across repeated draws. Adopted: repeat interaction ×10 to amplify; never read raw `.heapsnapshot` (context blowout); baseline/target/final snapshot triad. |
+| `chrome-devtools-mcp:troubleshooting` | same plugin (98L) | **yes** | **READ IN FULL** | Contingency for Phase 6. Notes read-only-mode symptom (only ~9 tools) and `--autoConnect` / `DevToolsActivePort` failure modes. |
+| `chrome-devtools-mcp:chrome-devtools-cli` | same plugin (153L) | **yes** | **NOT READ** | Deliberate: shell-scripting variant of the MCP runtime already covered by `chrome-devtools`. Will be read only if the MCP path fails in Phase 6. Recorded rather than silently skipped. |
+| `cloudflare:web-perf` | plugin `cloudflare@1.0.0` (201L) | **yes** | **READ IN FULL** | Phase 4.7. Adopted thresholds (LCP <2.5s, INP <200ms, CLS <0.1, TTFB <800ms, TBT <200ms) — consistent with `budgets.json`. Adopted "verify before recommending" and "quantify impact; skip 0ms non-issues". **Audit-only**: goal rule 5 forbids touching Cloudflare config; Phase 5 codebase analysis is in scope, config changes are not. |
+| `scroll-world` | plugin `scroll-world@0.2.0` (535L) | **yes** | **READ IN PART (150/535)** — excluded | Read to the point where conflict C2 was decisively confirmed, then stopped. It is a Higgsfield **media-generation** pipeline requiring new image/video generation and credits — barred by goal rules 4 and 6. Remaining 385L are prompt templates and ffmpeg encode recipes with no audit value. Its `references/scrub-engine.js` retained as a comparison reference for `src/lib/cinematic/scrollScrub.ts` seam handling only. |
+| `test-creator` | `~/.claude/skills/test-creator` (150L) | **yes** | **READ IN FULL** | Phase 8. Adopted: mandatory inspection pass before writing tests; no new framework (repo is Vitest — must not introduce another); never weaken privacy/security to make a test pass; negative case per positive; no large snapshots. It self-directs to `raouf-change-protocol` when `AGENT.md` + `CHANGELOG*.md` exist — both do. |
 | `verify` / `code-review` / `simplify` / `run` | harness | **yes** | classified | Phase 8/9 |
 | `superpowers:systematic-debugging` | plugin `superpowers@6.1.1` | process | **APPLIED** | Forced empirical verification of the reducer lead → downgraded it from High to Low |
-| `superpowers:test-driven-development` | same | process | pending | Phase 8 — mandated by goal rule 11 anyway |
+| `superpowers:test-driven-development` | same (371L) | process | **NOT READ** | Deliberate: goal rule 11 already mandates failing-test-first and is the governing authority (precedence 1 over precedence 4). Will be read before Phase 8 if any repair is authorised. Recorded rather than silently skipped. |
 | `superpowers:verification-before-completion` | same | process | **APPLIED** | Caught the false `pnpm install` success (see below) |
 | `superpowers:using-git-worktrees` | same | process | **APPLIED** | Phase 0 isolation |
-| `raouf-change-protocol` | `~/.claude/skills/raouf-change-protocol` | **yes (mandatory)** | classified | Phase 10 — `AGENT.md` + `CHANGELOG.md` entries |
+| `raouf-change-protocol` | `~/.claude/skills/raouf-change-protocol` (74L) | **yes (mandatory)** | **READ IN FULL** | Phase 10. Requires: preflight read of `AGENT.md` + `CHANGELOG.md` **before** code edits; postflight `Raouf:` entry in **both**, dated Australia/Sydney, with scope, summary, files changed, verification, follow-ups; and a fixed output format (Preflight / Plan / Changes / Verification / Logs). Also mirrors repo `CLAUDE.md` invariant 6. **No implementation file has been edited, so its preflight obligation is not yet triggered.** |
 
 ### Classified NOT frontend-relevant (not inflating the count)
 
@@ -93,6 +93,22 @@ explicitly: "Do not convert the full website into a Scroll World." **Resolution:
 skill wins as the nearer, more specific authority. `scroll-world` may inform scrub-engine
 review only; it must not motivate expanding the cinematic.
 
+**C4 — tap-target floor: 48×48 vs 44px.** `chrome-devtools-mcp:a11y-debugging` cites web.dev's
+48×48 px tap-target guidance. The repository's `CLAUDE.md` states a 44px target convention, and
+`divan-accessibility-qa` defers to "target size consistent with the project design". WCAG 2.2 AA
+SC 2.5.8 (Target Size, Minimum) requires 24×24 CSS px; 44×44 is the AAA-adjacent/Apple HIG norm;
+48×48 is a Google recommendation, not a WCAG AA conformance threshold. **Resolution:** the
+repository convention (44px) governs, and WCAG 2.2 AA (24×24) is the pass/fail line. A control
+between 44 and 48 px is **not** a defect and must not be reported as one — doing so would breach
+goal rule 3 (no redesign by taste) by dressing a preference as a violation. Recorded so the
+distinction is explicit before any measurement is taken.
+
+**C5 — `frontend-design` vs `test-creator` on asking first.** `test-creator` requires proposing a
+test plan and waiting for confirmation before writing tests. Goal rule 11 requires a failing test
+before each behavioural repair. **Resolution:** no conflict in substance — the plan is proposed as
+part of the Phase 7 defect ledger, which the goal already gates on user-visible review before
+Phase 8 editing. Both are satisfied by the goal's own ordering.
+
 **C3 — `divan-release-gauntlet` entry conditions.** Its own text forbids automatic invocation
 outside final release verification. The goal asks to apply every applicable frontend skill.
 **Resolution:** the skill's own contract governs its applicability. Read, deliberately not run,
@@ -114,11 +130,37 @@ an unnoticed false-green would have invalidated the entire baseline.
 | User skills discovered | 92 |
 | Raw `SKILL.md` hits under plugins (**artefact**) | 2,509 |
 | Frontend-relevant skills identified | 21 |
-| Frontend-relevant skills READ IN FULL | 9 |
-| Frontend-relevant skills APPLIED so far | 9 |
-| Frontend-relevant skills classified but NOT yet read | 12 |
-| Unreadable skills | 0 |
+| Frontend-relevant skills READ IN FULL | 18 |
+| Frontend-relevant skills read in part, exclusion justified | 1 (`scroll-world`) |
+| Frontend-relevant skills deliberately NOT read, reason recorded | 2 (`chrome-devtools-cli`, `superpowers:test-driven-development`) |
+| Frontend-relevant skills silently skipped | **0** |
+| Unreadable / unavailable skills | 0 |
+| Conflicts found and resolved | 5 (C1–C5) |
 
-**This inventory is incomplete.** 12 classified frontend skills remain unread, all of them
-Phase 6 (rendered browser) and Phase 8 (repair) tooling. The audit cannot be reported as
-PASS until they are read or explicitly and honestly excluded.
+## Phase 1 status: CLOSED
+
+Every frontend-relevant skill is now read in full, or read to the point of a justified
+exclusion, or deliberately deferred with a recorded reason. **None was silently skipped**,
+which is the bar goal rule 15 sets.
+
+The three not read in full are accounted for honestly:
+
+- **`scroll-world`** — read 150/535L, enough to confirm C2 decisively. It is generation
+  machinery this audit is forbidden to run. Finishing it would produce no audit evidence.
+- **`chrome-devtools-cli`** — same capability as the MCP runtime already read; a fallback path.
+- **`superpowers:test-driven-development`** — superseded by goal rule 11, which outranks it.
+  To be read if Phase 8 repairs are authorised.
+
+### Note on `ui-widgets`
+
+A filesystem scan surfaces `ui-widgets/SKILL.md` (355L) under
+`chrome-devtools-mcp/*/node_modules/chrome-devtools-frontend/.agents/skills/`. This is a
+**vendored dependency's own internal skill**, not a registered skill of this installation —
+it does not appear in the harness registry and cannot be invoked. It is therefore not an
+installed skill and is excluded. Counting it would have inflated the frontend total.
+
+### Stale cache note
+
+`chrome-devtools-mcp` has both `1.5.0` and `1.6.0` caches on disk with byte-identical skill
+files. `installed_plugins.json` pins **1.6.0** active; 1.6.0 was read and 1.5.0 ignored as
+stale. Reading both would have double-counted six skills.
