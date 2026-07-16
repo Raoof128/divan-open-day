@@ -12,6 +12,10 @@ import {
   type RegistryBundle,
 } from '../../src/lib/content/registrySchemas';
 import { containsRemoteResource } from '../../src/lib/content/remoteResource';
+import {
+  productionSelectionManifestSchema,
+  type ProductionSelectionManifest,
+} from '../../src/lib/content/productionManifest';
 
 export type ContentLoadProfile = 'fixture' | 'production';
 
@@ -24,6 +28,7 @@ export interface LoadedPrivateContent {
   readonly items: readonly AuthoringContentItem[];
   readonly registries: RegistryBundle;
   readonly privateValues: ReadonlySet<string>;
+  readonly selectionManifest?: ProductionSelectionManifest;
 }
 
 const REGISTRY_FILES = {
@@ -36,6 +41,7 @@ const REGISTRY_FILES = {
 
 const ALLOWED_ROOT_FILES = new Set([
   'README.md',
+  'production-selection.yaml',
   ...Object.values(REGISTRY_FILES),
 ]);
 const FIXTURE_SENTINEL_PATTERN =
@@ -500,9 +506,26 @@ export async function loadContentPrivate(
     );
   }
 
+  let selectionManifest: ProductionSelectionManifest | undefined;
+  if (options.profile === 'production') {
+    const manifestInput = await readStrictYamlFile(
+      contentRoot,
+      'production-selection.yaml',
+    );
+    const manifestResult =
+      productionSelectionManifestSchema.safeParse(manifestInput);
+    if (!manifestResult.success) {
+      throw new Error(
+        `Invalid production selection manifest: ${manifestResult.error.message}`,
+      );
+    }
+    selectionManifest = manifestResult.data;
+  }
+
   return {
     items,
     registries: registryResult.data,
     privateValues: derivePrivateSourceValues(items, registryResult.data),
+    ...(selectionManifest === undefined ? {} : { selectionManifest }),
   };
 }

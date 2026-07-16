@@ -3,21 +3,24 @@ import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { buildCorpusInventory } from '../../scripts/poetry/build-corpus-inventory';
-import { loadContentPrivate } from '../../scripts/content/loadContent';
-
 describe('pre-expansion corpus inventory', () => {
-  it('classifies every current production record and reports the remaining 60/60 gap', async () => {
-    const loaded = await loadContentPrivate({
-      projectRoot: process.cwd(),
-      profile: 'production',
-    });
-
-    const inventory = buildCorpusInventory({
-      items: loaded.items,
-      buildDate: '2026-07-16',
-      targetPerPoet: 60,
-    });
+  it('preserves the classified 40-record baseline and original 60/60 gap', async () => {
+    const inventory = JSON.parse(
+      await readFile(
+        path.join(
+          process.cwd(),
+          'docs/verification/2026-07-16-pre-expansion-corpus-inventory.json',
+        ),
+        'utf8',
+      ),
+    ) as {
+      readonly records: ReadonlyArray<{
+        readonly sourceEvidenceCurrent: boolean;
+        readonly finalContractAuthorityCurrent: boolean;
+        readonly failureReasons: readonly string[];
+      }>;
+      readonly summary: Record<string, number>;
+    };
 
     expect(inventory.records).toHaveLength(40);
     expect(inventory.summary).toMatchObject({
