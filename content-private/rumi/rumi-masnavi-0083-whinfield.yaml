@@ -1,0 +1,78 @@
+id: rumi-masnavi-0083-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 83
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0295-s2:lines-4-5
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - کی بری زان آب کان آبت برد
+    - کی کنی زان فهم فهمت را خورد
+  english_lines:
+    - How can you get water from that which cuts it off?
+    - How gain understanding from what destroys understanding?
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0083-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: da7217a06fc643894ebbb45c4ed44307a41fd96f0854326f5fbebce62e8cc191
+  englishSpanHash: 47e784590cc6c76f84036a8c6ef48606f0759209416a71a32045e25f050be267
+  persianSpanHash: 0fd110351095bd97ea39409d6562d098375a984411cdfcb3ed952094fddc1ca6
+  mappingHash: b058678534c2f1ee6ca8d8257693670b8073c9f08bb7bab20e5ab6ff210bfbd2
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 4 resolve to the continuous Nicholson section 83 span beginning at 44, supported by 3 independent same-context anchors.

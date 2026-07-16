@@ -1,0 +1,78 @@
+id: rumi-masnavi-0359-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 359
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0125-s2:lines-21-22
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - چشم نیکو باز کن در من نگر
+    - تا ببینی نور حق اندر بشر
+  english_lines:
+    - Open clear eyes and look upon me,
+    - That you may behold the light of God in a mortal.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0359-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 84db59430c25729fdac36b3a6c0076e7a53352773a283949a3fb8412be97a305
+  englishSpanHash: 68bfe30d87772cae87c2cf0b70c115447d0fb050a8b66b08941ea61519d0ad34
+  persianSpanHash: 26d607f2222e97a94bdf2a6720aedf378d5b5be7fc53b2eb8d873291b218f78c
+  mappingHash: 1f60f5b440b2ec4aa827ea8925d2261a028d6290bb54ba55fa4459b7e23b5f15
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.834794
+  disclosures:
+    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 21 resolve to the continuous Nicholson section 359 span beginning at 44, supported by 3 independent same-context anchors.

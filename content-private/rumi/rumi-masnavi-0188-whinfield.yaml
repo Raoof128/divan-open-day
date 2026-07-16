@@ -1,0 +1,78 @@
+id: rumi-masnavi-0188-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 188
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0233-s5:lines-19-20
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - او به نور حق ببیند آنچ هست
+    - نور پاکش بی‌دلیل و بی‌بیان
+  english_lines:
+    - Beholds by the light of God all things that exist.
+    - His pure light, without signs or tokens,
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0188-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 17ea1baec80c513239ee46e9a3c50df7be919c48c328745397db94b0c9a9691b
+  englishSpanHash: c5eb6b66e8e69ec6f4fb1f007b4022418fa37e6df98e35b4dd4184cf6096b6ed
+  persianSpanHash: c5977d9f06a360feef3c9b53020bbeee619d5e690a8bb1f1c8e9fdf102a42a58
+  mappingHash: 8b8635029d6ff8cf0e1cb1d96bfab693faf31d5d3c4227640ac081658da0e733
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.811793
+  disclosures:
+    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 19 resolve to the continuous Nicholson section 188 span beginning at 21, supported by 3 independent same-context anchors.

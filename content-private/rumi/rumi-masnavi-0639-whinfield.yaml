@@ -1,0 +1,78 @@
+id: rumi-masnavi-0639-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 639
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0149-s1:lines-16-17
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - صد هزاران نام و او یک آدمی
+    - صاحب هر وصفش از وصفی عمی
+  english_lines:
+    - He has thousands of names, yet is One,
+    - Answering to all of His descriptions, yet indescribable.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0639-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 92568c092af29c0ef94ed81b2d2b3bb166b57f60c9a1fa71fbc2f3570bc975d9
+  englishSpanHash: a67b2316b8b3591d1542a444cb02e00e4c7bf220b6bed930bc9020f515d4ce5b
+  persianSpanHash: 4c777639dcdfdbbca6e87769ee63b7ed43da4eca125fce3bfe041f9b3d1d0aca
+  mappingHash: 0d39b8a2e584b4e9b76ef101b06b05027f6b0b16362b0c9e964036a6be642c4e
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.847796
+  disclosures:
+    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 16 resolve to the continuous Nicholson section 639 span beginning at 34, supported by 3 independent same-context anchors.

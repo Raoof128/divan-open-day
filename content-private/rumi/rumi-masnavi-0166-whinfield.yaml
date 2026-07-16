@@ -1,0 +1,78 @@
+id: rumi-masnavi-0166-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 166
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0249-s2:lines-16-17
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - شاخه‌ها رقصان شده چون تایبان
+    - برگها کف‌زن مثال مطربان
+  english_lines:
+    - Branches of trees dancing like fair damsels,
+    - Leaves clapping hands like singers.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0166-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 7c76a91d38d8d7181535abcba5ce07ddbe39763f5e3deee7297c8d54c362639f
+  englishSpanHash: 530257ace5208ebf631081ce4ecffd2371184154cf4d1830fa7998b478dbafb4
+  persianSpanHash: 387fb557bcaec2c0bf888718a9d61eb93b0392b9b9c31b34cb3552ce5a65ce77
+  mappingHash: ebfe6f580bfcdcfa0dcd16ecf5cf5c554a1b2843e8808128cf33cfcaa1dac62c
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Whinfield is an abridged edition; this selected continuous couplet remains directly traceable to the Nicholson span.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 16 resolve to the continuous Nicholson section 166 span beginning at 16, supported by 3 independent same-context anchors.
