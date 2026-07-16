@@ -1,0 +1,3884 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-16T00:00:00.000Z",
+  "methodVersion": "source-bound-alignment-v2",
+  "modelLabel": "gpt-5.6-sol",
+  "sourceStrategy": {
+    "hafezPersian": "hafez-qazvini-ghani-fa-wikisource",
+    "hafezEnglish": ["hafez-bell-1897-en", "hafez-clarke-1891-en"],
+    "rumiPersian": "rumi-nicholson-fa-wikisource",
+    "rumiEnglish": "rumi-whinfield-abridged-en"
+  },
+  "preserved": {
+    "hafez": [
+      "hafez-ghazal-001-bell",
+      "hafez-ghazal-002-bell",
+      "hafez-ghazal-008-bell",
+      "hafez-ghazal-011-bell",
+      "hafez-ghazal-046-bell",
+      "hafez-ghazal-065-bell",
+      "hafez-ghazal-079-bell",
+      "hafez-ghazal-090-bell",
+      "hafez-ghazal-101-bell",
+      "hafez-ghazal-103-bell",
+      "hafez-ghazal-134-bell",
+      "hafez-ghazal-145-bell",
+      "hafez-ghazal-163-bell",
+      "hafez-ghazal-164-bell",
+      "hafez-ghazal-166-bell",
+      "hafez-ghazal-169-bell",
+      "hafez-ghazal-184-bell",
+      "hafez-ghazal-233-bell",
+      "hafez-ghazal-254-bell",
+      "hafez-ghazal-255-bell",
+      "hafez-ghazal-268-bell",
+      "hafez-ghazal-279-bell",
+      "hafez-ghazal-288-bell",
+      "hafez-ghazal-336-bell"
+    ],
+    "rumi": [
+      "rumi-masnavi-0029-whinfield",
+      "rumi-masnavi-0112-whinfield",
+      "rumi-masnavi-0300-whinfield",
+      "rumi-masnavi-0306-whinfield",
+      "rumi-masnavi-0357-whinfield",
+      "rumi-masnavi-0397-whinfield",
+      "rumi-masnavi-0418-whinfield",
+      "rumi-masnavi-0557-whinfield",
+      "rumi-masnavi-0633-whinfield",
+      "rumi-masnavi-0643-whinfield",
+      "rumi-masnavi-0674-whinfield",
+      "rumi-masnavi-0724-whinfield",
+      "rumi-masnavi-0812-whinfield",
+      "rumi-masnavi-0946-whinfield",
+      "rumi-masnavi-0947-whinfield",
+      "rumi-masnavi-0959-whinfield"
+    ]
+  },
+  "newHafez": [
+    {
+      "stableRecordId": "hafez-ghazal-017-clarke",
+      "taskId": "volume-1/p211",
+      "volume": "volume-1",
+      "page": 211,
+      "ode": 65,
+      "concordance": 34,
+      "ghazalNumber": 17,
+      "englishLines": [
+        "From the fire (of love) of my heart, my chest in grief for the Beloved—— consumed.",
+        "In this house (of the heart), was (such) a fire, that the house consumed."
+      ],
+      "persianLines": [
+        "سینه از آتش دل در غم جانانه بسوخت",
+        "آتشی بود در این خانه که کاشانه بسوخت"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 3,
+      "retrievalScore": 0.715174,
+      "independentAnchorCount": 4,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "From the fire (of love) of my heart",
+          "persian": "آتش دل",
+          "note": "Burning passion within the heart"
+        },
+        {
+          "english": "my chest in grief for the Beloved consumed",
+          "persian": "سینه ... سوخت",
+          "note": "Chest burned/immolated by love's grief"
+        },
+        {
+          "english": "fire",
+          "persian": "آتش",
+          "note": "Repeated specific image of consuming flame"
+        },
+        {
+          "english": "Beloved",
+          "persian": "جانانه",
+          "note": "The object of love-sickness"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-019-clarke",
+      "taskId": "volume-1/p205",
+      "volume": "volume-1",
+      "page": 205,
+      "ode": 62,
+      "concordance": 95,
+      "ghazalNumber": 19,
+      "englishLines": [
+        "O fragrant morning breeze (the Angel of Death) !",
+        "The Beloved's rest-place is where ?"
+      ],
+      "persianLines": [
+        "ای نسیم سحر آرامگه یار کجاست",
+        "منزل آن مه عاشق‌کش عیّار کجاست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.64727,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "O fragrant morning breeze",
+          "persian": "ای نسیم سحر",
+          "note": "Dawn wind as messenger/herald"
+        },
+        {
+          "english": "The Beloved's rest-place",
+          "persian": "آرامگه یار",
+          "note": "Sanctuary/dwelling of the beloved"
+        },
+        {
+          "english": "is where?",
+          "persian": "کجاست",
+          "note": "Location query/seeking"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-028-clarke",
+      "taskId": "volume-1/p123",
+      "volume": "volume-1",
+      "page": 123,
+      "ode": 20,
+      "concordance": 50,
+      "ghazalNumber": 28,
+      "englishLines": [
+        "By the Khwaja's soul, and by ancient right, and by true covenant,",
+        "(I swear) that, at the breath of dawn, prayer for thy welfare is my (sole) companion."
+      ],
+      "persianLines": [
+        "بجان خواجه و حق قدیم و عهد درست",
+        "که مونس دم صبحم دعای دولت تست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.731858,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "By the Khwaja's soul",
+          "persian": "بجان خواجه",
+          "note": "Direct: Khwaja (خواجه) = Khwaja (spiritual master)"
+        },
+        {
+          "english": "ancient right, and by true covenant",
+          "persian": "حق قدیم و عهد درست",
+          "note": "Direct: 'ancient law/right' (حق قدیم) and 'correct covenant' (عهد درست)"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-034-clarke",
+      "taskId": "volume-1/p125",
+      "volume": "volume-1",
+      "page": 125,
+      "ode": 21,
+      "concordance": 102,
+      "ghazalNumber": 34,
+      "englishLines": [
+        "(0 true Beloved!) the chamber of vision of my eye is the dwelling of—- Thine :",
+        "Show courtesy, and alight, for this house is the House of Thine."
+      ],
+      "persianLines": [
+        "رواق منظر چشم من آشیانهٔ تست",
+        "کرم نما و فرود‌آ که خانه خانهٔ تُست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.724815,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "chamber of vision of my eye is the dwelling",
+          "persian": "رواق منظر چشم من آشیانهٔ تست",
+          "note": "Direct: 'chamber/audience-hall (رواق) of vision (منظر) of my eye (چشم)' and 'thy dwelling/nest (آشیانه)'"
+        },
+        {
+          "english": "house is the House of Thine",
+          "persian": "خانه خانهٔ تُست",
+          "note": "Direct: 'house is thy house' - exact parallel construction"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-038-clarke",
+      "taskId": "volume-1/p224",
+      "volume": "volume-1",
+      "page": 224,
+      "ode": 71,
+      "concordance": 107,
+      "ghazalNumber": 38,
+      "englishLines": [
+        "Without the sun of Thy cheek, light for my day, hath remained not And of my life, save the blackest night, aught hath remained not."
+      ],
+      "persianLines": [
+        "بی مهر رخت روز مرا نور نماندست",
+        "وز عُمر مرا جز شب دیجور نماندست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0, 1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.696711,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "sun of thy cheek, light...remained not",
+          "persian": "بی مهر رخت روز مرا نور نماندست",
+          "note": "Clarke: 'Without the sun of Thy cheek, light for my day, hath remained not'; Persian literally: 'Without the sun (bounty) of Thy face, light of my day remained not'"
+        },
+        {
+          "english": "blackest night remained",
+          "persian": "جز شب دیجور نماندست",
+          "note": "Clarke: 'save the blackest night, aught hath remained not'; Persian: 'save the darkest night remained not' (دیجور = complete darkness)"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-043-clarke",
+      "taskId": "volume-1/p183",
+      "volume": "volume-1",
+      "page": 183,
+      "ode": 52,
+      "concordance": 54,
+      "ghazalNumber": 43,
+      "englishLines": [
+        "The court of the garden (the world) is joy-giving (producing manifestations of Love's glories); and the society of friends (the soul and the body that intervene between the seeker and the Sought), pleasant;",
+        "Pleasant, be the time of the rose (the Murshid), whereby the time of winedrinkers (lovers of God) is pleasant."
+      ],
+      "persianLines": [
+        "صحن بستان ذوق‌بخش و صحبت یاران خوشست",
+        "وقت گل خوش باد کزوی وقت میخواران خوشست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 2,
+      "retrievalScore": 0.562936,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "court of the garden",
+          "persian": "صحن بستان",
+          "note": "Compound architectural-botanical image, precise match"
+        },
+        {
+          "english": "joy-giving",
+          "persian": "ذوق‌بخش",
+          "note": "Pleasure/taste-giving epithet—specific positive valuation"
+        },
+        {
+          "english": "pleasant",
+          "persian": "خوشست",
+          "note": "Pleasantness (خوش) describes the scene—reinforces affect"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-052-clarke",
+      "taskId": "volume-1/p159",
+      "volume": "volume-1",
+      "page": 159,
+      "ode": 41,
+      "concordance": 42,
+      "ghazalNumber": 52,
+      "englishLines": [
+        "Tis a (long) time since the passion for idols was my faith :",
+        "The pain of this work, the joy of the sorrowful heart of mine is."
+      ],
+      "persianLines": [
+        "روزگاریست که سودای بتان دین منست",
+        "غم این کار نشاط دل غمگین منست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.65656,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "passion for idols was my faith",
+          "persian": "سودای بتان دین منست",
+          "note": "Idolatry as faith—rare theological paradox, exact correspondence"
+        },
+        {
+          "english": "'Tis a (long) time since",
+          "persian": "روزگاریست",
+          "note": "Age/time adverbial frame marks opening temporal structure"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-056-clarke",
+      "taskId": "volume-1/p127",
+      "volume": "volume-1",
+      "page": 127,
+      "ode": 22,
+      "concordance": 30,
+      "ghazalNumber": 56,
+      "englishLines": [
+        "The heart is the chamber (comprehender) of love of His:",
+        "The eye is the mirror-holder (displayer) of the form of His."
+      ],
+      "persianLines": ["دل سراپردهٔ محبّت اوست", "دیده آیینه‌دار طلعت اوست"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.614527,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "The heart is the chamber (comprehender) of love of His",
+          "persian": "دل سراپردهٔ محبّت اوست",
+          "note": "Direct: 'heart (دل) is display/holder (سراپرده) of his love (محبّت اوست)'"
+        },
+        {
+          "english": "The eye is the mirror-holder (displayer) of the form of His",
+          "persian": "دیده آیینه‌دار طلعت اوست",
+          "note": "Direct: 'eye (دیده) is mirror-holder (آیینه‌دار) of his visage/form (طلعت اوست)'"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-058-clarke",
+      "taskId": "volume-1/p129",
+      "volume": "volume-1",
+      "page": 129,
+      "ode": 23,
+      "concordance": 29,
+      "ghazalNumber": 58,
+      "englishLines": [
+        "(Together are), the head of our desire, and the threshold of the Mighty Friend (God) :",
+        "For, whatever (of good, or of bad) passeth over our head is His will."
+      ],
+      "persianLines": [
+        "سر ارادت ما و آستان حضرت دوست",
+        "که هر چه بر سر ما میرود ارادت اوست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.741465,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "the head of our desire, and the threshold of the Mighty Friend",
+          "persian": "سر ارادت ما و آستان حضرت دوست",
+          "note": "Direct: 'head of our desire' (سر ارادت ما) and 'threshold of presence of Beloved' (آستان حضرت دوست)'"
+        },
+        {
+          "english": "Mighty Friend (God)",
+          "persian": "حضرت دوست",
+          "note": "Direct: 'presence of Beloved/Friend' (حضرت دوست)"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-062-clarke",
+      "taskId": "volume-1/p138",
+      "volume": "volume-1",
+      "page": 138,
+      "ode": 30,
+      "concordance": 38,
+      "ghazalNumber": 62,
+      "englishLines": [
+        "Welcome ! O Messenger of the Longing Ones, give the message of the Friend :",
+        "That, with the essence of pleasure, I may make my soul a sacrifice for the Friend."
+      ],
+      "persianLines": [
+        "مرحبا ای پیک مشتاقان بده پیغام دوست",
+        "تا کنم جان از سر رغبت فدای نام دوست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 6,
+      "retrievalScore": 0.630355,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "Welcome! O Messenger of the Longing Ones, give the message",
+          "persian": "مرحبا ای پیک مشتاقان بده پیغام دوست",
+          "note": "Direct: 'Welcome (مرحبا)' + 'O Messenger (پیک)' + 'Longing Ones (مشتاقان)' + 'give message (بده پیغام)'"
+        },
+        {
+          "english": "That, with the essence of pleasure, I may make my soul a sacrifice",
+          "persian": "تا کنم جان از سر رغبت فدای نام دوست",
+          "note": "Thematic: soul sacrifice (جان فدای) echoes Clarke's self-sacrifice motif in the matla"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-077-clarke",
+      "taskId": "volume-1/p221",
+      "volume": "volume-1",
+      "page": 221,
+      "ode": 69,
+      "concordance": 80,
+      "ghazalNumber": 77,
+      "englishLines": [
+        "A bulbul had a rose-leaf, pleasant of hue in his beak ;",
+        "And, on that leaf and pleasant food, bitter lamentation held."
+      ],
+      "persianLines": [
+        "بلبلی برگ گلی خوش رنگ در منقار داشت",
+        "واندران برگ و نوا خوش نالهای زار داشت"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.68328,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "A bulbul had a rose-leaf, pleasant of hue",
+          "persian": "بلبلی برگ گلی خوش رنگ",
+          "note": "Nightingale holding colored petal"
+        },
+        {
+          "english": "in his beak",
+          "persian": "در منقار",
+          "note": "Anatomical detail of the bird's mouth"
+        },
+        {
+          "english": "bitter lamentation",
+          "persian": "نالهای زار",
+          "note": "Mournful cries/songs held by the bird"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-086-clarke",
+      "taskId": "volume-1/p219",
+      "volume": "volume-1",
+      "page": 219,
+      "ode": 68,
+      "concordance": 103,
+      "ghazalNumber": 86,
+      "englishLines": [
+        "Saki (Murshid) ! come ; for the true Beloved (God) hath taken up the veil,",
+        "The work of the lamp (love's glory) of theKhilvatis again kindled."
+      ],
+      "persianLines": [
+        "ساقی بیا که یار ز رخ پرده برگرفت",
+        "کار چراغ خلوتیان باز درگرفت"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 60,
+      "retrievalScore": 0.543482,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "Saki (Murshid)! come",
+          "persian": "ساقی بیا",
+          "note": "Wine-pourer/guide summoned"
+        },
+        {
+          "english": "the true Beloved (God) hath taken up the veil",
+          "persian": "یار ز رخ پرده برگرفت",
+          "note": "Unveiling/revealing action"
+        },
+        {
+          "english": "The work of the lamp of the Khilvatis",
+          "persian": "کار چراغ خلوتیان",
+          "note": "Lamp of secluded/mystical devotees"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-089-clarke",
+      "taskId": "volume-1/p243",
+      "volume": "volume-1",
+      "page": 243,
+      "ode": 84,
+      "concordance": 88,
+      "ghazalNumber": 89,
+      "englishLines": [
+        "O Lord! devise a means, whereby in safety my Beloved May come back, and release me from the claw of reproach."
+      ],
+      "persianLines": [
+        "یا رب سببی ساز که یارم بسلامت",
+        "باز آید و برهاندم از بند ملامت"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0, 1]
+        }
+      ],
+      "retrievalRank": 13,
+      "retrievalScore": 0.645996,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "devise a means",
+          "persian": "سببی ساز",
+          "note": "Clarke: 'O Lord! devise a means'; Persian: 'یا رب سببی ساز' (O Lord, make/devise a means) — exact correspondence including the invocation"
+        },
+        {
+          "english": "beloved May come back",
+          "persian": "یار بازآید",
+          "note": "Clarke: 'whereby...my Beloved May come back'; Persian: 'یار بازآید' (the beloved will come back) — exact phrase"
+        },
+        {
+          "english": "release me from the claw of reproach",
+          "persian": "برهاندم از بند ملامت",
+          "note": "Clarke: 'release me from the claw of reproach'; Persian: 'برهاندم از بند ملامت' (rescue me from the bonds of reproach) — بند (bond/fetter) parallels 'claw' as metaphor for confinement"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-091-clarke",
+      "taskId": "volume-1/p242",
+      "volume": "volume-1",
+      "page": 242,
+      "ode": 83,
+      "concordance": 49,
+      "ghazalNumber": 91,
+      "englishLines": [
+        "O (beloved) hidden from (my) sight! to God, I entrust, —— thee. (In pain of separation), thou consumedest my soul; yet with heart, friend"
+      ],
+      "persianLines": [
+        "ای غایب از نظر بخدا می‌سپارمت",
+        "جانم بسوختیّ و بدل دوست دارمت"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0, 1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.729163,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "hidden from (my) sight",
+          "persian": "غائب از نظر",
+          "note": "Clarke: 'O (beloved) hidden from (my) sight!'; Persian: 'ای غائب از نظر' (O absent from sight!) — verbatim correspondence of the rare word 'غائب' (ghayib, hidden/absent)"
+        },
+        {
+          "english": "to God, I entrust thee",
+          "persian": "بخدا می‌سپارمت",
+          "note": "Clarke: 'to God, I entrust...thee'; Persian: 'بخدا می‌سپارمت' (to God I entrust you) — exact phrase correspondence"
+        },
+        {
+          "english": "soul consumedst",
+          "persian": "جانم بسوختیّ",
+          "note": "Clarke: '(thou) consumedest my soul'; Persian: 'جانم بسوختیّ' (my soul is burnt/consumed) — parallel metaphor of burning"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-094-clarke",
+      "taskId": "volume-1/p244",
+      "volume": "volume-1",
+      "page": 244,
+      "ode": 85,
+      "concordance": 87,
+      "ghazalNumber": 94,
+      "englishLines": [
+        "On account of that heart-cherishing beloved, thanks (mixed) with complaint are mine (and, verily, this is wonderful) :",
+        "If thou be a subtlety-understander of love list well to this tale."
+      ],
+      "persianLines": [
+        "زان یار دلنوازم شکریست با شکایت",
+        "گر نکته‌دان عشقی بشنو تو این حکایت"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.730239,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "thanks (mixed) with complaint",
+          "persian": "شکریست با شکایت",
+          "note": "Clarke: 'thanks (mixed) with complaint are mine'; Persian: 'شکریست با شکایت' (thanksgiving with complaint) — verbatim phrase in both"
+        },
+        {
+          "english": "heart-cherishing beloved",
+          "persian": "یار دلنوازم",
+          "note": "Clarke: 'that heart-cherishing beloved'; Persian: 'یار دلنوازم' (beloved that soothes/cherishes the heart) — cognate concepts"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-119-clarke",
+      "taskId": "volume-1/p345",
+      "volume": "volume-1",
+      "page": 345,
+      "ode": 145,
+      "concordance": 189,
+      "ghazalNumber": 119,
+      "englishLines": [
+        "That heart that is the hidden-displayer ; and that the cup of Jamshid hath,",
+        "For a seal ring (of Sulaiman), that awhile became lost, what grief (is it that) it hath ?"
+      ],
+      "persianLines": [
+        "دلی که غیب‌نمایست و جام ‌جم دارد",
+        "ز خاتمی که دمی گم شود چه غم دارد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.775201,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "That heart that is the hidden-displayer",
+          "persian": "دلی که غیب‌نمایست",
+          "note": "EXACT phrase: heart (دل) + hidden-displayer (غیب‌نمایست) — highly specific, non-generic epithet"
+        },
+        {
+          "english": "the cup of Jamshid",
+          "persian": "جام جم",
+          "note": "Jamshid's cup (جام جم) is a rare, named mythological artifact — proper noun anchor"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-130-clarke",
+      "taskId": "volume-1/p294",
+      "volume": "volume-1",
+      "page": 294,
+      "ode": 116,
+      "concordance": 211,
+      "ghazalNumber": 130,
+      "englishLines": [
+        "In the morning, the bulbul (Hafiz) told a tale to the east wind (the Murshid),",
+        "Saying : — (0 wind thou sawest) for us what (calamities) love for the face of the rose (the true Beloved) made."
+      ],
+      "persianLines": [
+        "سحر بلبل حکایت با صبا کرد",
+        "که عشق روی گل با ما چها کرد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 10,
+      "retrievalScore": 0.56419,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 1,
+      "anchors": [
+        {
+          "english": "In the morning, the bulbul (Hafiz) told a tale to the east wind",
+          "persian": "سحر بلبل حکایت با صبا کرد",
+          "note": "morning/seher matches سحر, bulbul/bolbol matches بلبل, tale/hekayet matches حکایت, east wind/saba matches صبا"
+        },
+        {
+          "english": "east wind (the Murshid)",
+          "persian": "صبا",
+          "note": "صبا (morning breeze/Saba wind) is the specific poetic term that bridges English and Persian"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-135-clarke",
+      "taskId": "volume-1/p302",
+      "volume": "volume-1",
+      "page": 302,
+      "ode": 120,
+      "concordance": 155,
+      "ghazalNumber": 135,
+      "englishLines": [
+        "Like the (swift) wind, resolution of (going to) the head of the (true) Beloved's street, I will make :",
+        "By His pleasant perfume, my own breath, musk-raining, I will make."
+      ],
+      "persianLines": [
+        "چو باد عزم سر کوی یار خواهم کرد",
+        "نفس ببوی خوشش مشکبار خواهم کرد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 28,
+      "retrievalScore": 0.554953,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "Like the (swift) wind, resolution of (going to) the head of the (true) Beloved's",
+          "persian": "چو باد عزم سر کوی یار خواهم کرد",
+          "note": "Like/chun matches چو, wind/bad matches باد, resolution/azm matches عزم, head of street/sar-e-kuye matches سر کوی, Beloved/yar matches یار"
+        },
+        {
+          "english": "resolution of (going to) the head of the (true) Beloved's",
+          "persian": "عزم سر کوی یار",
+          "note": "The rare poetic phrase 'determination of the beloved's street/way' (عزم سر کوی یار) appears exactly in Ghazal 135"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-136-clarke",
+      "taskId": "volume-1/p317",
+      "volume": "volume-1",
+      "page": 317,
+      "ode": 127,
+      "concordance": 168,
+      "ghazalNumber": 136,
+      "englishLines": [
+        "Into the curve of that doubled tress, the hand one cannot put :",
+        "(O true Beloved !) reliance on Thy covenant and the morning breeze,—— one cannot make."
+      ],
+      "persianLines": [
+        "دست در حلقهٔ آن زلف دوتا نتوان کرد",
+        "تکیه بر عهد تو و باد صبا نتوان کرد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.710645,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 1,
+      "anchors": [
+        {
+          "english": "Into the curve of that doubled tress, the hand one cannot put",
+          "persian": "دست در حلقه آن زلف دوتا نتوان کرد",
+          "note": "Exact structural and semantic match: 'hand into curl of doubled tress cannot do'"
+        },
+        {
+          "english": "reliance on Thy covenant and the morning breeze",
+          "persian": "تکیه بر عهد تو و باد صبا نتوان کرد",
+          "note": "Exact phrase: covenant (عهد) and morning breeze (باد صبا) word-for-word identical"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-161-clarke",
+      "taskId": "volume-1/p466",
+      "volume": "volume-1",
+      "page": 466,
+      "ode": 226,
+      "concordance": 232,
+      "ghazalNumber": 161,
+      "englishLines": [
+        "How a (lustrous) verse exciteth afresh the heart that is sorrowful (through love for, and through the stain of, the world ; and from search after lust)!",
+        "A subtlety out of this book, we uttered ; and (enough) is this very subtlety."
+      ],
+      "persianLines": [
+        "کی شعر تر انگیزد خاطر که حزین باشد",
+        "یک نکته ازین معنی گفتیم و همین باشد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 3,
+      "retrievalScore": 0.627671,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "How a (lustrous) verse exciteth afresh the heart that is sorrowful",
+          "persian": "کی شعر تر انگیزد خاطر که حزین باشد",
+          "note": "Distinctive poetic meta-reference: Clarke's question about verse (شعر) exciting a sorrowful (حزین) heart directly renders Persian's opening 'کی شعر تر انگیزد خاطر که حزین باشد' (how does verse refresh-excite the heart that is sorrowful?)"
+        },
+        {
+          "english": "A subtlety out of this book, we uttered; and (enough) ts this very subtlety",
+          "persian": "یک نکته ازین معنی گفتیم و همین باشد",
+          "note": "Rare specific term 'subtlety': Clarke's closing phrase matches Persian 'نکته' (subtlety/nuance), a technical term for poetic meaning not found in paired form elsewhere in this context"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-173-clarke",
+      "taskId": "volume-1/p471",
+      "volume": "volume-1",
+      "page": 471,
+      "ode": 230,
+      "concordance": 188,
+      "ghazalNumber": 173,
+      "englishLines": [
+        "When, in prayer, to me recollection of the curve of Thy eye-brow—— came.",
+        "(Over me such) a state passed that, into lament, the prayer-arch—— came."
+      ],
+      "persianLines": [
+        "در نمازم خم ابروی تو با یاد آمد",
+        "حالتی رفت که محراب بفریاد آمد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 2,
+      "retrievalScore": 0.601803,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "When, in prayer, to me recollection of the curve of Thy eye-brow—— came",
+          "persian": "در نمازم خم ابروی تو با یاد آمد",
+          "note": "Distinctive spatial concurrence: Clarke's 'in prayer...recollection of...eye-brow' renders Persian's exact image 'در نمازم خم ابروی' (in my prayer, the curve of your eyebrow) at precise same locus"
+        },
+        {
+          "english": "into lament, the prayer-arch—— came",
+          "persian": "محراب بفریاد آمد",
+          "note": "Rare architectural/spiritual image: Clarke's 'prayer-arch' (محراب) is distinctive Persian term, and 'came' to lament mirrors Persian's 'بفریاد آمد' (cried out/wailed)"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-180-clarke",
+      "taskId": "volume-1/p499",
+      "volume": "volume-1",
+      "page": 499,
+      "ode": 248,
+      "concordance": 127,
+      "ghazalNumber": 180,
+      "englishLines": [
+        "O thou whose pistachio (mouth), laugheth at the tale of candy !",
+        "(Of thy laughter), I am desirous. For God's sake, one sweet smile — smile."
+      ],
+      "persianLines": [
+        "ای پستهٔ تو خنده زده بر حدیث قند",
+        "مشتاقم از برای خدا یک شکر بخند"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 2,
+      "retrievalScore": 0.685709,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "pistachio mouth",
+          "persian": "پستهٔ تو",
+          "note": "your pistachio/pistachio of you"
+        },
+        {
+          "english": "laugheth at the tale of candy",
+          "persian": "خنده زده بر حدیث قند",
+          "note": "laughs at the tale of candy"
+        },
+        {
+          "english": "sweet smile",
+          "persian": "شکر بخند",
+          "note": "sugar-smile/sweet smile"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-209-clarke",
+      "taskId": "volume-1/p517",
+      "volume": "volume-1",
+      "page": 517,
+      "ode": 261,
+      "concordance": 225,
+      "ghazalNumber": 209,
+      "englishLines": [
+        "By the sword (of inclination) of thine, the slaughter of this shattered one decreed, it was not :",
+        "If not, by the glance of sorcery of thine, a fault it was not."
+      ],
+      "persianLines": [
+        "قتل این خسته بشمشیر تو تقدیر نبود",
+        "ور نه هیچ از دل بیرحم تو تقصیر نبود"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 2,
+      "retrievalScore": 0.574251,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "By the sword of inclination, the slaughter of this shattered one",
+          "persian": "قتل این خسته بشمشیر تو",
+          "note": "Direct match: sword (شمشیر) + slaughter (قتل) + broken/shattered (خسته)"
+        },
+        {
+          "english": "a fault was not / no fault",
+          "persian": "تقصیر نبود",
+          "note": "Negation of fault/blame - exact linguistic correspondence"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-234-clarke",
+      "taskId": "volume-1/p421",
+      "volume": "volume-1",
+      "page": 421,
+      "ode": 196,
+      "concordance": 154,
+      "ghazalNumber": 234,
+      "englishLines": [
+        "When from the east, the cup (the holy traveller's existence) the sun of wine (of love) cometh up.",
+        "From the garden of the cheek, of the Saki (the Murshid), many a tulip (of freshness) cometh up."
+      ],
+      "persianLines": [
+        "چو آفتاب می از مشرق پیاله برآید",
+        "ز باغ عارض ساقی هزار لاله برآید"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 2,
+      "retrievalScore": 0.642198,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "sun of wine from the east",
+          "persian": "آفتاب می از مشرق",
+          "note": "Identical metaphor: the sun (of wine) rises from the east in the cup"
+        },
+        {
+          "english": "in the cup",
+          "persian": "پیاله",
+          "note": "Both mention the cup/chalice as the vessel"
+        },
+        {
+          "english": "garden of the cheek, Saki brings tulips",
+          "persian": "باغ عارض ساقی هزار لاله",
+          "note": "Both refer to beloved's cheek as a garden and Saki bringing tulips from it"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-242-clarke",
+      "taskId": "volume-1/p537",
+      "volume": "volume-1",
+      "page": 537,
+      "ode": 277,
+      "concordance": 138,
+      "ghazalNumber": 242,
+      "englishLines": [
+        "Come for the standard of Mansur, the King - hath arrived.",
+        "To the sun and the moon, the joyous news of victory with glad tidings - hath arrived."
+      ],
+      "persianLines": [
+        "بیا که رایت منصور پادشاه رسید",
+        "نوید فتح و بشارت بمهر و ماه رسید"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.701284,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "Come for the standard of Mansir, the King has arrived",
+          "persian": "بیا که رایت منصور پادشاه رسید",
+          "note": "Mansur (منصور) - Sufi martyr; raith/standard (رایت); King (پادشاه); arrived (رسید)"
+        },
+        {
+          "english": "To the sun and the moon, joyous news of victory with glad tidings",
+          "persian": "نوید فتح و بشارت بمهر و ماه رسید",
+          "note": "Sun/Mehr (مهر) + moon (ماه) + victory/conquest (فتح) + glad tidings (بشارت)"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-278-clarke",
+      "taskId": "volume-1/p620",
+      "volume": "volume-1",
+      "page": 620,
+      "ode": 328,
+      "concordance": 327,
+      "ghazalNumber": 278,
+      "englishLines": [
+        "Bitter (strong) wine, whose power is man-overthrowing, I desire :",
+        "Perchance, a moment, from the world and its iniquity and clamour, I may rest."
+      ],
+      "persianLines": [
+        "شرابی تلخ میخواهم که مردافکن بود زورش",
+        "که تا یکدم بیاسایم ز دنیا و شر و شورش"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.801832,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "bitter wine whose power is man-overthrowing",
+          "persian": "شرابی تلخ میخواهم که مردافکن بود زورش",
+          "note": "Exact phrase correspondence including rare compound مردافکن"
+        },
+        {
+          "english": "one moment from the world",
+          "persian": "یکدم بیاسایم ز دنیا",
+          "note": "Exact phrase - one moment rest from the world"
+        },
+        {
+          "english": "evil and clamour",
+          "persian": "شر و شورش",
+          "note": "Exact parallel on evil and tumult/clamour"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-337-clarke",
+      "taskId": "volume-2/p81",
+      "volume": "volume-2",
+      "page": 81,
+      "ode": 381,
+      "concordance": 384,
+      "ghazalNumber": 337,
+      "englishLines": [
+        "In the pursuit of the desire of visiting my own (native) Land,- why should I not be ?",
+        "The dust of the head of my (true) Beloved's street, why should I not be ?"
+      ],
+      "persianLines": [
+        "چرا نه در پی عزم دیار خود باشم",
+        "چرا نه خاک سر کوی یار خود باشم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.535895,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "pursuit of the desire / in the pursuit",
+          "persian": "در پی عزم (in pursuit of intent)",
+          "note": "Clarke's 'pursuit of desire' directly parallels Persian 'در پی عزم' (pursuit of intent)"
+        },
+        {
+          "english": "own (native) Land; visiting land",
+          "persian": "دیار خود (native land/own country)",
+          "note": "Both explicitly reference visiting/pursuing one's native homeland"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-342-clarke",
+      "taskId": "volume-2/p85",
+      "volume": "volume-2",
+      "page": 85,
+      "ode": 385,
+      "concordance": 388,
+      "ghazalNumber": 342,
+      "englishLines": [
+        "The dust of my body is the veil of the (true) Beloved's face ;",
+        "O happy that moment when from off this face, the veil I cast!"
+      ],
+      "persianLines": [
+        "حجاب چهرهٔ جان میشود غبار تنم",
+        "خوشا دمی که از آن چهره پرده برفکنم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.677004,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 1,
+      "anchors": [
+        {
+          "english": "dust of my body is the veil",
+          "persian": "غبار تنم (dust of my body) ... حجاب (veil)",
+          "note": "First line of matla: 'The dust of my body becomes the veil of the soul's face'"
+        },
+        {
+          "english": "beloved's face",
+          "persian": "چهرهٔ جان (soul's/beloved's face)",
+          "note": "Both texts reference the beloved's face as the object of longing"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-350-clarke",
+      "taskId": "volume-2/p60",
+      "volume": "volume-2",
+      "page": 60,
+      "ode": 369,
+      "concordance": 374,
+      "ghazalNumber": 350,
+      "englishLines": [
+        "Iii the morning, with the desire of repentance (to my heart), I said : — \" I seek the counsel of God,\"",
+        "Spring, repentance-shatterer, arriveth : what remedy may— I make ?"
+      ],
+      "persianLines": [
+        "بعزم توبه سحر گفتم استخاره کنم",
+        "بهار توبه شکن میرسد چه چاره کنم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 6,
+      "retrievalScore": 0.588928,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 1,
+      "anchors": [
+        {
+          "english": "in the morning",
+          "persian": "سحر (morning/dawn)",
+          "note": "Clarke opens 'In the morning...'; Persian سحر is the opening word of the matla"
+        },
+        {
+          "english": "desire of repentance",
+          "persian": "عزم توبه (desire/intent of repentance)",
+          "note": "Repentance (توبه) is central theme in both Clarke and Persian"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-377-clarke",
+      "taskId": "volume-2/p137",
+      "volume": "volume-2",
+      "page": 137,
+      "ode": 425,
+      "concordance": 427,
+      "ghazalNumber": 377,
+      "englishLines": [
+        "One night, our hand we shall uplift ; and a prayer we shall make.",
+        "For the grief of separation from Thee, a remedy from some place we shall make."
+      ],
+      "persianLines": [
+        "ما شبی دست برآریم و دعائی بکنیم",
+        "غم هجران ترا چاره ز جائی بکنیم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 3,
+      "retrievalScore": 0.651884,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "One night, our hand we shall uplift",
+          "persian": "ما شبی دست برآریم",
+          "note": "Exact match: Clarke 'one night our hand uplift' = Persian 'ما شبی دست برآریم' (one night we shall lift our hand). The specific phrase structure and verb برآریم (uplift/raise) is distinctive."
+        },
+        {
+          "english": "and a prayer—we shall make. For the grief of separation",
+          "persian": "و دعائی بکنیم / غم هجران",
+          "note": "Clarke's 'prayer we shall make' + 'grief of separation' matches Persian 'دعائی بکنیم' (prayer make) + 'غم هجران' (separation's grief). The conjunction of prayer-making with separation-grief is specific to this couplet."
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-412-clarke",
+      "taskId": "volume-2/p210",
+      "volume": "volume-2",
+      "page": 210,
+      "ode": 475,
+      "concordance": 486,
+      "ghazalNumber": 412,
+      "englishLines": [
+        "Mine is an eye, blood-shedding on account of the eye of that bow eyebrow ;",
+        "Full of tumult will become the world on account of that eye, and of that eyebrow."
+      ],
+      "persianLines": [
+        "مرا چشمیست خون افشان ز دست آن کمان ابرو",
+        "جهان بس فتنه خواهد دید از آن چشم و از آن ابرو"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.689948,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "eye, blood-shedding",
+          "persian": "چشمیست خون افشان",
+          "note": "Direct match: Clarke 'eye, blood-shedding' = Persian 'cheshmist khoon-afshanfare' (eye blood-shedding/bloodstained eye)"
+        },
+        {
+          "english": "bow-eyebrow",
+          "persian": "کمان ابرو",
+          "note": "Direct match: Clarke 'eye of that bow-eyebrow' = Persian 'kamanabrow' (bow-eyebrow)"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-427-clarke",
+      "taskId": "volume-2/p230",
+      "volume": "volume-2",
+      "page": 230,
+      "ode": 488,
+      "concordance": 494,
+      "ghazalNumber": 427,
+      "englishLines": [
+        "The moth of the lamp of thy (resplendent) face became the candle ;",
+        "On account of thy mole, care for my own state, — mine none."
+      ],
+      "persianLines": [
+        "چراغ روی ترا شمع گشت پروانه",
+        "مرا ز حال تو با حال خویش پروا نه"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.751338,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 1,
+      "anchors": [
+        {
+          "english": "moth, lamp, candle (combined rare image)",
+          "persian": "پروانه، چراغ، شمع",
+          "note": "Three-part metaphor: 'moth became candle at the lamp of thy face'"
+        },
+        {
+          "english": "face as lamp/light",
+          "persian": "چراغ روی ترا",
+          "note": "Lamp of thy face - unique phrasing for beloved's visage"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-452-clarke",
+      "taskId": "volume-2/p314",
+      "volume": "volume-2",
+      "page": 314,
+      "ode": 544,
+      "concordance": 568,
+      "ghazalNumber": 452,
+      "englishLines": [
+        "For the sake of love's existence are man and Pari,",
+        "A little (pure) desire, show, so that a great happiness (in attaining to true love) thou mayst achieve."
+      ],
+      "persianLines": [
+        "طفیل هستی عشقند آدمیّ و پری",
+        "ارادتی بنما تا سعادتی ببری"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 2,
+      "retrievalScore": 0.620368,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "man and Pari",
+          "persian": "آدمیّ و پری",
+          "note": "Unique proper nouns - Peri (supernatural being) appears in both; specific mythological reference"
+        },
+        {
+          "english": "pure desire, show, so that a great happiness",
+          "persian": "ارادتی بنما تا سعادتی ببری",
+          "note": "Distinctive phrase structure: desire/ارادتی and happiness/سعادتی appear in matching semantic positions"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-465-clarke",
+      "taskId": "volume-2/p289",
+      "volume": "volume-2",
+      "page": 289,
+      "ode": 528,
+      "concordance": 549,
+      "ghazalNumber": 465,
+      "englishLines": [
+        "One morning to the garden I went a rose to pluck,",
+        "Suddenly, came to my ear the clamour of a bulbul."
+      ],
+      "persianLines": [
+        "رفتم بباغ صبحدمی تا چنم گلی",
+        "آمد بگوش ناگهم آواز بلبلی"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 6,
+      "retrievalScore": 0.647731,
+      "independentAnchorCount": 3,
+      "exactPersianAnchorCount": 3,
+      "anchors": [
+        {
+          "english": "morning to the garden",
+          "persian": "باغ صبحدمی",
+          "note": "going to garden at dawn/morning"
+        },
+        {
+          "english": "rose to pluck",
+          "persian": "تا چنم گلی",
+          "note": "specific action: to pick a rose"
+        },
+        {
+          "english": "bulbul's sound/clamour",
+          "persian": "آواز بلبلی",
+          "note": "the bulbul's voice/sound suddenly heard"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-468-clarke",
+      "taskId": "volume-2/p335",
+      "volume": "volume-2",
+      "page": 335,
+      "ode": 560,
+      "concordance": 572,
+      "ghazalNumber": 468,
+      "englishLines": [
+        "From me, the beggar, to kings, who taketh a message,",
+        "Saying:— \"In the street of the wine-sellers, (they sell) two thousand (mighty) Jamshids for a single cup of wine.\""
+      ],
+      "persianLines": [
+        "که برد بنزد شاهان ز من گدا پیامی",
+        "که بکوی می‌فروشان دو هزار جم بجامی"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.592227,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "In the street of the wine-sellers, (they sell) two thousand (mighty) Jamshids",
+          "persian": "که بکوی می‌فروشان دو هزار جم بجامی",
+          "note": "بکوی می‌فروشان (in the street of wine-sellers) + دو هزار (two thousand) + جم (Jams/Jamshids, referencing Cup of Jamshid) all appear sequentially"
+        },
+        {
+          "english": "for a single cup of wine",
+          "persian": "بجامی",
+          "note": "جام (cup) appears at the end of the Persian line, completing the commercial transaction motif"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    },
+    {
+      "stableRecordId": "hafez-ghazal-489-clarke",
+      "taskId": "volume-2/p255",
+      "volume": "volume-2",
+      "page": 255,
+      "ode": 506,
+      "concordance": 512,
+      "ghazalNumber": 489,
+      "englishLines": [
+        "O them, in whose face (are) revealed the splendours of sovereignty;",
+        "And, in whose thought, (are) concealed divine philosophies !"
+      ],
+      "persianLines": [
+        "ای در رخ تو پیدا انوار پادشاهی",
+        "در فکرت تو پنهان صد حکمت الهی"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "retrievalRank": 1,
+      "retrievalScore": 0.656762,
+      "independentAnchorCount": 2,
+      "exactPersianAnchorCount": 2,
+      "anchors": [
+        {
+          "english": "in whose face (are) revealed the splendours of sovereignty",
+          "persian": "در رخ تو پیدا انوار پادشاهی",
+          "note": "Hafez's 'in thy face revealed the splendors of sovereignty' is nearly identical to Clarke's English phrasing"
+        },
+        {
+          "english": "in whose thought, (are) concealed divine philosophies",
+          "persian": "در فکرت تو پنهان صد حکمت الهی",
+          "note": "Hafez: 'in thy thought concealed hundred divine philosophies' = Clarke: 'in whose thought concealed divine philosophies'"
+        }
+      ],
+      "relationship": "literal-selected",
+      "disclosures": [
+        "Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript."
+      ]
+    }
+  ],
+  "newRumi": [
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0015-s0",
+      "persianSequence": 0,
+      "englishLineStart": 32,
+      "persianLineStart": 32,
+      "englishLines": [
+        "But all who are not fishes are soon tired of water;",
+        "And they who lack daily bread find the day very long;"
+      ],
+      "persianLines": [
+        "هر که جز ماهی ز آبش سیر شد",
+        "هر که بی روزیست روزش دیر شد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "PROLOGUE.",
+      "englishSubheading": null,
+      "persianTitle": "نی‌نامه",
+      "retrievalScore": 0.77004,
+      "independentAnchorCount": 10,
+      "anchors": [
+        {
+          "english": "But all who are not fishes are soon tired of water;",
+          "persian": "هر که جز ماهی ز آبش سیر شد"
+        },
+        {
+          "english": "Therefore it behoves me to shorten my discourse.",
+          "persian": "پس سخن کوتاه باید والسلام"
+        },
+        {
+          "english": "The BELOVED is all that lives, the lover a dead thing.",
+          "persian": "زنده معشوقست و عاشق مردهٔ"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0035-s2",
+      "persianSequence": 942,
+      "englishLineStart": 163,
+      "persianLineStart": 41,
+      "englishLines": [
+        "Which is distinct from the light of reason and sense.",
+        "At night there is no light, and colors are not seen;"
+      ],
+      "persianLines": [
+        "کو ز نور عقل و حس پاک و جداست",
+        "شب نبد نور و ندیدی رنگها"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY V. The Lion and the Beasts.",
+      "englishSubheading": "Trust in God, as opposed to human exertions.",
+      "persianTitle": "هم در بیان مکر خرگوش",
+      "retrievalScore": 0.840008,
+      "independentAnchorCount": 18,
+      "anchors": [
+        {
+          "english": "Which is distinct from the light of reason and sense.",
+          "persian": "کو ز نور عقل و حس پاک و جداست"
+        },
+        {
+          "english": "Opposite shows up opposite, as a Frank a Negro.",
+          "persian": "دیدن نورست آنگه دید رنگ"
+        },
+        {
+          "english": "When waves of thought arise from the Ocean of Wisdom,",
+          "persian": "چون ز دانش موج اندیشه بتاخت"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0065-s2",
+      "persianSequence": 858,
+      "englishLineStart": 21,
+      "persianLineStart": 115,
+      "englishLines": [
+        "Is a secret denier and philosopher.",
+        "Now and then he displays firm belief,"
+      ],
+      "persianLines": [
+        "در جهان او فلسفی پنهانیست",
+        "می‌نماید اعتقاد و گاه گاه"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XIII. The Prophet's Scribe.",
+      "englishSubheading": "How philosophers deceive themselves.",
+      "persianTitle": "مرتد شدن کاتب وحی به سبب آنک پرتو وحی برو زد آن آیت را پیش از پیغامبر صلی الله علیه و سلم بخواند گفت پس من هم محل وحیم",
+      "retrievalScore": 0.840321,
+      "independentAnchorCount": 9,
+      "anchors": [
+        {
+          "english": "Is a secret denier and philosopher.",
+          "persian": "در جهان او فلسفی پنهانیست"
+        },
+        {
+          "english": "Whosoever has a doubt or disquietude in his heart",
+          "persian": "هر که را در دل شک و پیچانیست"
+        },
+        {
+          "english": "(True reason comes not out of a dark corner) ;",
+          "persian": "فلسفی کو منکر حنانه است"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0073-s3",
+      "persianSequence": 802,
+      "englishLineStart": 10,
+      "persianLineStart": 8,
+      "englishLines": [
+        "Like you, I was naturally dark,",
+        "'Twas the Sun's revelation that gave me such light."
+      ],
+      "persianLines": [
+        "چون شما تاریک بودم در نهاد",
+        "وحی خورشیدم چنین نوری بداد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XV. Counsels of Reserve given by the Prophet to his Freedman Zaid.",
+      "englishSubheading": "The Prophet's final counsels of \"Reserve\".",
+      "persianTitle": "گفتن پیغامبر صلی الله علیه و سلم مر زید را کی این سر را فاش‌تر ازین مگو و متابعت نگهدار",
+      "retrievalScore": 0.909147,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "Like you, I was naturally dark,",
+          "persian": "چون شما تاریک بودم در نهاد"
+        },
+        {
+          "english": "I still am dark compared to the Sun,",
+          "persian": "ظلمتی دارم به نسبت با شموس"
+        },
+        {
+          "english": "Though I am light compared to the dark souls of men.",
+          "persian": "نور دارم بهر ظلمات نفوس"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0081-s0",
+      "persianSequence": 800,
+      "englishLineStart": 23,
+      "persianLineStart": 53,
+      "englishLines": [
+        "The water is become muddy; close the mouth of the well,",
+        "Till God makes it again pure and sweet;"
+      ],
+      "persianLines": ["آب تیره شد سر چه بند کن", "تا خدایش باز صاف و خوش کند"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "Epilogue to Book I.",
+      "englishSubheading": null,
+      "persianTitle": "گفتن امیر الممنین علی کرم الله وجهه با قرین خود کی چون خدو انداختی در روی من نفس من جنبید و اخلاص عمل نماند مانع کشتن تو آن شد",
+      "retrievalScore": 0.823018,
+      "independentAnchorCount": 4,
+      "anchors": [
+        {
+          "english": "The water is become muddy; close the mouth of the well,",
+          "persian": "آب تیره شد سر چه بند کن"
+        },
+        {
+          "english": "And thereby the warm life of reason was congealed.",
+          "persian": "گندمی خورشید آدم را کسوف"
+        },
+        {
+          "english": "Till God makes it again pure and sweet;",
+          "persian": "تا خدایش باز صاف و خوش کند"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0093-s2",
+      "persianSequence": 836,
+      "englishLineStart": 104,
+      "persianLineStart": 69,
+      "englishLines": [
+        "He is like Pharaoh, and his body is like Moses,",
+        "He runs abroad crying, \"where is my foe?\""
+      ],
+      "persianLines": [
+        "خود حسود و دشمن او آن تنست",
+        "او چو فرعون و تنش موسی او"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY II. The Pauper and the Prisoners.",
+      "englishSubheading": "Satan's office in the world.",
+      "persianTitle": "مثل",
+      "retrievalScore": 0.807002,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "He is like Pharaoh, and his body is like Moses,",
+          "persian": "خود حسود و دشمن او آن تنست"
+        },
+        {
+          "english": "Rebellious Pharaoh set his face towards Being (egoism),",
+          "persian": "رو بهستی داشت فرعون عنود"
+        },
+        {
+          "english": "He committed a thousand murders in the land.",
+          "persian": "تا که موسی نبی ناید برون"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0097-s2",
+      "persianSequence": 718,
+      "englishLineStart": 10,
+      "persianLineStart": 20,
+      "englishLines": [
+        "The soul of David was warmed by its heat,",
+        "Iron became pliable by the force of his weaving. 4"
+      ],
+      "persianLines": ["جان داوود از شعاعش گرم شد", "آهن اندر دست‌بافش نرم شد"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY III. The King and his Two Slaves.",
+      "englishSubheading": "The apostolical succession of the prophets and the saints.",
+      "persianTitle": "قسم غلام در صدق و وفای یار خود از طهارت ظن خود",
+      "retrievalScore": 0.846257,
+      "independentAnchorCount": 11,
+      "anchors": [
+        {
+          "english": "The soul of David was warmed by its heat,",
+          "persian": "جان داوود از شعاعش گرم شد"
+        },
+        {
+          "english": "Wherefore Adam made him his viceroy when he saw it.",
+          "persian": "پس خلیفه‌ش کرد آدم کان بدید"
+        },
+        {
+          "english": "He recovered his sight at the scent of his son. 5",
+          "persian": "چشم روشن کرد از بوی پسر"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0105-s2",
+      "persianSequence": 703,
+      "englishLineStart": 28,
+      "persianLineStart": 161,
+      "englishLines": [
+        "The eye of passion takes milk to be blood.",
+        "Kiss that arrow and bear it to the King,"
+      ],
+      "persianLines": [
+        "چشم خشمت خون شمارد شیر را",
+        "بوسه ده بر تیر و پیش شاه بر"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY V. The Thirsty Man who threw Bricks into the Water.",
+      "englishSubheading": "\"It was not ye who shot, but God shot; and",
+      "persianTitle": "فرمودن والی آن مرد را کی این خاربن را کی نشانده‌ای بر سر راه بر کن",
+      "retrievalScore": 0.891907,
+      "independentAnchorCount": 10,
+      "anchors": [
+        {
+          "english": "The eye of passion takes milk to be blood.",
+          "persian": "چشم خشمت خون شمارد شیر را"
+        },
+        {
+          "english": "When you cannot see the senses' light with the eye,",
+          "persian": "چونک نور حس نمی‌بینی ز چشم"
+        },
+        {
+          "english": "That is the meaning of \"Light upon light.\" 2",
+          "persian": "نور حق بر نور حس راکب شود"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0109-s2",
+      "persianSequence": 667,
+      "englishLineStart": 38,
+      "persianLineStart": 94,
+      "englishLines": [
+        "You must have the soul of Abraham in order with light",
+        "To see the mansions of Paradise in the fire."
+      ],
+      "persianLines": [
+        "جان ابراهیم باید تا به نور",
+        "بیند اندر نار فردوس و قصور"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VI. Luqman's Master examines him and discovers his Acuteness.",
+      "englishSubheading": "Love endures hardships at the hands of the Beloved.",
+      "persianTitle": "ظاهر شدن فضل و زیرکی لقمان پیش امتحان کنندگان",
+      "retrievalScore": 0.858777,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "the soul of Abraham",
+          "persian": "جان ابراهیم باید تا به نور"
+        },
+        {
+          "english": "a ring that fastens a door",
+          "persian": "همچو حلقه بند در"
+        },
+        {
+          "english": "bitter things seem sweet / copper are made gold",
+          "persian": "از محبت تلخها شیرین شود / از محبت مسها زرین شود"
+        }
+      ],
+      "relationship": "abridged",
+      "disclosures": [
+        "Whinfield's translation is abridged and freely amplified here. He omits sixteen consecutive couplets of the Persian (a digression on deficient knowledge and lightning) and expands Rumi's six-couplet \"through love\" catalogue to eleven couplets, adding image-pairs (thorns/roses, stake/throne, devil/houri, lions/mice and others) that do not appear in the Nicholson-aligned Persian text. The English block's opening prose is Whinfield's own summary, not translated verse, and its heading corresponds to a different Persian section from the verse translated."
+      ],
+      "correctsHistoricalCandidate": true
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0117-s2",
+      "persianSequence": 813,
+      "englishLineStart": 50,
+      "persianLineStart": 41,
+      "englishLines": [
+        "Does a cow ever seek the lion?",
+        "Did the wolf show love to Joseph, 5"
+      ],
+      "persianLines": ["گاو سوی شیر نر کی رو نهد", "گرگ بر یوسف کجا عشق آورد"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VIII. The Man who made a Pet of a Bear.",
+      "englishSubheading": "He who needs mercy finds it.",
+      "persianTitle": "گفتن موسی علیه السلام گوساله‌پرست را کی آن خیال‌اندیشی و حزم تو کجاست",
+      "retrievalScore": 0.823866,
+      "independentAnchorCount": 12,
+      "anchors": [
+        {
+          "english": "Does a cow ever seek the lion?",
+          "persian": "گاو سوی شیر نر کی رو نهد"
+        },
+        {
+          "english": "The calf lowed through magic,",
+          "persian": "بانگ زد گوساله‌ای از جادوی"
+        },
+        {
+          "english": "You have seen thousands of miracles done by me,",
+          "persian": "صد هزاران معجزه دیدی ز من"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0125-s2",
+      "persianSequence": 359,
+      "englishLineStart": 21,
+      "persianLineStart": 44,
+      "englishLines": [
+        "Open clear eyes and look upon me,",
+        "That you may behold the light of God in a mortal."
+      ],
+      "persianLines": ["چشم نیکو باز کن در من نگر", "تا ببینی نور حق اندر بشر"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY X. Bayazid and the Saint.",
+      "englishSubheading": "The Sage said, \"Whither are you going, O Bayazid?",
+      "persianTitle": "حکایت",
+      "retrievalScore": 0.834794,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "Open clear eyes and look upon me,",
+          "persian": "چشم نیکو باز کن در من نگر"
+        },
+        {
+          "english": "But none but That Living One enters this house;",
+          "persian": "واندرین خانه بجز آن حی نرفت"
+        },
+        {
+          "english": "When you have seen me you have seen God,",
+          "persian": "چون مرا دیدی خدا را دیده‌ای"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0125-s5",
+      "persianSequence": 958,
+      "englishLineStart": 96,
+      "persianLineStart": 19,
+      "englishLines": [
+        "And, to please God, have quenched those fires,",
+        "So that the fire of lust, that erst breathed flame,"
+      ],
+      "persianLines": ["نار را کشتید از بهر خدا", "آتش شهوت که شعله می‌زدی"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY X. Bayazid and the Saint.",
+      "englishSubheading": "The sweet uses of adversity.",
+      "persianTitle": "وصیت کردن پیغامبر علیه السلام مر آن بیمار را و دعا آموزانیدنش",
+      "retrievalScore": 0.830209,
+      "independentAnchorCount": 13,
+      "anchors": [
+        {
+          "english": "And, to please God, have quenched those fires,",
+          "persian": "نار را کشتید از بهر خدا"
+        },
+        {
+          "english": "Since you have turned the fire of greed into bounty,",
+          "persian": "آتش حرص از شما ایثار شد"
+        },
+        {
+          "english": "Since you have turned the fire of wrath to meekness,",
+          "persian": "آتش خشم از شما هم حلم شد"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0129-s2",
+      "persianSequence": 708,
+      "englishLineStart": 0,
+      "persianLineStart": 0,
+      "englishLines": [
+        "A certain man was going into the mosque,",
+        "Just as another was coming out."
+      ],
+      "persianLines": [
+        "آن یکی می‌رفت در مسجد درون",
+        "مردم از مسجد همی‌آمد برون"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XI. Mo'avia and Iblis.",
+      "englishSubheading": "The value of sighs.",
+      "persianTitle": "فضیلت حسرت خوردن آن مخلص بر فوت نماز جماعت",
+      "retrievalScore": 0.846936,
+      "independentAnchorCount": 4,
+      "anchors": [
+        {
+          "english": "A certain man was going into the mosque,",
+          "persian": "آن یکی می‌رفت در مسجد درون"
+        },
+        {
+          "english": "The first heaved a sigh, and its smoke ascended;",
+          "persian": "گفت آه و دود از آن اه شد برون"
+        },
+        {
+          "english": "\"Give me that sigh, and take my prayers instead.\"",
+          "persian": "گفت دادم آه و پذرفتم نماز"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0143-s0",
+      "persianSequence": 544,
+      "englishLineStart": 49,
+      "persianLineStart": 49,
+      "englishLines": [
+        "From that breath of the soul roses bloomed in his heart,",
+        "His soul heard the revelations of heaven;"
+      ],
+      "persianLines": ["زان دم جان در دل او گل شکفت", "جان او بشنید وحی آسمان"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XV. The Man who boasted that God did not punish him for his sins, and Jethro's answer to him.",
+      "englishSubheading": null,
+      "persianTitle": "دعوی کردن آن شخص کی خدای تعالی مرا نمی‌گیرد به گناه و جواب گفتن شعیب علیه السلام مرورا",
+      "retrievalScore": 0.870496,
+      "independentAnchorCount": 9,
+      "anchors": [
+        {
+          "english": "From that breath of the soul roses bloomed in his heart,",
+          "persian": "زان دم جان در دل او گل شکفت"
+        },
+        {
+          "english": "It is not plain, reading it is deceptive;",
+          "persian": "فهم ناید خواندنش گردد غلط"
+        },
+        {
+          "english": "His face agrees in color with the smoke.",
+          "persian": "مرد آهنگر که او زنگی بود"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0149-s1",
+      "persianSequence": 639,
+      "englishLineStart": 16,
+      "persianLineStart": 34,
+      "englishLines": [
+        "He has thousands of names, yet is One,",
+        "Answering to all of His descriptions, yet indescribable."
+      ],
+      "persianLines": [
+        "صد هزاران نام و او یک آدمی",
+        "صاحب هر وصفش از وصفی عمی"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XVII. The Tree of Life.",
+      "englishSubheading": null,
+      "persianTitle": "شرح کردن شیخ سر آن درخت با آن طالب مقلد",
+      "retrievalScore": 0.847796,
+      "independentAnchorCount": 4,
+      "anchors": [
+        {
+          "english": "He has thousands of names, yet is One,",
+          "persian": "صد هزاران نام و او یک آدمی"
+        },
+        {
+          "english": "Pass over names and look to qualities,",
+          "persian": "در گذر از نام و بنگر در صفات"
+        },
+        {
+          "english": "In relation to another, mercy and goodness.",
+          "persian": "در حق دیگر بود لطف و نکو"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0153-s0",
+      "persianSequence": 751,
+      "englishLineStart": 29,
+      "persianLineStart": 29,
+      "englishLines": [
+        "In Solomon we hold our course to eternity.",
+        "Along with Solomon plunge into the ocean, 4"
+      ],
+      "persianLines": [
+        "در سلیمان تا ابد داریم سیر",
+        "با سلیمان پای در دریا بنه"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XVIII. The Young Ducks who were brought up under a Hen.",
+      "englishSubheading": null,
+      "persianTitle": "قصه‌ی بط بچگان کی مرغ خانگی پروردشان",
+      "retrievalScore": 0.877816,
+      "independentAnchorCount": 9,
+      "anchors": [
+        {
+          "english": "In Solomon we hold our course to eternity.",
+          "persian": "در سلیمان تا ابد داریم سیر"
+        },
+        {
+          "english": "Though he stands hard by us, we are shut off from him.",
+          "persian": "او بپیش ما و ما از وی ملول"
+        },
+        {
+          "english": "Whoso beholds the Causer face to face,",
+          "persian": "آنک بیند او مسبب را عیان"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0185-s2",
+      "persianSequence": 232,
+      "englishLineStart": 36,
+      "persianLineStart": 8,
+      "englishLines": [
+        "For I have fallen into this dire disgrace;",
+        "I have squandered goods and gold and wealth."
+      ],
+      "persianLines": [
+        "کاندرین ادبار زشت افتاده‌ام",
+        "مال و زر و نعمت از کف داده‌ام"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY IX. The Darvesh who Broke his Vow.",
+      "englishSubheading": "All things dependent upon the will of God.",
+      "persianTitle": "تشبیه بند و دام قضا به صورت پنهان به اثر پیدا",
+      "retrievalScore": 0.802827,
+      "independentAnchorCount": 6,
+      "anchors": [
+        {
+          "english": "For I have fallen into this dire disgrace;",
+          "persian": "کاندرین ادبار زشت افتاده‌ام"
+        },
+        {
+          "english": "Having sold all his clothes and substance;",
+          "persian": "در هوای نابکاری سوخته"
+        },
+        {
+          "english": "For the mason can pull down prison walls,",
+          "persian": "بتر از زندان و بند آهنست"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0189-s1",
+      "persianSequence": 673,
+      "englishLineStart": 12,
+      "persianLineStart": 48,
+      "englishLines": [
+        "I conceal myself a while from this world,",
+        "I shake down the leaves of outward sense from the tree."
+      ],
+      "persianLines": [
+        "زین جهان خود را دمی پنهان کنم",
+        "برگ حس را از درخت افشان کنم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY X. The Old Man who made no Lamentation at the Death of his Sons.",
+      "englishSubheading": null,
+      "persianTitle": "عذر گفتن شیخ بهر ناگریستن بر فرزندان",
+      "retrievalScore": 0.869368,
+      "independentAnchorCount": 6,
+      "anchors": [
+        {
+          "english": "I conceal myself a while from this world,",
+          "persian": "زین جهان خود را دمی پنهان کنم"
+        },
+        {
+          "english": "Then your sleepless sense is lulled into sleep,",
+          "persian": "حس را بی‌خواب خواب اندر کند"
+        },
+        {
+          "english": "When they are swept aside, the water is seen;",
+          "persian": "چونک دست عقل نگشاید خدا"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0191-s1",
+      "persianSequence": 612,
+      "englishLineStart": 3,
+      "persianLineStart": 31,
+      "englishLines": [
+        "Without the decree and command of that Lord of lords;",
+        "Not a morsel goes from the mouth down the throat"
+      ],
+      "persianLines": ["بی قضا و حکم آن سلطان بخت", "از دهان لقمه نشد سوی گلو"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XI. Bahlol and the Darvesh.",
+      "englishSubheading": null,
+      "persianTitle": "سال کردن بهلول آن درویش را",
+      "retrievalScore": 0.84009,
+      "independentAnchorCount": 13,
+      "anchors": [
+        {
+          "english": "Without the decree and command of that Lord of lords;",
+          "persian": "بی قضا و حکم آن سلطان بخت"
+        },
+        {
+          "english": "At the time when he lit the lamp of love to God.",
+          "persian": "رحم خود را او همان دم سوختست"
+        },
+        {
+          "english": "Not a leaf falls from a tree",
+          "persian": "هیچ برگی در نیفتد از درخت"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0193-s2",
+      "persianSequence": 759,
+      "englishLineStart": 6,
+      "persianLineStart": 6,
+      "englishLines": [
+        "He said, \"If I tarry in one house two days,",
+        "Attachment to that house becomes a passion with me."
+      ],
+      "persianLines": [
+        "گفت در یک خانه گر باشم دو روز",
+        "عشق آن مسکن کند در من فروز"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XII. The Visions seen by the Saint Daquqi.",
+      "englishSubheading": "Description of a saint whose will was identified with God's will.",
+      "persianTitle": "قصه‌ی دقوقی رحمة الله علیه و کراماتش",
+      "retrievalScore": 0.83609,
+      "independentAnchorCount": 5,
+      "anchors": [
+        {
+          "english": "He said, \"If I tarry in one house two days,",
+          "persian": "گفت در یک خانه گر باشم دو روز"
+        },
+        {
+          "english": "Benevolent to the good and the bad, and a firm ally,",
+          "persian": "نیک و بد را مهربان و مستقر"
+        },
+        {
+          "english": "A kind intercessor, and one whose prayers were heard.",
+          "persian": "خوش شفعیی و دعااش مستجاب"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0197-s2",
+      "persianSequence": 431,
+      "englishLineStart": 119,
+      "persianLineStart": 1,
+      "englishLines": [
+        "And when they enjoy prosperity they do evil.",
+        "Wherefore the mosque of their devotion is hell,"
+      ],
+      "persianLines": [
+        "چون وفا بینند خود جافی شوند",
+        "مسجد طاعاتشان پس دوزخست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XIII. The People of Saba.",
+      "englishSubheading": "Not every one can properly use similitudes and parables in divine matters.",
+      "persianTitle": "حکمت آفریدن دوزخ آن جهان و زندان این جهان تا معبد متکبران باشد کی ائتیا طوعا او کرها",
+      "retrievalScore": 0.829402,
+      "independentAnchorCount": 5,
+      "anchors": [
+        {
+          "english": "And when they enjoy prosperity they do evil.",
+          "persian": "چون وفا بینند خود جافی شوند"
+        },
+        {
+          "english": "Hell for the base and increased bliss for the noble.",
+          "persian": "دوزخ آنها را و اینها را مزید"
+        },
+        {
+          "english": "The only object of the world is to worship God.",
+          "persian": "جز عبادت نیست مقصود از جهان"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0197-s5",
+      "persianSequence": 143,
+      "englishLineStart": 45,
+      "persianLineStart": 12,
+      "englishLines": [
+        "Why then, O faint-hearted one, in the matter of religion",
+        "Are you paralysed by the fear of loss?"
+      ],
+      "persianLines": [
+        "پس چرا در کار دین ای بدگمان",
+        "دامنت می‌گیرد این خوف زیان"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XIII. The People of Saba.",
+      "englishSubheading": "The despair of the prophets.",
+      "persianTitle": "بیان آنک ایمان مقلد خوفست و رجا",
+      "retrievalScore": 0.785653,
+      "independentAnchorCount": 4,
+      "anchors": [
+        {
+          "english": "Why then, O faint-hearted one, in the matter of religion",
+          "persian": "پس چرا در کار دین ای بدگمان"
+        },
+        {
+          "english": "Are you paralysed by the fear of loss?",
+          "persian": "دامنت می‌گیرد این خوف زیان"
+        },
+        {
+          "english": "You say, \"Although the fear of loss is before me,",
+          "persian": "خوف حرمان هست تو چونی قوی"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0209-s2",
+      "persianSequence": 699,
+      "englishLineStart": 23,
+      "persianLineStart": 23,
+      "englishLines": [
+        "Though the real nature of Noah is not revealed to you.",
+        "On the other hand, if you say, \"What know I of Noah"
+      ],
+      "persianLines": [
+        "گرچه ماهیت نشد از نوح کشف",
+        "ور بگویی من چه دانم نوح را"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XVI. The Woman who lost all her infants.",
+      "englishSubheading": "The difference between knowing a thing merely by similitudes and on the authority of others, and knowing the very essence thereof.",
+      "persianTitle": "فرق میان دانستن چیزی به مثال و تقلید و میان دانستن ماهیت آن چیز",
+      "retrievalScore": 0.867504,
+      "independentAnchorCount": 13,
+      "anchors": [
+        {
+          "english": "Though the real nature of Noah is not revealed to you.",
+          "persian": "گرچه ماهیت نشد از نوح کشف"
+        },
+        {
+          "english": "On the other hand, if you say, \"What know I of Noah",
+          "persian": "ور بگویی من چه دانم نوح را"
+        },
+        {
+          "english": "And if he says, \"I know it not,\" 'tis not wrong.",
+          "persian": "ور ندانم گفت کذب و زور نیست"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0213-s2",
+      "persianSequence": 342,
+      "englishLineStart": 25,
+      "persianLineStart": 12,
+      "englishLines": [
+        "My hand is a tabor and my belly a drum,",
+        "Like the rose I beat the drum of love of water."
+      ],
+      "persianLines": [
+        "دست چون دف و شکم همچون دهل",
+        "طبل عشق آب می‌کوبم چو گل"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XVII. The Vakil of the Prince of Bokhara.",
+      "englishSubheading": "The reply of the lover when asked by his mistress which city of all those he had seen was most pleasing in his sight.",
+      "persianTitle": "جواب گفتن عاشق عاذلان را وتهدید کنندگان را",
+      "retrievalScore": 0.823737,
+      "independentAnchorCount": 12,
+      "anchors": [
+        {
+          "english": "My hand is a tabor and my belly a drum,",
+          "persian": "دست چون دف و شکم همچون دهل"
+        },
+        {
+          "english": "At night I boil on the fire like a cooking-pot,",
+          "persian": "شب همی‌جوشم در آتش همچو دیگ"
+        },
+        {
+          "english": "And its least part became a source of life.",
+          "persian": "کمترین جزوش حیات کشته‌ای"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0221-s2",
+      "persianSequence": 283,
+      "englishLineStart": 28,
+      "persianLineStart": 72,
+      "englishLines": [
+        "Nay, borrow from Him both eyes and sight,",
+        "And with those eyes of His look upon His face,"
+      ],
+      "persianLines": ["بلک ازو کن عاریت چشم و نظر", "پس ز چشم او بروی او نگر"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY I. The Lover and his Mistress.",
+      "englishSubheading": "The soul of good in things evil. Evil only relative.",
+      "persianTitle": "تمامی حکایت آن عاشق که از عسس گریخت در باغی مجهول خود معشوق را در باغ یافت",
+      "retrievalScore": 0.824908,
+      "independentAnchorCount": 9,
+      "anchors": [
+        {
+          "english": "Nay, borrow from Him both eyes and sight,",
+          "persian": "بلک ازو کن عاریت چشم و نظر"
+        },
+        {
+          "english": "In the world there is nothing absolutely bad;",
+          "persian": "پس بد مطلق نباشد در جهان"
+        },
+        {
+          "english": "And borrow from His admirers their eyes;",
+          "persian": "چشم خود بر بند زان خوش‌چشم تو"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0233-s2",
+      "persianSequence": 762,
+      "englishLineStart": 64,
+      "persianLineStart": 75,
+      "englishLines": [
+        "Yea, he dwells in security forever.",
+        "His form is vanished, he is a mere mirror;"
+      ],
+      "persianLines": ["تا ابد در آمنی او ساکنست", "نقش او فانی و او شد آینه"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY IV. Bayazid and his impious sayings when beside himself.",
+      "englishSubheading": "How Bayazid cried out, when beside himself, \"Glory be to me!\" and how his disciples were scandalized at this saying, and how Bayazid answered them.",
+      "persianTitle": "قصه‌ی سبحانی ما اعظم شانی گفتن ابویزید قدس الله سره و اعتراض مریدان و جواب این مر ایشان را نه به طریق گفت زبان بلک از راه عیان",
+      "retrievalScore": 0.809211,
+      "independentAnchorCount": 7,
+      "anchors": [
+        {
+          "english": "Yea, he dwells in security forever.",
+          "persian": "تا ابد در آمنی او ساکنست"
+        },
+        {
+          "english": "If I say that again you must kill me!\"",
+          "persian": "چون چنین گویم بباید کشتنم"
+        },
+        {
+          "english": "Saw his own throat cut, and gave up the ghost;",
+          "persian": "هر که او سویی گلویش زخم برد"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0233-s5",
+      "persianSequence": 188,
+      "englishLineStart": 19,
+      "persianLineStart": 21,
+      "englishLines": [
+        "Beholds by the light of God all things that exist.",
+        "His pure light, without signs or tokens,"
+      ],
+      "persianLines": [
+        "او به نور حق ببیند آنچ هست",
+        "نور پاکش بی‌دلیل و بی‌بیان"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY IV. Bayazid and his impious sayings when beside himself.",
+      "englishSubheading": "Why the Prophet promoted the youth to command his seniors.",
+      "persianTitle": "بیان رسول علیه السلام سبب تفضیل و اختیار کردن او آن هذیلی را به امیری و سرلشکری بر پیران و کاردیدگان",
+      "retrievalScore": 0.811793,
+      "independentAnchorCount": 7,
+      "anchors": [
+        {
+          "english": "Beholds by the light of God all things that exist.",
+          "persian": "او به نور حق ببیند آنچ هست"
+        },
+        {
+          "english": "Have secretly shed the blood of many true believers.",
+          "persian": "خون صد ممن به پنهانی بریخت"
+        },
+        {
+          "english": "We look at the heart and disregard the outside.",
+          "persian": "دل ببینیم و به ظاهر ننگریم"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0237-s2",
+      "persianSequence": 685,
+      "englishLineStart": 6,
+      "persianLineStart": 6,
+      "englishLines": [
+        "The second, he, namely, who is half wise,",
+        "Knows the wise man to be the light of his eyes."
+      ],
+      "persianLines": [
+        "دیگری که نیم‌عاقل آمد او",
+        "عاقلی را دیده‌ی خود داند او"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY V. The Three Fishes.",
+      "englishSubheading": "The marks of the wise man, of the half wise, and of the fool.",
+      "persianTitle": "علامت عاقل تمام و نیم‌عاقل و مرد تمام",
+      "retrievalScore": 0.784835,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "So as to become possessed of the wise man's sight.",
+          "persian": "دیگری که نیم‌عاقل آمد او"
+        },
+        {
+          "english": "In order to rise up out of his degradation.",
+          "persian": "نیم‌عقلی نه که خود مرده کند"
+        },
+        {
+          "english": "He is the guide and leader of the caravan.",
+          "persian": "او دلیل و پیشوای قافله‌ست"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0241-s6",
+      "persianSequence": 271,
+      "englishLineStart": 1,
+      "persianLineStart": 1,
+      "englishLines": [
+        "You will be able to build thousands of houses.",
+        "The treasure lies under it; there is no help for it;"
+      ],
+      "persianLines": [
+        "صد هزاران خانه شاید ساختن",
+        "گنج زیر خانه است و چاره نیست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VI. Moses and Pharaoh1.",
+      "englishSubheading": "On the tradition, \"I was a hidden treasure and I desired to be known, and I created the world in order to be known\".",
+      "persianTitle": "تفسیر کنت کنزا مخفیا فاحببت ان اعرف",
+      "retrievalScore": 0.820689,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "On the tradition, \"I was a hidden treasure…\"",
+          "persian": "تفسیر کنت کنزا مخفیا فاحببت ان اعرف"
+        },
+        {
+          "english": "Destroy your house … build thousands of houses",
+          "persian": "خانه بر کن … صد هزاران خانه شاید ساختن"
+        },
+        {
+          "english": "\"Man gets nothing he has not worked for.\"",
+          "persian": "لییس للانسان الا ما سعی"
+        }
+      ],
+      "relationship": "abridged",
+      "disclosures": [
+        "Abridged translation. Whinfield renders this section freely, omitting the extended cobbler's-shop couplets in the middle of the Persian and closing with two lines citing Sanai that fall outside this section. Line numbering does not correspond one-to-one with the Persian."
+      ],
+      "correctsHistoricalCandidate": true
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0249-s2",
+      "persianSequence": 166,
+      "englishLineStart": 16,
+      "persianLineStart": 16,
+      "englishLines": [
+        "Branches of trees dancing like fair damsels,",
+        "Leaves clapping hands like singers."
+      ],
+      "persianLines": [
+        "شاخه‌ها رقصان شده چون تایبان",
+        "برگها کف‌زن مثال مطربان"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VIII. The Prince who, after having been beguiled by a Courtesan, returned to his True Love.",
+      "englishSubheading": "The world is the outward form of \"Universal Reason\" (Muhammad), and he who grieves him must expect trouble in the world. 3",
+      "persianTitle": "بیان آنک مجموع عالم صورت عقل کلست",
+      "retrievalScore": 0.779808,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "the outward form of Universal Reason",
+          "persian": "صورت عقل کل"
+        },
+        {
+          "english": "father of all creatures of reason",
+          "persian": "بابای هر آنک اهل قل است"
+        },
+        {
+          "english": "Its form, the world, shows its teeth at him",
+          "persian": "صورت کل پیش او هم سگ نمود"
+        }
+      ],
+      "relationship": "direct",
+      "disclosures": [
+        "Whinfield is an abridged edition; this selected continuous couplet remains directly traceable to the Nicholson span."
+      ],
+      "correctsHistoricalCandidate": true
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0253-s2",
+      "persianSequence": 39,
+      "englishLineStart": 18,
+      "persianLineStart": 18,
+      "englishLines": [
+        "Again, the great Creator, as you know,",
+        "Drew man out of the animal into the human state."
+      ],
+      "persianLines": ["باز از حیوان سوی انسانیش", "می‌کشید آن خالقی که دانیش"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY IX. The Mule and the Camel.",
+      "englishSubheading": "The evolution of man.",
+      "persianTitle": "اطوار و منازل خلقت آدمی از ابتدا",
+      "retrievalScore": 0.866568,
+      "independentAnchorCount": 6,
+      "anchors": [
+        {
+          "english": "appeared in the class of inorganic things / passed therefrom into that of plants",
+          "persian": "آمده اول به اقلیم جماد / وز جمادی در نباتی اوفتاد"
+        },
+        {
+          "english": "at the time of spring and sweet flowers",
+          "persian": "خاصه در وقت بهار و ضیمران"
+        },
+        {
+          "english": "rent the garments of many Josephs / rise from your heavy sleep as a wolf",
+          "persian": "ای دریده پوستین یوسفان / گرگ بر خیزی ازین خواب گران"
+        }
+      ],
+      "relationship": "composite",
+      "disclosures": [
+        "This English passage is E. H. Whinfield's abridged rendering. Its verse follows the Persian section closely, but the surrounding mule-and-camel narrative is Whinfield's own prose summary rather than translated verse, and the English continues past this section into further passages of the Masnavi."
+      ],
+      "correctsHistoricalCandidate": true
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0257-s2",
+      "persianSequence": 170,
+      "englishLineStart": 29,
+      "persianLineStart": 29,
+      "englishLines": [
+        "And in mercy wash him clean of that defilement.",
+        "In order that the pardoning grace of God may be seen,"
+      ],
+      "persianLines": [
+        "غسل داده رحمت او را زین خباط",
+        "تا که غفاری او ظاهر شود"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY I. The Prophet and his Infidel Guest.",
+      "englishSubheading": "Outward acts bear witness of the state of the heart within.",
+      "persianTitle": "بیان آنک نماز و روزه و همه چیزهای برونی گواهیهاست بر نور اندرونی",
+      "retrievalScore": 0.820564,
+      "independentAnchorCount": 4,
+      "anchors": [
+        {
+          "english": "And in mercy wash him clean of that defilement.",
+          "persian": "غسل داده رحمت او را زین خباط"
+        },
+        {
+          "english": "So, offerings and presents and oblations",
+          "persian": "هدیه‌ها و ارمغان و پیش‌کش"
+        },
+        {
+          "english": "If the cat keeps fast, and remains still",
+          "persian": "نه ز رحم و جود بل بهر شکار"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0273-s2",
+      "persianSequence": 895,
+      "englishLineStart": 10,
+      "persianLineStart": 10,
+      "englishLines": [
+        "See the kings who lead forth their armies",
+        "To slay their own people from envy!"
+      ],
+      "persianLines": [
+        "پادشاهان بین که لشکر می‌کشند",
+        "از حسد خویشان خود را می‌کشند"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY V. The Man who claimed to be a Prophet.",
+      "englishSubheading": "The Prophet's prayer for the envious people.",
+      "persianTitle": "مناجات ۱",
+      "retrievalScore": 0.85732,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "See the kings who lead forth their armies",
+          "persian": "پادشاهان بین که لشکر می‌کشند"
+        },
+        {
+          "english": "Making one nonentity fall in love with another.",
+          "persian": "مر عدم را بر عدم عاشق کند"
+        },
+        {
+          "english": "'Tis God alone who agitates these nonentities",
+          "persian": "پاک الهی که عدم بر هم زند"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0277-s2",
+      "persianSequence": 860,
+      "englishLineStart": 6,
+      "persianLineStart": 10,
+      "englishLines": [
+        "Then he inquires what the laughter was about,",
+        "And, on hearing it, proceeds to laugh a second time."
+      ],
+      "persianLines": [
+        "باز وا پرسد که خنده بر چه بود",
+        "پس دوم کرت بخندد چون شنود"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VI. The Disciple who blindly imitated his Shaikh.",
+      "englishSubheading": "The worthlessness of mere blind imitation (taqlid) of religious exercises.",
+      "persianTitle": "مریدی در آمد به خدمت شیخ و ازین شیخ پیر سن نمی‌خواهم",
+      "retrievalScore": 0.926489,
+      "independentAnchorCount": 16,
+      "anchors": [
+        {
+          "english": "Then he inquires what the laughter was about,",
+          "persian": "باز وا پرسد که خنده بر چه بود"
+        },
+        {
+          "english": "He laughs also at his own previous laughter,",
+          "persian": "خنده‌ش آید هم بر آن خنده‌ی خودش"
+        },
+        {
+          "english": "He is then ignorant of the subject of their laughter;",
+          "persian": "بیخبر از حالت خندندگان"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0281-s2",
+      "persianSequence": 167,
+      "englishLineStart": 11,
+      "persianLineStart": 11,
+      "englishLines": [
+        "If He makes me a dart, I pierce bodies.",
+        "If He makes me a snake, I dart forth poison;"
+      ],
+      "persianLines": [
+        "ور مرا ناوک کند در تن جهم",
+        "گر مرا ماری کند زهر افکنم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VII. How Adam was created out of a handful of earth brought by an Angel.",
+      "englishSubheading": "God the Only Real Agent.",
+      "persianTitle": "بیان آنک مخلوقی کر ترا ازو ظلمی رسد",
+      "retrievalScore": 0.681671,
+      "independentAnchorCount": 6,
+      "anchors": [
+        {
+          "english": "He is as Azar, maker of idols; I am only the idol",
+          "persian": "او به صنعت آزرست و من صنم"
+        },
+        {
+          "english": "If He makes of me a cup, a cup am I; If He makes of me a dagger, a dagger am I",
+          "persian": "گر مرا ساغر کند ساغر شوم / ور مرا خنجر کند خنجر شوم"
+        },
+        {
+          "english": "I am as the pen in the fingers of the writer",
+          "persian": "من چو کلکم در میان اصبعین"
+        }
+      ],
+      "relationship": "abridged",
+      "disclosures": [
+        "This English passage renders only the opening couplets of the Persian section; the remainder of the section is compressed by the translator into surrounding prose summary."
+      ],
+      "correctsHistoricalCandidate": true
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0291-s3",
+      "persianSequence": 844,
+      "englishLineStart": 36,
+      "persianLineStart": 36,
+      "englishLines": [
+        "He has the scent of the apple, but not a piece of it,",
+        "And the scent only for the purpose of misleading others."
+      ],
+      "persianLines": [
+        "بوی سیبش هست جزو سیب نیست",
+        "بو درو جز از پی آسیب نیست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY X. The Lion, the Fox, and the Ass.",
+      "englishSubheading": null,
+      "persianTitle": "مثل آوردن اشتر در بیان آنک در مخبر دولتی فر و اثر آن چون نبینی جای متهم داشتن باشد کی او مقلدست در آن",
+      "retrievalScore": 0.829403,
+      "independentAnchorCount": 9,
+      "anchors": [
+        {
+          "english": "He has the scent of the apple, but not a piece of it,",
+          "persian": "بوی سیبش هست جزو سیب نیست"
+        },
+        {
+          "english": "Because it comes only from the lips, not from the heart.",
+          "persian": "زانک در لب بود آن نه در قلوب"
+        },
+        {
+          "english": "Perils of the road, of robbers, of cursed Satans.",
+          "persian": "از ره و ره‌زن ز شیطان رجیم"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0295-s2",
+      "persianSequence": 83,
+      "englishLineStart": 4,
+      "persianLineStart": 44,
+      "englishLines": [
+        "How can you get water from that which cuts it off?",
+        "How gain understanding from what destroys understanding?"
+      ],
+      "persianLines": [
+        "کی بری زان آب کان آبت برد",
+        "کی کنی زان فهم فهمت را خورد"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY XI. The Mosalman who tried to convert a Magian.",
+      "englishSubheading": "Love puts reason to silence.",
+      "persianTitle": "باز جواب گفتن آن کافر جبری آن سنی را",
+      "retrievalScore": 0.791853,
+      "independentAnchorCount": 5,
+      "anchors": [
+        {
+          "english": "How can you get water from that which cuts it off?",
+          "persian": "کی بری زان آب کان آبت برد"
+        },
+        {
+          "english": "In like manner the Prophet's companions tell us",
+          "persian": "هم‌چنانک گفت آن یار رسول"
+        },
+        {
+          "english": "They penetrated the mansion of Joseph's love;",
+          "persian": "بر رواق عشق یوسف تاختند"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0303-s2",
+      "persianSequence": 805,
+      "englishLineStart": 39,
+      "persianLineStart": 58,
+      "englishLines": [
+        "Thou art as joy, and we are laughing;",
+        "The laughter is the consequence of the joy."
+      ],
+      "persianLines": [
+        "تو مثال شادی و ما خنده‌ایم",
+        "که نتیجه‌ی شادی فرخنده‌ایم"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VIII. (continued). Mahmud and Ayaz.",
+      "englishSubheading": "Love and faith are a mighty spell.",
+      "persianTitle": "گفتن خویشاوندان مجنون را کی حسن لیلی باندازه‌ایست",
+      "retrievalScore": 0.891248,
+      "independentAnchorCount": 7,
+      "anchors": [
+        {
+          "english": "Thou art as joy, and we are laughing;",
+          "persian": "تو مثال شادی و ما خنده‌ایم"
+        },
+        {
+          "english": "'Tis reason that teaches the tongue to speak.",
+          "persian": "این زبان از عقل دارد این بیان"
+        },
+        {
+          "english": "Like that shepherd who cried,\" O Lord! 1",
+          "persian": "هر دمت گوید که جانم مفرشت"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0307-s0",
+      "persianSequence": 282,
+      "englishLineStart": 36,
+      "persianLineStart": 138,
+      "englishLines": [
+        "Behold the bright and fresh sprays of coral,",
+        "And the princely fruits growing in the water of life!"
+      ],
+      "persianLines": [
+        "شاخهای تازه‌ی مرجان ببین",
+        "میوه‌های رسته ز آب جان ببین"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "PROLOGUE.",
+      "englishSubheading": null,
+      "persianTitle": "تمامت کتاب الموطد الکریم",
+      "retrievalScore": 0.813303,
+      "independentAnchorCount": 7,
+      "anchors": [
+        {
+          "english": "Behold the bright and fresh sprays of coral,",
+          "persian": "شاخهای تازه‌ی مرجان ببین"
+        },
+        {
+          "english": "Art thou thirsting for the Ocean of spirituality?",
+          "persian": "گر شدی عطشان بحر معنوی"
+        },
+        {
+          "english": "It matters not to Him whether ye accept or reject it.",
+          "persian": "با قبول و ناقبول او را چه کار"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0327-s5",
+      "persianSequence": 840,
+      "englishLineStart": 14,
+      "persianLineStart": 42,
+      "englishLines": [
+        "Or like ice which is formed in great frost,",
+        "The frost departs, but the ice is still before us."
+      ],
+      "persianLines": [
+        "یا مثال یخ که زاید از شتا",
+        "شد شتا پنهان و آن یخ پیش ما"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY V. The Sufi and the Qazi.",
+      "englishSubheading": "Each of our members testifies to God's bounties towards us.",
+      "persianTitle": "مثل ۵",
+      "retrievalScore": 0.813274,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "Or like ice which is formed in great frost,",
+          "persian": "یا مثال یخ که زاید از شتا"
+        },
+        {
+          "english": "Has been, like Mary, impregnated by the Unseen King.",
+          "persian": "هم‌چو مریم حامل از شاهی نهان"
+        },
+        {
+          "english": "Even as a woman who has borne twenty children,",
+          "persian": "چون زنی که بیست فرزندش بود"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0331-s2",
+      "persianSequence": 432,
+      "englishLineStart": 52,
+      "persianLineStart": 19,
+      "englishLines": [
+        "Even till the time of Pharaoh and gentle Moses.",
+        "Between these two the war was waged for years,"
+      ],
+      "persianLines": [
+        "تا به فرعون و به موسی شفیق",
+        "سالها اندر میانشان حرب بود"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VI. The Faqir and the Hidden Treasure.",
+      "englishSubheading": "God rules men by alternations of hope and fear.",
+      "persianTitle": "حکمت در انی جاعل فی الارض خلیفة",
+      "retrievalScore": 0.864693,
+      "independentAnchorCount": 8,
+      "anchors": [
+        {
+          "english": "Even till the time of Pharaoh and gentle Moses.",
+          "persian": "تا به فرعون و به موسی شفیق"
+        },
+        {
+          "english": "That same bread will choke you like a halter.",
+          "persian": "چون خناق آن نان بگیرد در گلو"
+        },
+        {
+          "english": "Between these two the war was waged for years,",
+          "persian": "سالها اندر میانشان حرب بود"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0335-s11",
+      "persianSequence": 408,
+      "englishLineStart": 6,
+      "persianLineStart": 80,
+      "englishLines": [
+        "He added, \"'Yea, he was with you,' 9 this great king;",
+        "He beheld our actions and heard our secrets."
+      ],
+      "persianLines": [
+        "گفت و هو معکم این شاه بود",
+        "فعل ما می‌دید و سرمان می‌شنود"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY VII. The Three Travelers.",
+      "englishSubheading": "He whose eyes discern God in the world is safe from destruction.",
+      "persianTitle": "حکایت شب دزدان کی سلطان محمود شب در میان ایشان افتاد کی من یکی‌ام از شما و بر احوال ایشان مطلع شدن الی آخره",
+      "retrievalScore": 0.820883,
+      "independentAnchorCount": 6,
+      "anchors": [
+        {
+          "english": "He added, \"'Yea, he was with you,' 9 this great king;",
+          "persian": "گفت و هو معکم این شاه بود"
+        },
+        {
+          "english": "Recognized him without fail when he saw him by day,",
+          "persian": "روز دیدی بی شکش بشناختی"
+        },
+        {
+          "english": "Because his eye 'did not wander' 10 from the King of kings.",
+          "persian": "که ز جز شه چشم او مازاغ بود"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0343-s2",
+      "persianSequence": 590,
+      "englishLineStart": 27,
+      "persianLineStart": 83,
+      "englishLines": [
+        "Know to be shadows of the architect's thought;",
+        "Although stones and planks and bricks"
+      ],
+      "persianLines": ["سایه‌ی اندیشه‌ی معمار دان", "گرچه خود اندر محل افتکار"],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY IX. The King and his Three Sons.",
+      "englishSubheading": "The significance of forms. 2",
+      "persianTitle": "رفتن پسران سلطان به حکم آنک الانسان حریص علی ما منع",
+      "retrievalScore": 0.851973,
+      "independentAnchorCount": 10,
+      "anchors": [
+        {
+          "english": "Know to be shadows of the architect's thought;",
+          "persian": "سایه‌ی اندیشه‌ی معمار دان"
+        },
+        {
+          "english": "Those bodies either to good or to evil.",
+          "persian": "اندر آرد جسم را در نیک و بد"
+        },
+        {
+          "english": "From its perfect beauty and power.",
+          "persian": "از کمال و از جمال و قدرتی"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0343-s5",
+      "persianSequence": 395,
+      "englishLineStart": 11,
+      "persianLineStart": 53,
+      "englishLines": [
+        "A demon, though he usurp his kingdom, is quite another.",
+        "The demon has taken upon him the form of Solomon,"
+      ],
+      "persianLines": [
+        "دیو گرچه ملک گیرد هست غیر",
+        "دیو بر شبه سلیمان کرد ایست"
+      ],
+      "mapping": [
+        {
+          "englishIndex": 0,
+          "persianIndices": [0]
+        },
+        {
+          "englishIndex": 1,
+          "persianIndices": [1]
+        }
+      ],
+      "englishHeading": "STORY IX. The King and his Three Sons.",
+      "englishSubheading": "How the princes discoursed with one another in figurative language concerning their beloved mistress.",
+      "persianTitle": "حکایت امرء القیس کی پادشاه عرب بود و به صورت عظیم به جمال بود یوسف وقت خود بود",
+      "retrievalScore": 0.859309,
+      "independentAnchorCount": 10,
+      "anchors": [
+        {
+          "english": "A demon, though he usurp his kingdom, is quite another.",
+          "persian": "دیو گرچه ملک گیرد هست غیر"
+        },
+        {
+          "english": "For the blessing abides, though shut off and hidden!",
+          "persian": "که آمنست از هر فراق آن منقبت"
+        },
+        {
+          "english": "His knowledge is fraud, not \"what we have been taught.\"",
+          "persian": "چون سلیمان از خدا بشاش بود"
+        }
+      ],
+      "relationship": "selected-abridged",
+      "disclosures": [
+        "Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material."
+      ],
+      "correctsHistoricalCandidate": false
+    }
+  ],
+  "counts": {
+    "preservedHafez": 24,
+    "newHafez": 36,
+    "finalHafez": 60,
+    "preservedRumi": 16,
+    "newRumi": 44,
+    "finalRumi": 60,
+    "finalTotal": 120
+  }
+}

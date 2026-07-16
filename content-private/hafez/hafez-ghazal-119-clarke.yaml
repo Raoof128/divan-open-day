@@ -1,0 +1,78 @@
+id: hafez-ghazal-119-clarke
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: The Divan, Written in the Fourteenth Century by Khwaja Shams-ud-Din Muhammad-i-Hafiz-i-Shirazi
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 119
+  opening_hemistich_fa: دلی که غیب‌نمایست و جام ‌جم دارد
+  page_reference: Clarke volume-1, ode 145 (189), scan page 345
+  source_language: fa
+  english_source_id: hafez-clarke-1891-en
+  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_reference: Clarke volume-1, ode 145 (189), scan page 345
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - دلی که غیب‌نمایست و جام ‌جم دارد
+    - ز خاتمی که دمی گم شود چه غم دارد
+  english_lines:
+    - That heart that is the hidden-displayer ; and that the cup of Jamshid hath,
+    - For a seal ring (of Sulaiman), that awhile became lost, what grief (is it that) it hath ?
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-119-clarke-translation-permission
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: hafez-clarke-1891-en
+  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  persianSourceId: hafez-qazvini-ghani-fa-wikisource
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  canonicalIdentityHash: 4336af3aac303438b5262fa137385dd6a48e4e8736a1ab421ea8cd0b468c9d27
+  englishSpanHash: f69086205690c748bce406e65440d378a289d4a84b83e14cb9e94d90ca49da67
+  persianSpanHash: 73b44748d5d41d1b67c2efa5622d1b0f249e3bc1d96cbeb61bb88a882bfdf3b7
+  mappingHash: 5f149080ab41eab4b0a48f3881de8f27479ca65e243a5366a00b3fe50f9ca64b
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+  verifiedAt: 2026-07-16
+  rationale: The selected Clarke opening at Clarke volume-1, ode 145 (189), scan page 345 resolves to Qazvini-Ghani ghazal 119 through an exact continuous source span and 2 independent bilingual anchors.

@@ -1,0 +1,78 @@
+id: rumi-masnavi-0271-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 271
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0241-s6:lines-1-2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - صد هزاران خانه شاید ساختن
+    - گنج زیر خانه است و چاره نیست
+  english_lines:
+    - You will be able to build thousands of houses.
+    - The treasure lies under it; there is no help for it;
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0271-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 8039d6a74846dd972a477a369b0e22c75045b623ee7ca19f10bec7fe7d912f0a
+  englishSpanHash: 32b597fff5e0ec013f514f833046c544d8bfcc5e31baa435a5c3f2b2f440f9b2
+  persianSpanHash: 3b8455ac9d6e8e2d590db3b94fab98de948dd05891ac5f5371a6afd6b0c42f9d
+  mappingHash: a25c24652684c3b63a1504d7723b7315fb6a6667f1aa3050a7a5196f70141c9c
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.820689
+  disclosures:
+    - Abridged translation. Whinfield renders this section freely, omitting the extended cobbler's-shop couplets in the middle of the Persian and closing with two lines citing Sanai that fall outside this section. Line numbering does not correspond one-to-one with the Persian.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 1 resolve to the continuous Nicholson section 271 span beginning at 1, supported by 3 independent same-context anchors.

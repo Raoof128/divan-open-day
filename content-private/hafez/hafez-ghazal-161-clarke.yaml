@@ -1,0 +1,78 @@
+id: hafez-ghazal-161-clarke
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: The Divan, Written in the Fourteenth Century by Khwaja Shams-ud-Din Muhammad-i-Hafiz-i-Shirazi
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 161
+  opening_hemistich_fa: کی شعر تر انگیزد خاطر که حزین باشد
+  page_reference: Clarke volume-1, ode 226 (232), scan page 466
+  source_language: fa
+  english_source_id: hafez-clarke-1891-en
+  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_reference: Clarke volume-1, ode 226 (232), scan page 466
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - کی شعر تر انگیزد خاطر که حزین باشد
+    - یک نکته ازین معنی گفتیم و همین باشد
+  english_lines:
+    - How a (lustrous) verse exciteth afresh the heart that is sorrowful (through love for, and through the stain of, the world ; and from search after lust)!
+    - A subtlety out of this book, we uttered ; and (enough) is this very subtlety.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-161-clarke-translation-permission
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: hafez-clarke-1891-en
+  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  persianSourceId: hafez-qazvini-ghani-fa-wikisource
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  canonicalIdentityHash: bd9fa69665cf39f8369b6ff7bf66169f7b3b8088820a6500ac477fccaf55d770
+  englishSpanHash: 4810592c2509b9f22876ee6e8cef6d4c5a7d180702191cad280fd68a57e16921
+  persianSpanHash: cf0e48975e72bb15c1749d8d7dadaad6a6f789c94bda3c381343ad6a2d5726fa
+  mappingHash: 504ecb94c5849548017a128060cd7632892f92500f57618015fddc6039f8de2e
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+  verifiedAt: 2026-07-16
+  rationale: The selected Clarke opening at Clarke volume-1, ode 226 (232), scan page 466 resolves to Qazvini-Ghani ghazal 161 through an exact continuous source span and 2 independent bilingual anchors.

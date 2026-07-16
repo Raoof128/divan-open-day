@@ -21,7 +21,7 @@ function readmeProse(): string {
 
 describe('public repository status and ownership', () => {
   test('publishes a WIP README that licenses the code and withholds the rest', () => {
-    const readme = readProjectFile('README.md');
+    const readme = readmeProse();
     const packageJson = JSON.parse(readProjectFile('package.json')) as Record<
       string,
       unknown
@@ -29,7 +29,8 @@ describe('public repository status and ownership', () => {
 
     expect(readme).toContain('Work in progress');
     expect(readme).toContain('not deployed');
-    expect(readme).toContain('no approved production poetry corpus');
+    expect(readme).toContain('exactly 60 Hafez and 60 Rumi');
+    expect(readme).toContain('source-bound production corpus');
     expect(readme).toContain('productionEligible: false');
     expect(readme).toContain('Node.js 22.16.0');
     expect(readme).toContain('pnpm 10.33.0');

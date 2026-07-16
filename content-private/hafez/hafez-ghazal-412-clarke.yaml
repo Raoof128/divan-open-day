@@ -1,0 +1,78 @@
+id: hafez-ghazal-412-clarke
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: The Divan, Written in the Fourteenth Century by Khwaja Shams-ud-Din Muhammad-i-Hafiz-i-Shirazi
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 412
+  opening_hemistich_fa: مرا چشمیست خون افشان ز دست آن کمان ابرو
+  page_reference: Clarke volume-2, ode 475 (486), scan page 210
+  source_language: fa
+  english_source_id: hafez-clarke-1891-en
+  english_source_sha256: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  english_source_reference: Clarke volume-2, ode 475 (486), scan page 210
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - مرا چشمیست خون افشان ز دست آن کمان ابرو
+    - جهان بس فتنه خواهد دید از آن چشم و از آن ابرو
+  english_lines:
+    - Mine is an eye, blood-shedding on account of the eye of that bow eyebrow ;
+    - Full of tumult will become the world on account of that eye, and of that eyebrow.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-412-clarke-translation-permission
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: hafez-clarke-1891-en
+  englishSourceHash: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  persianSourceId: hafez-qazvini-ghani-fa-wikisource
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  canonicalIdentityHash: 47bb08a1ae02f03408325e2f01eb79df1f24d652ff5bd80c769b289ea47ebdcb
+  englishSpanHash: 1e7b3ce7497bc9d13d9a21846af51ea4f9261576be28047cede99257f1c1435b
+  persianSpanHash: 927d42cd38d17faca5e3be6428fe549af024596351453f5fc448933a6b4f5818
+  mappingHash: 258dda5069ae9e815825452995e76270e8c525a6f4963207a439bcc0e0b75c16
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+  verifiedAt: 2026-07-16
+  rationale: The selected Clarke opening at Clarke volume-2, ode 475 (486), scan page 210 resolves to Qazvini-Ghani ghazal 412 through an exact continuous source span and 2 independent bilingual anchors.

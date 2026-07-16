@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — final 60/60 source-bound corpus
+
+**Raouf:**
+
+- **Scope:** Completed the final bilingual content stage on `feat/poetry-source-ingestion`: 60 unique Hafez ghazals, 60 unique non-overlapping Rumi records, an explicit 120-record production manifest, and local release evidence. No frontend redesign, deployment, DNS, University branding, physical QR, or external approval was changed or claimed.
+- **Summary:** Preserved and revalidated the existing 24 Bell Hafez and 16 Whinfield Rumi records, added 36 Clarke/Qazvini-Ghani Hafez records and 44 Whinfield/Nicholson Rumi records, bound every authority to edition IDs, source/span/mapping hashes, and canonical identity, and made the loader/compiler reject stale, duplicate, overlapping, archived, excluded, or implicit directory-order selections. The five prior Rumi archives remain outside production; weaker replacement candidates remain private evidence.
+- **Files Changed:** Authority/identity/manifest contracts and tests; deterministic inventory, alignment, corpus, and report builders; 120 canonical authoring YAML records plus permissions and selection manifest; production loader/build wiring; verification reports and release guidance.
+- **Verification:** Node 22.16.0 / pnpm 10.33.0. `pnpm poetry:verify-sources` passed all 9 locked artefacts; format, lint, and typecheck passed; `pnpm test` passed 694/694 and Playwright passed 5/5; the explicit `pnpm build:production` built `final-120` with 120 items; distribution, archival-leak, privacy, and four static ops contracts passed. `pnpm audit --prod` is externally blocked because npm retired both configured audit endpoints with HTTP 410; `pnpm verify:qr` remains correctly blocked on the approved short URL and physical scan matrix. Full evidence is recorded in `docs/verification/2026-07-16-final-120-corpus-report.md`.
+- **Follow-ups:** Independent public-launch governance/legal decisions, approved hostname/short URL, manual assistive-technology/device evidence, live deployment/rollback evidence, and physical QR validation remain external gates.
+
 ### 2026-07-16 (Australia/Sydney) — integrate poetry ingestion into main
 
 **Raouf:**

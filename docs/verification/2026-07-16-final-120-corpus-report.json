@@ -1,0 +1,904 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-16T12:00:00.000Z",
+  "branch": "feat/poetry-source-ingestion",
+  "baseline": {
+    "validUniqueHafezCount": 24,
+    "validUniqueRumiCount": 16,
+    "finalContractStaleAuthorityCount": 40,
+    "duplicateHafezGhazalCount": 0,
+    "overlappingRumiSpanCount": 0,
+    "excludedCount": 0,
+    "remainingHafezRequired": 36,
+    "remainingRumiRequired": 44
+  },
+  "final": {
+    "hafezProductionRecords": 60,
+    "uniqueHafezCanonicalGhazals": 60,
+    "duplicateHafezCanonicalGhazals": 0,
+    "rumiProductionRecords": 60,
+    "uniqueRumiRecordIdentities": 60,
+    "overlappingRumiPersianSpans": 0,
+    "totalProductionRecords": 120,
+    "freshMachineAuthorities": 120,
+    "staleMachineAuthorities": 0,
+    "humanApprovalRequiredForMachineRecords": false,
+    "excludedRecordsInProduction": 0,
+    "archivedRecordsInProduction": 0,
+    "reusedEnglishProductionSpans": 0,
+    "fullSourceBooksInPublicOutput": 0,
+    "rawOcrOrPrivateMetadataInPublicOutput": 0,
+    "requiredAttributionFailures": 0,
+    "productionBuild": "PASS",
+    "privacyLeakVerification": "PASS"
+  },
+  "authority": {
+    "modelLabels": ["gpt-5.5-codex", "gpt-5.6-sol"],
+    "methodVersions": ["source-bound-alignment-v2"],
+    "verdictCounts": {
+      "MACHINE_VERIFIED": 13,
+      "MACHINE_VERIFIED_WITH_DISCLOSURE": 107
+    }
+  },
+  "sourceSplit": { "hafezBell": 24, "hafezClarke": 36, "rumiWhinfield": 60 },
+  "preservedExistingIds": {
+    "hafez": [
+      "hafez-ghazal-001-bell",
+      "hafez-ghazal-002-bell",
+      "hafez-ghazal-008-bell",
+      "hafez-ghazal-011-bell",
+      "hafez-ghazal-046-bell",
+      "hafez-ghazal-065-bell",
+      "hafez-ghazal-079-bell",
+      "hafez-ghazal-090-bell",
+      "hafez-ghazal-101-bell",
+      "hafez-ghazal-103-bell",
+      "hafez-ghazal-134-bell",
+      "hafez-ghazal-145-bell",
+      "hafez-ghazal-163-bell",
+      "hafez-ghazal-164-bell",
+      "hafez-ghazal-166-bell",
+      "hafez-ghazal-169-bell",
+      "hafez-ghazal-184-bell",
+      "hafez-ghazal-233-bell",
+      "hafez-ghazal-254-bell",
+      "hafez-ghazal-255-bell",
+      "hafez-ghazal-268-bell",
+      "hafez-ghazal-279-bell",
+      "hafez-ghazal-288-bell",
+      "hafez-ghazal-336-bell"
+    ],
+    "rumi": [
+      "rumi-masnavi-0029-whinfield",
+      "rumi-masnavi-0112-whinfield",
+      "rumi-masnavi-0300-whinfield",
+      "rumi-masnavi-0306-whinfield",
+      "rumi-masnavi-0357-whinfield",
+      "rumi-masnavi-0397-whinfield",
+      "rumi-masnavi-0418-whinfield",
+      "rumi-masnavi-0557-whinfield",
+      "rumi-masnavi-0633-whinfield",
+      "rumi-masnavi-0643-whinfield",
+      "rumi-masnavi-0674-whinfield",
+      "rumi-masnavi-0724-whinfield",
+      "rumi-masnavi-0812-whinfield",
+      "rumi-masnavi-0946-whinfield",
+      "rumi-masnavi-0947-whinfield",
+      "rumi-masnavi-0959-whinfield"
+    ]
+  },
+  "newlyAddedIds": {
+    "hafez": [
+      "hafez-ghazal-017-clarke",
+      "hafez-ghazal-019-clarke",
+      "hafez-ghazal-028-clarke",
+      "hafez-ghazal-034-clarke",
+      "hafez-ghazal-038-clarke",
+      "hafez-ghazal-043-clarke",
+      "hafez-ghazal-052-clarke",
+      "hafez-ghazal-056-clarke",
+      "hafez-ghazal-058-clarke",
+      "hafez-ghazal-062-clarke",
+      "hafez-ghazal-077-clarke",
+      "hafez-ghazal-086-clarke",
+      "hafez-ghazal-089-clarke",
+      "hafez-ghazal-091-clarke",
+      "hafez-ghazal-094-clarke",
+      "hafez-ghazal-119-clarke",
+      "hafez-ghazal-130-clarke",
+      "hafez-ghazal-135-clarke",
+      "hafez-ghazal-136-clarke",
+      "hafez-ghazal-161-clarke",
+      "hafez-ghazal-173-clarke",
+      "hafez-ghazal-180-clarke",
+      "hafez-ghazal-209-clarke",
+      "hafez-ghazal-234-clarke",
+      "hafez-ghazal-242-clarke",
+      "hafez-ghazal-278-clarke",
+      "hafez-ghazal-337-clarke",
+      "hafez-ghazal-342-clarke",
+      "hafez-ghazal-350-clarke",
+      "hafez-ghazal-377-clarke",
+      "hafez-ghazal-412-clarke",
+      "hafez-ghazal-427-clarke",
+      "hafez-ghazal-452-clarke",
+      "hafez-ghazal-465-clarke",
+      "hafez-ghazal-468-clarke",
+      "hafez-ghazal-489-clarke"
+    ],
+    "rumi": [
+      "rumi-masnavi-0000-whinfield",
+      "rumi-masnavi-0039-whinfield",
+      "rumi-masnavi-0083-whinfield",
+      "rumi-masnavi-0143-whinfield",
+      "rumi-masnavi-0166-whinfield",
+      "rumi-masnavi-0167-whinfield",
+      "rumi-masnavi-0170-whinfield",
+      "rumi-masnavi-0188-whinfield",
+      "rumi-masnavi-0232-whinfield",
+      "rumi-masnavi-0271-whinfield",
+      "rumi-masnavi-0282-whinfield",
+      "rumi-masnavi-0283-whinfield",
+      "rumi-masnavi-0342-whinfield",
+      "rumi-masnavi-0359-whinfield",
+      "rumi-masnavi-0395-whinfield",
+      "rumi-masnavi-0408-whinfield",
+      "rumi-masnavi-0431-whinfield",
+      "rumi-masnavi-0432-whinfield",
+      "rumi-masnavi-0544-whinfield",
+      "rumi-masnavi-0590-whinfield",
+      "rumi-masnavi-0612-whinfield",
+      "rumi-masnavi-0639-whinfield",
+      "rumi-masnavi-0667-whinfield",
+      "rumi-masnavi-0673-whinfield",
+      "rumi-masnavi-0685-whinfield",
+      "rumi-masnavi-0699-whinfield",
+      "rumi-masnavi-0703-whinfield",
+      "rumi-masnavi-0708-whinfield",
+      "rumi-masnavi-0718-whinfield",
+      "rumi-masnavi-0751-whinfield",
+      "rumi-masnavi-0759-whinfield",
+      "rumi-masnavi-0762-whinfield",
+      "rumi-masnavi-0800-whinfield",
+      "rumi-masnavi-0802-whinfield",
+      "rumi-masnavi-0805-whinfield",
+      "rumi-masnavi-0813-whinfield",
+      "rumi-masnavi-0836-whinfield",
+      "rumi-masnavi-0840-whinfield",
+      "rumi-masnavi-0844-whinfield",
+      "rumi-masnavi-0858-whinfield",
+      "rumi-masnavi-0860-whinfield",
+      "rumi-masnavi-0895-whinfield",
+      "rumi-masnavi-0942-whinfield",
+      "rumi-masnavi-0958-whinfield"
+    ]
+  },
+  "selectedRecords": {
+    "hafez": [
+      {
+        "id": "hafez-ghazal-001-bell",
+        "canonicalIdentity": "Ghazal 1",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-002-bell",
+        "canonicalIdentity": "Ghazal 2",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-008-bell",
+        "canonicalIdentity": "Ghazal 8",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-011-bell",
+        "canonicalIdentity": "Ghazal 11",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-017-clarke",
+        "canonicalIdentity": "Ghazal 17",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-019-clarke",
+        "canonicalIdentity": "Ghazal 19",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-028-clarke",
+        "canonicalIdentity": "Ghazal 28",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-034-clarke",
+        "canonicalIdentity": "Ghazal 34",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-038-clarke",
+        "canonicalIdentity": "Ghazal 38",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-043-clarke",
+        "canonicalIdentity": "Ghazal 43",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-046-bell",
+        "canonicalIdentity": "Ghazal 46",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-052-clarke",
+        "canonicalIdentity": "Ghazal 52",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-056-clarke",
+        "canonicalIdentity": "Ghazal 56",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-058-clarke",
+        "canonicalIdentity": "Ghazal 58",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-062-clarke",
+        "canonicalIdentity": "Ghazal 62",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-065-bell",
+        "canonicalIdentity": "Ghazal 65",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-077-clarke",
+        "canonicalIdentity": "Ghazal 77",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-079-bell",
+        "canonicalIdentity": "Ghazal 79",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-086-clarke",
+        "canonicalIdentity": "Ghazal 86",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-089-clarke",
+        "canonicalIdentity": "Ghazal 89",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-090-bell",
+        "canonicalIdentity": "Ghazal 90",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-091-clarke",
+        "canonicalIdentity": "Ghazal 91",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-094-clarke",
+        "canonicalIdentity": "Ghazal 94",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-101-bell",
+        "canonicalIdentity": "Ghazal 101",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-103-bell",
+        "canonicalIdentity": "Ghazal 103",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-119-clarke",
+        "canonicalIdentity": "Ghazal 119",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-130-clarke",
+        "canonicalIdentity": "Ghazal 130",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-134-bell",
+        "canonicalIdentity": "Ghazal 134",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-135-clarke",
+        "canonicalIdentity": "Ghazal 135",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-136-clarke",
+        "canonicalIdentity": "Ghazal 136",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-145-bell",
+        "canonicalIdentity": "Ghazal 145",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-161-clarke",
+        "canonicalIdentity": "Ghazal 161",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-163-bell",
+        "canonicalIdentity": "Ghazal 163",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-164-bell",
+        "canonicalIdentity": "Ghazal 164",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-166-bell",
+        "canonicalIdentity": "Ghazal 166",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-169-bell",
+        "canonicalIdentity": "Ghazal 169",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-173-clarke",
+        "canonicalIdentity": "Ghazal 173",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-180-clarke",
+        "canonicalIdentity": "Ghazal 180",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-184-bell",
+        "canonicalIdentity": "Ghazal 184",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-209-clarke",
+        "canonicalIdentity": "Ghazal 209",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-233-bell",
+        "canonicalIdentity": "Ghazal 233",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-234-clarke",
+        "canonicalIdentity": "Ghazal 234",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-242-clarke",
+        "canonicalIdentity": "Ghazal 242",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-254-bell",
+        "canonicalIdentity": "Ghazal 254",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-255-bell",
+        "canonicalIdentity": "Ghazal 255",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-268-bell",
+        "canonicalIdentity": "Ghazal 268",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-278-clarke",
+        "canonicalIdentity": "Ghazal 278",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-279-bell",
+        "canonicalIdentity": "Ghazal 279",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-288-bell",
+        "canonicalIdentity": "Ghazal 288",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-336-bell",
+        "canonicalIdentity": "Ghazal 336",
+        "englishSourceId": "hafez-bell-1897-en"
+      },
+      {
+        "id": "hafez-ghazal-337-clarke",
+        "canonicalIdentity": "Ghazal 337",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-342-clarke",
+        "canonicalIdentity": "Ghazal 342",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-350-clarke",
+        "canonicalIdentity": "Ghazal 350",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-377-clarke",
+        "canonicalIdentity": "Ghazal 377",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-412-clarke",
+        "canonicalIdentity": "Ghazal 412",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-427-clarke",
+        "canonicalIdentity": "Ghazal 427",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-452-clarke",
+        "canonicalIdentity": "Ghazal 452",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-465-clarke",
+        "canonicalIdentity": "Ghazal 465",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-468-clarke",
+        "canonicalIdentity": "Ghazal 468",
+        "englishSourceId": "hafez-clarke-1891-en"
+      },
+      {
+        "id": "hafez-ghazal-489-clarke",
+        "canonicalIdentity": "Ghazal 489",
+        "englishSourceId": "hafez-clarke-1891-en"
+      }
+    ],
+    "rumi": [
+      {
+        "id": "rumi-masnavi-0000-whinfield",
+        "canonicalIdentity": "Nicholson section 0",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0015-s0:lines-32-33"
+      },
+      {
+        "id": "rumi-masnavi-0029-whinfield",
+        "canonicalIdentity": "Nicholson section 29",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0171-s2"
+      },
+      {
+        "id": "rumi-masnavi-0039-whinfield",
+        "canonicalIdentity": "Nicholson section 39",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0253-s2:lines-18-19"
+      },
+      {
+        "id": "rumi-masnavi-0083-whinfield",
+        "canonicalIdentity": "Nicholson section 83",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0295-s2:lines-4-5"
+      },
+      {
+        "id": "rumi-masnavi-0112-whinfield",
+        "canonicalIdentity": "Nicholson section 112",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0019-s2"
+      },
+      {
+        "id": "rumi-masnavi-0143-whinfield",
+        "canonicalIdentity": "Nicholson section 143",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0197-s5:lines-45-46"
+      },
+      {
+        "id": "rumi-masnavi-0166-whinfield",
+        "canonicalIdentity": "Nicholson section 166",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0249-s2:lines-16-17"
+      },
+      {
+        "id": "rumi-masnavi-0167-whinfield",
+        "canonicalIdentity": "Nicholson section 167",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0281-s2:lines-11-12"
+      },
+      {
+        "id": "rumi-masnavi-0170-whinfield",
+        "canonicalIdentity": "Nicholson section 170",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0257-s2:lines-29-30"
+      },
+      {
+        "id": "rumi-masnavi-0188-whinfield",
+        "canonicalIdentity": "Nicholson section 188",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0233-s5:lines-19-20"
+      },
+      {
+        "id": "rumi-masnavi-0232-whinfield",
+        "canonicalIdentity": "Nicholson section 232",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0185-s2:lines-36-37"
+      },
+      {
+        "id": "rumi-masnavi-0271-whinfield",
+        "canonicalIdentity": "Nicholson section 271",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0241-s6:lines-1-2"
+      },
+      {
+        "id": "rumi-masnavi-0282-whinfield",
+        "canonicalIdentity": "Nicholson section 282",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0307-s0:lines-36-37"
+      },
+      {
+        "id": "rumi-masnavi-0283-whinfield",
+        "canonicalIdentity": "Nicholson section 283",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0221-s2:lines-28-29"
+      },
+      {
+        "id": "rumi-masnavi-0300-whinfield",
+        "canonicalIdentity": "Nicholson section 300",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0171-s4"
+      },
+      {
+        "id": "rumi-masnavi-0306-whinfield",
+        "canonicalIdentity": "Nicholson section 306",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0161-s2"
+      },
+      {
+        "id": "rumi-masnavi-0342-whinfield",
+        "canonicalIdentity": "Nicholson section 342",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0213-s2:lines-25-26"
+      },
+      {
+        "id": "rumi-masnavi-0357-whinfield",
+        "canonicalIdentity": "Nicholson section 357",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0101-s2"
+      },
+      {
+        "id": "rumi-masnavi-0359-whinfield",
+        "canonicalIdentity": "Nicholson section 359",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0125-s2:lines-21-22"
+      },
+      {
+        "id": "rumi-masnavi-0395-whinfield",
+        "canonicalIdentity": "Nicholson section 395",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0343-s5:lines-11-12"
+      },
+      {
+        "id": "rumi-masnavi-0397-whinfield",
+        "canonicalIdentity": "Nicholson section 397",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0023-s2"
+      },
+      {
+        "id": "rumi-masnavi-0408-whinfield",
+        "canonicalIdentity": "Nicholson section 408",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0335-s11:lines-6-7"
+      },
+      {
+        "id": "rumi-masnavi-0418-whinfield",
+        "canonicalIdentity": "Nicholson section 418",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0169-s2"
+      },
+      {
+        "id": "rumi-masnavi-0431-whinfield",
+        "canonicalIdentity": "Nicholson section 431",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0197-s2:lines-119-120"
+      },
+      {
+        "id": "rumi-masnavi-0432-whinfield",
+        "canonicalIdentity": "Nicholson section 432",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0331-s2:lines-52-53"
+      },
+      {
+        "id": "rumi-masnavi-0544-whinfield",
+        "canonicalIdentity": "Nicholson section 544",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0143-s0:lines-49-50"
+      },
+      {
+        "id": "rumi-masnavi-0557-whinfield",
+        "canonicalIdentity": "Nicholson section 557",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0043-s2"
+      },
+      {
+        "id": "rumi-masnavi-0590-whinfield",
+        "canonicalIdentity": "Nicholson section 590",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0343-s2:lines-27-28"
+      },
+      {
+        "id": "rumi-masnavi-0612-whinfield",
+        "canonicalIdentity": "Nicholson section 612",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0191-s1:lines-3-4"
+      },
+      {
+        "id": "rumi-masnavi-0633-whinfield",
+        "canonicalIdentity": "Nicholson section 633",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0039-s2"
+      },
+      {
+        "id": "rumi-masnavi-0639-whinfield",
+        "canonicalIdentity": "Nicholson section 639",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0149-s1:lines-16-17"
+      },
+      {
+        "id": "rumi-masnavi-0643-whinfield",
+        "canonicalIdentity": "Nicholson section 643",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0137-s2"
+      },
+      {
+        "id": "rumi-masnavi-0667-whinfield",
+        "canonicalIdentity": "Nicholson section 667",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0109-s2:lines-38-39"
+      },
+      {
+        "id": "rumi-masnavi-0673-whinfield",
+        "canonicalIdentity": "Nicholson section 673",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0189-s1:lines-12-13"
+      },
+      {
+        "id": "rumi-masnavi-0674-whinfield",
+        "canonicalIdentity": "Nicholson section 674",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0145-s2"
+      },
+      {
+        "id": "rumi-masnavi-0685-whinfield",
+        "canonicalIdentity": "Nicholson section 685",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0237-s2:lines-6-7"
+      },
+      {
+        "id": "rumi-masnavi-0699-whinfield",
+        "canonicalIdentity": "Nicholson section 699",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0209-s2:lines-23-24"
+      },
+      {
+        "id": "rumi-masnavi-0703-whinfield",
+        "canonicalIdentity": "Nicholson section 703",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0105-s2:lines-28-29"
+      },
+      {
+        "id": "rumi-masnavi-0708-whinfield",
+        "canonicalIdentity": "Nicholson section 708",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0129-s2:lines-0-1"
+      },
+      {
+        "id": "rumi-masnavi-0718-whinfield",
+        "canonicalIdentity": "Nicholson section 718",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0097-s2:lines-10-11"
+      },
+      {
+        "id": "rumi-masnavi-0724-whinfield",
+        "canonicalIdentity": "Nicholson section 724",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0059-s2"
+      },
+      {
+        "id": "rumi-masnavi-0751-whinfield",
+        "canonicalIdentity": "Nicholson section 751",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0153-s0:lines-29-30"
+      },
+      {
+        "id": "rumi-masnavi-0759-whinfield",
+        "canonicalIdentity": "Nicholson section 759",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0193-s2:lines-6-7"
+      },
+      {
+        "id": "rumi-masnavi-0762-whinfield",
+        "canonicalIdentity": "Nicholson section 762",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0233-s2:lines-64-65"
+      },
+      {
+        "id": "rumi-masnavi-0800-whinfield",
+        "canonicalIdentity": "Nicholson section 800",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0081-s0:lines-23-24"
+      },
+      {
+        "id": "rumi-masnavi-0802-whinfield",
+        "canonicalIdentity": "Nicholson section 802",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0073-s3:lines-10-11"
+      },
+      {
+        "id": "rumi-masnavi-0805-whinfield",
+        "canonicalIdentity": "Nicholson section 805",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0303-s2:lines-39-40"
+      },
+      {
+        "id": "rumi-masnavi-0812-whinfield",
+        "canonicalIdentity": "Nicholson section 812",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0061-s2"
+      },
+      {
+        "id": "rumi-masnavi-0813-whinfield",
+        "canonicalIdentity": "Nicholson section 813",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0117-s2:lines-50-51"
+      },
+      {
+        "id": "rumi-masnavi-0836-whinfield",
+        "canonicalIdentity": "Nicholson section 836",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0093-s2:lines-104-105"
+      },
+      {
+        "id": "rumi-masnavi-0840-whinfield",
+        "canonicalIdentity": "Nicholson section 840",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0327-s5:lines-14-15"
+      },
+      {
+        "id": "rumi-masnavi-0844-whinfield",
+        "canonicalIdentity": "Nicholson section 844",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0291-s3:lines-36-37"
+      },
+      {
+        "id": "rumi-masnavi-0858-whinfield",
+        "canonicalIdentity": "Nicholson section 858",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0065-s2:lines-21-22"
+      },
+      {
+        "id": "rumi-masnavi-0860-whinfield",
+        "canonicalIdentity": "Nicholson section 860",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0277-s2:lines-6-7"
+      },
+      {
+        "id": "rumi-masnavi-0895-whinfield",
+        "canonicalIdentity": "Nicholson section 895",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0273-s2:lines-10-11"
+      },
+      {
+        "id": "rumi-masnavi-0942-whinfield",
+        "canonicalIdentity": "Nicholson section 942",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0035-s2:lines-163-164"
+      },
+      {
+        "id": "rumi-masnavi-0946-whinfield",
+        "canonicalIdentity": "Nicholson section 946",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0201-s2"
+      },
+      {
+        "id": "rumi-masnavi-0947-whinfield",
+        "canonicalIdentity": "Nicholson section 947",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0205-s2"
+      },
+      {
+        "id": "rumi-masnavi-0958-whinfield",
+        "canonicalIdentity": "Nicholson section 958",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0125-s5:lines-96-97"
+      },
+      {
+        "id": "rumi-masnavi-0959-whinfield",
+        "canonicalIdentity": "Nicholson section 959",
+        "englishSourceReference": "rumi-whinfield-abridged-en-b0055-s2"
+      }
+    ]
+  },
+  "archivedAlternates": [
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0089-s2",
+      "persianSequence": 116,
+      "verdict": "EXCLUDED",
+      "archiveReason": "Composite, reordered correspondence across multiple Persian sections creates excessive disclosure burden."
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0217-s2",
+      "persianSequence": 347,
+      "verdict": "EXCLUDED",
+      "archiveReason": "Only three ranking votes and composite correspondence make stronger continuous candidates preferable."
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0225-s2",
+      "persianSequence": 483,
+      "verdict": "EXCLUDED",
+      "archiveReason": "Only three ranking votes and composite correspondence make stronger continuous candidates preferable."
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0225-s8",
+      "persianSequence": 622,
+      "verdict": "EXCLUDED",
+      "archiveReason": "Two ranking votes are the weakest source-identification signal among the 21 verified alignments."
+    },
+    {
+      "segmentId": "rumi-whinfield-abridged-en-b0031-s1",
+      "persianSequence": 668,
+      "verdict": "EXCLUDED",
+      "archiveReason": "Composite correspondence and prose-summary boundary burden make stronger candidates more suitable."
+    }
+  ],
+  "excludedCandidates": [
+    {
+      "id": "rumi-whinfield-abridged-en-b0089-s2",
+      "reason": "Composite, reordered correspondence across multiple Persian sections creates excessive disclosure burden."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0217-s2",
+      "reason": "Only three ranking votes and composite correspondence make stronger continuous candidates preferable."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0225-s2",
+      "reason": "Only three ranking votes and composite correspondence make stronger continuous candidates preferable."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0225-s8",
+      "reason": "Two ranking votes are the weakest source-identification signal among the 21 verified alignments."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0031-s1",
+      "reason": "Composite correspondence and prose-summary boundary burden make stronger candidates more suitable."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0303-s10",
+      "reason": "Excluded after source-bound review in favour of a stronger continuous bilingual span."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0339-s2",
+      "reason": "Excluded after source-bound review in favour of a stronger continuous bilingual span."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0319-s7",
+      "reason": "Excluded after source-bound review in favour of a stronger continuous bilingual span."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0193-s5",
+      "reason": "Excluded after source-bound review in favour of a stronger continuous bilingual span."
+    },
+    {
+      "id": "rumi-whinfield-abridged-en-b0069-s2",
+      "reason": "Excluded after source-bound review in favour of a stronger continuous bilingual span."
+    }
+  ],
+  "nonSelectedCandidatePolicy": "Candidate-only records remain in private inventories and do not become production authority without a clean continuous source mapping.",
+  "sourceLocks": { "verifiedArtifacts": 9, "result": "PASS" },
+  "publicOutput": {
+    "releaseId": "final-120",
+    "buildProfile": "production",
+    "productionEligible": true,
+    "itemCount": 120,
+    "hafezCount": 60,
+    "rumiCount": 60,
+    "publicIdsMatchManifest": true,
+    "inventedReflections": 0
+  },
+  "verification": [
+    { "command": "pnpm poetry:build-production", "result": "PASS" },
+    { "command": "pnpm poetry:verify-sources", "result": "PASS" },
+    { "command": "pnpm test:content", "result": "PASS (407 tests)" },
+    { "command": "pnpm test", "result": "PASS (694 tests)" },
+    { "command": "pnpm test:e2e", "result": "PASS (5 Playwright tests)" },
+    { "command": "pnpm format:check", "result": "PASS" },
+    { "command": "pnpm lint", "result": "PASS" },
+    { "command": "pnpm typecheck", "result": "PASS" },
+    { "command": "pnpm build:production", "result": "PASS (120 items)" },
+    { "command": "pnpm verify:dist", "result": "PASS" },
+    { "command": "pnpm verify:privacy", "result": "PASS" },
+    { "command": "pnpm verify:container", "result": "PASS (static contract)" },
+    { "command": "pnpm verify:headers", "result": "PASS (static contract)" },
+    {
+      "command": "pnpm verify:origin-isolation",
+      "result": "PASS (static contract)"
+    },
+    { "command": "pnpm verify:rollback", "result": "PASS (static contract)" },
+    {
+      "command": "pnpm audit --prod",
+      "result": "BLOCKED (npm audit endpoints returned HTTP 410)"
+    },
+    {
+      "command": "pnpm verify:qr",
+      "result": "BLOCKED (approved short URL and physical scan matrix pending)"
+    }
+  ],
+  "commitsCoveredByReport": [
+    "6edf261",
+    "60dd8fa",
+    "5d04de6",
+    "dd0fba1",
+    "4aa90c8",
+    "03ce73b"
+  ]
+}

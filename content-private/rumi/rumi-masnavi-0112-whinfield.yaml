@@ -61,9 +61,12 @@ review: null
 review_authority:
   kind: machine_alignment
   model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v1
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 97df02ce2992ef89ae446fe7ead686d1c0f6ec9ca328bb18d6646ab3f2904fc9
   englishSpanHash: 478e3a0a2f511c3d665d9f19a2fdb3e942cb24c14bdfbf3b05dd5bc837238af9
   persianSpanHash: 6fcec9ed8ab35ba7a17fbf9e6e9a3992f9488689e60c9dcb53676f86b31e07b8
   mappingHash: 9e403690da4697fcf29012f0891eef9aeb1e9aa550f76a68493da9fd92707665

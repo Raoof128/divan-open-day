@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-16 — Final 120-record source-bound corpus
+
+**Raouf:**
+
+- Expanded production from the historical 24 Hafez / 16 Rumi baseline to exactly 60 unique Hafez ghazals and 60 unique, non-overlapping Rumi source identities.
+- Preserved the existing 40 literary records, added 36 Clarke/Qazvini-Ghani Hafez alignments and 44 Whinfield/Nicholson Rumi alignments, and renewed all 120 machine authorities under the final source/edition/span/mapping/canonical-identity contract.
+- Added a deterministic, schema-validated 120-record selection manifest. Production now rejects implicit directory selection, duplicate Hafez identities, overlapping or reused Rumi spans, stale authority digests, and archived/excluded records.
+- Added pre-expansion inventory, final alignment evidence, reproducible corpus/report builders, 60/60 count and uniqueness regressions, and machine-readable plus human-readable verification reports.
+- Verified all 9 source locks, 694 Vitest tests, 5 Playwright tests, format/lint/typecheck, the exact 120-item production build, distribution integrity and archival-leak checks, privacy, and four static ops contracts. npm's retired audit endpoints return HTTP 410; external launch, live deployment/rollback, manual accessibility, and physical QR gates remain separate.
+
 ## 2026-07-16 — Integrate poetry ingestion into main
 
 **Raouf:**

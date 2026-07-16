@@ -1,0 +1,78 @@
+id: rumi-masnavi-0667-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 667
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0109-s2:lines-38-39
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - جان ابراهیم باید تا به نور
+    - بیند اندر نار فردوس و قصور
+  english_lines:
+    - You must have the soul of Abraham in order with light
+    - To see the mansions of Paradise in the fire.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0667-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 11996bacb2c35bf8e95fc50da54c93cdb6b1da00a71f3132c261a131d1e06cd0
+  englishSpanHash: edea4d77db5f97925d378e7d8846484af7d219cdba44798989ba519a51447287
+  persianSpanHash: 1dcdd9326e827a291e467bf5a957d36a08541af6d4251cc1ef8769976c9ca5a8
+  mappingHash: 0346c68dcc035329431647d570c974dd97ab602c5ff7967029809f470f20960d
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.858777
+  disclosures:
+    - Whinfield's translation is abridged and freely amplified here. He omits sixteen consecutive couplets of the Persian (a digression on deficient knowledge and lightning) and expands Rumi's six-couplet "through love" catalogue to eleven couplets, adding image-pairs (thorns/roses, stake/throne, devil/houri, lions/mice and others) that do not appear in the Nicholson-aligned Persian text. The English block's opening prose is Whinfield's own summary, not translated verse, and its heading corresponds to a different Persian section from the verse translated.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 38 resolve to the continuous Nicholson section 667 span beginning at 94, supported by 3 independent same-context anchors.
