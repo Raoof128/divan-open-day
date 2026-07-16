@@ -61,7 +61,9 @@ The only local fixture build is an explicit non-production action. Never push or
 docker build --build-arg DIVAN_BUILD_MODE=fixture -f ops/Dockerfile -t divan-open-day:fixture .
 ```
 
-Before registry publication, run all repository checks, generate an SBOM, scan dependencies and the final image, inspect the image labels, and prove the final filesystem contains no source, authoring records, source maps, Git data, credentials, or private evidence. Push only the approved production image and record the registry-returned digest.
+The pinned Go toolchain rebuilds Caddy 2.11.4 and the integrity-aware health verifier, then copies those binaries and verified public output into an empty `scratch` runtime. The final image intentionally contains no shell, package manager, or OS library set; operational checks invoke `/usr/local/bin/divan-health` directly.
+
+Before registry publication, run all repository checks, generate an SBOM, scan dependencies and the final image, inspect the image labels, and prove the final filesystem contains no source, authoring records, source maps, Git data, credentials, or private evidence. Push only the approved production image and record the registry-returned digest. A scanner report with any Critical or unmitigated High finding rejects the image; record and justify any unscored/no-fix advisory against the compiled dependency graph.
 
 ## 2. Provision release files
 

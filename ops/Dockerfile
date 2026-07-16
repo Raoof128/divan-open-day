@@ -30,21 +30,35 @@ RUN case "$DIVAN_BUILD_MODE" in \
     esac \
     && pnpm verify:dist
 
-FROM caddy:2.10.2-alpine@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d
+FROM golang:1.26.5-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc AS caddy-build
+
+# Caddy 2.11.4's published image was compiled with a Go standard library that
+# now has a fixed High-severity CVE. Rebuild the same upstream command with the
+# fixed toolchain; the module proxy payload remains authenticated by Go's
+# checksum database, and trimpath/build-id removal keeps the output reproducible.
+ENV CGO_ENABLED=0 \
+    GOTOOLCHAIN=local
+RUN go install -trimpath -ldflags='-s -w -buildid=' github.com/caddyserver/caddy/v2/cmd/caddy@v2.11.4 \
+    && go version -m /go/bin/caddy | grep -E '^[[:space:]]*mod[[:space:]]+github.com/caddyserver/caddy/v2[[:space:]]+v2.11.4([[:space:]]|$)'
+
+COPY ops/healthcheck/main.go /tmp/divan-health.go
+RUN go build -trimpath -ldflags='-s -w -buildid=' -o /go/bin/divan-health /tmp/divan-health.go
+
+FROM scratch
 
 ARG DIVAN_BUILD_MODE
 LABEL org.opencontainers.image.title="DIVAN Open Day" \
       org.opencontainers.image.description="Static DIVAN release; fixture mode is TEST ONLY and MUST NOT be deployed" \
       org.opencontainers.image.divan-build-mode=$DIVAN_BUILD_MODE
 
-# Port 8080 needs no privilege; retaining Caddy's low-port file capability
-# would make cap_drop: ALL reject binary execution on Linux.
-RUN setcap -r /usr/bin/caddy
+COPY --from=caddy-build --chown=10001:10001 --chmod=0555 /go/bin/caddy /usr/bin/caddy
+COPY --from=caddy-build --chown=10001:10001 --chmod=0555 /go/bin/divan-health /usr/local/bin/divan-health
 
 COPY --chown=10001:10001 ops/Caddyfile /etc/caddy/Caddyfile
-COPY --chown=10001:10001 ops/scripts/container-health.sh /usr/local/bin/divan-health
 COPY --from=build --chown=10001:10001 /app/dist /srv
 
+ENV XDG_CONFIG_HOME=/config \
+    XDG_DATA_HOME=/data
 USER 10001:10001
 EXPOSE 8080
 

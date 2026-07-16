@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-16 — Harden Release 1 runtime images
+
+**Raouf:**
+
+- Rejected the initial vendor-based web and tunnel candidates after mandatory image scanning found fixable Critical/High vulnerabilities; no rejected web image was published.
+- Rebuilt Caddy 2.11.4 with fixed Go 1.26.5, replaced the shell health probe with a static verifier that preserves the exact 60 Hafez / 60 Rumi / 120-item and asset-digest contract, and moved the final web filesystem to `scratch`.
+- Reduced cloudflared to a `scratch` image containing only the exact official 2026.7.2 static binary and CA roots; Compose and deployment validation pin its immutable GHCR digest.
+- The hardened web candidate passed its production build, private/source leak check, read-only unprivileged runtime probe, and Docker Scout at 0 Critical / 0 High / 0 Medium / 0 Low. OSV's only unscored/no-fix advisory concerns unmaintained OpenPGP packages that are absent from the compiled Caddy dependency graph.
+- Kept poetry, translations, corpus selection, source evidence, service worker, frontend behavior, branding, QR approval, and unrelated Droplet workloads unchanged.
+
 ## 2026-07-16 — Prepare the exact-120 Release 1 deployment gate
 
 **Raouf:**

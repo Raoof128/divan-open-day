@@ -69,9 +69,12 @@ describe('production image contract', () => {
     const syntaxReference = dockerfile.match(/^# syntax=([^\n]+)$/mu)?.[1];
     const imageReferences = [
       ...dockerfile.matchAll(/^FROM\s+([^\s]+)(?:\s+AS\s+\S+)?$/gimu),
-    ].flatMap((match) => (match[1] === undefined ? [] : [match[1]]));
+    ].flatMap((match) =>
+      match[1] === undefined || match[1] === 'scratch' ? [] : [match[1]],
+    );
 
     expect(imageReferences).toHaveLength(2);
+    expect(dockerfile).toMatch(/^FROM scratch$/mu);
     expect(syntaxReference).toMatch(
       /^docker\/dockerfile:[a-z0-9._-]+@sha256:[a-f0-9]{64}$/u,
     );
@@ -126,7 +129,19 @@ describe('production image contract', () => {
   test('copies only verified public output into an unprivileged Caddy runtime', () => {
     const dockerfile = readProjectFile('ops/Dockerfile');
 
-    expect(dockerfile).toContain('RUN setcap -r /usr/bin/caddy');
+    expect(dockerfile).toContain(
+      'golang:1.26.5-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc',
+    );
+    expect(dockerfile).toContain(
+      'github.com/caddyserver/caddy/v2/cmd/caddy@v2.11.4',
+    );
+    expect(dockerfile).toContain(
+      'COPY --from=caddy-build --chown=10001:10001 --chmod=0555 /go/bin/caddy /usr/bin/caddy',
+    );
+    expect(dockerfile).toContain(
+      'COPY --from=caddy-build --chown=10001:10001 --chmod=0555 /go/bin/divan-health /usr/local/bin/divan-health',
+    );
+    expect(dockerfile).not.toMatch(/apk\s+(?:add|del|upgrade)/iu);
     expect(dockerfile).toMatch(/COPY --from=build[^\n]*\/app\/dist \/srv/u);
     expect(dockerfile).not.toMatch(
       /COPY --from=build[^\n]*(content-private|src|\.git)/u,
@@ -135,29 +150,38 @@ describe('production image contract', () => {
     expect(dockerfile).toContain('EXPOSE 8080');
   });
 
+  test('builds the tunnel from exact official bytes on a scratch runtime', () => {
+    const dockerfile = readProjectFile('ops/Dockerfile.cloudflared');
+
+    expect(dockerfile).toContain(
+      'cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d',
+    );
+    expect(dockerfile).toContain('FROM scratch');
+    expect(dockerfile).toContain(
+      'COPY --from=source /usr/local/bin/cloudflared /usr/local/bin/cloudflared',
+    );
+    expect(dockerfile).toContain('ca-certificates.crt');
+    expect(dockerfile).toContain('USER 65532:65532');
+    expect(dockerfile).toContain('ENTRYPOINT ["/usr/local/bin/cloudflared"]');
+  });
+
   test('requires production release metadata at both image and filesystem layers', () => {
     const dockerfile = readProjectFile('ops/Dockerfile');
-    const health = readProjectFile('ops/scripts/container-health.sh');
+    const health = readProjectFile('ops/healthcheck/main.go');
 
     expect(dockerfile).toContain(
       'org.opencontainers.image.divan-build-mode=$DIVAN_BUILD_MODE',
     );
-    expect(health).toContain('[ -f /srv/index.html ] || exit 1');
-    expect(health).toContain('[ "$build_profile" = production ] || exit 1');
-    expect(health).toContain('[ "$production_eligible" = true ] || exit 1');
-    expect(health).toContain(
-      '[ "$content_path" = "/content/${content_sha}.json" ] || exit 1',
-    );
-    expect(health).toContain(
-      '[ "$asset_manifest_path" = "/assets/${asset_manifest_sha}.json" ] || exit 1',
-    );
-    expect(health).toContain('[ "$hafez_count" -eq 60 ] || exit 1');
-    expect(health).toContain('[ "$rumi_count" -eq 60 ] || exit 1');
-    expect(health).toContain('[ "$item_count" -eq 120 ] || exit 1');
-    expect(health).toContain('wget -q -T 5');
-    expect(health).not.toMatch(
-      /\[ -f \/srv\/index\.html \] \|\| \[ -f "\$release_file" \]/u,
-    );
+    expect(health).toContain('manifest.BuildProfile != "production"');
+    expect(health).toContain('!manifest.ProductionEligible');
+    expect(health).toContain('manifest.HafezCount != 60');
+    expect(health).toContain('manifest.RumiCount != 60');
+    expect(health).toContain('manifest.ItemCount != 120');
+    expect(health).toContain('"/content/"+manifest.ContentSHA256+".json"');
+    expect(health).toContain('"/assets/"+manifest.AssetManifestSHA256+".json"');
+    expect(health).toContain('Timeout: 5 * time.Second');
+    expect(health).toContain('http://127.0.0.1:8080/healthz');
+    expect(health).not.toContain('http.ProxyFromEnvironment');
   });
 });
 
@@ -271,6 +295,9 @@ describe('Compose and tunnel isolation', () => {
     expect(
       immutableImagePattern.test(compose.services['cloudflared']!.image),
     ).toBe(true);
+    expect(compose.services['cloudflared']!.image).toBe(
+      'ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.1@sha256:80c6b602be5657a9af7843736137099f1e7f23ad1de1c00855c539c41bcc9460',
+    );
     expect(compose.services['divan-web']!.ports).toBeUndefined();
     expect(compose.services['cloudflared']!.ports).toBeUndefined();
     expect(source).not.toMatch(/VERIFIED_DIGEST|PLACEHOLDER|CHANGEME|latest/iu);

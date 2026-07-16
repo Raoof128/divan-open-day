@@ -186,11 +186,12 @@ describe('public operational evidence boundary', () => {
     expect(phaseZero).toContain(
       'node:22.16.0-alpine3.21@sha256:9f3ae04faa4d2188825803bf890792f33cc39033c9241fc6bb201149470436ca',
     );
+    expect(phaseZero).toContain('final empty `scratch` runtime');
     expect(phaseZero).toContain(
-      'caddy:2.10.2-alpine@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d',
+      'golang:1.26.5-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc',
     );
     expect(phaseZero).toContain(
-      'cloudflare/cloudflared:2026.7.0@sha256:5e49861633763e8933475477c20bae6039ed47f32c1d267a34babc347f28f0df',
+      'cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d',
     );
   });
 
