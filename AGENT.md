@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — Release 1 production gate preparation
+
+**Raouf:**
+
+- **Scope:** Merged reviewed PR #5 normally into `main`, then prepared the integrated exact-120 release for an immutable technical-preview deployment at `divan.raoufabedini.dev`. No poetry text, corpus selection, source evidence, translation, service worker, University branding, or unrelated Droplet service was changed.
+- **Summary:** Replaced stale live health/runbook thresholds with an exact 60 Hafez / 60 Rumi / 120-item runtime contract; made the successful production build a required quality gate; and added a commit-pinned official OSV dependency scan ahead of CI because pnpm 10.33.0's retired npm audit endpoints return HTTP 410. The remaining QR gate stays fail-closed.
+- **Files Changed:** `.github/workflows/ci.yml`, `scripts/check.sh`, `ops/scripts/container-health.sh`, `ops/scripts/verify.sh`, focused security regressions, and current release/runbook documentation.
+- **Verification:** Node 22.16.0 / pnpm 10.33.0. Source locks passed 9/9; format, lint, and strict typecheck passed; Vitest passed 701/701, including components 80/80, accessibility 24/24, security 55/55, and performance 5/5; Playwright passed 5/5. The explicit candidate build emitted 120 items and passed distribution/private-leak, privacy, and all four static ops checks. OSV-Scanner 2.4.0 found no issues across 429 locked packages; `pnpm audit --prod` remained externally blocked by the documented HTTP 410 retirement.
+- **Follow-ups:** SSH key discovery failed closed because the supplied destination accepts no available public key and is configured as root; the stored password was not used. Do not claim live deployment, tunnel health, rollback rehearsal, Access protection, manual assistive-technology/device evidence, or physical QR validation until separate evidence closes each gate.
+
 ### 2026-07-16 (Australia/Sydney) — visible poet return and cinematic Begin verification
 
 **Raouf:**

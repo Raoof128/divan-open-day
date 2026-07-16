@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-16 — Prepare the exact-120 Release 1 deployment gate
+
+**Raouf:**
+
+- Normally merged reviewed PR #5 into `main`, preserving the complete final 60-Hafez / 60-Rumi corpus and its evidence.
+- Tightened container health and live verification from the historical minimum to exactly 60 Hafez, 60 Rumi, and 120 total records, and updated current operational runbooks without rewriting historical audit records.
+- Made `build:production` a required quality-gate pass for `divan.raoufabedini.dev`; kept physical QR fail-closed.
+- Added a commit-pinned official OSV dependency scan before CI. OSV-Scanner 2.4.0 found no issues across 429 locked packages; pnpm's retired audit endpoints still return HTTP 410.
+- Local verification passed source locks 9/9, format/lint/typecheck, Vitest 701/701, components 80/80, accessibility 24/24, security 55/55, performance 5/5, Playwright 5/5, an exact 120-item production build, distribution/private-leak, privacy, and four static operations contracts.
+- Live Droplet deployment remains blocked on a dedicated non-root SSH key; the password-only root fallback was deliberately not used. Tunnel, Access, live rollback, manual accessibility/device, and physical QR evidence remain open.
+
 ## 2026-07-16 — Visible poet return and cinematic Begin verification
 
 **Raouf:**

@@ -246,8 +246,8 @@ item_count=$(extract_json_integer "$work_dir/release.json" itemCount)
   || die 'Public asset manifest path does not match release.json assetManifestSha256.'
 [[ "$hafez_count" =~ ^[0-9]+$ && "$rumi_count" =~ ^[0-9]+$ && "$item_count" =~ ^[0-9]+$ ]] \
   || die 'Public release counts are missing or malformed.'
-((hafez_count >= 24 && rumi_count >= 16 && item_count == hafez_count + rumi_count)) \
-  || die 'Public release counts do not meet or reconcile with the approved contract.'
+((hafez_count == 60 && rumi_count == 60 && item_count == 120 && item_count == hafez_count + rumi_count)) \
+  || die 'Public release counts do not match the exact 60 Hafez / 60 Rumi / 120-item contract.'
 
 fetch_public "$content_path" "$work_dir/content.headers" "$work_dir/content.json"
 require_global_headers "$work_dir/content.headers"

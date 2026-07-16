@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # DIVAN quality gate. Runs the local verification gauntlet (design §30.1) and
-# reports every step. Hard gates must pass; launch gates are reported as status
-# (they are deliberately fail-closed until human/production evidence exists).
+# reports every step. Hard gates must pass; remaining external launch gates are
+# reported as status until their independent evidence exists.
 #
 # Usage:
 #   scripts/check.sh            full gate (no browser e2e, no Docker)
@@ -33,6 +33,32 @@ else
 fi
 
 FAILURES=()
+
+production_build() {
+  env \
+    DIVAN_PUBLIC_ORIGIN='https://divan.raoufabedini.dev' \
+    DIVAN_RELEASE_ID='ci-production-verification' \
+    DIVAN_MIN_HAFEZ_COUNT='60' \
+    DIVAN_MIN_RUMI_COUNT='60' \
+    DIVAN_BRANDING_MODE='society_only' \
+    DIVAN_UNIVERSITY_APPROVAL_ID='' \
+    SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)" \
+    pnpm -s build:production
+}
+
+dependency_audit() {
+  if [[ "${DIVAN_OSV_SCAN_COMPLETED:-0}" == 1 ]]; then
+    printf '%s\n' 'OSV dependency scan completed by the required CI job.'
+    return 0
+  fi
+
+  if command -v osv-scanner >/dev/null 2>&1; then
+    osv-scanner scan source --lockfile pnpm-lock.yaml --format table
+    return
+  fi
+
+  pnpm audit --prod
+}
 
 # Hard gate: failure fails the whole check (collected, reported at the end).
 step() {
@@ -72,7 +98,8 @@ if [[ "$QUICK" -eq 0 ]]; then
   step 'build:fixture' pnpm -s build:fixture
   step 'verify:dist' pnpm -s verify:dist
   step 'verify:privacy' pnpm -s verify:privacy
-  step 'audit (prod deps)' pnpm audit --prod
+  step 'audit (prod deps)' dependency_audit
+  step 'build:production' production_build
 
   if [[ "$E2E" -eq 1 ]]; then
     step 'test:e2e (Playwright)' pnpm -s test:e2e
@@ -82,7 +109,6 @@ if [[ "$QUICK" -eq 0 ]]; then
 
   echo
   echo "${BOLD}Launch gates${RESET} ${DIM}(must stay closed until evidence exists)${RESET}"
-  gate_closed 'build:production' pnpm -s build:production
   gate_closed 'verify:qr' pnpm -s verify:qr
 
   if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then

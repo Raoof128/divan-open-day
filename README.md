@@ -54,10 +54,10 @@ pnpm check --e2e     # also run Playwright end-to-end tests
 
 CI runs the same gate (`scripts/check.sh --ci`, including end-to-end tests) on
 every push to `main` and every pull request. See `CONTRIBUTING.md` for the full
-developer workflow. `build:production` and `verify:qr` are intentionally
-fail-closed until an approved corpus and the physical QR deliverable exist;
-Docker-host evidence (`ops/scripts/verify.sh`, image build, SBOM scan) is run
-separately on a host with a running Docker daemon.
+developer workflow. `build:production` is now a required exact-120-record gate;
+`verify:qr` remains fail-closed until the approved short URL and physical QR
+deliverable exist. Docker-host evidence (`ops/scripts/verify.sh`, image build,
+SBOM scan) is run separately on a host with a running Docker daemon.
 
 ## Architecture
 

@@ -104,7 +104,7 @@ the cache without any network.
 
 Then run `pnpm poetry:build-production`. Only the fixed selections in
 `productionSelection.ts` become canonical records; the compiler requires exactly
-24 Hafez, 16 Rumi, and 40 total, and revalidates every embedded authority hash.
+60 Hafez, 60 Rumi, and 120 total, and revalidates every embedded authority hash.
 
 ## Launch gates still closed
 

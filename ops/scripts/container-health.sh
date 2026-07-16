@@ -51,8 +51,9 @@ case "$asset_manifest_sha" in
 esac
 [ "${#asset_manifest_sha}" -eq 64 ] || exit 1
 [ "$asset_manifest_path" = "/assets/${asset_manifest_sha}.json" ] || exit 1
-[ "$hafez_count" -ge 24 ] || exit 1
-[ "$rumi_count" -ge 16 ] || exit 1
+[ "$hafez_count" -eq 60 ] || exit 1
+[ "$rumi_count" -eq 60 ] || exit 1
+[ "$item_count" -eq 120 ] || exit 1
 [ "$item_count" -eq $((hafez_count + rumi_count)) ] || exit 1
 
 content_file="/srv${content_path}"

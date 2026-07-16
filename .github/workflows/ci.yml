@@ -13,8 +13,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  osv-scan:
+    name: OSV dependency scan
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@8dc09193bb540e09b23da07ad7e30bd33bf87018
+    with:
+      scan-args: |-
+        --lockfile=pnpm-lock.yaml
+      upload-sarif: false
+      fail-on-vuln: true
+
   quality-gate:
     name: Quality gate
+    needs: osv-scan
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -38,6 +52,8 @@ jobs:
 
       - name: Run quality gate
         run: bash scripts/check.sh --ci
+        env:
+          DIVAN_OSV_SCAN_COMPLETED: '1'
 
       - name: Upload Playwright report on failure
         if: failure()
