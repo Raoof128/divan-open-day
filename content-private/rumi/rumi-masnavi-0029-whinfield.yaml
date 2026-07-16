@@ -1,0 +1,75 @@
+id: rumi-masnavi-0029-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 29
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0171-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - چشم حس همچون کف دستست و بس
+    - چشم دریا دیگرست و کف دگر
+  english_lines:
+    - eye of outward sense is as the palm of a hand
+    - The sea itself is one thing, the foam another
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0029-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: a984397110f7d5ac46b1add4fdd5166afed12bad1901eb6f11d1d33830851db3
+  persianSpanHash: a899a9505a02c69818136d9c6fa1adc4d905b93a672060ca08a3eb8348f59ff2
+  mappingHash: 5c690f31c5f3a2c5539b112f445bf8fa69fae1ec593c6371e5fa78968d4af42d
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.985
+  disclosures:
+    - This English text is an abridged translation. It corresponds mainly to this Persian section, but omits some couplets within it and also draws on later sections of the Masnavi that are not shown here.
+  verifiedAt: 2026-07-16
+  rationale: "Nicholson section 29 (اختلاف کردن در چگونگی و شکل پیل) contains the segment's verse from its first couplet onward in the same order, with far more than three independent anchors: the palm-of-hand figure, the sea/foam antithesis, the Moses-and-Jesus question, the Adam-and-Eve bowstring, the triple 'dam mazan' imperative, and the full Noah/Canaan exchange down to the wave striking Canaan's head. The candidate list's other entries (97, 402, 312) are hare-and-elephant fables matching only on the word پیل and were discarded on reading. The pairing is not one-to-one, however: Whinfield abridges within section 29 (omitting the world-as-tree / half-ripe fruit passage and the 'تو یکی تو نیستی' sequence), and his segment runs past that section's end into further material — the reconciliation of the two traditions on acquiescence in infidelity, and the half-gray beard / barber and Zaid anecdotes, the latter being Nicholson section 845 (مثل در بیان آنک حیرت مانع بحث و فکرتست). Section 29 is therefore the primary source but not the sole one, so the correspondence is composite and abridged rather than direct."

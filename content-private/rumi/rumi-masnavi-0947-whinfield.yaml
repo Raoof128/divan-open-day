@@ -1,0 +1,75 @@
+id: rumi-masnavi-0947-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 947
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0205-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - گفت یزدان تو بده بایست او / برگشا در اختیار آن دست او
+    - اختیار آمد عبادت را نمک
+  english_lines:
+    - God said, "Do thou grant his earnest request... according to his freewill"
+    - Freewill is as the salt to piety
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0947-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: 6cb141b1c4400129f9ff54c6dfeb7781aa0d7ec2eb9a2c0fa0087ffd75cbcba7
+  persianSpanHash: 3a089443ec397f6f1fb1f72522452cfe8a30f67e875fa48af6c1c12d7f9326ea
+  mappingHash: 8db4e49f28a2480ccdeb0333cb5da450d014742237a44b13e5094a132a1a9df9
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.95
+  disclosures:
+    - "Abridged translation. E. H. Whinfield renders this section closely but not completely: the English omits the section's closing couplets, and substitutes \"wasps\" for the Persian \"snake\" in the honeybee/serpent contrast. The block also opens with Whinfield's own prose summary of the surrounding story, which is not translated verse."
+  verifiedAt: 2026-07-16
+  rationale: "The verse portion of English block 205 (\"Why freewill is good for man\") corresponds couplet-by-couplet to Nicholson section 947, وحی آمدن از حق تعالی به موسی کی بیاموزش چیزی کی استدعا کند یا بعضی از آن — the divine reply within the Moses / language-of-animals cycle. Six independent identifying anchors align in the same sequence: the opening divine grant of ikhtiyar, the salt-of-worship metaphor, the sword/ghazi-or-brigand test, the karramna + halved-Adam contrast, the prison-makes-ascetics argument, and the closing capital/reckoning figure. The ranked candidates (350, 107, 65, 194, 949) all matched on موسی alone and are unrelated — I located 947 by searching the Persian for کرمنا together with زنبور. Disclosure is warranted because the English block prefixes the verse with Whinfield's own prose plot summary, he renders نیم مار (\"half a snake\") as \"wasps\" and normalizes the snake/wasp imagery throughout, and he drops the concluding couplets (آدمی بر خنگ کرمنا سوار onward, and Moses's renewed warning) that close the Persian section."

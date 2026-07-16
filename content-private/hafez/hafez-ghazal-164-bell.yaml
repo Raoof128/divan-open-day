@@ -1,0 +1,74 @@
+id: hafez-ghazal-164-bell
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: Poems from the Divan of Hafiz
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 164
+  opening_hemistich_fa: نفس باد صبا مشک فشان خواهد شد
+  page_reference: Bell poem XXXI, scan page 108
+  source_language: fa
+  english_source_id: hafez-bell-1897-en
+  english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  english_source_reference: Bell poem XXXI, scan page 108
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - نفس باد صبا مشک فشان خواهد شد
+  english_lines:
+    - The breath of Dawn's musk-strewing wind shall blow,
+    - The ancient world shall turn to youth again,
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 0
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-164-bell-translation-permission
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  englishSpanHash: 3a6c06928bca55e11ad5c5fbf823d98aab73f13f393f3574f099855e90b8013e
+  persianSpanHash: ee6101c82ca92b3aaeb7a613bfa8b03f1ec871937f94588daf37da80fa0bad3b
+  mappingHash: 9eacb42af4d049f948f9d50f3a4ded5ae90f8136259388b2fa5c25b77c1e5567
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.97
+  disclosures:
+    - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
+  verifiedAt: 2026-07-16
+  rationale: Bell poem XXXI on scan page 108 was aligned to Qazvini-Ghani ghazal 164 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.

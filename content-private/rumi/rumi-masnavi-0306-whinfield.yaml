@@ -1,0 +1,75 @@
+id: rumi-masnavi-0306-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 306
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0161-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - صومعه‌ی عیسیست خوان اهل دل
+    - سگ کهف
+  english_lines:
+    - house of 'Isa was the banquet of men of heart
+    - the Seven Sleepers' dog
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0306-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: b3cb353a433f94b21364b7c5cf29e45f38f8ae5757aafdbb800da36885ec5e03
+  persianSpanHash: 5ddc49b409682c851ebfccaab714828c1ac7d7ddbec39534b169c5b8fd910ba6
+  mappingHash: 1fa63d63ebceb29e7e4e1d366158012a2b283553d0b44f7a0b9105a59c3ae23e
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.975
+  disclosures:
+    - Abridged translation. The bulk of this passage corresponds to the Persian section on the afflicted gathering at Jesus's cloister; Whinfield condenses it and omits the Noah's-ark passage. The closing verses on false claims to sanctity are drawn from a different section of the Persian text.
+  verifiedAt: 2026-07-16
+  rationale: "The English segment's verse portion opens with the cloister-of-Jesus healing passage and tracks Nicholson section 306 (جمع آمدن اهل آفت ... بر در صومعه‌ی عیسی) hemistich-for-hemistich through the ingratitude reproach, the dog-of-the-Cave, the fidelity argument, the mother's claims versus God's, the evil-doubt passage, and the Jesus/Korah contrast. The correspondence is dense and identifying, not generic. Two qualifications. First, Whinfield abridges: he drops the Noah's-ark remembrance (یاد کن ... کشتی نوح) and compresses the expanded dogs-counselling-dogs lines. Second, the segment is not coextensive with section 306. English lines 2–78 correspond to 306; from the subheading \"How false pretensions to sanctity...\" onward (the tailor's test, Rustam, Junaid and Bayazid, David's iron, the sun on gold and the dry branch) the text corresponds instead to section 586 (رسیدن خواجه و قومش به ده ...). Section 306 is the dominant and unambiguous source for the majority of the segment, so I anchor there and disclose the tail rather than force a single-section claim."

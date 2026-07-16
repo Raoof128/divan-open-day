@@ -1,0 +1,73 @@
+id: hafez-ghazal-001-bell
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: Poems from the Divan of Hafiz
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 1
+  opening_hemistich_fa: الا یا ایهّا الساقی اَدِر کاَساً و ناوِلها
+  page_reference: Bell poem I, scan page 71
+  source_language: fa
+  english_source_id: hafez-bell-1897-en
+  english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  english_source_reference: Bell poem I, scan page 71
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - الا یا ایهّا الساقی اَدِر کاَساً و ناوِلها
+  english_lines:
+    - Arise, oh Cup-bearer, rise! and bring
+    - To lips that are thirsting the bowl they praise,
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 0
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-001-bell-translation-permission
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  englishSpanHash: 7e7239fbfd10aa303570f473d70506872219dc9e9de3efe7ad2c6b44fdf46142
+  persianSpanHash: 7aaea84dcf89148157efc58326cdc5f027ea1dfbc5e221b5c7c35cdc77ec9ee8
+  mappingHash: c25468b3075317e4b83057fa0412a69f436c1559732950e2bfd61d58ad4889a3
+  verdict: MACHINE_VERIFIED
+  confidence: 0.99
+  disclosures: []
+  verifiedAt: 2026-07-16
+  rationale: Bell poem I on scan page 71 was aligned to Qazvini-Ghani ghazal 1 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.

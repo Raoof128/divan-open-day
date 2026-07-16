@@ -1,0 +1,682 @@
+schema_version: 1
+permissions:
+  - id: hafez-ghazal-001-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-001-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-268-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-268-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-079-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-079-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-046-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-046-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-011-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-011-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-065-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-065-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-002-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-002-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-134-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-134-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-288-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-288-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-145-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-145-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-090-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-090-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-163-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-163-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-166-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-166-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-101-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-101-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-255-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-255-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-279-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-279-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-164-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-164-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-254-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-254-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-184-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-184-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-103-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-103-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-008-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-008-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-233-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-233-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-169-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-169-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-336-bell-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-336-bell
+    rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0029-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0029-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0112-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0112-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0300-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0300-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0306-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0306-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0357-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0357-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0397-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0397-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0418-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0418-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0557-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0557-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0633-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0633-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0643-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0643-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0674-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0674-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0724-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0724-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0812-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0812-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0946-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0946-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0947-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0947-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0959-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0959-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null

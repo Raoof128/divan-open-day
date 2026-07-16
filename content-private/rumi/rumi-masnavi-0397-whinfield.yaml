@@ -1,0 +1,80 @@
+id: rumi-masnavi-0397-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 397
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0023-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - حس دنیا نردبان این جهان / حس دینی نردبان آسمان
+    - پوست را بشکافت و پیکان را کشید / پوست تازه ... بر دمید
+  english_lines:
+    - Worldly senses are the ladder of earth, / Spiritual senses ... of heaven
+    - Has cut its flesh to extract a spear-head, / Causing a fresh skin to grow
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0397-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: 6fa1b97ad81f5aa345334ad3dd22adaf49d272a73d83e5158a553c7e80fadf2d
+  persianSpanHash: cc0693d1e6e2ad71b81678f6d81d5893b7fb3349631d7b679feb1f5276bd5460
+  mappingHash: d2dd36cd95338039e4762a54ad62ef8a0dcecae202a6f5d69e6e18b863dbff37
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.9199999999999999
+  disclosures:
+    - This English passage is E. H. Whinfield's abridged translation. It renders only the closing discourse of the Persian section (from "Worldly senses are the ladder of earth" onward), omitting the verse narrative of the parrot — summarised separately as prose — and a substantial intervening passage of the discourse. The subheading "Confusion of saints with hypocrites" is the translator's addition and does not appear in the Persian.
+  verifiedAt: 2026-07-16
+  rationale: |-
+    Block 23 is a prose retelling of the Oilman-and-Parrot story followed by a 46-line verse discourse; s2 is the verse discourse only, so it is translated verse, not commentary. It matches the closing discourse of Nicholson section 397 (Book 1). Correspondence is exceptionally tight: twelve distinct images in identical order with no transposition, including anchors identifying nothing else in the Masnavi (Musaylima vs Muhammad, the woollen lion, the spear-head cut from flesh, the two ladders). Generic material (wine, musk, love of God) was disregarded.
+
+    Disclosure is needed because the pairing is abridged, not direct: the English verse begins at char 3042 of a 4177-char section, rendering only the final ~27%. Whinfield omits the verse narrative of the parrot (compressed into English prose above) and roughly 1,100 characters of intervening discourse, including the bees/deer/reeds comparisons, Moses' magicians, the monkey and the touchstone. The subheading is Whinfield's own.
+
+    Section choice: seq 5 has near-identical text but a colloquial title in a scrambled front run; 397 carries the canonical Nicholson heading inside a contiguous Nicholson-headed Book 1 run.

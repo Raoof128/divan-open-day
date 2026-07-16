@@ -1,0 +1,75 @@
+id: rumi-masnavi-0418-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 418
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0169-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - حکایت مارگیر کی اژدهای فسرده را مرده پنداشت ... آورد به بغداد
+    - نفست اژدرهاست او کی مرده است ... افسرده است
+  english_lines:
+    - snake-catcher ... frozen snake ... took it to Baghdad
+    - Lust is that snake; How say you it is dead? It is only frozen
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0418-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: 3d43d9dc9a8884d8644810271c6ae67aa5cf9b0e3f4524be2922caddab174b19
+  persianSpanHash: f1033fbdd68655d6ffac14d2cd1a395d3c2346686a707b0d5c941e4a9d620054
+  mappingHash: 0d6db6ee5ca96602e7a12d9ab6582e05ad0005678293d8e5c0185fb6c0f1a73a
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.94
+  disclosures:
+    - Whinfield's abridgement summarises most of this section in his own English prose and renders only its closing verse passage. The paired verse corresponds closely to the Persian; the preceding narrative summary is the translator's prose, not translated verse.
+  verifiedAt: 2026-07-16
+  rationale: "The ranked candidates (194/297/324/350/351, Pharaoh-answers-Moses sections) were all wrong — they matched only the generic Moses/Pharaoh title words. Searching the index for اژدها/مارگیر found seq 418 (حکایت مارگیر ... آورد به بغداد, 182 lines), which I read in full. Its closing sixteen couplets, from نفست اژدرهاست او کی مرده است, correspond couplet-by-couplet and in the same order to Whinfield's 31 verse lines: frozen-not-dead lust; Pharaoh commanding the river; plundering a hundred Moseses and Aarons; worm under poverty / gnat through wealth; the frost of separation; the sun of Iraq; do-not-pity; the bat of vileness; الله یجزیک الوصال; the warmed snake's destruction; \"twenty times more than I have told\"; and the closing Moses-must-slay-dragons / hundred-thousand-slain pair. Eight independent anchors, several rare. The English block is mixed: Whinfield opens with his own prose précis of the Moses–Pharaoh narrative and a prose summary of the snake-catcher anecdote, then translates only the section's closing verse passage. The verse portion is a genuine close rendering; the surrounding prose is the abridger's connective tissue — hence disclosure rather than plain verification."

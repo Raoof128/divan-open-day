@@ -1,0 +1,75 @@
+id: rumi-masnavi-0959-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 959
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0055-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - گفت پیغامبر علی را کای علی / شیر حقی
+    - ظل او اندر زمین چون کوه قاف
+  english_lines:
+    - The Prophet said to 'Ali, "O 'Ali, Thou art the Lion of God"
+    - His shadow on earth is as that of Mount Qaf
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0959-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: b5f4a457c99f9a32f8dd8aab8004e25d2ca3154b3c7e4e2028a9b28bb02923e6
+  persianSpanHash: 384cc5a2ca6d0b2aad3f22f25bacc9f930655cba25c27442ff040775af80d06a
+  mappingHash: 6fe82226acbbc6d0f2d150d1c764158037b17f9ed95d4806eef7bf066611b0c6
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.945
+  disclosures:
+    - English text is E. H. Whinfield's abridged Victorian translation. It follows this Persian section couplet-for-couplet and in order, but includes several additional couplets that fall outside the bounds of this section. The tattoo story named in the English heading is narrated separately as prose and belongs to a different Persian section.
+  verifiedAt: 2026-07-16
+  rationale: "Whinfield's block 55 contains two distinct units: a prose retelling of the Qazwini tattoo story (which corresponds to Persian seq 785, کبودی زدن قزوینی) and then a discrete verse discourse under the heading \"The Prophet's counsels to 'Ali\". Segment s2 is that verse discourse, and it maps to Persian seq 959 (وصیت کردن رسول ... مر علی را) essentially couplet-for-couplet in unbroken order. Anchors are numerous, specific and non-generic: the Lion-of-God address to Ali, Mount Qaf paired with the Simurgh, Moses under Khizr with the staved boat and the slain child, the Qur'anic \"yad Allah fawqa aydihim\", the absent-versus-present saints argument, and the closing polished-mirror question. This far exceeds the three-anchor threshold. The one caveat requiring disclosure: Whinfield's English runs roughly 31 couplets against 22 bayts in this Nicholson section, so several English couplets (e.g. \"palm-trees of the Truth\", \"thorn a bed of roses\", \"sun of the spirit\") have no counterpart within seq 959 itself and likely reflect adjacent lines or a fuller recension. The verified core is not in doubt."
