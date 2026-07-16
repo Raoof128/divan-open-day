@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "allowedRoles": [
+    "poster-mobile",
+    "poster-desktop",
+    "cinematic-mobile",
+    "cinematic-desktop",
+    "decorative"
+  ],
+  "requiredRoles": [
+    "poster-mobile",
+    "poster-desktop",
+    "cinematic-mobile",
+    "cinematic-desktop"
+  ],
+  "maxBytesByRole": {
+    "poster-mobile": 225280,
+    "poster-desktop": 327680,
+    "cinematic-mobile": 3145728,
+    "cinematic-desktop": 6291456,
+    "decorative": 614400
+  },
+  "maxAllReleasedAssetBytes": 11010048,
+  "maxPrecacheBytesExcludingCinematic": 3145728,
+  "maxSelectedRuntimeCachedCinematicBytes": 6291456,
+  "maxInitialCompressedTransferBytes": 1258291,
+  "maxInitialJavaScriptGzipBytes": 225280,
+  "maxCriticalFontBytes": 184320,
+  "qualityTargets": {
+    "lcpMs": 2500,
+    "cls": 0.1,
+    "inpMs": 200
+  }
+}

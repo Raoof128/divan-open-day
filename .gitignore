@@ -20,7 +20,9 @@ test-results/
 *.log
 .DS_Store
 CLAUDE.md
-.claude/
+.claude/runtime/
+.claude/state/
+.claude/settings.local.json
 *.tsbuildinfo
 docs/evidence/runtime/
 docs/audits/divan/screenshots/
