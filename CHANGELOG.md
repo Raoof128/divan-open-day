@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-07-16 — Local OCR of Clarke, and the first citation-grade Hafez binding
+
+**Raouf:**
+
+- Added `scripts/poetry/ocr-clarke.sh`: renders and OCRs all 1,078 Clarke pages
+  locally at 400dpi, parallel across cores (~25min vs ~4.5h sequential) and
+  resumable. No page text passes through a model — no content filter, no tokens.
+  Output is git-ignored; per-page text of a complete translation is the whole book.
+- Needed because the Archive's OCR of Clarke recovers ~1.5 numbered couplets per
+  ode where ghazals run 5–15. Local OCR reaches 2.7 and reads headings the Archive
+  loses. The engines fail on different odes (local 273, Archive 356, union 438) and
+  agree on 98% of concordance numbers where both read them, so they are merged as
+  two corroborating readings with disagreements flagged.
+- **Clarke ode 8 = Qazvini-Ghani ghazal 3**, on three independent verse signals:
+  literal matla' rendering, couplet count 8 = 8, and a rare-name cluster
+  (Samarkand + Bukhara) unique to one ghazal. The first Hafez identification in
+  this project resting on citable evidence rather than motif similarity.
+- Retracted an earlier form of that same claim: it was first reported on names
+  found in Clarke's commentary rather than his verse. The binding is real, but the
+  evidence was not, and a true claim on invalid evidence is still unfounded.
+- Measured the ceiling of rare-anchor binding: it can uniquely identify at most 36
+  of 494 ghazals; 448 have no rare anchor at all. Proper nouns are a seed, not the
+  method. Rhyme letter + couplet count narrows a typical ode to ~15 candidates,
+  turning matla' alignment into closed multiple choice.
+- 1 of 24 Hafez bound; 21 of 16 Rumi. No record authored, no gate moved.
+
 ## 2026-07-16 — Ingest Clarke 1891 as the Hafez identification source
 
 **Raouf:**

@@ -28,6 +28,67 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — local OCR of Clarke; first citation-grade Hafez binding; the proper-noun ceiling
+
+**Raouf:**
+
+**Scope.** Source OCR and measurement only. No corpus record authored, no gate
+moved, no agent spent.
+
+**Local OCR (`scripts/poetry/ocr-clarke.sh`).** All 1,078 Clarke pages rendered at
+400dpi and OCR'd locally — no page text through a model, so no content filter and
+no tokens. Parallel across cores (~4.5h sequential → ~25min); resumable; each
+worker renders to its own PNG path and deletes it immediately (holding all pages
+at 400dpi would need ~8GB). Output is git-ignored: per-page text of a complete
+1,078-page translation IS the whole book.
+
+**Why it was needed.** The Archive's OCR of Clarke recovers a mean of 1.5 numbered
+couplets per ode where a ghazal runs 5-15, because the couplet numerals are
+mangled. Local OCR raises this to 2.7 and reads ode headings the Archive loses
+entirely (`110, (u3).` vs `9, (12).`). The two engines fail on *different* odes:
+local reads 273, Archive 356, union 438, and where both read the concordance
+number they **agree 98%** (188/191, 3 disputed). Merged per the Bell method — two
+independent readings corroborate; disagreements are flagged, never guessed.
+
+**First citation-grade Hafez binding: Clarke ode 8 = Q-G ghazal 3.** Established
+on three independent signals, all drawn from the verse: the matla' rendered
+phrase-by-phrase ("If that Bold One of Shiraz gain our heart, For His dark mole, I
+will give Samarkand and Bukhara" ← اگر آن ترک شیرازی بدست آرد دل ما را / بخال
+هندویش بخشم سمرقند و بخارا را); couplet count 8 = 8; and a rare-name cluster
+(سمرقند + بخارا) occurring in exactly one ghazal. Both sit in the Alif section,
+which corroborates independently. Clarke ode 72 = ghazal 41 is a second unique
+candidate (پرویز), not yet confirmed against the matla'.
+
+**A claim I retracted.** I first reported ode 8 = ghazal 3 on names found in
+Clarke's *commentary*, not his translation — the seq-757 defect class for the
+third time in this project (ode 1's "Samarkand" comes from a footnote about
+Yezid). The binding turns out to be correct, but the retraction stands: a true
+claim resting on invalid evidence is still unfounded, and it would have been luck
+rather than method. Verse extraction now filters Clarke's glosses, but it is not
+yet structural enough to trust unsupervised — Clarke's notes are themselves
+numbered lists, and a gloss still lands in a couplet slot in ode 8's own record.
+
+**Measured ceiling — why proper nouns cannot finish the job.** Rare-anchor binding
+uniquely identifies at most **36 of 494** ghazals; **448 carry no rare anchor at
+all** and are unreachable this way regardless of OCR quality. Proper nouns are a
+seed, not the method. The matla' match is, because Clarke translates every matla'
+literally — and it needs a model, which is where the agent budget belongs.
+
+**The prefilter that makes that cheap.** Clarke's "The Letter X" sections are
+Persian rhyme-letter names (Alif, Ba, Sa, Jim, Dal …); Q-G is arranged by the same
+principle. Rhyme letter + couplet count partitions 494 ghazals into buckets
+averaging 15.7 (37 unique, 115 at ≤3, 200 at ≤8). That reduces alignment from open
+judgement to closed multiple choice — "which of these ~15 Persian matla's does this
+English line translate?" — which is verifiable rather than thematic.
+
+**Not done.** 1 of 24 Hafez bound (21 of 16 Rumi). No record authored;
+`build:production` and `verify:qr` remain fail-closed.
+
+**Files changed.** `scripts/poetry/ocr-clarke.sh` (new), `.gitignore`.
+
+**Verification.** `pnpm check`: 615 tests pass; verifiers pass; gates confirmed
+still fail-closed. `audit (prod deps)` fails on the pre-existing npm 410.
+
 ### 2026-07-16 (Australia/Sydney) — ingest Clarke 1891 as the Hafez identification source; fix an artifact filename collision
 
 **Raouf:**

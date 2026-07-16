@@ -22,6 +22,9 @@ sources-private/poetry/extracted/**
 # Bell OCR reconstruction: rendered page images and per-page OCR text are a
 # derivative of the whole scanned book. Never commit them.
 sources-private/poetry/bell-ocr/**
+# Clarke 1891 OCR: same reasoning — per-page text of a complete 1,078-page
+# translation is the whole book. Only selected excerpts may ever be published.
+sources-private/poetry/clarke-ocr/**
 # Candidate reports carry verse excerpts — keep them out of Git; the text-free
 # candidates-summary.json is committed instead.
 sources-private/poetry/reports/*-candidates.json
