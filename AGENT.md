@@ -28,6 +28,15 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — Persian heading font fallback (frontend audit F-01)
+
+**Raouf:**
+
+- **Scope:** One CSS rule in `src/styles/visual.css` and one regression test in `tests/performance/visualBudgets.test.ts`. The Persian section heading `متن فارسی` in the result card inherited `--font-display` (`DIVAN Cormorant Garamond`), which is bundled as a **latin** subset and carries no Arabic glyphs. Because the `@font-face` declares `unicode-range: U+0-10FFFF`, the browser attempted it, found no glyph, and fell through to an unspecified system Arabic face that varies by device. Added `.poem-result [lang='fa'] h2 { font-family: var(--font-persian); line-height: 1.5; }` so Persian stays on a bundled family with descender clearance. No poetry, translation, provenance, rights, corpus, selection, token, colour, layout, or deployment surface was touched, and no font was added or removed.
+- **Evidence (rendered, 390×844, real 120-record production build):** Before — the heading rendered at **93.59px**, matching Cormorant (93.59) / Georgia (93.76) / generic serif (93.98) and matching **neither** bundled Persian face (Vazirmatn 106.69, Nastaliq 85.84); `line-height` 1.1× produced ink 30px inside a 27px box (`scrollHeight - clientHeight = 2`). After — computed family is `"DIVAN Vazirmatn"`, rendered width **106.69px** (exactly the bundled face), `line-height` 1.5×, `scrollHeight - clientHeight = 0`. No regression: the Persian verse remains `DIVAN Noto Nastaliq Urdu` at `line-height: 52px` with zero clipping, the English headings remain `DIVAN Cormorant Garamond`, and horizontal overflow stays 0.
+- **Verification:** Test written first and observed failing (`expect(visual).toMatch(...)` at `visualBudgets.test.ts:103`) before the CSS change, per the engineering contract. `bash scripts/check.sh --ci` exit 0 in 60s; 62 files / **706 tests** passed (705 → 706, none deleted or weakened); `verify:dist` and `verify:privacy` passed against the production build; `verify:qr` remains fail-closed. Two failures during the work were mine, not the app's: TS4111 (named capture groups need bracket access under `noPropertyAccessFromIndexSignature`), and a stray preview server holding port 4173 blocking Playwright.
+- **Truth boundary:** The regression test asserts a **CSS contract read as text**; it cannot observe inheritance, so it catches a Persian-scoped selector set to a Latin family and the specific heading rule, but would **not** catch a new Persian element silently inheriting a Latin stack from an unscoped rule. This is a real limit of the repository's locked-visual-system pattern under jsdom. Severity was Low: presentation-only, no conformance breach — `divan-brand-art-direction` permits system fonts, so the defect was **consistency**, not conformance. Evidence is throttled-Chromium against a local preview; no physical-device, VoiceOver, TalkBack, or Safari-hardware evidence exists and none is claimed.
+
 ### 2026-07-16 (Australia/Sydney) — owner-authorised public access
 
 **Raouf:**

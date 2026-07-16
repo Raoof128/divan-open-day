@@ -63,6 +63,50 @@ describe('locked visual system', () => {
     expect(css).toContain('font-display: swap');
   });
 
+  it('never renders Persian text on a Latin-only font stack', async () => {
+    const tokens = await source('src/styles/tokens.css');
+    const visual = await source('src/styles/visual.css');
+
+    // The Latin display face is bundled as a latin subset and carries no Arabic
+    // glyphs, so any Persian element resolving to it falls through to an
+    // unspecified system face that varies by device.
+    const latinOnly = ['--font-display', '--font-interface'];
+    const persian = ['--font-persian', '--font-persian-display'];
+
+    for (const token of [...latinOnly, ...persian]) {
+      expect(tokens).toContain(`${token}:`);
+    }
+
+    // Collect every rule whose selector is scoped to Persian content and which
+    // sets a font-family. Each must resolve to a bundled Persian family.
+    const persianRules = [
+      ...visual.matchAll(
+        /(?<selector>[^{}]*\[lang=['"]fa['"]\][^{}]*)\{(?<body>[^}]*)\}/gu,
+      ),
+    ].filter((rule) => /font-family:/u.test(rule.groups?.['body'] ?? ''));
+
+    expect(persianRules.length).toBeGreaterThan(0);
+
+    for (const rule of persianRules) {
+      const selector = (rule.groups?.['selector'] ?? '').trim();
+      const family = /font-family:([^;]*)/u.exec(
+        rule.groups?.['body'] ?? '',
+      )?.[1];
+      expect(
+        persian.some((token) => family?.includes(token)),
+        `Persian-scoped selector "${selector}" sets font-family:${String(
+          family,
+        )} which is not a bundled Persian family (${persian.join(' or ')}).`,
+      ).toBe(true);
+    }
+
+    // The Persian section heading is a hardcoded literal in PoemResult and is
+    // therefore always rendered, independent of the corpus.
+    expect(visual).toMatch(
+      /\.poem-result\s+\[lang=['"]fa['"]\]\s+h2\s*\{[^}]*font-family:\s*var\(--font-persian/u,
+    );
+  });
+
   it('animates only transform, opacity, and bounded stroke properties', async () => {
     const css = `${await source('src/styles/visual.css')}\n${await source('src/styles/motion.css')}`;
     expect(css).not.toMatch(

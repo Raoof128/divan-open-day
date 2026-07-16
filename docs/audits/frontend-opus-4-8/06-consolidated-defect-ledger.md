@@ -78,10 +78,10 @@ releases. A deliberate, controlled release-mismatch test is still outstanding.
 | Field | Value |
 | --- | --- |
 | **Severity** | **Low** |
-| **Status** | Open — reported, not repaired (Phase 8 not authorised) |
+| **Status** | **FIXED** — test-first, verified rendered, `check.sh --ci` exit 0 |
 | **Affected** | Every visitor, every result, both poets. Presentation only. |
 | **Surface** | Result scene, `متن فارسی` (`<h2>`) |
-| **Discoverable before now?** | **No** — the ASCII fixture had no Persian in headings |
+| **Discoverable before now?** | **Yes — correction.** `متن فارسی` is a hardcoded literal in `PoemResult.tsx:120`, not corpus data, so it rendered under the ASCII fixture too. An earlier draft of this entry claimed the fixture could not have surfaced it; that was wrong and is corrected here. The prior audit simply was not examining heading font fallback. |
 
 ### Evidence
 
@@ -145,7 +145,30 @@ Persian family. This generalises past the single heading and would catch recurre
 Low. CSS-only, additive to a fallback chain, no token change, no layout system change. Must be
 re-measured against the locked visual budgets, which assert authoritative colours/fonts.
 
-**Not yet done:** repair, regression test, before/after capture at the same viewport.
+### Repair applied
+
+`.poem-result [lang='fa'] h2 { font-family: var(--font-persian); line-height: 1.5; }`
+
+Regression test written first and **observed failing** at `visualBudgets.test.ts:103` before
+the CSS change, per AGENT.md line 16.
+
+| Measure (390×844, real corpus) | Before | After |
+| --- | --- | --- |
+| computed family | system fallback | **`"DIVAN Vazirmatn"`** |
+| rendered width | 93.59px (= Cormorant/serif) | **106.69px (= bundled Vazirmatn exactly)** |
+| line-height | 1.1× | **1.5×** |
+| `scrollHeight - clientHeight` | 2 | **0** |
+| Persian verse (regression check) | Nastaliq, lh 52px, clip 0 | **unchanged** |
+| English headings (regression check) | Cormorant | **unchanged** |
+| horizontal overflow | 0 | **0** |
+
+`bash scripts/check.sh --ci` exit 0 (60s), 706 tests (705 → 706, none weakened).
+
+**Honest limit of the regression test:** it reads CSS as **text** and therefore cannot observe
+inheritance — which is precisely how this bug arose. It catches a Persian-scoped selector set to a
+Latin family, and pins this heading rule, but would **not** catch a future Persian element silently
+inheriting a Latin stack from an unscoped rule. An earlier draft of this ledger claimed the test
+"generalises past the single heading"; that overstated it and is corrected here.
 
 ---
 
@@ -327,7 +350,7 @@ supported a false High finding, which is exactly what rule 14 warns about.
 
 | ID | Severity | Status |
 | --- | --- | --- |
-| F-01 Persian heading uses unbundled system font | **Low** | Open, repair proposed, not applied |
+| F-01 Persian heading uses unbundled system font | **Low** | **FIXED** — test-first, verified |
 | F-02 Reducer discards poem on unhandled event | **Low** (was High hypothesis; disproved) | Open, repair proposed, not applied |
 | O-01 Cinematic Begin traversal | **Resolved — not a defect** | Headed browser confirms correct traversal |
 | M-01 Stale fixture SW | Methodology, **not a defect** | Resolved (profile cleared) |

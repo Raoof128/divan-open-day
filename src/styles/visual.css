@@ -586,6 +586,14 @@ button:active {
   line-height: 1.45;
 }
 
+/* The display face is bundled as a latin subset and has no Arabic glyphs, so a
+   Persian heading inheriting it falls through to an unspecified system face.
+   Keep Persian on a bundled family, with clearance for descenders. */
+.poem-result [lang='fa'] h2 {
+  font-family: var(--font-persian);
+  line-height: 1.5;
+}
+
 .poem-result [lang='fa'] .poem-lines {
   font-family: var(--font-persian-display);
   font-size: clamp(1.3rem, 4.4vw, 1.9rem);

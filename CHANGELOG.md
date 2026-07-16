@@ -1,5 +1,48 @@
 # Changelog
 
+## 2026-07-16 — Keep the Persian heading on a bundled Persian font (audit F-01)
+
+**Raouf:**
+
+The Persian section heading `متن فارسی` on the result card was rendering in whatever
+Arabic font the visitor's operating system happened to supply — Geeza Pro on iOS, Noto
+Naskh on Android, something else on Windows — instead of the typography DIVAN bundles.
+Beside the curated headings in the same card it read as a different type system.
+
+The cause was subtle. The heading inherited `--font-display` (`DIVAN Cormorant Garamond`),
+which ships as a **latin** subset with no Arabic glyphs, but whose `@font-face` declares
+`unicode-range: U+0-10FFFF`. The browser therefore tried it for Persian, found no glyph,
+and fell through Georgia → `serif` → an unspecified system face. Its 1.1× line-height was
+also tight for a script with descenders, pushing ink 1.5px above and 1.23px below the line
+box.
+
+Fixed by scoping the heading to the bundled Persian family with descender clearance:
+
+```css
+.poem-result [lang='fa'] h2 {
+  font-family: var(--font-persian);
+  line-height: 1.5;
+}
+```
+
+Measured on the real 120-record production build at 390×844. Before: the heading rendered
+at 93.59px, matching Cormorant/Georgia/serif and matching neither bundled Persian face
+(Vazirmatn 106.69px, Nastaliq 85.84px). After: `"DIVAN Vazirmatn"` at exactly 106.69px,
+line-height 1.5×, zero ink overflow. The Persian verse still renders in Noto Nastaliq Urdu
+at 52px line-height with zero clipping, English headings still render in Cormorant
+Garamond, and horizontal overflow remains 0.
+
+Found during the Opus 4.8 frontend audit (`docs/audits/frontend-opus-4-8/`, finding F-01).
+The regression test was written first and observed failing before the fix.
+`bash scripts/check.sh --ci` passes: 62 files, 706 tests (up from 705; none deleted or
+weakened).
+
+Honest limit: the regression test reads CSS as text, so it cannot observe inheritance. It
+catches a Persian-scoped selector set to a Latin family, and it pins this specific heading
+rule, but it would not catch some future Persian element silently inheriting a Latin stack
+from an unscoped rule. No poetry, translation, provenance, rights, corpus, or deployment
+surface was touched, and no font was added or removed.
+
 ## 2026-07-16 — Make the deployed DIVAN hostname publicly reachable
 
 **Raouf:**
