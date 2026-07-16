@@ -1,0 +1,35 @@
+.flow-back {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--space-2);
+  margin-block-end: var(--space-5);
+  padding: 0.62rem 0.9rem;
+  color: var(--gold-light);
+  background: color-mix(in srgb, var(--ink-night) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gold) 72%, transparent);
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.flow-back::before {
+  content: '←';
+  font-size: 1.05em;
+}
+
+.flow-back:hover {
+  border-color: var(--gold-light);
+}
+
+.poem-result .flow-back {
+  color: var(--deep-red);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  border-color: color-mix(in srgb, var(--deep-red) 58%, transparent);
+}
+
+@media (forced-colors: active) {
+  .flow-back {
+    border: 2px solid ButtonText;
+  }
+}

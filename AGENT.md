@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — visible poet return and cinematic Begin verification
+
+**Raouf:**
+
+- **Scope:** Reviewed and repaired draft PR #5 on `fix/visible-back-and-cinematic-begin`, then merged current `origin/main` normally so the separate final 60-Hafez / 60-Rumi work remains intact. No poetry, corpus, evidence, translation, compiler, service-worker, deployment, or production-selection behaviour was changed by the PR.
+- **Summary:** Verified visible `Choose another poet` controls on intention and result screens, release-bound state clearing and deterministic chooser history, smooth automatic traversal through the existing scroll-scrub corridor, natural manual scrub, Skip, terminal-frame paint, and direct reduced-motion/Save-Data/offline/video-failure/timeout/non-scrollable fallbacks. Fixed the first-frame timeout being cancelled before frame presentation, terminal arrival unmounting before the final seek could paint, and a throwing scroll API trapping Begin.
+- **Files Changed:** `src/components/CinematicThreshold.tsx`, `src/components/FlowBackButton.tsx`, focused component regressions, `docs/verification/visible-navigation-and-cinematic-begin.md`, `AGENT.md`, and `CHANGELOG.md`; the pre-existing PR also owns its navigation helper, scene wiring, styles, and navigation tests.
+- **Verification:** Node 22.16.0 / pnpm 10.33.0. `pnpm format:check`, `pnpm lint`, and `pnpm typecheck` passed; components passed 80/80, accessibility 24/24, and Playwright 5/5. The explicit production build emitted `pr-5-visible-navigation` with 120 items; `verify:dist`, archival leak verification, and `verify:privacy` passed. A 390×844 Chromium walk proved Begin scroll/video progression to 7.95 s, manual scrubbing, Skip, both visible return controls, Back/Forward, and direct reduced-motion, failed-video, Save-Data, and offline entry. Verified implementation SHA: `a079e722f0d3ecdb643c8204d7c3272e14ad4616`.
+- **Follow-ups:** Manual evidence is emulated Chromium rather than a physical-device/cross-browser/assistive-technology matrix. npm's retired audit endpoints still return HTTP 410 independently of this PR. Full command evidence and limitations are in `docs/verification/visible-navigation-and-cinematic-begin.md`.
+
 ### 2026-07-16 (Australia/Sydney) — final 60/60 source-bound corpus
 
 **Raouf:**

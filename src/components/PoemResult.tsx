@@ -7,6 +7,7 @@ import {
   downloadShareCard as defaultDownloadShareCard,
   shareVerse as defaultShareVerse,
 } from '../lib/share/shareService';
+import { FlowBackButton } from './FlowBackButton';
 import { IlluminatedFrame } from './IlluminatedFrame';
 import { SourceCredit } from './SourceCredit';
 
@@ -97,6 +98,8 @@ export function PoemResult({
       }
     >
       <IlluminatedFrame>
+        <FlowBackButton />
+
         <section data-testid="english-poem" aria-labelledby="result-heading">
           <h1 id="result-heading" ref={headingRef} tabIndex={-1}>
             Your verse

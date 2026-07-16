@@ -34,7 +34,7 @@ export function WelcomeScene({
           className="primary-action"
           type="button"
           data-focus-target="begin"
-          onClick={onBegin}
+          data-cinematic-begin
         >
           Begin
         </button>
