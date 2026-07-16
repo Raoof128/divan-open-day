@@ -1,4 +1,5 @@
 import { DecorativeGeometry } from '../components/DecorativeGeometry';
+import { FlowBackButton } from '../components/FlowBackButton';
 import type { Poet } from '../contracts/content';
 
 export interface IntentionSceneProps {
@@ -17,6 +18,7 @@ export function IntentionScene({ poet, onReveal }: IntentionSceneProps) {
       <DecorativeGeometry
         motif={isHafez ? 'pomegranate-cypress' : 'reed-rosette'}
       />
+      <FlowBackButton />
       <h1 tabIndex={-1} data-focus-target="scene-heading">
         {isHafez ? 'Take a quiet moment.' : 'Take one slow breath.'}
       </h1>
