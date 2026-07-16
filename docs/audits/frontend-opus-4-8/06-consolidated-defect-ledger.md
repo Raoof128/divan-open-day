@@ -172,12 +172,58 @@ inheriting a Latin stack from an unscoped rule. An earlier draft of this ledger 
 
 ---
 
-## F-02 — Reducer sends unhandled events to `intention`, discarding the poem
+## F-02 — WITHDRAWN. Not a defect: the fall-through is a deliberate privacy scrubber
+
+**This finding is withdrawn. The behaviour is intentional and my proposed repair would have
+regressed a security control.** The original entry is preserved below the withdrawal for audit
+honesty.
+
+### What the repair attempt revealed
+
+A repair was written test-first (`return state` for an unhandled event on a valid state). It
+immediately broke an **existing** test:
+
+> `it('recovers an invalid result transition to intention without stale poem data')`
+> — which passes a state carrying an extra field
+> `visitorIntention: 'must never survive reducer recovery'` and asserts
+> `expect(recovered).not.toHaveProperty('visitorIntention')`.
+
+`isValidState` does **not** check for extra keys. So `return state` would have passed a contaminated
+state straight through, **including `visitorIntention`**. Proven by direct execution against the
+current code:
+
+```
+input keys : stage,releaseId,selectedPoet,currentPoemId,motionPreference,statusCode,errorCode,visitorIntention
+output keys: stage,releaseId,selectedPoet,currentPoemId,motionPreference,statusCode,errorCode
+visitorIntention survived? false
+```
+
+### The actual design
+
+`appReducer` is a **sanitising boundary**, not merely a state machine. Routing every unhandled event
+through `recoverToNearestSafeState` → `copyState` rebuilds state from the known contract fields
+only, so no unexpected property can survive a reducer pass. `tests/unit/state.test.ts` documents
+this deliberately, and its fixtures name the threat model outright: `visitorIntention`,
+`STORE_VISITOR_ID`, `'private-release'`, `'private-poem'`, `'raw server text'`, `'stack trace'`.
+It is a privacy/injection suite for a product whose contract is "no visitor input, no identifiers".
+
+Returning `state` unchanged would have been correct for a textbook reducer and **wrong for this
+one**. The repair was reverted; `src/app/state.ts` is unmodified.
+
+### Lesson recorded
+
+Goal rule 8 forbids weakening tests. The test did not need defending — it defended itself, and in
+doing so taught the design intent. An audit that had "fixed" F-02 without running the existing
+suite would have shipped a privacy regression while reporting a state-machine improvement.
+
+---
+
+### Superseded original entry — Reducer sends unhandled events to `intention`
 
 | Field | Value |
 | --- | --- |
-| **Severity** | **Low** (latent; downgraded from an initial High hypothesis) |
-| **Status** | Open — reported, not repaired |
+| **Severity** | ~~Low~~ **WITHDRAWN — not a defect** |
+| **Status** | **Withdrawn.** Repair attempted, broke a privacy test, reverted |
 | **Surface** | `src/app/state.ts:213-282` |
 
 `appReducer` routes any event its guard rejects to `recoverToNearestSafeState(state)` instead of
@@ -418,12 +464,27 @@ supported a false High finding, which is exactly what rule 14 warns about.
 | ID | Severity | Status |
 | --- | --- | --- |
 | F-01 Persian heading uses unbundled system font | **Low** | **FIXED** — test-first, verified |
-| F-02 Reducer discards poem on unhandled event | **Low** (was High hypothesis; disproved) | Open, repair proposed, not applied |
+| ~~F-02~~ Reducer fall-through | **WITHDRAWN — not a defect** | Deliberate privacy scrubber; repair reverted |
 | F-03 Choose-another-poet + Back desyncs view from storage | **Low** | Open — repair risk (Medium) exceeds the defect; deferral defensible |
 | O-01 Cinematic Begin traversal | **Resolved — not a defect** | Headed browser confirms correct traversal |
 | M-01 Stale fixture SW | Methodology, **not a defect** | Resolved (profile cleared) |
 
-**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 3** (1 fixed, 2 open).
+**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 2** (1 fixed, 1 open) · **Informational 2** (1 fixed) · **1 withdrawn**.
+
+### Fix-all pass — outcome
+
+Asked to "fix all", the audit fixed **two** and declined **two**, on evidence:
+
+| ID | Asked | Outcome |
+| --- | --- | --- |
+| F-01 | fix | **Fixed** — test-first, rendered before/after |
+| I-02 | fix | **Fixed** — test-only; proved the existing suite missed SW-side drift entirely |
+| F-02 | fix | **WITHDRAWN — not a defect.** Repair broke a privacy test and was reverted |
+| I-01 | fix | **Declined** — Informational, no behaviour wrong; a rename is cosmetic churn (rule 3) |
+| F-03 | fix | **Declined pending intent.** After F-02, the storage clearing is plausibly the same deliberate privacy posture; repair risk (Medium) still exceeds severity (Low) |
+
+Two of the four "fixes" would have made the product worse. Fixing everything asked was not the
+correct outcome.
 
 Two candidate findings were **investigated and withdrawn** rather than banked: the reducer
 double-tap (disproved — every dispatch site guarded) and the skip-link overlay (disproved —

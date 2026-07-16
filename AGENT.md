@@ -28,6 +28,31 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — asset-contract drift test (frontend audit I-02)
+
+**Raouf:**
+
+- **Scope:** Added `tests/offline/assetContractSync.test.ts` and exported `FIXED_MIME`
+  (`src-sw/schemas.ts`) and `FIXED_BROWSER_ASSETS` (`src/lib/content/release.ts`) so the test can
+  read them. **No runtime behaviour changed**; the service-worker bundle is unaffected. The two
+  validators must agree on the fixed browser asset set, and nothing asserted it.
+- **Evidence (controlled experiment):** Injecting an asset into the **app-side**
+  `FIXED_BROWSER_ASSETS` alone already fails three existing tests in `tests/content/release.test.ts`
+  — that direction was never unprotected. Injecting one into the **service-worker-side**
+  `FIXED_MIME` alone passed the **entire suite: 62 files / 706 tests green** while the two
+  validators disagreed. That drift would have shipped and surfaced to visitors only at runtime as
+  "Offline release staging failed". The new test catches it, and returns to green when the drift is
+  reverted.
+- **Verification:** Test written first and observed failing (maps private — `Cannot read properties
+  of undefined`). `bash scripts/check.sh --ci` exit 0 in 62s; 63 files / **707 tests** (706 → 707,
+  none deleted or weakened).
+- **Truth boundary:** This closes the service-worker direction only. The fixed asset list still
+  exists in four hand-maintained copies (`release.ts`, `schemas.ts`, `release.test.ts`
+  `fixedBrowserSources()`, and the `build.ts` allow-list); unifying them is an architectural
+  decision about the app/service-worker boundary and was deliberately **not** taken here. An earlier
+  audit draft claimed drift would ship silently in *any* direction; that was wrong and is corrected
+  in `docs/audits/frontend-opus-4-8/04-file-by-file-ledger.md`.
+
 ### 2026-07-16 (Australia/Sydney) — Persian heading font fallback (frontend audit F-01)
 
 **Raouf:**

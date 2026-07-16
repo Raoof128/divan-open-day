@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-07-16 — Catch service-worker asset-contract drift before it ships (audit I-02)
+
+**Raouf:**
+
+The browser app and the service worker validate a release independently, and they must
+agree on the fixed browser asset set. `CLAUDE.md` already warned that a mismatch surfaces
+to visitors only at runtime, as "Offline release staging failed". Nothing asserted the two
+agreed.
+
+A controlled experiment showed the gap is one-directional, and not the direction assumed:
+
+| Drift injected | Result |
+| --- | --- |
+| App side (`FIXED_BROWSER_ASSETS` only) | Caught — three existing tests fail |
+| **Service-worker side (`FIXED_MIME` only)** | **Entire suite green — 62 files, 706 tests** |
+
+So an asset added to the service worker's map alone would have shipped with every test
+passing, and broken offline for visitors. `tests/offline/assetContractSync.test.ts` now
+asserts the two maps are entry-for-entry equal. Both are exported so the test can read
+them; no runtime behaviour changed and the service-worker bundle is unaffected.
+
+The test was written first and observed failing, then proven to catch injected drift and to
+return to green when reverted. `check.sh --ci` passes: 63 files, 707 tests (up from 706).
+
+Honest limit: this closes the service-worker direction only. The fixed asset list still
+lives in four hand-maintained copies. Unifying them spans the app/service-worker boundary
+and is an architectural decision, deliberately not taken here.
+
 ## 2026-07-16 — Keep the Persian heading on a bundled Persian font (audit F-01)
 
 **Raouf:**

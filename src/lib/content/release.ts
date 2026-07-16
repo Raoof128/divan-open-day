@@ -32,21 +32,24 @@ const ASSET_MIME_TYPES = [
   'video/mp4',
 ] as const;
 
-const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>(
-  [
-    ['icon.svg', 'image/svg+xml'],
-    ['index.html', 'text/html'],
-    ['manifest.webmanifest', 'application/manifest+json'],
-    ['offline.html', 'text/html'],
-    ['service-worker.js', 'text/javascript'],
-    ['images/divan-poster-mobile.webp', 'image/webp'],
-    ['images/divan-poster-desktop.webp', 'image/webp'],
-    ['images/divan-alcove-mobile.webp', 'image/webp'],
-    ['images/divan-alcove-desktop.webp', 'image/webp'],
-    ['video/divan-cinematic-mobile.mp4', 'video/mp4'],
-    ['video/divan-cinematic-desktop.mp4', 'video/mp4'],
-  ],
-);
+// Exported so a test can assert this stays identical to the service-worker-side
+// FIXED_MIME. See src-sw/schemas.ts.
+export const FIXED_BROWSER_ASSETS = new Map<
+  string,
+  (typeof ASSET_MIME_TYPES)[number]
+>([
+  ['icon.svg', 'image/svg+xml'],
+  ['index.html', 'text/html'],
+  ['manifest.webmanifest', 'application/manifest+json'],
+  ['offline.html', 'text/html'],
+  ['service-worker.js', 'text/javascript'],
+  ['images/divan-poster-mobile.webp', 'image/webp'],
+  ['images/divan-poster-desktop.webp', 'image/webp'],
+  ['images/divan-alcove-mobile.webp', 'image/webp'],
+  ['images/divan-alcove-desktop.webp', 'image/webp'],
+  ['video/divan-cinematic-mobile.mp4', 'video/mp4'],
+  ['video/divan-cinematic-desktop.mp4', 'video/mp4'],
+]);
 
 const VITE_ASSET_PATTERN =
   /^assets\/[A-Za-z0-9][A-Za-z0-9._-]*-[a-f0-9]{16}\.(css|js|woff2|avif|png|svg|webp)$/u;

@@ -264,7 +264,10 @@ const MIME_TYPES = [
   'video/mp4',
 ] as const;
 
-const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
+// Exported so a test can assert this stays identical to the app-side
+// FIXED_BROWSER_ASSETS. A drift between the two validators surfaces to visitors
+// only at runtime, as "Offline release staging failed".
+export const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
   ['icon.svg', 'image/svg+xml'],
   ['index.html', 'text/html'],
   ['manifest.webmanifest', 'application/manifest+json'],

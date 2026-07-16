@@ -280,26 +280,36 @@ copies agree.** Verified by grep: `FIXED_MIME|FIXED_BROWSER_ASSETS` appears nowh
 or `scripts/`.
 
 **Why this is Informational, not a defect.** The copies agree today — measured, not assumed — so
-there is no current user-facing fault. Severity must reflect real impact, and the impact is zero
-right now.
+there is no current user-facing fault.
 
-**Why it is worth recording anyway.** The failure mode is asymmetric: a future author adding an
-asset updates three of four copies, every existing test still passes (they build their manifests
-from copy 3, which they just updated), and the drift ships. It surfaces to visitors as
-"Offline release staging failed" — an offline-breaking error with no compile-time or test-time
-signal. This is the same *cross-boundary coupling* shape that produced F-03, which is why it was
-audited ahead of path order.
+### Correction: the gap is one-directional, and my first reasoning was wrong
 
-**Proposed repair (test-only, not applied).** Export the two maps and add a test asserting
-`FIXED_MIME` and `FIXED_BROWSER_ASSETS` are entry-for-entry equal, and that
-`fixedBrowserSources()` covers exactly the same key set. This is additive, changes no runtime
-behaviour, and converts a silent runtime failure into a build-time one. It does **not** require the
-structural unification a "single source of truth" refactor implies — goal rule 4 bars redesign on
-best-practice grounds alone, and a shared module spanning the app/SW boundary would be a real
-architectural change deserving its own decision.
+An earlier draft claimed "a future author updates three of four copies, every existing test still
+passes, and the drift ships." **That was wrong**, and a controlled experiment disproved it. The real
+gap is one-directional:
 
-**Not applied here** because Phase 8 authorised only F-01, and because adding it belongs with the
-maintainer's judgement about the app/SW boundary.
+| Drift injected | Existing suite (without the new test) |
+| --- | --- |
+| App side — asset added to `FIXED_BROWSER_ASSETS` only | **Caught** — 3 existing tests in `tests/content/release.test.ts` fail |
+| **Service-worker side — asset added to `FIXED_MIME` only** | **NOT caught — 62 files / 706 tests all pass** while the two validators disagree |
+
+So the app-side direction was never unprotected. The service-worker side was, completely. The new
+test closes exactly that direction, and the repair is justified on the corrected reasoning rather
+than the original one.
+
+### Repair applied (test-only)
+
+`tests/offline/assetContractSync.test.ts` asserts `FIXED_MIME` and `FIXED_BROWSER_ASSETS` are
+entry-for-entry equal. Both maps are now exported for the test; **no runtime behaviour changed** and
+the service-worker bundle is unaffected.
+
+Written test-first and observed failing (the maps were private: `Cannot read properties of
+undefined`). Then proven to catch real drift and to return to green when reverted.
+`check.sh --ci` exit 0; **707 tests** (706 → 707, none deleted or weakened).
+
+Deliberately **not** the "single source of truth" refactor: goal rule 4 bars redesign on
+best-practice grounds alone, and a shared module spanning the app/SW boundary is an architectural
+decision for the maintainer.
 
 ---
 
