@@ -1,6 +1,6 @@
 # 04 — File-by-File Ledger
 
-**Status: IN PROGRESS — 12 of 127 rows touched (9 resolved, 3 partial). 115 remain `PENDING`.**
+**Status: IN PROGRESS — 13 of 127 rows touched (9 resolved, 4 partial). 114 remain `PENDING`.**
 
 This ledger is the goal's primary artefact and is far from complete. Every row below was **read in
 full** by the primary agent, not sampled and not delegated. A `NO DEFECT` verdict is recorded only
@@ -303,6 +303,50 @@ maintainer's judgement about the app/SW boundary.
 
 ---
 
+## `src-sw/releaseManager.ts` — 871 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **partial — exported surface + `#stageCurrentRelease` retention path (222-269); ~800 lines unread** |
+| Purpose | Release staging, coherence, retention, cleanup, pointer management |
+| Lenses | T, S, O |
+| Tests | `tests/offline/releaseManager.test.ts`, `runtimeStrategies.test.ts`, `serviceWorker.test.ts` |
+| Verdict | **No defect in what was read.** Row stays **`PENDING`** — the majority is unaudited |
+
+**Cache naming (verified against rendered evidence).** `RELEASE_CACHE_PREFIX = 'divan-release-v2:'`
+and `POINTER_CACHE_NAME = 'divan-release-pointers-v2'` match exactly the cache names observed live
+during M-01 (`divan-release-v2:test-only-fixture-release`, `divan-release-pointers-v2`,
+`divan-release-v2:audit-opus48-phase6`). Code and runtime agree.
+
+**Retention path (222-269) — sound.** This is a direct implementation of the goal's 4.9
+requirements, and it is written defensively:
+
+- The release descriptor is parsed through `parseCanonicalJson` **and** a zod schema before use, so
+  a malformed or non-canonical `release.json` is rejected at the boundary rather than partially
+  applied.
+- When the incoming release **is** the active one, it re-verifies coherence (ready record exists,
+  candidate complete, hashes match) and throws `'Active release metadata is incoherent.'` rather
+  than trusting its own cache.
+- `isProtectedRollback` (`pointer?.previousReleaseId === descriptor.releaseId`) exempts a rollback
+  target from cache deletion — the "previous-release retention" requirement, implemented rather
+  than assumed.
+- **Release-ID reuse with different hashes throws** and deletes the offending cache (unless it is
+  the protected rollback). This is a genuine integrity control: it makes a mutated release under a
+  reused ID a hard failure instead of a silent swap.
+- A protected rollback whose metadata is incoherent throws rather than deleting — failing closed on
+  the one cache that must survive.
+
+**Explains M-01.** The stale-fixture episode was **correct** service-worker behaviour, not a bug:
+the SW keeps serving the active release until a new one is *completely* staged. The 504 came from
+the server no longer hosting the old fixture's content file, not from the SW misbehaving. This
+strengthens the M-01 disposition — profile pollution, not a defect.
+
+**Unaudited (~800 lines):** fetch strategies, pending/ready lifecycle, cleanup of superseded
+caches, quota/Cache-API failure handling, and the `TimeoutAdapter` seam. Row remains `PENDING`; the
+"no defect" above covers **only** the lines read.
+
+---
+
 ## `src/components/PoemResult.tsx` — 206 lines
 
 | Field | Value |
@@ -341,14 +385,14 @@ z-index, safe-area, scroll locking, forced-colours, hover/active/disabled states
 | Metric | Count |
 | --- | ---: |
 | Rows resolved (full read + verdict) | **9** |
-| Rows partially read, still `PENDING` | 3 |
-| Rows untouched `PENDING` | **115** |
+| Rows partially read, still `PENDING` | 4 |
+| Rows untouched `PENDING` | **114** |
 | Total | 127 |
 | Defects found in resolved rows | 2 (F-02, F-03) |
 | Informational notes | 2 (I-01, I-02) |
 | `NO DEFECT` verdicts | 7 |
 
-**The audit cannot pass in this state.** 115 rows have not been opened. Any later reader must treat
+**The audit cannot pass in this state.** 114 rows have not been opened. Any later reader must treat
 the absence of a finding for those files as **unaudited**, not as evidence of soundness.
 
 ### Signal from the ordering
@@ -374,7 +418,12 @@ the first read. Coupling, not missing coverage, is the better predictor in this 
 findings so far (F-03, I-02) sit on a boundary where two owners must agree with no mechanism
 forcing it.
 
-**Next, on the same reasoning:** `src-sw/releaseManager.ts` (871L — the other side of the release
-contract), then `App.tsx` (795L), where the focus, history, and release-replacement races
-concentrate and where F-03's counterpart writer lives. Then the remaining ~1000 unaudited lines of
-`visual.css`.
+**Next, on the same reasoning:** `App.tsx` (795L), where the focus, history, and release-replacement
+races concentrate and where F-03's counterpart writer lives; then the remaining ~800 lines of
+`releaseManager.ts`; then the ~1000 unaudited lines of `visual.css`.
+
+### A note on the two largest files
+
+`releaseManager.ts` (871L) and `App.tsx` (795L) together are ~13% of the frontend line count and
+carry most of the state, race, and lifecycle risk. Neither can be honestly cleared by a partial
+read. They should be the first work of the next session, before any further breadth.
