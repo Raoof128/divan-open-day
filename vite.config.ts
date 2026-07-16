@@ -3,6 +3,10 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: '/',
+  // public/ is copied exclusively by the reviewed allow-list in
+  // scripts/build.ts; auto-copy would leak release media into raw Vite
+  // builds and break the locked raster-zero initial payload.
+  publicDir: false,
   envDir: false,
   envPrefix: 'DIVAN_BROWSER_PUBLIC_',
   plugins: [react()],

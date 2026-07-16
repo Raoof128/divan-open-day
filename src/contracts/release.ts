@@ -30,7 +30,8 @@ export interface ReleaseAsset {
     | 'image/webp'
     | 'text/css'
     | 'text/html'
-    | 'text/javascript';
+    | 'text/javascript'
+    | 'video/mp4';
   readonly sha256: string;
   readonly bytes: number;
   readonly requiredOffline: boolean;

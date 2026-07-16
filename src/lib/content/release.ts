@@ -29,6 +29,7 @@ const ASSET_MIME_TYPES = [
   'text/css',
   'text/html',
   'text/javascript',
+  'video/mp4',
 ] as const;
 
 const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>(
@@ -38,6 +39,12 @@ const FIXED_BROWSER_ASSETS = new Map<string, (typeof ASSET_MIME_TYPES)[number]>(
     ['manifest.webmanifest', 'application/manifest+json'],
     ['offline.html', 'text/html'],
     ['service-worker.js', 'text/javascript'],
+    ['images/divan-poster-mobile.webp', 'image/webp'],
+    ['images/divan-poster-desktop.webp', 'image/webp'],
+    ['images/divan-alcove-mobile.webp', 'image/webp'],
+    ['images/divan-alcove-desktop.webp', 'image/webp'],
+    ['video/divan-cinematic-mobile.mp4', 'video/mp4'],
+    ['video/divan-cinematic-desktop.mp4', 'video/mp4'],
   ],
 );
 
@@ -113,11 +120,17 @@ const releaseAssetSchema = z
           message: 'Browser asset MIME type must match its fixed or Vite path.',
         });
       }
-      if (!asset.requiredOffline) {
+      // Cinematic video must never join the precached offline shell; the
+      // poster route is the offline guarantee. Every other browser asset is
+      // shell content and must stage offline.
+      const mustPrecache = browserMimeType !== 'video/mp4';
+      if (asset.requiredOffline !== mustPrecache) {
         context.addIssue({
           code: 'custom',
           path: ['requiredOffline'],
-          message: 'Browser shell assets must be required for offline staging.',
+          message: mustPrecache
+            ? 'Browser shell assets must be required for offline staging.'
+            : 'Cinematic video must not be required for offline staging.',
         });
       }
       return;

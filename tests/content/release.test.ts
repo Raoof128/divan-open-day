@@ -65,6 +65,12 @@ function fixedBrowserSources(): ReleaseAssetSource[] {
     ['manifest.webmanifest', 'application/manifest+json', '{"name":"DIVAN"}'],
     ['offline.html', 'text/html', '<!doctype html><title>Offline</title>'],
     ['service-worker.js', 'text/javascript', '(function(){})();'],
+    ['images/divan-poster-mobile.webp', 'image/webp', 'TEST ONLY POSTER M'],
+    ['images/divan-poster-desktop.webp', 'image/webp', 'TEST ONLY POSTER D'],
+    ['images/divan-alcove-mobile.webp', 'image/webp', 'TEST ONLY ALCOVE M'],
+    ['images/divan-alcove-desktop.webp', 'image/webp', 'TEST ONLY ALCOVE D'],
+    ['video/divan-cinematic-mobile.mp4', 'video/mp4', 'TEST ONLY CINE M'],
+    ['video/divan-cinematic-desktop.mp4', 'video/mp4', 'TEST ONLY CINE D'],
   ].map(([assetPath, mimeType, text]) => {
     const contents = new TextEncoder().encode(text);
     return {
@@ -72,7 +78,9 @@ function fixedBrowserSources(): ReleaseAssetSource[] {
       mimeType: mimeType as ReleaseAssetSource['mimeType'],
       sha256: createHash('sha256').update(contents).digest('hex'),
       bytes: contents.byteLength,
-      requiredOffline: true,
+      // Cinematic video is the one fixed browser asset class that must never
+      // be precached; everything else in the fixed set is the offline shell.
+      requiredOffline: mimeType !== 'video/mp4',
       contents,
     };
   });
@@ -92,6 +100,32 @@ function createFixtureRelease(
     assets,
   });
 }
+
+describe('cinematic media contract', () => {
+  it('rejects cinematic video marked as precached shell content', () => {
+    const sources = fixedBrowserSources().map((source) =>
+      source.mimeType === 'video/mp4'
+        ? { ...source, requiredOffline: true }
+        : source,
+    );
+
+    expect(() =>
+      createFixtureRelease([fixtureAudioSource(), ...sources]),
+    ).toThrow(/offline/iu);
+  });
+
+  it('rejects posters and backdrops excluded from the offline shell', () => {
+    const sources = fixedBrowserSources().map((source) =>
+      source.path === 'images/divan-poster-mobile.webp'
+        ? { ...source, requiredOffline: false }
+        : source,
+    );
+
+    expect(() =>
+      createFixtureRelease([fixtureAudioSource(), ...sources]),
+    ).toThrow(/offline/iu);
+  });
+});
 
 describe('createReleaseArtifacts', () => {
   it('requires every fixed offline browser asset exactly once', () => {

@@ -373,11 +373,13 @@ describe('font preload injection', () => {
       'audio',
       'content',
       'icon.svg',
+      'images',
       'index.html',
       'manifest.webmanifest',
       'offline.html',
       'release.json',
       'service-worker.js',
+      'video',
     ]);
   });
 });
@@ -428,11 +430,13 @@ describe('fixture release build', () => {
       'audio',
       'content',
       'icon.svg',
+      'images',
       'index.html',
       'manifest.webmanifest',
       'offline.html',
       'release.json',
       'service-worker.js',
+      'video',
     ]);
     await expect(
       readFile(path.join(distDir, 'index.html'), 'utf8'),

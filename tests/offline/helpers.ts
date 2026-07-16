@@ -141,6 +141,12 @@ export function releaseFixture(releaseId = 'release-one'): FixtureRelease {
   const manifestDocument = '{"name":"DIVAN"}';
   const iconDocument = '<svg xmlns="http://www.w3.org/2000/svg" />';
   const worker = 'self.addEventListener("fetch", function () {})';
+  const posterMobile = 'TEST ONLY POSTER MOBILE';
+  const posterDesktop = 'TEST ONLY POSTER DESKTOP';
+  const alcoveMobile = 'TEST ONLY ALCOVE MOBILE';
+  const alcoveDesktop = 'TEST ONLY ALCOVE DESKTOP';
+  const cinematicMobile = 'TEST ONLY CINEMATIC MOBILE';
+  const cinematicDesktop = 'TEST ONLY CINEMATIC DESKTOP';
   const assets = [
     asset('icon.svg', 'image/svg+xml', iconDocument, true),
     asset('index.html', 'text/html', index, true),
@@ -153,6 +159,35 @@ export function releaseFixture(releaseId = 'release-one'): FixtureRelease {
       true,
     ),
     asset('service-worker.js', 'text/javascript', worker, true),
+    asset('images/divan-poster-mobile.webp', 'image/webp', posterMobile, true),
+    asset(
+      'images/divan-poster-desktop.webp',
+      'image/webp',
+      posterDesktop,
+      true,
+    ),
+    asset('images/divan-alcove-mobile.webp', 'image/webp', alcoveMobile, true),
+    asset(
+      'images/divan-alcove-desktop.webp',
+      'image/webp',
+      alcoveDesktop,
+      true,
+    ),
+    // Cinematic video is listed for integrity but must never be precached;
+    // staging must succeed without ever requesting these paths, so the fake
+    // network below deliberately has no entries for them.
+    asset(
+      'video/divan-cinematic-mobile.mp4',
+      'video/mp4',
+      cinematicMobile,
+      false,
+    ),
+    asset(
+      'video/divan-cinematic-desktop.mp4',
+      'video/mp4',
+      cinematicDesktop,
+      false,
+    ),
     asset(audioPath, 'audio/mpeg', audio, false),
   ];
   const manifest = { releaseId, assets };
@@ -184,6 +219,10 @@ export function releaseFixture(releaseId = 'release-one'): FixtureRelease {
     ['/offline.html', new Response(offline)],
     ['/manifest.webmanifest', new Response(manifestDocument)],
     ['/service-worker.js', new Response(worker)],
+    ['/images/divan-poster-mobile.webp', new Response(posterMobile)],
+    ['/images/divan-poster-desktop.webp', new Response(posterDesktop)],
+    ['/images/divan-alcove-mobile.webp', new Response(alcoveMobile)],
+    ['/images/divan-alcove-desktop.webp', new Response(alcoveDesktop)],
     [`/${String(assets.at(-1)!['path'])}`, new Response(audio)],
   ]);
   return { release, corpus, manifest, files };

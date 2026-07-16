@@ -74,18 +74,34 @@ composition which comes fully to rest in the final second. Duration 7–8 s mast
 - Both video variants are never precached; the service worker passes `/video/` through to
   the network. Posters + alcove backdrops are precached — they are the offline guarantee.
 
-## 4. Generation plan (10 credits total)
+## 4. Generation plan (revised 2026-07-16 on Raouf's instruction — direct APIs, not Higgsfield)
 
-1. **Exploration**: `z_image` (0.15 cr/frame) to test composition/safe zones — up to 4 frames.
-2. **Finals**: `gpt_image_2`, 1k, quality medium (2 cr each) — garden 9:16, garden 16:9,
-   alcove 9:16, alcove 16:9. Spend ≈ 8.6 cr, reserve ≈ 1.4 cr.
-3. Prompts: shared style preamble from
+Raouf provided `OPENAI_API_TOKEN` and `GEMINI_API_TOKEN` in the git-ignored repo `.env`
+(mode 600, never committed, never logged). Higgsfield dropped as too expensive
+(10 free credits could not cover video).
+
+1. **Stills — OpenAI Images API, model `gpt-image-2`** (`POST /v1/images/generations`):
+   drafts at `quality: low` to validate composition, finals at `quality: high`, PNG masters.
+   Sizes: 1088×1936 (9:16) and 1936×1088 (16:9) — both multiples of 16, within API limits.
+   Four finals: garden 9:16 / 16:9, alcove 9:16 / 16:9. (~$0.17 each at high.)
+2. **Video — Gemini API, model `gemini-omni-flash-preview`**
+   (`POST /v1beta/interactions`, image-to-video, `response_format {type: video,
+   aspect_ratio, delivery: uri}`): both stills passed as image inputs with the §2 motion
+   prompt — begin on the garden composition, glide through the arch, settle on the alcove
+   composition. Native 9:16 and 16:9 runs. Poll `files/{id}` until ACTIVE, download,
+   then ffmpeg delivery encodes.
+3. **Frame-lock verification (adapted):** Omni Flash does not guarantee a byte-exact final
+   frame, so the extracted final frame is compared against the alcove still (ImageMagick/
+   ffmpeg SSIM image difference). Acceptance: no visible composition jump per the handoff
+   contract; the app's small crossfade may hide codec noise only. If drift is visible,
+   iterate via `previous_interaction_id` multi-turn editing; the ffmpeg glide-from-stills
+   remains the deterministic fallback (final frame byte-identical to the alcove still).
+4. Prompts: shared style preamble from
    `.claude/skills/divan-asset-pipeline-higgsfield/references/prompts.md` byte-for-byte,
-   plus per-shot lines from §2 and hex anchors from §1. Negative constraints appended.
-4. **Upgrade path (external gate — credits)**: `seedance_2_0` with
-   `image_references=[garden still]`, `end_image=alcove still`, `generate_audio=false`,
-   native 9:16 and 16:9 — replaces the ffmpeg glide without changing any contract,
-   because the final frame remains the alcove still.
+   plus per-shot lines from §2 and hex anchors from §1. Negative constraints folded into
+   the prompt text (Omni Flash has no separate negative-prompt field).
+5. Raw masters + provenance records live under git-ignored `docs/evidence/runtime/
+   cinematic-masters/`; only encoded derivatives ship.
 
 ## 5. Component and state naming (repository-native)
 
