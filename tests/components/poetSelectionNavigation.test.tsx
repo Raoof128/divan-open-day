@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SESSION_STORAGE_KEYS } from '../../src/contracts/app';
 import { PoemResult } from '../../src/components/PoemResult';
+import { SESSION_STORAGE_KEYS } from '../../src/contracts/app';
 import { IntentionScene } from '../../src/scenes/IntentionScene';
 import { HAFEZ_ITEM } from './fixtures';
 
@@ -56,8 +56,12 @@ describe('visible poet-selection navigation', () => {
 
     expect(window.history.state).toEqual(CHOOSE_STATE);
     expect(popstate).toHaveBeenCalledTimes(1);
-    expect(window.sessionStorage.getItem(SESSION_STORAGE_KEYS.selectedPoet)).toBeNull();
-    expect(window.sessionStorage.getItem(SESSION_STORAGE_KEYS.currentPoemId)).toBeNull();
+    expect(
+      window.sessionStorage.getItem(SESSION_STORAGE_KEYS.selectedPoet),
+    ).toBeNull();
+    expect(
+      window.sessionStorage.getItem(SESSION_STORAGE_KEYS.currentPoemId),
+    ).toBeNull();
   });
 
   it('returns from a poem result without depending on browser-history depth', () => {
@@ -79,7 +83,11 @@ describe('visible poet-selection navigation', () => {
 
     expect(window.history.state).toEqual(CHOOSE_STATE);
     expect(popstate).toHaveBeenCalledTimes(1);
-    expect(window.sessionStorage.getItem(SESSION_STORAGE_KEYS.selectedPoet)).toBeNull();
-    expect(window.sessionStorage.getItem(SESSION_STORAGE_KEYS.currentPoemId)).toBeNull();
+    expect(
+      window.sessionStorage.getItem(SESSION_STORAGE_KEYS.selectedPoet),
+    ).toBeNull();
+    expect(
+      window.sessionStorage.getItem(SESSION_STORAGE_KEYS.currentPoemId),
+    ).toBeNull();
   });
 });
