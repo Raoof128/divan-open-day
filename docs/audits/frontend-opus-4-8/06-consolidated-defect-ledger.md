@@ -321,12 +321,62 @@ and the terminal frame paints before handoff. Until then this is an open questio
 
 ---
 
-## F-03 — "Choose another poet" then browser Back leaves view and storage disagreeing
+## F-03 — WITHDRAWN. Not a defect: a deliberate two-tier restore model
+
+**Withdrawn after reading `App.tsx`.** The divergence is intended, and the proposed `replaceState`
+repair would have broken working behaviour. Original entry preserved below.
+
+### What `App.tsx` shows
+
+`handlePopState` (App.tsx:478-506) makes the source of truth explicit:
+
+```js
+let resultPoemId = lastResultPoemIdRef.current;          // ref is PRIMARY
+if (resolved.stage === 'result') {
+  const resultItem = ...itemsById.get(resultPoemId);
+  if (resultItem?.poet !== resolved.selectedPoet) {      // only on mismatch...
+    const restored = restoreSessionState(storage, ...);  // ...fall back to storage
+    resultPoemId = restored?.selectedPoet === resolved.selectedPoet
+      ? restored.currentPoemId : null;
+  }
+}
+```
+
+The in-session ref is primary; `sessionStorage` is a **fallback**, not the authority. And
+`stateFromHistory` already degrades an unrestorable `result` entry to `intention`
+(`canRestoreResult ? ... : 'intention'`), so a genuinely orphaned result cannot render.
+
+### The model is two-tier and coherent
+
+| Store | Role | Behaviour on "Choose another poet" |
+| --- | --- | --- |
+| `lastResultPoemIdRef` | in-session memory | retained → **Back restores the verse** (correct undo) |
+| `sessionStorage` | cross-reload restore | cleared → **reload lands on welcome** (correct: do not resurrect a verse the visitor walked away from) |
+
+Both observed behaviours are the *intended* ones. Pressing Back means "undo my navigation", so
+showing the verse again is right. Saying "choose another poet" means "do not persist this", so a
+refresh not restoring it is right — the same privacy posture proven in F-02, where the reducer
+scrubs unknown fields.
+
+**No user harm exists.** The original entry's claimed harm — "a refresh silently drops them at
+welcome, contradicting L-10" — was wrong: L-10 ("refresh restores the result poem") applies to a
+result the visitor is still on, not to one they have explicitly left.
+
+### Lesson
+
+This is the second finding withdrawn after reading the code that owns the behaviour rather than the
+code that writes to storage. `flowNavigation.ts` looked incoherent in isolation; it is correct in
+context. Auditing a writer without its reader produces false positives — recorded so the remaining
+104 rows are worked reader-first.
+
+---
+
+### Superseded original entry — "Choose another poet" then browser Back
 
 | Field | Value |
 | --- | --- |
-| **Severity** | **Low** |
-| **Status** | Open — reported, not repaired |
+| **Severity** | ~~Low~~ **WITHDRAWN — not a defect** |
+| **Status** | **Withdrawn** after reading `App.tsx:478-506` |
 | **Surface** | `src/lib/navigation/flowNavigation.ts:29-54` (writer); `src/app/history.ts` (contract) |
 | **Affected** | A visitor who presses "← Choose another poet" from a result, then browser Back |
 | **Test coverage** | `flowNavigation.ts` has **no test importing it**, despite backing the control PR #5 shipped specifically to add |
@@ -465,11 +515,11 @@ supported a false High finding, which is exactly what rule 14 warns about.
 | --- | --- | --- |
 | F-01 Persian heading uses unbundled system font | **Low** | **FIXED** — test-first, verified |
 | ~~F-02~~ Reducer fall-through | **WITHDRAWN — not a defect** | Deliberate privacy scrubber; repair reverted |
-| F-03 Choose-another-poet + Back desyncs view from storage | **Low** | Open — repair risk (Medium) exceeds the defect; deferral defensible |
+| ~~F-03~~ Choose-another-poet + Back | **WITHDRAWN — not a defect** | Deliberate two-tier restore; ref primary, storage fallback |
 | O-01 Cinematic Begin traversal | **Resolved — not a defect** | Headed browser confirms correct traversal |
 | M-01 Stale fixture SW | Methodology, **not a defect** | Resolved (profile cleared) |
 
-**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 2** (1 fixed, 1 open) · **Informational 2** (1 fixed) · **1 withdrawn**.
+**Blocker 0 · Critical 0 · High 0 · Medium 0 · Low 1** (fixed) · **Informational 2** (1 fixed) · **2 withdrawn**.
 
 ### Fix-all pass — outcome
 
@@ -481,7 +531,7 @@ Asked to "fix all", the audit fixed **two** and declined **two**, on evidence:
 | I-02 | fix | **Fixed** — test-only; proved the existing suite missed SW-side drift entirely |
 | F-02 | fix | **WITHDRAWN — not a defect.** Repair broke a privacy test and was reverted |
 | I-01 | fix | **Declined** — Informational, no behaviour wrong; a rename is cosmetic churn (rule 3) |
-| F-03 | fix | **Declined pending intent.** After F-02, the storage clearing is plausibly the same deliberate privacy posture; repair risk (Medium) still exceeds severity (Low) |
+| F-03 | fix | **WITHDRAWN — not a defect.** Reading `App.tsx` proved the ref is primary and storage a fallback; the repair would have broken working behaviour |
 
 Two of the four "fixes" would have made the product worse. Fixing everything asked was not the
 correct outcome.

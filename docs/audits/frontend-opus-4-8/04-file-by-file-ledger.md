@@ -1,6 +1,6 @@
 # 04 — File-by-File Ledger
 
-**Status: IN PROGRESS — 23 of 127 rows touched (19 resolved, 4 partial). 104 remain `PENDING`.**
+**Status: IN PROGRESS — 24 of 127 rows touched (19 resolved, 5 partial). 103 remain `PENDING`.**
 
 This ledger is the goal's primary artefact and is far from complete. Every row below was **read in
 full** by the primary agent, not sampled and not delegated. A `NO DEFECT` verdict is recorded only
@@ -396,6 +396,47 @@ A visible `<span>Ready offline</span>`. Announcement is handled separately throu
 
 ---
 
+## `src/app/App.tsx` — 795 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **partial — ~320 of 795 lines (1-260, 470-524, 526-600, 636-730)** |
+| Purpose | Reducer host, history, offline, focus orchestration, scene routing |
+| Lenses | R, T, A, S |
+| Tests | `appFlow`, `appAccessibility`, `contextRoutes`, `failures`, `offlineIntegration`, `poetSelectionNavigation`, `visualLanguage` |
+| Verdict | **No defect in what was read. Resolved F-03 as NOT a defect.** Row stays `PENDING` |
+
+### React correctness — the parts read are sound
+
+- **No stale closures.** `dispatch` is `useCallback((event) => setState((current) => appReducer(current, event)), [])` — a functional update with an empty dep array, so it can never capture a stale `state`.
+- **StrictMode double-invoke safe.** The release-load effect uses the `let cancelled = false` / `if (cancelled) return` guard, so React 18's double-invoked effects cannot double-apply or setState after unmount.
+- **Timer cleanup.** `clearRevealTimers` nulls both refs after clearing, and `useEffect(() => () => clearRevealTimers(), [clearRevealTimers])` guarantees teardown on unmount.
+- **Double-activation guarded.** `handleReveal` early-returns on `revealActiveRef.current`; `completeReveal` early-returns on the same plus a null `pendingPoemIdRef`. This is what makes F-02 latent.
+- **Fail-safe browser access.** `browserStorage`, `browserMatchMedia`, and `writeHistory` each wrap access in `try/catch` and degrade rather than throw. `writeHistory`'s comment states the reasoning: "History is a navigation enhancement; the active in-memory scene remains usable."
+- **URL hygiene.** An unknown deep path triggers `history.replaceState(null, '', '/')` with a `§5.3` reference — the prior audit's L-12 fix, still present.
+
+### F-03 resolved here — not a defect
+
+`handlePopState` (478-506) makes `lastResultPoemIdRef` the **primary** source for restoring a
+result and `sessionStorage` only a **fallback** consulted when the ref's poem does not match the
+resolved poet. `stateFromHistory` independently degrades an unrestorable `result` to `intention`.
+The two-tier model (ref = in-session memory, storage = cross-reload restore) is deliberate and
+coherent. See F-03's withdrawal in `06`.
+
+### Observations recorded as **not** defects
+
+- **Popstate effect deps are `[clearRevealTimers, state, verifiedRelease]`**, so the listener is removed and re-added on **every state change**. This is churn, but it is the correct trade: the handler closes over `state`, and a narrower dep list would reintroduce exactly the stale-closure bug the rest of the file avoids. `addEventListener`/`removeEventListener` are paired in the same effect, so no leak. Not a defect; recorded so a later reader does not "optimise" it into a bug.
+- **`activeContextRoute = contextRoute(window.location.pathname)` is computed during render**, reading external mutable state. It is a read, not a write, so it is not a render-phase side effect, and popstate → `setState` → re-render keeps it fresh. Theoretically impure under concurrent rendering; no observed impact.
+- **16 `useRef`s.** High, but each has a single stated purpose and they are the correct tool: they hold values that must survive re-render without causing one (timers, in-flight reveal, last poem, focus request). Not prop-drilling and not hidden state.
+
+### Unaudited (~475 lines)
+
+The offline/service-worker effects, `handleReveal`/`completeReveal` bodies beyond their guards, the
+share/save/download wiring, scene routing, and the render tree. The "no defect" above covers **only
+the lines read**. Row remains `PENDING`.
+
+---
+
 ## `src-sw/releaseManager.ts` — 871 lines
 
 | Field | Value |
@@ -478,14 +519,14 @@ z-index, safe-area, scroll locking, forced-colours, hover/active/disabled states
 | Metric | Count |
 | --- | ---: |
 | Rows resolved (full read + verdict) | **19** |
-| Rows partially read, still `PENDING` | 4 |
-| Rows untouched `PENDING` | **104** |
+| Rows partially read, still `PENDING` | 5 |
+| Rows untouched `PENDING` | **103** |
 | Total | 127 |
-| Defects found in resolved rows | 2 (F-02, F-03) |
+| Defects found in resolved rows | **0 — both F-02 and F-03 withdrawn as intended behaviour** |
 | Informational notes | 2 (I-01, I-02) |
 | `NO DEFECT` verdicts | 17 |
 
-**The audit cannot pass in this state.** 104 rows have not been opened. Any later reader must treat
+**The audit cannot pass in this state.** 103 rows have not been opened. Any later reader must treat
 the absence of a finding for those files as **unaudited**, not as evidence of soundness.
 
 ### Signal from the ordering
