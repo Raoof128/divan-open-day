@@ -48,6 +48,7 @@
     "poetry:extract": "tsx scripts/poetry/extract-sources.ts",
     "poetry:extract-bell": "tsx scripts/poetry/extract-hafez-bell.ts",
     "poetry:build-candidates": "tsx scripts/poetry/build-candidate-index.ts",
+    "poetry:inventory": "tsx scripts/poetry/build-corpus-inventory.ts",
     "poetry:fetch-masnavi": "tsx scripts/poetry/fetch-masnavi-sections.ts",
     "poetry:build-production": "tsx scripts/poetry/build-production-corpus.ts"
   },
