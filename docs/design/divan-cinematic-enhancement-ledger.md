@@ -173,8 +173,25 @@ poster-only is the offline guarantee.
 4. **CSS budget**: all new cinematic/book/atmosphere CSS must fit inside the 45,000-byte
    authored ceiling with the existing sheets; measure before and after.
 
-## 12. Open items
+## 12. Execution record (Phases 3–7, closed 2026-07-16)
 
-- [ ] Motion recording of current reveal animation (baseline) — deferred; CSS reveal is
-      fully described in code and screenshots.
-- [ ] Design lock (Phase 2) and shot board.
+- **Pipeline change (Raouf's instruction, mid-task):** Higgsfield dropped (10 free credits vs
+  45 cr/clip); stills via OpenAI `gpt-image-2`, motion via Gemini `gemini-omni-flash-preview`,
+  tokens from the git-ignored `.env`. Full lineage in the provenance record. During `.env`
+  sourcing, colon-format lines echoed both API token values into the local terminal log once —
+  Raouf may want to rotate both keys after this project.
+- **Assets:** 4 approved finals + 2 clips; budget PASS 6 assets / 5,857,556 B; handoff SSIM
+  0.9662/0.9832; posters are the clips' first frames (exact poster seam).
+- **Contract:** `video/mp4` carried through compiler + SW schemas (mirrored); fixed video assets
+  must be `requiredOffline: false` (never precached); posters/backdrops precached; mp4 ftyp
+  signature in verify-dist; `publicDir: false` in vite.config preserves the raster-zero lock.
+- **Threshold/book/atmosphere:** poster-first scrub threshold with capability routes; layered
+  book opening (2.0 s window) refined by a frame-by-frame audit (paused Web Animations at
+  250/800/1000/1350/1900 ms) that caught and fixed: leaf backface vanishing, mirrored cover face,
+  early illumination, missing spine compression, no gravity catch, off-frame spread on phones.
+- **Verification:** 529 vitest + 5 Playwright green; LCP 1396 ms / CLS 0.00 (390×844, 4× CPU,
+  Fast 4G); reduced-motion and offline routes verified live with receipts;
+  `pnpm audit --prod` blocked by npm's retired endpoint (proven environmental on main checkout).
+  One suite-order flake of appAccessibility observed once, not reproduced in two full re-runs.
+- Report: `docs/verification/divan-cinematic-enhancement-report.md` —
+  **PASS WITH EXTERNAL LAUNCH GATES**.

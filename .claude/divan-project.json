@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "releaseGateEnabled": false,
+  "releaseGateEnabled": true,
   "verificationReport": "docs/verification/divan-cinematic-enhancement-report.md",
   "assetManifest": "docs/verification/divan-cinematic-assets.json",
   "protectedPaths": [
