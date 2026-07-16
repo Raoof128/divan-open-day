@@ -37,8 +37,11 @@ const machineAuthoritySchema = z
     kind: z.literal('machine_alignment'),
     model: z.string().min(3).max(120),
     methodVersion: z.string().min(3).max(120),
+    englishSourceId: identifierSchema,
     englishSourceHash: sha256Schema,
+    persianSourceId: identifierSchema,
     persianSourceHash: sha256Schema,
+    canonicalIdentityHash: sha256Schema,
     englishSpanHash: sha256Schema,
     persianSpanHash: sha256Schema,
     mappingHash: sha256Schema,
@@ -90,12 +93,14 @@ export interface MachineAuthorityBinding {
   readonly persianSourceId: string;
   readonly persianSourceHash: string;
   readonly persianReference: string;
+  readonly canonicalIdentity: string;
   readonly englishLines: readonly string[];
   readonly persianLines: readonly string[];
   readonly mapping: readonly MachineLineMapping[];
 }
 
 export interface MachineAuthorityDigests {
+  readonly canonicalIdentityHash: string;
   readonly englishSpanHash: string;
   readonly persianSpanHash: string;
   readonly mappingHash: string;
@@ -112,6 +117,7 @@ export function machineAuthorityDigests(
   binding: MachineAuthorityBinding,
 ): MachineAuthorityDigests {
   return {
+    canonicalIdentityHash: canonicalSha256(binding.canonicalIdentity),
     englishSpanHash: canonicalSha256(binding.englishLines),
     persianSpanHash: canonicalSha256(binding.persianLines),
     mappingHash: canonicalSha256({
@@ -149,6 +155,13 @@ export function assertMachineAuthorityCurrent(
   }
 
   if (
+    authority.englishSourceId !== binding.englishSourceId ||
+    authority.persianSourceId !== binding.persianSourceId
+  ) {
+    throw new Error('Machine authority has a stale source ID binding.');
+  }
+
+  if (
     authority.englishSourceHash !== binding.englishSourceHash ||
     authority.persianSourceHash !== binding.persianSourceHash
   ) {
@@ -156,6 +169,11 @@ export function assertMachineAuthorityCurrent(
   }
 
   const current = machineAuthorityDigests(binding);
+  if (authority.canonicalIdentityHash !== current.canonicalIdentityHash) {
+    throw new Error(
+      'Machine authority has a stale canonical Persian identity binding.',
+    );
+  }
   if (authority.englishSpanHash !== current.englishSpanHash) {
     throw new Error(
       'Machine authority has a stale English selected-span hash.',

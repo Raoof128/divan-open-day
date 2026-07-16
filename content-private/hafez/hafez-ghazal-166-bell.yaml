@@ -60,9 +60,12 @@ review: null
 review_authority:
   kind: machine_alignment
   model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v1
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  canonicalIdentityHash: a02e0dfb1035c692561af49358ea98a9b3440503115bfb80e1037f0e7e9f4772
   englishSpanHash: 3c96ae9ce6022c0802508f565af3bf7eaa58592bdac2acb8baca90f53c557fff
   persianSpanHash: 85ecc9367b67a07d4ea0ec2670c7e35d3826c05c4310379e36b64b68cbc5acca
   mappingHash: 4b4a7ee2d77af4b784ed379d6eba3873c4879987364549540a7b7963ca0cd22d

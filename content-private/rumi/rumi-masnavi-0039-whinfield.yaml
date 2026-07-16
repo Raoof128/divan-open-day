@@ -1,0 +1,78 @@
+id: rumi-masnavi-0039-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 39
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0253-s2:lines-18-19
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - باز از حیوان سوی انسانیش
+    - می‌کشید آن خالقی که دانیش
+  english_lines:
+    - Again, the great Creator, as you know,
+    - Drew man out of the animal into the human state.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0039-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: rumi-whinfield-abridged-en
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceId: rumi-nicholson-fa-wikisource
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  canonicalIdentityHash: 8592893411b18ba3fccb46a4b9f0994207552539472f66101e24a7f50f02d75f
+  englishSpanHash: e112583137341c8391447459f34906a5e4980cfe3e177bbdaf9251fc382075da
+  persianSpanHash: 13cbf3b708653c2abb0c0162515c2f7e0e9558b0894d83c4e1c49c325a336885
+  mappingHash: e1908bf906cd3ff0db01fc6e784dd06b238d11ea79c3c46e4c6cfe2cfa9a9f3a
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.866568
+  disclosures:
+    - This English passage is E. H. Whinfield's abridged rendering. Its verse follows the Persian section closely, but the surrounding mule-and-camel narrative is Whinfield's own prose summary rather than translated verse, and the English continues past this section into further passages of the Masnavi.
+  verifiedAt: 2026-07-16
+  rationale: The continuous Whinfield lines beginning at 18 resolve to the continuous Nicholson section 39 span beginning at 18, supported by 3 independent same-context anchors.

@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { stringify } from 'yaml';
 
 import { authoringContentItemSchema } from '../../src/lib/content/authoringSchema';
+import { canonicalSha256 } from '../../src/lib/content/canonical';
+import { productionSelectionManifestSchema } from '../../src/lib/content/productionManifest';
 import {
   HAFEZ_PRODUCTION_SELECTION,
   RUMI_ARCHIVED_SELECTION,
@@ -20,6 +22,10 @@ const CONTENT_ROOT = path.join(ROOT, 'content-private');
 
 const SOURCE_HASHES = {
   bell: '99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145',
+  clarkeVolume1:
+    '8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154',
+  clarkeVolume2:
+    'f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f',
   hafezPersian:
     'a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b',
   nicholson: '04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7',
@@ -79,6 +85,42 @@ interface RumiVerifiedAlignment {
   readonly anchors: readonly RumiAnchor[];
   readonly disclosure: string | null;
   readonly rationale: string;
+}
+interface EvidenceMapping {
+  readonly englishIndex: number;
+  readonly persianIndices: readonly number[];
+}
+interface HafezFinalEvidence {
+  readonly stableRecordId: string;
+  readonly volume: 'volume-1' | 'volume-2';
+  readonly page: number;
+  readonly ode: number;
+  readonly concordance: number;
+  readonly ghazalNumber: number;
+  readonly englishLines: readonly string[];
+  readonly persianLines: readonly string[];
+  readonly mapping: readonly EvidenceMapping[];
+  readonly retrievalScore: number;
+  readonly anchors: readonly RumiAnchor[];
+  readonly disclosures: readonly string[];
+}
+interface RumiFinalEvidence {
+  readonly segmentId: string;
+  readonly persianSequence: number;
+  readonly englishLineStart: number;
+  readonly persianLineStart: number;
+  readonly englishLines: readonly string[];
+  readonly persianLines: readonly string[];
+  readonly mapping: readonly EvidenceMapping[];
+  readonly retrievalScore: number;
+  readonly anchors: readonly RumiAnchor[];
+  readonly disclosures: readonly string[];
+}
+interface FinalAlignmentEvidence {
+  readonly modelLabel: string;
+  readonly methodVersion: string;
+  readonly newHafez: readonly HafezFinalEvidence[];
+  readonly newRumi: readonly RumiFinalEvidence[];
 }
 
 function sha256(bytes: Uint8Array): string {
@@ -167,6 +209,8 @@ function authorityFor(
     readonly disclosures: readonly string[];
     readonly confidence: number;
     readonly rationale: string;
+    readonly model?: string;
+    readonly methodVersion?: string;
   },
 ) {
   const binding = {
@@ -176,6 +220,13 @@ function authorityFor(
     persianSourceId: source.edition_id,
     persianSourceHash: source.persian_source_sha256,
     persianReference: `${source.reference_type}:${source.reference_value}`,
+    canonicalIdentity: `${source.edition_id}:${source.reference_type}:${source.reference_value
+      .trim()
+      .toLowerCase()}${
+      source.reference_type === 'masnavi'
+        ? `:${canonicalSha256(text.persian_lines)}`
+        : ''
+    }`,
     englishLines: text.english_lines,
     persianLines: text.persian_lines,
     mapping: text.mapping.map((entry) => ({
@@ -186,10 +237,13 @@ function authorityFor(
   const digests = machineAuthorityDigests(binding);
   return {
     kind: 'machine_alignment' as const,
-    model: 'gpt-5.5-codex',
-    methodVersion: 'source-bound-alignment-v1',
+    model: evidence.model ?? 'gpt-5.5-codex',
+    methodVersion: evidence.methodVersion ?? 'source-bound-alignment-v2',
+    englishSourceId: binding.englishSourceId,
     englishSourceHash: source.english_source_sha256,
+    persianSourceId: binding.persianSourceId,
     persianSourceHash: source.persian_source_sha256,
+    canonicalIdentityHash: digests.canonicalIdentityHash,
     englishSpanHash: digests.englishSpanHash,
     persianSpanHash: digests.persianSpanHash,
     mappingHash: digests.mappingHash,
@@ -334,6 +388,77 @@ function makeHafezItems(
   });
 }
 
+function evidenceMapping(mapping: readonly EvidenceMapping[]) {
+  return mapping.map((entry) => ({
+    english_index: entry.englishIndex,
+    persian_indices: [...entry.persianIndices],
+  }));
+}
+
+function makeClarkeHafezItems(
+  records: readonly HafezFinalEvidence[],
+  evidence: Pick<FinalAlignmentEvidence, 'modelLabel' | 'methodVersion'>,
+) {
+  return records.map((record) => {
+    const id = record.stableRecordId;
+    const englishHash =
+      record.volume === 'volume-1'
+        ? SOURCE_HASHES.clarkeVolume1
+        : SOURCE_HASHES.clarkeVolume2;
+    const sourceReference = `Clarke ${record.volume}, ode ${String(record.ode)} (${String(record.concordance)}), scan page ${String(record.page)}`;
+    const source = {
+      work_en:
+        'The Divan, Written in the Fourteenth Century by Khwaja Shams-ud-Din Muhammad-i-Hafiz-i-Shirazi',
+      work_fa: 'دیوان حافظ',
+      edition_id: 'hafez-qazvini-ghani-fa-wikisource',
+      edition_citation:
+        'Qazvini-Ghani Divan transcription; local source lock and extraction evidence.',
+      edition_public_credit:
+        'Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA).',
+      reference_type: 'ghazal' as const,
+      reference_value: `Ghazal ${String(record.ghazalNumber)}`,
+      opening_hemistich_fa: record.persianLines[0] ?? null,
+      page_reference: sourceReference,
+      source_language: 'fa' as const,
+      english_source_id: 'hafez-clarke-1891-en',
+      english_source_sha256: englishHash,
+      english_source_reference: sourceReference,
+      persian_source_sha256: SOURCE_HASHES.hafezPersian,
+    };
+    const text = {
+      persian_lines: [...record.persianLines],
+      english_lines: [...record.englishLines],
+      alignment: 'line' as const,
+      mapping: evidenceMapping(record.mapping),
+    };
+    const translation = {
+      classification: 'public_domain_translation' as const,
+      translator_ids: [],
+      rights_owner:
+        'H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.',
+      permission_record_id: `${id}-translation-permission`,
+      public_credit:
+        'English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891).',
+      permitted_uses: [...PUBLIC_USES],
+      moral_rights_notes: null,
+    };
+    return authoringContentItemSchema.parse({
+      id,
+      ...commonItemFields('hafez'),
+      source,
+      text,
+      translation,
+      review_authority: authorityFor(source, text, {
+        model: evidence.modelLabel,
+        methodVersion: evidence.methodVersion,
+        disclosures: record.disclosures,
+        confidence: Math.max(0.8, Math.min(0.99, record.retrievalScore)),
+        rationale: `The selected Clarke opening at ${sourceReference} resolves to Qazvini-Ghani ghazal ${String(record.ghazalNumber)} through an exact continuous source span and ${String(record.anchors.length)} independent bilingual anchors.`,
+      }),
+    });
+  });
+}
+
 function makeRumiItems(verified: readonly RumiVerifiedAlignment[]) {
   const verifiedBySegment = new Map(
     verified.map((alignment) => [alignment.segmentId, alignment]),
@@ -406,6 +531,64 @@ function makeRumiItems(verified: readonly RumiVerifiedAlignment[]) {
   });
 }
 
+function makeEvidenceRumiItems(
+  records: readonly RumiFinalEvidence[],
+  evidence: Pick<FinalAlignmentEvidence, 'modelLabel' | 'methodVersion'>,
+) {
+  return records.map((record) => {
+    const id = `rumi-masnavi-${String(record.persianSequence).padStart(4, '0')}-whinfield`;
+    const source = {
+      work_en: "Masnavi I Ma'navi",
+      work_fa: 'مثنوی معنوی',
+      edition_id: 'rumi-nicholson-fa-wikisource',
+      edition_citation:
+        'Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.',
+      edition_public_credit:
+        'Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA).',
+      reference_type: 'masnavi' as const,
+      reference_value: `Nicholson section ${String(record.persianSequence)}`,
+      opening_hemistich_fa: null,
+      page_reference: null,
+      source_language: 'fa' as const,
+      english_source_id: 'rumi-whinfield-abridged-en',
+      english_source_sha256: SOURCE_HASHES.whinfield,
+      english_source_reference: `${record.segmentId}:lines-${String(record.englishLineStart)}-${String(record.englishLineStart + record.englishLines.length - 1)}`,
+      persian_source_sha256: SOURCE_HASHES.nicholson,
+    };
+    const text = {
+      persian_lines: [...record.persianLines],
+      english_lines: [...record.englishLines],
+      alignment: 'line' as const,
+      mapping: evidenceMapping(record.mapping),
+    };
+    const translation = {
+      classification: 'public_domain_translation' as const,
+      translator_ids: [],
+      rights_owner:
+        'E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.',
+      permission_record_id: `${id}-translation-permission`,
+      public_credit:
+        "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged).",
+      permitted_uses: [...PUBLIC_USES],
+      moral_rights_notes: null,
+    };
+    return authoringContentItemSchema.parse({
+      id,
+      ...commonItemFields('rumi'),
+      source,
+      text,
+      translation,
+      review_authority: authorityFor(source, text, {
+        model: evidence.modelLabel,
+        methodVersion: evidence.methodVersion,
+        disclosures: record.disclosures,
+        confidence: Math.max(0.8, Math.min(0.99, record.retrievalScore)),
+        rationale: `The continuous Whinfield lines beginning at ${String(record.englishLineStart)} resolve to the continuous Nicholson section ${String(record.persianSequence)} span beginning at ${String(record.persianLineStart)}, supported by ${String(record.anchors.length)} independent same-context anchors.`,
+      }),
+    });
+  });
+}
+
 type AuthoringItem = ReturnType<typeof authoringContentItemSchema.parse>;
 
 function makeRegistries(items: readonly AuthoringItem[]) {
@@ -459,6 +642,33 @@ function makeRegistries(items: readonly AuthoringItem[]) {
   });
 }
 
+function makeSelectionManifest(items: readonly AuthoringItem[]) {
+  return productionSelectionManifestSchema.parse({
+    schema_version: 1,
+    records: [...items]
+      .sort(
+        (left, right) =>
+          left.poet.localeCompare(right.poet, 'en') ||
+          left.id.localeCompare(right.id, 'en'),
+      )
+      .map((item) => {
+        if (item.review_authority.kind !== 'machine_alignment') {
+          throw new Error(
+            `Production item ${item.id} lacks machine authority.`,
+          );
+        }
+        return {
+          item_id: item.id,
+          poet: item.poet,
+          canonical_identity_hash: item.review_authority.canonicalIdentityHash,
+          english_span_hash: item.review_authority.englishSpanHash,
+          persian_span_hash: item.review_authority.persianSpanHash,
+          mapping_hash: item.review_authority.mappingHash,
+        };
+      }),
+  });
+}
+
 async function writeYaml(relativePath: string, value: unknown): Promise<void> {
   const destination = path.join(CONTENT_ROOT, relativePath);
   try {
@@ -479,6 +689,14 @@ export async function buildProductionCorpus(): Promise<void> {
       SOURCE_HASHES.hafezPersian,
     ),
     assertSourceHash(
+      'raw/hafez-clarke-1891-en/volume-1.pdf',
+      SOURCE_HASHES.clarkeVolume1,
+    ),
+    assertSourceHash(
+      'raw/hafez-clarke-1891-en/volume-2.pdf',
+      SOURCE_HASHES.clarkeVolume2,
+    ),
+    assertSourceHash(
       'raw/rumi-nicholson-fa-wikisource/source.epub',
       SOURCE_HASHES.nicholson,
     ),
@@ -487,7 +705,7 @@ export async function buildProductionCorpus(): Promise<void> {
       SOURCE_HASHES.whinfield,
     ),
   ]);
-  const [bell, ghazals, alignmentReport] = await Promise.all([
+  const [bell, ghazals, alignmentReport, finalEvidence] = await Promise.all([
     readJson<{ readonly poems: readonly BellPoem[] }>(
       'sources-private/poetry/bell-ocr/bell-poems.json',
     ),
@@ -497,10 +715,23 @@ export async function buildProductionCorpus(): Promise<void> {
     readJson<{ readonly verified: readonly RumiVerifiedAlignment[] }>(
       'sources-private/poetry/reports/rumi-alignment-candidates.json',
     ),
+    readJson<FinalAlignmentEvidence>(
+      'docs/verification/2026-07-16-final-alignment-evidence.json',
+    ),
   ]);
-  const hafezItems = makeHafezItems(bell.poems, ghazals);
-  const rumiItems = makeRumiItems(alignmentReport.verified);
+  const hafezItems = [
+    ...makeHafezItems(bell.poems, ghazals),
+    ...makeClarkeHafezItems(finalEvidence.newHafez, finalEvidence),
+  ];
+  const rumiItems = [
+    ...makeRumiItems(alignmentReport.verified),
+    ...makeEvidenceRumiItems(finalEvidence.newRumi, finalEvidence),
+  ];
   const registries = makeRegistries([...hafezItems, ...rumiItems]);
+  const selectionManifest = makeSelectionManifest([
+    ...hafezItems,
+    ...rumiItems,
+  ]);
   await Promise.all([
     ...hafezItems.map((item) => writeYaml(`hafez/${item.id}.yaml`, item)),
     ...rumiItems.map((item) => writeYaml(`rumi/${item.id}.yaml`, item)),
@@ -509,6 +740,7 @@ export async function buildProductionCorpus(): Promise<void> {
     writeYaml('permissions.yaml', registries.permissions),
     writeYaml('approvals.yaml', registries.approvals),
     writeYaml('assets.yaml', registries.assets),
+    writeYaml('production-selection.yaml', selectionManifest),
   ]);
 }
 
@@ -517,6 +749,6 @@ const invokedPath =
 if (invokedPath === fileURLToPath(import.meta.url)) {
   await buildProductionCorpus();
   process.stdout.write(
-    `Built ${String(HAFEZ_PRODUCTION_SELECTION.length)} Hafez and ${String(RUMI_PRODUCTION_SELECTION.length)} Rumi canonical records; archived ${String(RUMI_ARCHIVED_SELECTION.length)} Rumi records separately.\n`,
+    `Built 60 Hafez and 60 Rumi canonical records; archived ${String(RUMI_ARCHIVED_SELECTION.length)} Rumi records separately.\n`,
   );
 }

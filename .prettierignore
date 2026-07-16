@@ -7,6 +7,9 @@ playwright-report/
 test-results/
 .tmp-tests/
 .worktrees/
+.remember/
+New_Frontend/
+scripts/poetry/build-hafez-align-tasks.ts
 .pnpm-store/
 pnpm-lock.yaml
 

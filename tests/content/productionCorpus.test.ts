@@ -7,7 +7,7 @@ import { RUMI_ARCHIVED_SELECTION } from '../../src/lib/content/productionSelecti
 const PROJECT_ROOT = process.cwd();
 
 describe('canonical production corpus', () => {
-  it('compiles exactly 24 Hafez and 16 Rumi source-bound records', async () => {
+  it('compiles exactly 60 Hafez and 60 Rumi source-bound records', async () => {
     const loaded = await loadContentPrivate({
       projectRoot: PROJECT_ROOT,
       profile: 'production',
@@ -17,12 +17,13 @@ describe('canonical production corpus', () => {
       items: loaded.items,
       registries: loaded.registries,
       buildDate: '2026-07-16',
+      selectionManifest: loaded.selectionManifest,
     });
 
     expect(compiled).toMatchObject({
-      hafezCount: 24,
-      rumiCount: 16,
-      totalCount: 40,
+      hafezCount: 60,
+      rumiCount: 60,
+      totalCount: 120,
       productionEligible: true,
     });
     expect(
@@ -58,6 +59,7 @@ describe('canonical production corpus', () => {
       items: loaded.items,
       registries: loaded.registries,
       buildDate: '2026-07-16',
+      selectionManifest: loaded.selectionManifest,
     });
     const serialized = JSON.stringify(compiled.items);
 

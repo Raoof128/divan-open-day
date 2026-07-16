@@ -1091,6 +1091,7 @@ export async function buildProductionRelease(
       items: loaded.items,
       registries: loaded.registries,
       buildDate: config.buildDate,
+      selectionManifest: loaded.selectionManifest,
     });
     if (
       compiled.hafezCount < config.minimumHafezCount ||

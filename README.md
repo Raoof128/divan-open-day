@@ -5,18 +5,18 @@
 ![pnpm](https://img.shields.io/badge/pnpm-10.33-orange)
 
 DIVAN is a bilingual Persian poetry experience for a Persian Society Open Day
-stall. This repository is a **Work in progress**. The application is not deployed,
-and the repository contains no approved production poetry corpus,
-translation, reflection, recording, image, permission record, or launch
-approval.
+stall. This repository is a **Work in progress**. It contains a source-bound
+local production corpus, but the application is not deployed and no public
+launch, University branding, live infrastructure, physical QR, or event approval
+is claimed.
 
 ## Release status
 
-The only build available without private, human-reviewed source records is a
-synthetic engineering fixture. `pnpm build` and `pnpm build:fixture` produce a
-release marked `productionEligible: false`. Do not publish or deploy that
-output. `pnpm build:production` fails closed until the complete content,
-rights, review, branding, and release configuration passes validation.
+`pnpm build` and `pnpm build:fixture` produce a synthetic release marked
+`productionEligible: false`; do not publish it. With explicit non-secret release
+configuration, `pnpm build:production` validates the deterministic manifest of
+exactly 60 Hafez and 60 Rumi source-bound records. Public launch remains a
+separate gated operation.
 
 Repository tests and local browser checks provide engineering evidence. They
 do not establish cultural approval, rights clearance, accessibility
@@ -87,9 +87,10 @@ decision before launch.
 
 Test records use repeated `TEST ONLY`, `SYNTHETIC`, `NOT POETRY`, and
 `NOT TRANSLATION` markers. The production compiler rejects those markers.
-Human editors must supply edition provenance, permissions, contributor roles,
-independent reviews, final approval, and asset checks before a production
-release can build. See the [content workflow](docs/content-style-guide.md) and
+Production poetry uses fresh machine-alignment authority bound to immutable
+edition, span, mapping, and canonical-identity evidence; it does not require a
+fabricated human identity. Attribution and source-bound permissions still fail
+closed. See the [content workflow](docs/content-style-guide.md) and
 [public rights register](docs/rights-register-public.md).
 
 ## Operations and security
@@ -110,11 +111,11 @@ Repository-authored source code is released under the MIT Licence — see
 
 It does not extend to, and no licence is granted for:
 
-- **Persian poetry, translations, and reflections.** No approved corpus exists
-  in this repository, and the four source editions are third-party works that
-  keep their own terms (for example, the Persian Wikisource transcriptions are
-  CC BY-SA and require attribution). Reusing them is a matter between you and
-  those rights holders.
+- **Persian poetry, translations, and reflections.** The source-bound production
+  corpus and its five registered source editions are third-party works that keep
+  their own terms (for example, the Persian Wikisource transcriptions are CC
+  BY-SA and require attribution). Reusing them is a matter between you and those
+  rights holders.
 - **Persian Society names and marks**, and any University mark. These are not
   licensed for reuse.
 

@@ -18,6 +18,7 @@ function binding(): MachineAuthorityBinding {
     persianSourceId: 'hafez-qazvini-ghani-fa-wikisource',
     persianSourceHash: SHA_B,
     persianReference: 'Ghazal 1',
+    canonicalIdentity: 'hafez-qazvini-ghani-fa-wikisource:ghazal:1',
     englishLines: ['Arise, oh Cup-bearer, rise!', 'And give me the cup.'],
     persianLines: ['الا یا ایها الساقی', 'ادر کاسا و ناولها'],
     mapping: [
@@ -33,8 +34,12 @@ function machineAuthority(sourceBinding = binding()) {
     kind: 'machine_alignment' as const,
     model: 'gpt-5.5-codex',
     methodVersion: 'source-bound-alignment-v1',
+    englishSourceId: sourceBinding.englishSourceId,
     englishSourceHash: sourceBinding.englishSourceHash,
+    persianSourceId: sourceBinding.persianSourceId,
     persianSourceHash: sourceBinding.persianSourceHash,
+    canonicalIdentityHash:
+      machineAuthorityDigests(sourceBinding).canonicalIdentityHash,
     englishSpanHash: digests.englishSpanHash,
     persianSpanHash: digests.persianSpanHash,
     mappingHash: digests.mappingHash,
@@ -79,6 +84,12 @@ describe('review authority', () => {
     ['Persian source hash', { persianSourceHash: 'd'.repeat(64) }],
     ['English source reference', { englishReference: 'Poem II, page 72' }],
     ['Persian source reference', { persianReference: 'Ghazal 2' }],
+    ['English source ID', { englishSourceId: 'hafez-clarke-1891-en' }],
+    ['Persian source ID', { persianSourceId: 'other-persian-edition' }],
+    [
+      'canonical Persian identity',
+      { canonicalIdentity: 'hafez-qazvini-ghani-fa-wikisource:ghazal:2' },
+    ],
     ['English selected span', { englishLines: ['Changed source span'] }],
     ['Persian selected span', { persianLines: ['مقطع منبع تغییر کرد'] }],
     ['line mapping', { mapping: [{ englishIndex: 0, persianIndices: [1] }] }],

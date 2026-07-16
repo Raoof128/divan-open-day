@@ -408,6 +408,618 @@ permissions:
       - worldwide
     effective_on: 2026-07-16
     expires_on: null
+  - id: hafez-ghazal-017-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-017-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-019-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-019-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-028-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-028-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-034-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-034-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-038-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-038-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-043-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-043-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-052-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-052-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-056-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-056-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-058-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-058-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-062-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-062-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-077-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-077-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-086-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-086-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-089-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-089-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-091-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-091-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-094-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-094-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-119-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-119-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-130-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-130-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-135-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-135-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-136-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-136-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-161-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-161-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-173-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-173-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-180-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-180-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-209-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-209-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-234-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-234-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-242-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-242-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-278-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-278-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-337-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-337-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-342-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-342-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-350-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-350-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-377-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-377-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-412-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-412-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-427-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-427-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-452-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-452-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-465-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-465-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-468-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-468-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: hafez-ghazal-489-clarke-translation-permission
+    status: active
+    kind: translation
+    subject_id: hafez-ghazal-489-clarke
+    rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
   - id: rumi-masnavi-0029-whinfield-translation-permission
     status: active
     kind: translation
@@ -667,6 +1279,754 @@ permissions:
     status: active
     kind: translation
     subject_id: rumi-masnavi-0959-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0000-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0000-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0942-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0942-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0858-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0858-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0802-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0802-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0800-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0800-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0836-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0836-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0718-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0718-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0703-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0703-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0667-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0667-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0813-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0813-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0359-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0359-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0958-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0958-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0708-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0708-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0544-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0544-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0639-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0639-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0751-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0751-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0232-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0232-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0673-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0673-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0612-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0612-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0759-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0759-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0431-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0431-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0143-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0143-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0699-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0699-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0342-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0342-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0283-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0283-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0762-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0762-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0188-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0188-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0685-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0685-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0271-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0271-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0166-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0166-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0039-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0039-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0170-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0170-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0895-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0895-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0860-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0860-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0167-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0167-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0844-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0844-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0083-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0083-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0805-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0805-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0282-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0282-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0840-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0840-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0432-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0432-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0408-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0408-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0590-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0590-whinfield
+    rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+    evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
+    permitted_uses:
+      - website_display
+      - downloadable_share_card
+      - event_print
+      - archival_hosting
+    attribution: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+    modification_permitted: true
+    territories:
+      - worldwide
+    effective_on: 2026-07-16
+    expires_on: null
+  - id: rumi-masnavi-0395-whinfield-translation-permission
+    status: active
+    kind: translation
+    subject_id: rumi-masnavi-0395-whinfield
     rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
     evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
     permitted_uses:

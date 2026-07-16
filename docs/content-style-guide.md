@@ -2,8 +2,8 @@
 
 ## Current release status
 
-The repository contains a source-bound production corpus of exactly 24 Hafez
-and 16 Rumi excerpts. Every item uses machine-alignment authority tied to source,
+The repository contains a source-bound production corpus of exactly 60 Hafez
+and 60 Rumi excerpts. Every item uses machine-alignment authority tied to source,
 span, reference, and mapping hashes. No reflection, contributor, reviewer,
 teacher, or human approval identity is invented. The local production package
 build passes; independent public-launch, governance, legal, deployment, manual
@@ -25,6 +25,7 @@ content-private/
   editions.yaml
   contributors.yaml
   permissions.yaml
+  production-selection.yaml
   approvals.yaml
   assets.yaml
 ```
@@ -75,8 +76,8 @@ Use Node 22.16.0 and pnpm 10.33.0. Production requires:
 ```text
 DIVAN_PUBLIC_ORIGIN=https://approved-origin.example
 DIVAN_RELEASE_ID=<lowercase-kebab-case-release-id>
-DIVAN_MIN_HAFEZ_COUNT=<integer-at-least-24>
-DIVAN_MIN_RUMI_COUNT=<integer-at-least-16>
+DIVAN_MIN_HAFEZ_COUNT=<integer-at-least-60>
+DIVAN_MIN_RUMI_COUNT=<integer-at-least-60>
 DIVAN_BRANDING_MODE=society_only
 SOURCE_DATE_EPOCH=<non-negative-integer-UTC-seconds>
 ```
@@ -96,7 +97,7 @@ pnpm lint
 ```
 
 In the present repository, `pnpm build:production` succeeds only when all seven
-non-secret production inputs are explicit and the exact 24/16/40 corpus remains
+non-secret production inputs are explicit and the exact 60/60/120 corpus remains
 source-bound. Omitting the inputs or changing a source, span, reference, mapping,
 verdict, permission, count, or fixture boundary fails closed.
 

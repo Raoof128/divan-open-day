@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { authoringContentItemSchema } from '../../src/lib/content/authoringSchema';
 import {
+  assertProductionMinimums,
   compileCorpus,
   validateItemEvidence,
 } from '../../src/lib/content/compileCorpus';
@@ -48,6 +49,7 @@ describe('compileCorpus', () => {
       persianSourceId: rawItem.source.edition_id,
       persianSourceHash: rawItem.source.persian_source_sha256,
       persianReference: `${rawItem.source.reference_type}:${rawItem.source.reference_value}`,
+      canonicalIdentity: `${rawItem.source.edition_id}:${rawItem.source.reference_type}:${rawItem.source.reference_value.trim().toLowerCase()}`,
       englishLines: rawItem.text.english_lines,
       persianLines: rawItem.text.persian_lines,
       mapping: rawItem.text.mapping.map((entry) => ({
@@ -61,8 +63,11 @@ describe('compileCorpus', () => {
         kind: 'machine_alignment',
         model: 'gpt-5.5-codex',
         methodVersion: 'source-bound-alignment-v1',
+        englishSourceId: binding.englishSourceId,
         englishSourceHash: binding.englishSourceHash,
+        persianSourceId: binding.persianSourceId,
         persianSourceHash: binding.persianSourceHash,
+        canonicalIdentityHash: digests.canonicalIdentityHash,
         englishSpanHash: digests.englishSpanHash,
         persianSpanHash: digests.persianSpanHash,
         mappingHash: digests.mappingHash,
@@ -132,7 +137,11 @@ describe('compileCorpus', () => {
     const corpus = makeFixtureCorpus();
     corpus.items[0]!.status = 'disabled';
 
-    expect(() => compileProduction(corpus)).toThrow(/24 Hafez/u);
+    expect(() =>
+      assertProductionMinimums(
+        corpus.items.map((item) => authoringContentItemSchema.parse(item)),
+      ),
+    ).toThrow(/60 Hafez/u);
   });
 
   it('rejects fixture sentinels and fixture IDs in production', () => {
@@ -257,22 +266,30 @@ describe('compileCorpus', () => {
     expect(() => compileFixture(corpus)).toThrow(/translator/u);
   });
 
-  it('rejects a production corpus with only 23 Hafez and 16 Rumi records', () => {
+  it('rejects the superseded 24 Hafez and 16 Rumi production corpus', () => {
     const corpus = makeFixtureCorpus();
     corpus.items = corpus.items.filter(
       (item) => item.id !== 'test-only-hafez-24',
     );
 
-    expect(() => compileProduction(corpus)).toThrow(/24 Hafez/u);
+    expect(() =>
+      assertProductionMinimums(
+        corpus.items.map((item) => authoringContentItemSchema.parse(item)),
+      ),
+    ).toThrow(/60 Hafez/u);
   });
 
-  it('rejects a production corpus with 24 Hafez and only 15 Rumi records', () => {
+  it('rejects a production corpus with fewer than 60 Rumi records', () => {
     const corpus = makeFixtureCorpus();
     corpus.items = corpus.items.filter(
       (item) => item.id !== 'test-only-rumi-16',
     );
 
-    expect(() => compileProduction(corpus)).toThrow(/16 Rumi/u);
+    expect(() =>
+      assertProductionMinimums(
+        corpus.items.map((item) => authoringContentItemSchema.parse(item)),
+      ),
+    ).toThrow(/60 Hafez/u);
   });
 
   it('rejects more than the exact production corpus counts', () => {
@@ -281,7 +298,11 @@ describe('compileCorpus', () => {
     extra.id = 'test-only-hafez-25';
     corpus.items.push(extra);
 
-    expect(() => compileProduction(corpus)).toThrow(/exactly 24 Hafez/iu);
+    expect(() =>
+      assertProductionMinimums(
+        corpus.items.map((item) => authoringContentItemSchema.parse(item)),
+      ),
+    ).toThrow(/exactly 60 Hafez/iu);
   });
 
   it('rejects invalid injected build dates', () => {
