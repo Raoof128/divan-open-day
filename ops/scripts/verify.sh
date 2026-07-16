@@ -13,6 +13,10 @@ readonly -a CURL_HTTPS_ARGS=(
   --connect-timeout 5
   --max-time 20
   --max-filesize 110000000
+  --retry 5
+  --retry-all-errors
+  --retry-delay 2
+  --retry-max-time 30
   --silent
   --show-error
 )
@@ -43,7 +47,7 @@ inspect_exact() {
 sorted_networks() {
   docker inspect \
     --format '{{range $name, $_ := .NetworkSettings.Networks}}{{$name}}{{"\n"}}{{end}}' \
-    "$1" | LC_ALL=C sort | paste -sd' ' -
+    "$1" | sed '/^$/d' | LC_ALL=C sort | paste -sd' ' -
 }
 
 require_hardened_container() {
@@ -139,16 +143,29 @@ fetch_public() {
     "$COMMON_PUBLIC_ORIGIN$path"
 }
 
+wait_for_public_health() {
+  local attempt
+  local status='000'
+  for attempt in $(seq 1 15); do
+    status=$(curl --proto '=https' --tlsv1.2 --connect-timeout 5 --max-time 5 \
+      --silent --show-error --output /dev/null --write-out '%{http_code}' \
+      "$COMMON_PUBLIC_ORIGIN/healthz" || true)
+    [[ "$status" == 404 ]] && return 0
+    sleep 2
+  done
+  die 'Public health path did not settle on exact status 404 within 30 seconds.'
+}
+
 web_id=$(compose ps -q divan-web)
 tunnel_id=$(compose ps -q cloudflared)
 [[ -n "$web_id" && -n "$tunnel_id" ]] || die 'Both deployment containers must exist.'
 
 require_running_image "$web_id" "$COMMON_IMAGE"
 require_running_immutable_tunnel "$tunnel_id"
-# The upstream Caddy image retains EXPOSE metadata for its stock ports even
-# though this config disables those listeners. Exact empty PortBindings proves
-# none are host-published; the full metadata map prevents an unreviewed change.
-require_hardened_container "$web_id" '10001:10001' 'divan_origin' '{"2019/tcp":null,"443/tcp":null,"443/udp":null,"80/tcp":null,"8080/tcp":null}' '268435456' '500000000' '128'
+# The final scratch image declares only its private 8080 listener. Exact empty
+# PortBindings proves it is never host-published, while the one-entry runtime
+# map prevents an unreviewed exposed port from being added to the image.
+require_hardened_container "$web_id" '10001:10001' 'divan_origin' '{"8080/tcp":null}' '268435456' '500000000' '128'
 require_hardened_container "$tunnel_id" '65532:65532' 'divan_egress divan_origin' '{}' '134217728' '250000000' '64'
 inspect_exact "$web_id" '{{.State.Health.Status}}' healthy 'Private origin health'
 inspect_exact "$web_id" '{{json .HostConfig.Tmpfs}}' '{"/config":"rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700","/data":"rw,noexec,nosuid,nodev,size=8m,uid=10001,gid=10001,mode=0700","/tmp":"rw,noexec,nosuid,nodev,size=16m,mode=1777"}' 'Private origin tmpfs'
@@ -175,23 +192,23 @@ inspect_exact_network divan_egress false egress
 
 origin_members=$(docker network inspect \
   --format '{{range $id, $_ := .Containers}}{{$id}}{{"\n"}}{{end}}' \
-  divan_origin | LC_ALL=C sort)
+  divan_origin | sed '/^$/d' | LC_ALL=C sort)
 expected_origin_members=$(printf '%s\n%s\n' "$tunnel_id" "$web_id" | LC_ALL=C sort)
 require_exact_network_members "$origin_members" "$expected_origin_members" 'Origin'
 
 egress_members=$(docker network inspect \
   --format '{{range $id, $_ := .Containers}}{{$id}}{{"\n"}}{{end}}' \
-  divan_egress | LC_ALL=C sort)
+  divan_egress | sed '/^$/d' | LC_ALL=C sort)
 require_exact_network_members "$egress_members" "$tunnel_id" 'Egress'
 
 web_mounts=$(docker inspect \
   --format '{{range .Mounts}}{{.Source}}|{{.Destination}}|{{.RW}}|{{.Type}}{{"\n"}}{{end}}' \
-  "$web_id" | LC_ALL=C sort)
+  "$web_id" | sed '/^$/d' | LC_ALL=C sort)
 require_no_web_mounts "$web_mounts"
 
 tunnel_mounts=$(docker inspect \
   --format '{{range .Mounts}}{{.Source}}|{{.Destination}}|{{.RW}}|{{.Type}}{{"\n"}}{{end}}' \
-  "$tunnel_id" | LC_ALL=C sort)
+  "$tunnel_id" | sed '/^$/d' | LC_ALL=C sort)
 config_source=$(canonical_path "$COMMON_CONFIG")
 credentials_source=$(canonical_path "$COMMON_CREDENTIALS")
 require_exact_tunnel_mounts "$tunnel_mounts" "$config_source" "$credentials_source"
@@ -203,15 +220,16 @@ compose exec -T divan-web /usr/local/bin/divan-health >/dev/null
 work_dir=$(mktemp -d)
 trap 'rm -rf -- "$work_dir"' EXIT
 
-compose exec -T divan-web cat /srv/release.json >"$work_dir/running-release.json" \
+# The production image is intentionally scratch-based and contains no shell or
+# cat binary. Docker's read-only copy API retrieves the exact file bytes
+# without weakening that runtime or attaching another container to its network.
+docker cp "$web_id:/srv/release.json" "$work_dir/running-release.json" \
   || die 'Unable to read the release pointer from the running image.'
 running_release_bytes=$(wc -c <"$work_dir/running-release.json" | tr -d ' ')
 ((running_release_bytes > 0 && running_release_bytes <= 65536)) \
   || die 'Running image release pointer has an invalid size.'
 
-health_status=$(curl "${CURL_HTTPS_ARGS[@]}" --output /dev/null --write-out '%{http_code}' \
-  "$COMMON_PUBLIC_ORIGIN/healthz")
-[[ "$health_status" == 404 ]] || die 'Public health path is not denied with exact status 404.'
+wait_for_public_health
 
 fetch_public '/' "$work_dir/document.headers" "$work_dir/index.html"
 require_global_headers "$work_dir/document.headers"
