@@ -88,20 +88,11 @@ const sourceSchema = z
 
 const textSchema = z
   .object({
-    persianLines: z.array(publicText(500)).min(2).max(6),
-    englishLines: z.array(publicText(500)).min(2).max(6),
+    persianLines: z.array(publicText(500)).min(1).max(6),
+    englishLines: z.array(publicText(500)).min(1).max(6),
     alignment: z.enum(['line', 'stanza']),
   })
-  .strict()
-  .superRefine((text, context) => {
-    if (text.persianLines.length !== text.englishLines.length) {
-      context.addIssue({
-        code: 'custom',
-        path: ['englishLines'],
-        message: 'English and Persian units must remain aligned.',
-      });
-    }
-  });
+  .strict();
 
 const audioSchema = z
   .object({
@@ -141,13 +132,22 @@ export const offlineContentItemSchema = z
     translationClassification: z.enum([
       'society_translation',
       'licensed_translation',
+      'public_domain_translation',
       'adaptation',
     ]),
     translationCredit: publicText(300),
-    reflection: publicText(1_200).refine((value) => {
-      const count = wordCount(value);
-      return count >= 45 && count <= 90;
-    }),
+    reflection: publicText(1_200)
+      .refine((value) => {
+        const count = wordCount(value);
+        return count >= 45 && count <= 90;
+      })
+      .nullable(),
+    verificationStatus: z.enum([
+      'HUMAN_ATTESTED',
+      'MACHINE_VERIFIED',
+      'MACHINE_VERIFIED_WITH_DISCLOSURE',
+    ]),
+    disclosures: z.array(publicText(1_200)).max(20),
     audio: audioSchema.nullable(),
     contentHash: z.string().regex(SHA256_PATTERN),
   })

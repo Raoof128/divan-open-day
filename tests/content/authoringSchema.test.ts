@@ -133,23 +133,17 @@ describe('authoringContentItemSchema', () => {
     },
   );
 
-  it('requires equal Persian and English unit counts for stanza alignment', () => {
+  it('allows source-bound many-to-one stanza mapping', () => {
     const item = makeAuthoringItem();
     item.text.alignment = 'stanza';
-    item.text.english_lines = ['TEST ONLY NOT TRANSLATION UNIT ONE'];
+    item.text.persian_lines = ['TEST ONLY NOT POETRY PERSIAN UNIT ONE'];
+    item.text.mapping = [
+      { english_index: 0, persian_indices: [0] },
+      { english_index: 1, persian_indices: [0] },
+    ];
 
     const result = authoringContentItemSchema.safeParse(item);
-
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(
-        result.error.issues.some(
-          (issue) =>
-            issue.message ===
-            'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
-        ),
-      ).toBe(true);
-    }
+    expect(result.success).toBe(true);
   });
 
   it('uses conspicuous neutral non-content fixture text', () => {

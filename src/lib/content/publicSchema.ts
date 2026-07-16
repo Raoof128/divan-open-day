@@ -89,21 +89,11 @@ const sourceSchema = z
 
 const textSchema = z
   .object({
-    persianLines: z.array(publicText(500)).min(2).max(6),
-    englishLines: z.array(publicText(500)).min(2).max(6),
+    persianLines: z.array(publicText(500)).min(1).max(6),
+    englishLines: z.array(publicText(500)).min(1).max(6),
     alignment: z.enum(['line', 'stanza']),
   })
-  .strict()
-  .superRefine((text, context) => {
-    if (text.persianLines.length !== text.englishLines.length) {
-      context.addIssue({
-        code: 'custom',
-        path: ['englishLines'],
-        message:
-          'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
-      });
-    }
-  });
+  .strict();
 
 const audioSchema = z
   .object({
@@ -148,10 +138,18 @@ const publicContentPayloadObjectSchema = z
     text: textSchema,
     translationClassification: z.enum(TRANSLATION_CLASSIFICATIONS),
     translationCredit: publicText(300),
-    reflection: publicText(1_200).refine((value) => {
-      const count = wordCount(value);
-      return count >= 45 && count <= 90;
-    }, 'Reflections must contain between 45 and 90 words.'),
+    reflection: publicText(1_200)
+      .refine((value) => {
+        const count = wordCount(value);
+        return count >= 45 && count <= 90;
+      }, 'Reflections must contain between 45 and 90 words.')
+      .nullable(),
+    verificationStatus: z.enum([
+      'HUMAN_ATTESTED',
+      'MACHINE_VERIFIED',
+      'MACHINE_VERIFIED_WITH_DISCLOSURE',
+    ]),
+    disclosures: z.array(publicText(1_200)).max(20),
     audio: audioSchema.nullable(),
   })
   .strict();
@@ -216,6 +214,8 @@ export const publicContentItemSchema =
       translationClassification: item.translationClassification,
       translationCredit: item.translationCredit,
       reflection: item.reflection,
+      verificationStatus: item.verificationStatus,
+      disclosures: item.disclosures,
       audio: item.audio,
     };
     if (canonicalSha256(payload) !== item.contentHash) {

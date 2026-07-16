@@ -222,6 +222,8 @@ function contentItem(
     translationCredit: 'Synthetic test translation credit',
     reflection:
       'This synthetic reflection exists only to exercise strict offline release validation. It does not quote or interpret a real poem. The wording deliberately contains enough separate words to satisfy the public schema while remaining conspicuously non production and free of any invented cultural claim, source claim, permission claim, or reviewer approval.',
+    verificationStatus: 'MACHINE_VERIFIED',
+    disclosures: [],
     audio:
       audioPath === null
         ? null

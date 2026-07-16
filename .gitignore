@@ -12,6 +12,15 @@ node_modules/
 dist/
 content-private/*
 !content-private/README.md
+!content-private/approvals.yaml
+!content-private/assets.yaml
+!content-private/contributors.yaml
+!content-private/editions.yaml
+!content-private/permissions.yaml
+!content-private/hafez/
+!content-private/hafez/*.yaml
+!content-private/rumi/
+!content-private/rumi/*.yaml
 # Raw archival source books are never committed to ordinary Git (large, and kept
 # out of public history). Manifests, hashes and reports under sources-private/
 # ARE committed; only raw/ and extracted staging are ignored.

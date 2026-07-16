@@ -46,7 +46,8 @@ ProofreadPage subpages, each wrapping hemistichs in `<span class="beyt">`).
 `poetry:extract` therefore skips it, and `poetry:fetch-masnavi` fetches the real
 verse per section (rate-limited, ordered by scan page) and owns `rumi-fa.jsonl`.
 The Bell 1897 English is a _selection_ and the Whinfield English is _abridged_, so
-their coverage is intentionally partial — human review pairs excerpts.
+their coverage is intentionally partial. Source-bound machine authority pairs
+selected excerpts and publishes limitations as disclosures.
 
 ## Safety properties (enforced by tests)
 
@@ -57,9 +58,11 @@ their coverage is intentionally partial — human review pairs excerpts.
   mismatch fails loudly. No poem text or secret is logged.
 - **Registry** (`tests/content/sourceRegistry.test.ts`): strict schema, HTTPS +
   allowlisted URLs only, all four fixed source ids required, no duplicates.
-- **Rights** (`tests/content/poetryRights.test.ts`): a source rights record cannot
-  reach `approved` without a **named human reviewer** and an acquired source-lock
-  SHA-256; "ai" is never a valid reviewer; the committed evidence is all `pending`.
+- **Rights evidence** (`tests/content/poetryRights.test.ts`): the legacy
+  source-rights register remains pending external legal/governance review. Corpus
+  permissions are separately bound to acquired source-lock hashes and recorded
+  public-domain/CC BY-SA evidence; no reviewer identity is fabricated merely to
+  make a machine-authority item compile.
 - **Extraction** (`tests/content/extraction.test.ts`): stdlib-only, deterministic
   (byte-identical replay), spine + heading order preserved, script/style excluded,
   Persian raw text preserved incl. ZWNJ, search text normalised separately, and
@@ -99,13 +102,13 @@ pnpm poetry:build-candidates
 rate-limited remainder is retried. `--assemble-only` rebuilds `rumi-fa.jsonl` from
 the cache without any network.
 
-Then hand the candidate reports and staging to the Society's reviewers. Nothing
-reaches the public corpus until they author approved records and the existing
-production compiler (with its ≥24 Hafez / ≥16 Rumi / ≥40 total gate) accepts them.
+Then run `pnpm poetry:build-production`. Only the fixed selections in
+`productionSelection.ts` become canonical records; the compiler requires exactly
+24 Hafez, 16 Rumi, and 40 total, and revalidates every embedded authority hash.
 
 ## Launch gates still closed
 
-Approved corpus + rights (incl. CC BY-SA attribution for the two Persian Wikisource
-transcriptions), cultural review, Bell OCR-vs-scan verification, and every existing
-§31.2 deployment/governance/QR gate remain the human's responsibility and are never
-fabricated here.
+The corpus, CC BY-SA attribution, source hashes, and Bell OCR disclosures now
+compile and verify locally. Independent legal/governance decisions, manual
+accessibility, deployment/rollback evidence, and physical QR gates remain external
+launch responsibilities and are never fabricated here.

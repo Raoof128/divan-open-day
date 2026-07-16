@@ -27,6 +27,8 @@ const item: PublicContentItem = {
   translationClassification: 'society_translation',
   translationCredit: 'Society translation',
   reflection: 'A reflection.',
+  verificationStatus: 'MACHINE_VERIFIED',
+  disclosures: [],
   audio: null,
   contentHash: 'def456',
 };

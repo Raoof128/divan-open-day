@@ -37,7 +37,15 @@ export function compileItem(input: unknown): PublicContentItem {
     },
     translationClassification: authoringItem.translation.classification,
     translationCredit: authoringItem.translation.public_credit,
-    reflection: authoringItem.reflection.english,
+    reflection: authoringItem.reflection?.english ?? null,
+    verificationStatus:
+      authoringItem.review_authority.kind === 'machine_alignment'
+        ? authoringItem.review_authority.verdict
+        : 'HUMAN_ATTESTED',
+    disclosures:
+      authoringItem.review_authority.kind === 'machine_alignment'
+        ? authoringItem.review_authority.disclosures
+        : [],
     audio: authoringItem.audio.enabled
       ? {
           assetPath: authoringItem.audio.asset_path,
@@ -59,6 +67,8 @@ export function compileItem(input: unknown): PublicContentItem {
     translationClassification: payload.translationClassification,
     translationCredit: payload.translationCredit,
     reflection: payload.reflection,
+    verificationStatus: payload.verificationStatus,
+    disclosures: payload.disclosures,
     audio: payload.audio,
     contentHash: canonicalSha256(payload),
   });

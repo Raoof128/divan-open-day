@@ -43,6 +43,8 @@ function makeItem(
     translationCredit: 'TEST ONLY Society translation',
     reflection:
       'Pause with the movement in these lines and notice what asks to be carried forward. The verse does not predict an outcome or decide a path for you. It offers a reviewed literary image that you may hold beside your own question, hope, or uncertainty with patience, care, and room for another interpretation.',
+    verificationStatus: 'MACHINE_VERIFIED' as const,
+    disclosures: [] as string[],
     audio: null,
   };
 

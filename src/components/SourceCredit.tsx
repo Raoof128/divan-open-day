@@ -3,6 +3,7 @@ import type { PublicContentItem } from '../contracts/content';
 const CLASSIFICATION_LABELS = {
   society_translation: 'Society translation',
   licensed_translation: 'Licensed translation',
+  public_domain_translation: 'Public-domain translation',
   adaptation: 'Adaptation',
 } as const;
 

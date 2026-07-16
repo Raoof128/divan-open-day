@@ -47,6 +47,10 @@ function makeItem(poet: 'hafez' | 'rumi', index: number) {
         : null,
       page_reference: null,
       source_language: 'fa',
+      english_source_id: `test-only-${poet}-english-source`,
+      english_source_sha256: 'a'.repeat(64),
+      english_source_reference: `TEST ONLY ENGLISH REFERENCE ${String(index + 1)}`,
+      persian_source_sha256: 'b'.repeat(64),
     },
     text: {
       persian_lines: [
@@ -58,6 +62,10 @@ function makeItem(poet: 'hafez' | 'rumi', index: number) {
         `TEST ONLY / NOT TRANSLATION / ENGLISH UNIT ${String(index + 1)} B`,
       ],
       alignment: 'line',
+      mapping: [
+        { english_index: 0, persian_indices: [0] },
+        { english_index: 1, persian_indices: [1] },
+      ],
     },
     translation: {
       classification: 'society_translation',
@@ -90,6 +98,11 @@ function makeItem(poet: 'hafez' | 'rumi', index: number) {
       rights_reviewer_ids: ['test-only-rights-reviewer'],
       approved_at: '2026-07-12',
       approval_record_id: `${id}-approval`,
+    },
+    review_authority: {
+      kind: 'human',
+      contributorIds: ['test-only-final-approver'],
+      attestationHash: 'c'.repeat(64),
     },
   };
 }

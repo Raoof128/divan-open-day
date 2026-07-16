@@ -10,6 +10,7 @@ export type ExperienceMode = (typeof EXPERIENCE_MODES)[number];
 export const TRANSLATION_CLASSIFICATIONS = [
   'society_translation',
   'licensed_translation',
+  'public_domain_translation',
   'adaptation',
 ] as const;
 export type TranslationClassification =
@@ -53,7 +54,10 @@ export interface PublicContentItem {
   readonly text: PublicText;
   readonly translationClassification: TranslationClassification;
   readonly translationCredit: string;
-  readonly reflection: string;
+  readonly reflection: string | null;
+  readonly verificationStatus:
+    'HUMAN_ATTESTED' | 'MACHINE_VERIFIED' | 'MACHINE_VERIFIED_WITH_DISCLOSURE';
+  readonly disclosures: readonly string[];
   readonly audio: PublicAudio | null;
   readonly contentHash: string;
 }

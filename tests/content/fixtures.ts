@@ -23,6 +23,10 @@ const BASE_AUTHORING_ITEM = {
       string | null,
     page_reference: null as string | null,
     source_language: 'fa',
+    english_source_id: 'test-only-english-source',
+    english_source_sha256: 'a'.repeat(64),
+    english_source_reference: 'TEST ONLY ENGLISH SOURCE REFERENCE',
+    persian_source_sha256: 'b'.repeat(64),
   },
   text: {
     persian_lines: [
@@ -34,6 +38,10 @@ const BASE_AUTHORING_ITEM = {
       'TEST ONLY NOT TRANSLATION ENGLISH UNIT TWO',
     ],
     alignment: 'line',
+    mapping: [
+      { english_index: 0, persian_indices: [0] },
+      { english_index: 1, persian_indices: [1] },
+    ],
   },
   translation: {
     classification: 'society_translation',
@@ -71,6 +79,11 @@ const BASE_AUTHORING_ITEM = {
     rights_reviewer_ids: ['test-rights-reviewer'],
     approved_at: '2026-07-12',
     approval_record_id: 'test-approval',
+  },
+  review_authority: {
+    kind: 'human',
+    contributorIds: ['test-final-approver'],
+    attestationHash: 'c'.repeat(64),
   },
 };
 

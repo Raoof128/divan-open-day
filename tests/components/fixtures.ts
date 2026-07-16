@@ -28,6 +28,8 @@ export const HAFEZ_ITEM: PublicContentItem = {
   translationClassification: 'society_translation',
   translationCredit: 'TEST ONLY Society translation',
   reflection: reflection('Hafez'),
+  verificationStatus: 'MACHINE_VERIFIED',
+  disclosures: [],
   audio: {
     assetPath: 'audio/hafez-aaaaaaaa.mp3',
     mimeType: 'audio/mpeg',
@@ -58,6 +60,8 @@ export const RUMI_ITEM: PublicContentItem = {
   translationClassification: 'adaptation',
   translationCredit: 'TEST ONLY Society adaptation',
   reflection: reflection('Rumi'),
+  verificationStatus: 'MACHINE_VERIFIED_WITH_DISCLOSURE',
+  disclosures: ['TEST ONLY abridged source correspondence.'],
   audio: null,
   contentHash: CONTENT_HASH,
 };

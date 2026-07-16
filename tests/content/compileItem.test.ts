@@ -13,6 +13,7 @@ describe('compileItem', () => {
       [
         'audio',
         'contentHash',
+        'disclosures',
         'display',
         'id',
         'mode',
@@ -23,6 +24,7 @@ describe('compileItem', () => {
         'text',
         'translationClassification',
         'translationCredit',
+        'verificationStatus',
       ].sort(),
     );
     expect(Object.keys(compiled.source).sort()).toEqual(

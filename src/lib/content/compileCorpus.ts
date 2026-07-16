@@ -5,6 +5,7 @@ import {
 } from './authoringSchema';
 import { canonicalSha256 } from './canonical';
 import { compileItem } from './compileItem';
+import { assertMachineAuthorityCurrent } from './reviewAuthority';
 import {
   PUBLIC_USES,
   registryBundleSchema,
@@ -250,7 +251,24 @@ function requireAudioAsset(
   );
 }
 
-function validateItemEvidence(
+function machineBinding(item: AuthoringContentItem) {
+  return {
+    englishSourceId: item.source.english_source_id,
+    englishSourceHash: item.source.english_source_sha256,
+    englishReference: item.source.english_source_reference,
+    persianSourceId: item.source.edition_id,
+    persianSourceHash: item.source.persian_source_sha256,
+    persianReference: `${item.source.reference_type}:${item.source.reference_value}`,
+    englishLines: item.text.english_lines,
+    persianLines: item.text.persian_lines,
+    mapping: item.text.mapping.map((entry) => ({
+      englishIndex: entry.english_index,
+      persianIndices: entry.persian_indices,
+    })),
+  };
+}
+
+export function validateItemEvidence(
   item: AuthoringContentItem,
   registries: RegistryBundle,
   buildDate: string,
@@ -272,6 +290,33 @@ function validateItemEvidence(
     throw new Error(
       `Item ${item.id} is missing its active approved edition join.`,
     );
+  }
+
+  requirePermission(
+    permissions,
+    {
+      id: item.translation.permission_record_id,
+      kind: 'translation',
+      subjectId: item.id,
+      attribution: item.translation.public_credit,
+      rightsOwner: item.translation.rights_owner,
+    },
+    buildDate,
+    item.id,
+  );
+
+  if (item.review_authority.kind === 'machine_alignment') {
+    assertMachineAuthorityCurrent(
+      machineBinding(item),
+      item.review_authority,
+      buildDate,
+    );
+    requireAudioAsset(item, registries, contributors, permissions, buildDate);
+    return;
+  }
+
+  if (item.review === null || item.reflection === null) {
+    throw new Error(`Item ${item.id} is missing human review evidence.`);
   }
 
   for (const translatorId of item.translation.translator_ids) {
@@ -301,19 +346,6 @@ function validateItemEvidence(
       `Item ${item.id} cannot be approved only by its translator.`,
     );
   }
-
-  requirePermission(
-    permissions,
-    {
-      id: item.translation.permission_record_id,
-      kind: 'translation',
-      subjectId: item.id,
-      attribution: item.translation.public_credit,
-      rightsOwner: item.translation.rights_owner,
-    },
-    buildDate,
-    item.id,
-  );
 
   const approval = approvals.get(item.review.approval_record_id);
   if (approval === undefined) {
@@ -368,48 +400,14 @@ function validateItemEvidence(
  */
 export function validateItemAlignment(
   item: AuthoringContentItem,
-  registries: RegistryBundle,
+  _registries: RegistryBundle,
   buildDate: string,
 ): void {
-  const alignment = registries.alignments.alignments.find(
-    (record) => record.item_id === item.id,
+  assertMachineAuthorityCurrent(
+    machineBinding(item),
+    item.review_authority,
+    buildDate,
   );
-
-  if (alignment === undefined) {
-    throw new Error(
-      `Item ${item.id} is missing machine alignment verification of its Persian-English pairing.`,
-    );
-  }
-
-  // A verdict is about exact content. Edit the item and the verdict is void.
-  if (alignment.authoring_sha256 !== canonicalSha256(item)) {
-    throw new Error(
-      `Item ${item.id} machine alignment SHA-256 digest does not match the canonical authoring item.`,
-    );
-  }
-
-  if (!alignment.release_eligible) {
-    throw new Error(
-      `Item ${item.id} machine alignment verdict ${alignment.verdict} is not release eligible.`,
-    );
-  }
-
-  if (alignment.human_reapproval_required) {
-    throw new Error(
-      `Item ${item.id} machine alignment requires renewed human approval before release.`,
-    );
-  }
-
-  if (alignment.reviewed_at > buildDate) {
-    throw new Error(`Item ${item.id} machine alignment is future-effective.`);
-  }
-
-  // The verdict must have been reached against the edition the item cites.
-  if (alignment.persian_source_id !== item.source.edition_id) {
-    throw new Error(
-      `Item ${item.id} machine alignment is bound to a different Persian edition.`,
-    );
-  }
 }
 
 function assertProductionMinimums(
@@ -419,21 +417,21 @@ function assertProductionMinimums(
   const rumiCount = items.filter((item) => item.poet === 'rumi').length;
   const totalCount = items.length;
 
-  if (hafezCount < 24) {
+  if (hafezCount !== 24) {
     throw new Error(
-      `Production corpus requires at least 24 Hafez items; received ${String(hafezCount)}.`,
+      `Production corpus requires exactly 24 Hafez items; received ${String(hafezCount)}.`,
     );
   }
 
-  if (rumiCount < 16) {
+  if (rumiCount !== 16) {
     throw new Error(
-      `Production corpus requires at least 16 Rumi items; received ${String(rumiCount)}.`,
+      `Production corpus requires exactly 16 Rumi items; received ${String(rumiCount)}.`,
     );
   }
 
-  if (totalCount < 40) {
+  if (totalCount !== 40) {
     throw new Error(
-      `Production corpus requires at least 40 total items; received ${String(totalCount)}.`,
+      `Production corpus requires exactly 40 total items; received ${String(totalCount)}.`,
     );
   }
 }
