@@ -3,13 +3,22 @@ import { z } from 'zod';
 import { POETS } from '../../contracts/content';
 
 /**
- * The four immutable source editions that back the DIVAN corpus. These ids are
+ * The immutable source editions that back the DIVAN corpus. These ids are
  * fixed: the acquisition pipeline, source-lock, extraction and rights records
  * all key off them. Adding or renaming an edition is a reviewed change.
+ *
+ * `hafez-clarke-1891-en` was added 2026-07-16. Bell translated only ~43 poems
+ * and freely; 35 of her 40 recovered poems carry no proper noun that
+ * discriminates between ghazals, so Bell alone can neither reach the 24-record
+ * Hafez threshold nor identify its Persian counterpart on citable evidence.
+ * Clarke is a literal, complete, per-ode-numbered crib whose first line tracks
+ * the matla', which makes Hafez identification a citation check rather than a
+ * thematic judgement.
  */
 export const SOURCE_EDITION_IDS = [
   'hafez-qazvini-ghani-fa-wikisource',
   'hafez-bell-1897-en',
+  'hafez-clarke-1891-en',
   'rumi-nicholson-fa-wikisource',
   'rumi-whinfield-abridged-en',
 ] as const;
@@ -84,8 +93,36 @@ const downloadArtifactSchema = z
     url: allowlistedHttpsUrl,
     required: z.boolean(),
     max_bytes: z.number().int().positive().max(200_000_000),
+    /**
+     * Destination basename within `raw/<source id>/`. Optional; defaults to
+     * `source.<ext>`. Required in practice whenever an edition declares more
+     * than one artifact of the same kind (e.g. a two-volume scan), because the
+     * default name is derived from `kind` alone and would otherwise collide.
+     */
+    filename: z
+      .string()
+      .regex(
+        /^[a-z0-9][a-z0-9-]{0,48}\.(epub|pdf|txt)$/,
+        'filename must be a lowercase basename ending in .epub, .pdf or .txt.',
+      )
+      .optional(),
   })
   .strict();
+
+export type DownloadArtifact = z.infer<typeof downloadArtifactSchema>;
+
+/**
+ * Destination basename for an artifact. Shared by the acquisition script and
+ * the registry validator so both agree on exactly one filename per artifact.
+ */
+export function artifactFileName(artifact: DownloadArtifact): string {
+  if (artifact.filename !== undefined) return artifact.filename;
+  return artifact.kind === 'epub'
+    ? 'source.epub'
+    : artifact.kind === 'pdf'
+      ? 'source.pdf'
+      : 'source.txt';
+}
 
 const rightsSchema = z
   .object({
@@ -108,7 +145,24 @@ export const sourceEditionSchema = z
     download_artifacts: z.array(downloadArtifactSchema).min(1).max(6),
     rights: rightsSchema,
   })
-  .strict();
+  .strict()
+  .superRefine((source, context) => {
+    // Two artifacts resolving to one path would silently overwrite each other
+    // and leave the source-lock recording two hashes for the same file. Fail
+    // closed at validation instead.
+    const seen = new Set<string>();
+    source.download_artifacts.forEach((artifact, index) => {
+      const name = artifactFileName(artifact);
+      if (seen.has(name)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['download_artifacts', index, 'filename'],
+          message: `Duplicate artifact filename ${name} in source ${source.id}; give each artifact a distinct filename.`,
+        });
+      }
+      seen.add(name);
+    });
+  });
 
 export type SourceEdition = z.infer<typeof sourceEditionSchema>;
 

@@ -28,6 +28,61 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — ingest Clarke 1891 as the Hafez identification source; fix an artifact filename collision
+
+**Raouf:**
+
+**Scope.** Source acquisition and the registry schema only. No corpus record was
+authored, no pairing was verified, and no launch gate moved.
+
+**Why.** Hafez alignment stood at 0 of 24 and Bell could not close it. Measured
+locally, before spending anything: only **5 of Bell's 40 recovered poems carry a
+proper noun that discriminates between ghazals**, and not one of the 5 is unique
+(the best, رکناباد, narrows to 3 candidates). 35 carry none. The signal that
+produced Rumi's 21 — section-title alignment — does not exist for Hafez, because
+ghazals have no titles and Bell's poems are numbered, not named. Matching the
+other 35 would have rested on exactly the generic motifs (wine, heart, beloved,
+nightingale) that the corpus rules forbid as evidence. Bell also holds only ~43
+poems in total, so 24 verified would require ~60% of her whole book to survive an
+adversarial gate; Rumi achieved 45% **with** strong anchors.
+
+**What Clarke changes.** Clarke 1891 is a complete, literal, per-ode-numbered
+crib of the whole Divan whose first line tracks the matla'. Verified against the
+Persian: Clarke Ode 1 renders الا یا ایها الساقی ادر کأسا و ناولها literally. The
+text carries `N, (M).` ode headings inside "The Letter X" rhyme sections with
+numbered couplets — 227 parsed in volume 1 (range 1–337, no duplicates). This
+makes Hafez identification a **citation check** (rhyme-letter partition + couplet
+count + literal matla') rather than a thematic judgement, and opens an
+English→English Bell↔Clarke route in place of the Bell↔Persian one that failed.
+
+**Rights.** Recorded, not assumed: Internet Archive reports both volumes
+(`thedivan01hafiuoft`, `thedivan02hafiuoft`) as NOT_IN_COPYRIGHT, 1891. The
+rights record stays `status: pending` with `rights_reviewer_id: null` — no AI is a
+reviewer, and no approval is implied.
+
+**A defect I introduced and then fixed.** Declaring two `text` volumes under one
+source id made **volume 2 silently overwrite volume 1**: the destination name was
+derived from `kind` alone, so both wrote `source.txt` and the lock recorded two
+hashes for one path. Fixed at the cause rather than worked around — artifacts take
+an optional `filename`, the schema now rejects two artifacts resolving to one
+file, and the fetcher keys prior-hash lookups by file rather than by kind (a
+kind-keyed map would compare a volume against its sibling's hash). Re-acquired
+clean: four distinct files, lock coherent, no duplicate paths.
+
+**Not done.** No Hafez pairing exists yet. Clarke→Persian binding and Bell→Clarke
+bridging are not built. `build:production` and `verify:qr` remain fail-closed.
+
+**Files changed.** `src/lib/content/sourceRegistrySchema.ts`,
+`scripts/poetry/fetch-sources.ts`, `tests/content/sourceRegistry.test.ts`,
+`sources-private/poetry/registry.yaml`, `sources-private/poetry/rights-evidence.yaml`,
+`sources-private/poetry/source-lock.json` (all `sources-private/` git-ignored).
+
+**Verification.** `pnpm check`: 49 files / 615 tests pass; lint, typecheck,
+format clean; `verify:dist` and `verify:privacy` pass; leak check confirms no
+Clarke text in `dist/`; `build:production` and `verify:qr` confirmed still
+fail-closed. `audit (prod deps)` fails on the pre-existing npm 410 (endpoint
+retired), reproducible on clean HEAD and unrelated to this change.
+
 ### 2026-07-16 (Australia/Sydney) — correct the Rumi count to 21; retract seq 717
 
 **Raouf:**

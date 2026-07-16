@@ -7,6 +7,8 @@ import { describe, expect, it } from 'vitest';
 import {
   ALLOWED_SOURCE_HOSTS,
   SOURCE_EDITION_IDS,
+  artifactFileName,
+  sourceEditionSchema,
   sourceRegistrySchema,
 } from '../../src/lib/content/sourceRegistrySchema';
 
@@ -48,10 +50,11 @@ function validSource(overrides: Record<string, unknown> = {}) {
 }
 
 describe('source registry schema', () => {
-  it('exposes the four fixed source edition ids', () => {
+  it('exposes the five fixed source edition ids', () => {
     expect([...SOURCE_EDITION_IDS]).toEqual([
       'hafez-qazvini-ghani-fa-wikisource',
       'hafez-bell-1897-en',
+      'hafez-clarke-1891-en',
       'rumi-nicholson-fa-wikisource',
       'rumi-whinfield-abridged-en',
     ]);
@@ -69,6 +72,12 @@ describe('source registry schema', () => {
           completeness: 'selection',
         }),
         validSource({
+          id: 'hafez-clarke-1891-en',
+          poet: 'hafez',
+          language: 'en',
+          completeness: 'complete',
+        }),
+        validSource({
           id: 'rumi-nicholson-fa-wikisource',
           poet: 'rumi',
           language: 'fa',
@@ -82,7 +91,82 @@ describe('source registry schema', () => {
         }),
       ],
     });
-    expect(parsed.sources).toHaveLength(4);
+    expect(parsed.sources).toHaveLength(5);
+  });
+
+  it('rejects two artifacts that would resolve to the same file', () => {
+    // Regression: Clarke declares two `text` volumes. The destination name was
+    // derived from `kind` alone, so volume 2 silently overwrote volume 1 and the
+    // lock recorded two hashes for one path. A collision must fail validation.
+    expect(() =>
+      sourceEditionSchema.parse(
+        validSource({
+          download_artifacts: [
+            {
+              kind: 'text',
+              url: 'https://archive.org/download/a/a_djvu.txt',
+              required: true,
+              max_bytes: 1_000,
+            },
+            {
+              kind: 'text',
+              url: 'https://archive.org/download/b/b_djvu.txt',
+              required: true,
+              max_bytes: 1_000,
+            },
+          ],
+        }),
+      ),
+    ).toThrow(/Duplicate artifact filename/);
+  });
+
+  it('accepts same-kind artifacts given distinct filenames', () => {
+    const parsed = sourceEditionSchema.parse(
+      validSource({
+        download_artifacts: [
+          {
+            kind: 'text',
+            url: 'https://archive.org/download/a/a_djvu.txt',
+            required: true,
+            max_bytes: 1_000,
+            filename: 'volume-1.txt',
+          },
+          {
+            kind: 'text',
+            url: 'https://archive.org/download/b/b_djvu.txt',
+            required: true,
+            max_bytes: 1_000,
+            filename: 'volume-2.txt',
+          },
+        ],
+      }),
+    );
+    expect(parsed.download_artifacts.map(artifactFileName)).toEqual([
+      'volume-1.txt',
+      'volume-2.txt',
+    ]);
+  });
+
+  it('defaults an unnamed artifact to source.<ext>', () => {
+    expect(
+      artifactFileName({
+        kind: 'epub',
+        url: 'x',
+        required: true,
+        max_bytes: 1,
+      }),
+    ).toBe('source.epub');
+    expect(
+      artifactFileName({ kind: 'pdf', url: 'x', required: true, max_bytes: 1 }),
+    ).toBe('source.pdf');
+    expect(
+      artifactFileName({
+        kind: 'text',
+        url: 'x',
+        required: true,
+        max_bytes: 1,
+      }),
+    ).toBe('source.txt');
   });
 
   it('rejects unknown keys', () => {
@@ -120,7 +204,7 @@ describe('source registry schema', () => {
     ).toThrow();
   });
 
-  it('rejects a registry missing one of the four fixed ids', () => {
+  it('rejects a registry missing one of the five fixed ids', () => {
     expect(() =>
       sourceRegistrySchema.parse({
         schema_version: 1,

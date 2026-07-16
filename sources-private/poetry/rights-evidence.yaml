@@ -44,6 +44,24 @@ records:
     rights_reviewer_id: null
     status: pending
 
+  - source_id: hafez-clarke-1891-en
+    poet: hafez
+    language: en
+    work_title: The Divan-i-Hafiz
+    contributor: Henry Wilberforce Clarke (translator)
+    publication_year: 1891
+    completeness: complete
+    original_status: >-
+      Internet Archive records both 1891 volumes as NOT_IN_COPYRIGHT.
+    transcription_licence: Public domain (Internet Archive OCR of the 1891 edition)
+    evidence_url: https://archive.org/details/thedivan01hafiuoft
+    required_public_credit: >-
+      English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta,
+      1891 (a complete literal prose translation with interpolated glosses).
+    source_lock_reference: null
+    rights_reviewer_id: null
+    status: pending
+
   - source_id: rumi-nicholson-fa-wikisource
     poet: rumi
     language: fa

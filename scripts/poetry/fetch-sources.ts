@@ -1,5 +1,5 @@
 /**
- * Secure acquisition of the four immutable DIVAN poetry source editions.
+ * Secure acquisition of the five immutable DIVAN poetry source editions.
  *
  * Safety properties (enforced and unit-tested in tests/content/sourceLock.test.ts):
  *  - only allowlisted HTTPS hosts are contacted; every redirect hop is revalidated;
@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 
 import {
+  artifactFileName,
   isAllowlistedHttpsUrl,
   sourceRegistrySchema,
   type SourceEdition,
@@ -343,14 +344,6 @@ function repoPaths(): RepoPaths {
   };
 }
 
-function artifactFileName(kind: ArtifactKind): string {
-  return kind === 'epub'
-    ? 'source.epub'
-    : kind === 'pdf'
-      ? 'source.pdf'
-      : 'source.txt';
-}
-
 function loadRegistry(registryPath: string): SourceEdition[] {
   const parsed = sourceRegistrySchema.parse(
     parseYaml(readFileSync(registryPath, 'utf8')),
@@ -365,22 +358,23 @@ async function main(): Promise<void> {
   const previous = existsSync(paths.lock)
     ? (JSON.parse(await readFile(paths.lock, 'utf8')) as SourceLock)
     : null;
+  // Keyed by destination file, not by kind: an edition may declare several
+  // artifacts of one kind (a two-volume scan), and a kind-keyed map would
+  // match a volume against its sibling's hash.
   const previousBySha = new Map(
-    (previous?.entries ?? []).map((e) => [
-      `${e.source_id}:${e.artifact_kind}`,
-      e,
-    ]),
+    (previous?.entries ?? []).map((e) => [e.file, e]),
   );
 
   const entries: SourceLockEntry[] = [];
   for (const source of sources) {
     for (const artifact of source.download_artifacts) {
       const destDir = resolve(paths.rawRoot, source.id);
-      const destPath = resolve(destDir, artifactFileName(artifact.kind));
-      const key = `${source.id}:${artifact.kind}`;
-      const prior = previousBySha.get(key);
+      const fileName = artifactFileName(artifact);
+      const destPath = resolve(destDir, fileName);
+      const relativeFile = `raw/${source.id}/${fileName}`;
+      const prior = previousBySha.get(relativeFile);
       process.stdout.write(
-        `• ${source.id} (${artifact.kind}) → ${safeHost(artifact.url)}\n`,
+        `• ${source.id} (${fileName}) → ${safeHost(artifact.url)}\n`,
       );
       try {
         const result = await acquireArtifact({
@@ -391,7 +385,7 @@ async function main(): Promise<void> {
         entries.push({
           source_id: source.id,
           artifact_kind: artifact.kind,
-          file: `raw/${source.id}/${artifactFileName(artifact.kind)}`,
+          file: relativeFile,
           requested_url: artifact.url,
           final_url: result.final_url,
           sha256: result.sha256,

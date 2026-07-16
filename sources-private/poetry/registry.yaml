@@ -1,6 +1,6 @@
 # DIVAN immutable poetry source registry
 #
-# Four source editions back the corpus. These are ARCHIVAL SOURCES for research,
+# Five source editions back the corpus. These are ARCHIVAL SOURCES for research,
 # provenance and human review — never shipped whole to the browser. Only short,
 # exact, human-approved excerpts enter the public corpus via the existing
 # authoring/compiler pipeline.
@@ -52,6 +52,44 @@ sources:
       transcription_licence: Public domain (Internet Archive OCR of a 1897 edition)
       attribution_required: true
       evidence_url: https://archive.org/details/poemsfromdivanof00hafiiala
+
+  - id: hafez-clarke-1891-en
+    poet: hafez
+    language: en
+    work_title: The Divan-i-Hafiz
+    edition_label: >-
+      H. Wilberforce Clarke, 1891 (Calcutta, Government of India Central Printing
+      Office) — complete literal English translation in two volumes
+    completeness: complete
+    canonical_page_url: https://archive.org/details/thedivan01hafiuoft
+    download_artifacts:
+      - kind: text
+        url: https://archive.org/download/thedivan01hafiuoft/thedivan01hafiuoft_djvu.txt
+        required: true
+        max_bytes: 8000000
+        filename: volume-1.txt
+      - kind: text
+        url: https://archive.org/download/thedivan02hafiuoft/thedivan02hafiuoft_djvu.txt
+        required: true
+        max_bytes: 8000000
+        filename: volume-2.txt
+      - kind: pdf
+        url: https://archive.org/download/thedivan01hafiuoft/thedivan01hafiuoft.pdf
+        required: false
+        max_bytes: 120000000
+        filename: volume-1.pdf
+      - kind: pdf
+        url: https://archive.org/download/thedivan02hafiuoft/thedivan02hafiuoft.pdf
+        required: false
+        max_bytes: 120000000
+        filename: volume-2.pdf
+    rights:
+      original_status: >-
+        Internet Archive records both 1891 volumes (thedivan01hafiuoft,
+        thedivan02hafiuoft) as NOT_IN_COPYRIGHT.
+      transcription_licence: Public domain (Internet Archive OCR of the 1891 edition)
+      attribution_required: true
+      evidence_url: https://archive.org/details/thedivan01hafiuoft
 
   - id: rumi-nicholson-fa-wikisource
     poet: rumi

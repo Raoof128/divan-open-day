@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-07-16 — Ingest Clarke 1891 as the Hafez identification source
+
+**Raouf:**
+
+- Added a fifth source edition, `hafez-clarke-1891-en` (H. Wilberforce Clarke,
+  Calcutta 1891) — a complete, literal, per-ode-numbered translation of the whole
+  Divan, acquired through the locked fetcher and hash-pinned in `source-lock.json`.
+  Internet Archive records both volumes as NOT_IN_COPYRIGHT; the rights record
+  stays `pending` with no reviewer.
+- Reason, measured rather than assumed: only 5 of Bell's 40 recovered poems carry
+  a ghazal-discriminating proper noun, none of them unique. Bell cannot identify
+  her Persian counterparts on citable evidence, and at ~43 poems total she cannot
+  reach 24 verified. Clarke's first line tracks the matla' (verified against
+  ghazal 1), turning Hafez identification into a citation check instead of a
+  thematic judgement.
+- Fixed a source-acquisition defect surfaced by the two-volume ingest: artifacts
+  of the same kind under one source id resolved to the same filename, so volume 2
+  silently overwrote volume 1 and the lock recorded two hashes for one path.
+  Artifacts now take an optional `filename`; the schema rejects colliding
+  destinations; the fetcher keys prior hashes by file rather than kind.
+- No pairing verified, no record authored, no gate moved. `build:production` and
+  `verify:qr` remain fail-closed.
+
 ## 2026-07-16 — Correct the Rumi count to 21 verified, and retract seq 717
 
 **Raouf:**
