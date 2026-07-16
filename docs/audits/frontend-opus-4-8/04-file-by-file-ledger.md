@@ -1,6 +1,6 @@
 # 04 — File-by-File Ledger
 
-**Status: IN PROGRESS — 13 of 127 rows touched (9 resolved, 4 partial). 114 remain `PENDING`.**
+**Status: IN PROGRESS — 23 of 127 rows touched (19 resolved, 4 partial). 104 remain `PENDING`.**
 
 This ledger is the goal's primary artefact and is far from complete. Every row below was **read in
 full** by the primary agent, not sampled and not delegated. A `NO DEFECT` verdict is recorded only
@@ -313,6 +313,89 @@ decision for the maintainer.
 
 ---
 
+## Component layer — 10 files, batch-audited (each read in full)
+
+Audited together because they share a lens set (**A** accessibility, **M** motion/atmosphere,
+**R** React) and are small enough to read completely. **All ten: NO DEFECT.** Two are worth
+recording as positives rather than silence.
+
+### `src/components/ButterflyField.tsx` — 42 lines · **NO DEFECT**
+
+`divan-atmosphere-effects` caps decorative butterflies at **two**. This ships **exactly one**, and
+says so in its own comment. `aria-hidden="true"` on the field, plus `role="presentation"` and
+**`focusable="false"`** on the SVG — the latter matters: SVG is focusable by default in some
+engines, so omitting it would put a decorative element in the tab order. The comment records that
+the path "never enters the central reading column (the path stays in the left third)", satisfying
+the skill's "never cross or cover poem text". **Under-spends its own budget** — the restraint the
+brand direction asks for.
+
+### `src/app/ErrorBoundary.tsx` — 40 lines · **NO DEFECT**
+
+`componentDidCatch` is **intentionally empty**, with the reason stated: *"Intentionally do not log
+runtime details: browser paths and content must stay local."* That is a **privacy control**, not an
+omission — it prevents poem content or local paths reaching the console. The fallback renders
+`<main id="main-content">` with `role="alert"` and a focusable `<h1 tabIndex={-1}>`, so the failure
+surface stays landmarked and announceable. `getDerivedStateFromError` is the correct hook.
+
+### `src/components/LiveRegion.tsx` — 16 lines · **NO DEFECT**
+
+`role="status"` + `aria-live="polite"` + `aria-atomic="true"`. The `role`/`aria-live` overlap is
+**settled prior art**: the previous audit raised it as **A11Y-06** and **rejected** it as an
+"accepted robustness pattern". Not re-reported — see the prior-art reconciliation in `06`.
+
+### `src/components/SkipLink.tsx` — 16 lines · **NO DEFECT**
+
+`preventDefault()` + `focusMainRegion('main-content')` rather than relying on fragment navigation —
+the correct workaround for the long-standing browser bug where `#id` navigation moves the viewport
+but not focus. It also keeps `#main-content` out of the URL, consistent with the URL-hygiene finding
+(prior L-12). Native `<a href>` retains keyboard activation. Rendered evidence (Phase 6) confirms
+`top: -160px` unfocused → `top: 8px` focused.
+
+### `src/components/CandleScene.tsx` — 13 lines · **NO DEFECT**
+
+`aria-hidden="true"`; pure decoration. Its comment explains the broad-gradient approach tolerates
+`object-fit` cropping so nothing depends on pixel alignment with the painted frame. This is the
+component behind the only viewport overhang measured in Phase 6 (`candle-scene__glow`, 57.6px at
+320px) — confirmed decorative and `aria-hidden`, causing no document scroll, so the overhang is
+benign by design.
+
+### `src/components/PoetryMotes.tsx` — 17 lines · **NO DEFECT**
+
+Six abstract motes, `aria-hidden="true"`, and explicitly "never glyphs or pseudo-language" —
+directly honouring the skill's ban on fabricated Persian words as decoration. `key={index}` is safe
+here: the list is static and never reorders.
+
+### `src/components/MotionControl.tsx` — 25 lines · **NO DEFECT**
+
+`<label htmlFor>` correctly bound to `<select id>`; native control, so keyboard parity is free.
+
+**Nit, not a defect.** `event.currentTarget.value as MotionPreference` is an unvalidated assertion.
+It is safe in depth: the reducer's `SET_MOTION_PREFERENCE` guards with `isMotionPreference`, so a
+tampered DOM value is rejected downstream rather than trusted. Recorded so the assertion is not
+mistaken for a hole.
+
+### `src/components/FlowBackButton.tsx` — 10 lines · **NO DEFECT**
+
+Semantic `<button type="button">`; keyboard activation free. F-03 belongs to
+`flowNavigation.returnToPoetSelection`, not to this component.
+
+**Nit, not a defect.** The JSX text is "Choose another poet", but the rendered accessible name is
+"← Choose another poet" — the arrow is CSS-generated content, which is included in the accessible
+name. Comprehensible either way, so no change proposed (rule 3).
+
+### `src/components/IlluminatedFrame.tsx` — 19 lines · **NO DEFECT**
+
+Thin wrapper composing `DecorativeGeometry` (`manuscript-corners`) around its children.
+`DecorativeGeometry` itself remains its own `PENDING` row.
+
+### `src/components/OfflineBadge.tsx` — 3 lines · **NO DEFECT**
+
+A visible `<span>Ready offline</span>`. Announcement is handled separately through the shared
+`LiveRegion` (`SET_STATUS: 'offline_ready'`), so it correctly carries no competing live region — the
+`CLAUDE.md` rule against adding a second `role="status"`.
+
+---
+
 ## `src-sw/releaseManager.ts` — 871 lines
 
 | Field | Value |
@@ -394,15 +477,15 @@ z-index, safe-area, scroll locking, forced-colours, hover/active/disabled states
 
 | Metric | Count |
 | --- | ---: |
-| Rows resolved (full read + verdict) | **9** |
+| Rows resolved (full read + verdict) | **19** |
 | Rows partially read, still `PENDING` | 4 |
-| Rows untouched `PENDING` | **114** |
+| Rows untouched `PENDING` | **104** |
 | Total | 127 |
 | Defects found in resolved rows | 2 (F-02, F-03) |
 | Informational notes | 2 (I-01, I-02) |
-| `NO DEFECT` verdicts | 7 |
+| `NO DEFECT` verdicts | 17 |
 
-**The audit cannot pass in this state.** 114 rows have not been opened. Any later reader must treat
+**The audit cannot pass in this state.** 104 rows have not been opened. Any later reader must treat
 the absence of a finding for those files as **unaudited**, not as evidence of soundness.
 
 ### Signal from the ordering
