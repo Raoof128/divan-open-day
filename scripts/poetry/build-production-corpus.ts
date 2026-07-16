@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { stringify } from 'yaml';
 
 import { authoringContentItemSchema } from '../../src/lib/content/authoringSchema';
+import { canonicalSha256 } from '../../src/lib/content/canonical';
 import {
   HAFEZ_PRODUCTION_SELECTION,
   RUMI_ARCHIVED_SELECTION,
@@ -176,6 +177,13 @@ function authorityFor(
     persianSourceId: source.edition_id,
     persianSourceHash: source.persian_source_sha256,
     persianReference: `${source.reference_type}:${source.reference_value}`,
+    canonicalIdentity: `${source.edition_id}:${source.reference_type}:${source.reference_value
+      .trim()
+      .toLowerCase()}${
+      source.reference_type === 'masnavi'
+        ? `:${canonicalSha256(text.persian_lines)}`
+        : ''
+    }`,
     englishLines: text.english_lines,
     persianLines: text.persian_lines,
     mapping: text.mapping.map((entry) => ({
@@ -187,9 +195,12 @@ function authorityFor(
   return {
     kind: 'machine_alignment' as const,
     model: 'gpt-5.5-codex',
-    methodVersion: 'source-bound-alignment-v1',
+    methodVersion: 'source-bound-alignment-v2',
+    englishSourceId: binding.englishSourceId,
     englishSourceHash: source.english_source_sha256,
+    persianSourceId: binding.persianSourceId,
     persianSourceHash: source.persian_source_sha256,
+    canonicalIdentityHash: digests.canonicalIdentityHash,
     englishSpanHash: digests.englishSpanHash,
     persianSpanHash: digests.persianSpanHash,
     mappingHash: digests.mappingHash,

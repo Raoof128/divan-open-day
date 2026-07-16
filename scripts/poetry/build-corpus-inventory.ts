@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import type { AuthoringContentItem } from '../../src/lib/content/authoringSchema';
 import { canonicalSha256 } from '../../src/lib/content/canonical';
+import { canonicalPersianIdentity } from '../../src/lib/content/canonicalIdentity';
 import { RUMI_ARCHIVED_SELECTION } from '../../src/lib/content/productionSelection';
 import {
   assertMachineAuthorityCurrent,
@@ -423,6 +424,7 @@ function machineBinding(item: AuthoringContentItem) {
     persianSourceId: item.source.edition_id,
     persianSourceHash: item.source.persian_source_sha256,
     persianReference: `${item.source.reference_type}:${item.source.reference_value}`,
+    canonicalIdentity: canonicalPersianIdentity(item),
     englishLines: item.text.english_lines,
     persianLines: item.text.persian_lines,
     mapping: item.text.mapping.map((entry) => ({
@@ -430,13 +432,6 @@ function machineBinding(item: AuthoringContentItem) {
       persianIndices: entry.persian_indices,
     })),
   };
-}
-
-function canonicalPersianIdentity(item: AuthoringContentItem): string {
-  if (item.poet === 'hafez') {
-    return `${item.source.edition_id}:${item.source.reference_value.toLowerCase().replaceAll(' ', '-')}`;
-  }
-  return `${item.source.edition_id}:${item.source.reference_value.toLowerCase().replaceAll(' ', '-')}:${canonicalSha256(item.text.persian_lines)}`;
 }
 
 function authorityBindsCanonicalIdentity(

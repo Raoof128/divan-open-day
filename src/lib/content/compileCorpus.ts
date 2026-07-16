@@ -4,7 +4,9 @@ import {
   type AuthoringContentItem,
 } from './authoringSchema';
 import { canonicalSha256 } from './canonical';
+import { canonicalPersianIdentity } from './canonicalIdentity';
 import { compileItem } from './compileItem';
+import { validateProductionSelectionManifest } from './productionManifest';
 import { assertMachineAuthorityCurrent } from './reviewAuthority';
 import {
   PUBLIC_USES,
@@ -23,6 +25,7 @@ export interface CompileCorpusInput {
   readonly items: readonly unknown[];
   readonly registries: unknown;
   readonly buildDate: string;
+  readonly selectionManifest?: unknown;
 }
 
 export interface CompiledCorpus {
@@ -259,6 +262,7 @@ function machineBinding(item: AuthoringContentItem) {
     persianSourceId: item.source.edition_id,
     persianSourceHash: item.source.persian_source_sha256,
     persianReference: `${item.source.reference_type}:${item.source.reference_value}`,
+    canonicalIdentity: canonicalPersianIdentity(item),
     englishLines: item.text.english_lines,
     persianLines: item.text.persian_lines,
     mapping: item.text.mapping.map((entry) => ({
@@ -410,28 +414,28 @@ export function validateItemAlignment(
   );
 }
 
-function assertProductionMinimums(
+export function assertProductionMinimums(
   items: readonly AuthoringContentItem[],
 ): void {
   const hafezCount = items.filter((item) => item.poet === 'hafez').length;
   const rumiCount = items.filter((item) => item.poet === 'rumi').length;
   const totalCount = items.length;
 
-  if (hafezCount !== 24) {
+  if (hafezCount !== 60) {
     throw new Error(
-      `Production corpus requires exactly 24 Hafez items; received ${String(hafezCount)}.`,
+      `Production corpus requires exactly 60 Hafez items; received ${String(hafezCount)}.`,
     );
   }
 
-  if (rumiCount !== 16) {
+  if (rumiCount !== 60) {
     throw new Error(
-      `Production corpus requires exactly 16 Rumi items; received ${String(rumiCount)}.`,
+      `Production corpus requires exactly 60 Rumi items; received ${String(rumiCount)}.`,
     );
   }
 
-  if (totalCount !== 40) {
+  if (totalCount !== 120) {
     throw new Error(
-      `Production corpus requires exactly 40 total items; received ${String(totalCount)}.`,
+      `Production corpus requires exactly 120 total items; received ${String(totalCount)}.`,
     );
   }
 }
@@ -466,7 +470,6 @@ export function compileCorpus(input: CompileCorpusInput): CompiledCorpus {
     (item) => item.status !== 'disabled',
   );
   if (input.profile === 'production') {
-    assertProductionMinimums(compilableItems);
     if (
       containsFixtureMarker([authoringItems, registries], new Set<object>())
     ) {
@@ -474,6 +477,12 @@ export function compileCorpus(input: CompileCorpusInput): CompiledCorpus {
         'Production corpus cannot contain fixture IDs or TEST ONLY sentinels.',
       );
     }
+    assertProductionMinimums(compilableItems);
+    validateProductionSelectionManifest(
+      compilableItems,
+      input.selectionManifest,
+      buildDate,
+    );
   }
 
   const compiledItems = compilableItems.map((item) => {
