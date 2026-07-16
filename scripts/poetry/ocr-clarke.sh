@@ -48,10 +48,17 @@ echo "OCR ${vol}: pages ${first}..${last} of ${total} at ${DPI}dpi, ${JOBS} work
 ocr_page() {
   local p="$1" vol="$2" pdf="$3" out png
   out="${OUT}/text/${vol}/p-$(printf '%04d' "$p")"
-  [ -f "${out}.txt" ] && return 0            # resumable
+  [ -f "${out}.hocr" ] && return 0           # resumable
   png="${OUT}/tmp/${vol}-p${p}"              # per-page path: workers must not race
   pdftoppm -r "$DPI" -f "$p" -l "$p" -png -singlefile "$pdf" "$png" 2>/dev/null || return 0
-  tesseract "${png}.png" "$out" --psm 6 -l eng >/dev/null 2>&1 || true
+  # hocr carries x_size (font size) per line. Clarke sets his commentary in
+  # smaller type than his verse (notes cluster at x_size<=52, verse at >=56, with
+  # a clear valley between). That is a typographic fact about the page, not a
+  # guess about the words, and it is the only reliable verse/notes boundary here:
+  # Clarke interleaves glosses down the page and numbers them with the same "N."
+  # form as his couplets, so keyword and numbering rules both misread glosses as
+  # verse. Text is emitted too — the two are read together.
+  tesseract "${png}.png" "$out" --psm 6 -l eng txt hocr >/dev/null 2>&1 || true
   rm -f "${png}.png"
 }
 export -f ocr_page

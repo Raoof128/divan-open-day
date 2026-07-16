@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-07-16 — Harden the Clarke verse filter; 10 verified Hafez identifications
+
+**Raouf:**
+
+- Replaced the Clarke verse/notes filter with a **typographic** one
+  (`scripts/poetry/parse-clarke-odes.ts`). Clarke interleaves glosses with verse and
+  numbers them with the same `N.` form as couplets, numbering only every fifth
+  couplet — so no keyword or numbering rule can separate them. He sets notes in
+  smaller type; hOCR reports `x_size`; the distribution is bimodal (notes ≤52, verse
+  ≥56) with the 53–55 valley classified `uncertain` and never pairable.
+- 13 tests pin it (`tests/content/clarkeParse.test.ts`), including the two defects
+  that have recurred three times: a gloss repeating the couplet's own anchors, and a
+  numbered gloss read as a couplet. They caught a real bug in the hOCR parser
+  (nested spans captured only the first word per line).
+- Alignment run: Haiku matla' aligners over 125 odes → 2 Opus adversarial refuters
+  on distinct lenses. 17 proposed; the refuters returned **identical verdicts on all
+  17**; **10 verified** (≥2 refuters, zero refutations). Hafez 10 of 24, Rumi 21 of
+  16, total 31 of 40.
+- Recorded two defects, both unfixed: the couplet-range prefilter excluded true
+  answers (Qazvini-Ghani rejects spurious couplets, so Clarke's ghazals run *longer*
+  than Q-G's — the filter assumed the reverse), which makes **every "none" in this
+  run inconclusive rather than a refutation; and ode labels are not unique (five
+  duplicated by OCR misreads), so identity must be keyed by volume+page.
+- These are identifications, not records: no excerpt chosen, no reflection, no rights
+  approval. No gate moved.
+
 ## 2026-07-16 — Local OCR of Clarke, and the first citation-grade Hafez binding
 
 **Raouf:**

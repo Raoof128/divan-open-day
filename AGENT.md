@@ -28,6 +28,70 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — harden the Clarke verse filter; 10 verified Hafez identifications
+
+**Raouf:**
+
+**Scope.** Verse/notes classification, its tests, and one alignment run. No corpus
+record authored; no gate moved.
+
+**The verse filter is now typographic, not textual.** Clarke interleaves glosses
+with verse down the page and numbers them with the same `N.` form as his couplets
+— and he numbers only every fifth couplet. So neither keywords nor numbering can
+separate them, which is how a footnote about Yezid became "evidence" for ode 8.
+Clarke sets notes in smaller type; tesseract's hOCR reports `x_size` per line, and
+the distribution is bimodal (notes <=52, verse >=56) with a real valley. The valley
+(53-55) is `uncertain` and is never pairable. This is a fact about the printed
+page, not a guess about the words. `ocr-clarke.sh` now emits hocr alongside text.
+
+On the real page 92 the filter yields 20 verse lines against 160 commentary lines,
+`signifies` no longer leaks, and all of ghazal 3's rare anchors (shiraz, samarkand,
+bukhara, ruknabad, musalla, zulaikha) now come from the verse — including zulaikha,
+which sits in couplet 5 and was previously unrecoverable.
+
+**Tests earned their keep immediately** (13, `tests/content/clarkeParse.test.ts`):
+they caught a real bug in my own hOCR parser (nested `<span>`s made it capture only
+the first word of every line). They pin the two recurring defects: a gloss that
+repeats the couplet's own anchors verbatim, and a numbered gloss read as a couplet.
+
+**Alignment run.** Prefilter (rhyme letter x couplet range) -> Haiku matla' aligners
+(6 batches, 125 odes) -> 2 Opus adversarial refuters on distinct lenses
+(generic-motif contamination; does the cited Persian actually exist and correspond).
+17 bindings proposed; **the two refuters returned identical verdicts on all 17** —
+same 7 refuted, same 10 passed. **10 verified** (>=2 refuters returned, zero
+refutations), e.g. ode 8 = ghazal 3, ode 282 = ghazal 245 (طوطی/اسرار/شکّر/منقار
+word-for-word), ode 309 = ghazal 263, ode 417 = ghazal 367 (a hemistich verbatim).
+The refuters killed exactly the right ones: ode 3 = ghazal 1 died as "Saki + cup +
+love — base rate, not identity", and where two odes claimed ghazal 98 they kept the
+one with a clause-for-clause juridical rendering and dropped the thematic claimant.
+
+**Two defects found, both mine, neither yet fixed.**
+1. **The couplet-range prefilter excluded true answers.** Qazvini-Ghani is a
+   critical edition that rejects spurious couplets, so Clarke's ghazals run
+   *longer* than Q-G's — the opposite of what the filter assumed. 96 of 278 odes
+   have `maxCoupletNumber >= 10` while only 52 of 494 ghazals are that long. Ode 1,
+   which I had verified by hand as ghazal 1, was never shown ghazal 1 and was
+   correctly reported "none" with high confidence. **Every "none" in this run is
+   inconclusive, not a refutation.** Only rhyme letter is safe as a partition.
+2. **Ode labels are not unique.** OCR misreads duplicate vol-1 odes 4, 8, 9, 105
+   and vol-2 ode 508. Identity must be keyed by volume+page. The refuters handled
+   this better than a blanket rule would: they refuted ode 105 (nothing pins the
+   record) but kept odes 4 and 8, whose evidence uniquely identifies which record
+   is meant.
+
+**Not done.** These are IDENTIFICATIONS, not records: no excerpt chosen, no
+reflection, no rights approval. Hafez 10 of 24; Rumi 21 of 16; total 31 of 40.
+`build:production` and `verify:qr` remain fail-closed.
+
+**Files changed.** `scripts/poetry/parse-clarke-odes.ts` (new),
+`tests/content/clarkeParse.test.ts` (new), `scripts/poetry/ocr-clarke.sh`,
+`sources-private/poetry/reports/hafez-clarke-alignment-candidates.json` (git-ignored).
+
+**Verification.** `pnpm check`: tests pass; verifiers pass; gates fail-closed.
+`audit (prod deps)` fails on the pre-existing npm 410. NOTE: `lint` currently fails
+on `New_Frontend/**` (untracked, added 11:42 today, not part of this change and not
+mine to touch); my own files lint clean.
+
 ### 2026-07-16 (Australia/Sydney) — local OCR of Clarke; first citation-grade Hafez binding; the proper-noun ceiling
 
 **Raouf:**
