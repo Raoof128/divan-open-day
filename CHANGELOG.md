@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-16 — Visible poet return and cinematic Begin verification
+
+**Raouf:**
+
+- Reviewed draft PR #5 against current `main` and normally merged the final 60-Hafez / 60-Rumi baseline without changing its poetry, source evidence, translations, compiler, service worker, deployment, or production-selection work.
+- Verified visible `Choose another poet` controls from intention and result, release-bound clearing of selected-poet/current-poem session state, deterministic return to both cards, and usable Back/Forward traversal.
+- Kept Begin inside the existing cinematic: smooth automatic scrolling and manual scrolling use the same real video-scrub path, terminal arrival paints the `duration - 0.05` frame, and Skip remains available.
+- Fixed three genuine failure edges without weakening tests: the first-frame timeout now waits for frame presentation rather than `loadeddata`, terminal seek paints before unmount, and a rejected programmatic scroll falls back directly.
+- Node 22.16.0 verification passed: format/lint/typecheck; components 80/80; accessibility 24/24; Playwright 5/5; exact 120-item production build; distribution/private-leak and privacy verification. A 390×844 Chromium walk covered automatic/manual traversal, Rumi/Hafez returns, result return, Back/Forward, reduced motion, failed video, Save-Data, and offline. Verified implementation SHA: `a079e722f0d3ecdb643c8204d7c3272e14ad4616`.
+- Limitations: browser evidence is emulated Chromium rather than the external physical-device/cross-browser/assistive-technology matrix; npm's retired audit endpoints still return unrelated HTTP 410 responses. Full evidence is in `docs/verification/visible-navigation-and-cinematic-begin.md`.
+
 ## 2026-07-16 — Final 120-record source-bound corpus
 
 **Raouf:**

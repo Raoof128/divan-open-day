@@ -2,67 +2,109 @@
 
 Date: 2026-07-16 (Australia/Sydney)
 
-## Scope
+## Verdict and scope
 
-This branch repairs two frontend flow defects without changing poetry, corpus selection, source evidence, release compilation, service-worker behaviour, deployment, or the 60 Hafez / 60 Rumi expansion work.
+PR #5 passes the requested local review. It adds a visible `Choose another poet`
+control to the intention and result screens, routes `Begin` through the existing
+scroll-scrub corridor, and preserves direct entry for poster-only/failure paths.
 
-## Root causes
+The branch was merged normally with `origin/main` at
+`9bdb860bdb452f7befab59021881a443856e1eff`, so it carries the separate final
+60-Hafez / 60-Rumi baseline without rebasing, rewriting, or editing that work.
+The diff from current `main` contains only cinematic/navigation components,
+focused CSS, their tests, and this verification record. Poetry, corpus records,
+source evidence, translations, release compilation, service-worker behaviour,
+deployment, and production-selection logic are unchanged by PR #5.
 
-1. The welcome `Begin` button called the app's `BEGIN` transition directly. That unmounted the cinematic threshold before scroll could scrub the entrance clip.
-2. Browser Back/Forward state existed, but the intention and result interfaces exposed no visible in-app control for returning to the Hafez/Rumi selection cards.
+Verified implementation SHA:
+`a079e722f0d3ecdb643c8204d7c3272e14ad4616`.
 
-## Changes
+## Implementation review
 
-- `Begin` is now owned by `CinematicThreshold` through `data-cinematic-begin`.
-- On a full-motion, online, scrollable route, Begin requests a smooth traversal to the end of the 260vh corridor. Existing scroll events continue to drive frame seeking and arrival.
-- If motion is reduced, Save-Data/offline disables video, video decoding fails, the first-frame timeout expires, or the corridor cannot scroll, Begin enters directly rather than trapping the visitor.
-- Added a reusable `Choose another poet` control to both the intention and result screens.
-- The control clears stale selected-poet/current-poem session values and sends a validated `choose_poet` PopStateEvent through the existing app history handler. It does not depend on a hard-coded browser-history depth.
-- Added night-surface and paper-surface styles, including forced-colours support.
+- `Begin` is captured by `CinematicThreshold`, which requests
+  `scrollIntoView({ behavior: 'smooth', block: 'end' })`; natural and automatic
+  scroll events use the same seek coalescer and `video.currentTime` path.
+- Arrival requests the terminal `duration - 0.05` frame, waits for `seeked`, and
+  crosses two animation-frame boundaries before advancing. A bounded one-second
+  fallback prevents a terminal seek from trapping entry.
+- The four-second first-frame timer now remains armed until a requested frame is
+  actually presented. `loadeddata` alone can no longer disable the timeout.
+- Reduced motion, Save-Data, offline, video error, first-frame timeout,
+  non-scrollable layout, and a rejected `scrollIntoView` enter directly.
+- Manual scrolling and the existing `Skip entrance` control remain active.
+- Both visible back controls clear `divan.selectedPoet` and
+  `divan.currentPoemId`, push a validated release-bound `choose_poet` history
+  state, and use the existing `popstate` handler. Back can restore the in-memory
+  result during the same visit, while Forward returns to the chooser; no poem ID
+  is added to URL or browser history.
 
-## Regression coverage
+## Exact automated commands and results
 
-- `tests/components/cinematicBegin.test.tsx`
-  - full-motion Begin requests `{ behavior: 'smooth', block: 'end' }` and does not arrive immediately;
-  - reduced-motion Begin enters directly.
-- `tests/components/cinematicThreshold.test.tsx`
-  - existing poster, frame-gate, skip, failure, timeout and natural-scroll contracts remain covered;
-  - the video-error fallback now proves Begin remains usable.
-- `tests/components/poetSelectionNavigation.test.tsx`
-  - intention and result controls emit deterministic chooser state and clear stale session values;
-  - a full App walk proves Welcome → Rumi → intention → Choose another poet returns both Hafez and Rumi cards.
+Node 22.16.0 and pnpm 10.33.0 were used.
 
-## Verification performed here
+| Command                 | Result                                                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| `pnpm format:check`     | Initial FAIL on the two PR files reported by CI; PASS after formatting only those files |
+| `pnpm lint`             | PASS, zero warnings/errors                                                              |
+| `pnpm typecheck`        | PASS                                                                                    |
+| `pnpm test:components`  | PASS, 80/80 tests in 11 files                                                           |
+| `pnpm test:a11y`        | PASS, 24/24 tests in 2 files                                                            |
+| `pnpm test:e2e`         | PASS, 5/5 Chromium tests                                                                |
+| `pnpm build:production` | PASS, production release `pr-5-visible-navigation`, 120 items                           |
+| `pnpm verify:dist`      | PASS, 120 items; archival/private bundle leak check passed                              |
+| `pnpm verify:privacy`   | PASS, no cookies, trackers, fingerprinting, geolocation, or disallowed storage          |
 
-- Compared branch against `main`: only cinematic/navigation components, their focused CSS, tests and this report changed.
-- TypeScript `transpileModule` syntax check passed for the new cinematic controller, navigation helper and reusable back component under ES2022/ESNext/react-jsx settings.
-- GitHub reports no configured commit-status checks for the branch.
-
-## Verification limitation
-
-This ChatGPT execution environment cannot resolve GitHub from its shell, so it could not clone the repository or execute `pnpm test`, `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, Playwright, or the production build. No claim is made that those commands ran. Before merge, run the repository's normal fresh verification from a real checkout.
-
-## Merge acceptance
-
-From Node 22.16.x and pnpm 10.33.0, require at minimum:
+The production command used these explicit non-secret values before invoking the
+exact `pnpm build:production` command:
 
 ```bash
-pnpm format:check
-pnpm lint
-pnpm typecheck
-pnpm test:components
-pnpm test:a11y
-pnpm test:e2e
+export DIVAN_PUBLIC_ORIGIN=https://approved-origin.example
+export DIVAN_RELEASE_ID=pr-5-visible-navigation
+export DIVAN_MIN_HAFEZ_COUNT=60
+export DIVAN_MIN_RUMI_COUNT=60
+export DIVAN_BRANDING_MODE=society_only
+export SOURCE_DATE_EPOCH=1784167200
 pnpm build:production
-pnpm verify:dist
-pnpm verify:privacy
 ```
 
-Then manually verify on a phone-sized viewport:
+Focused TDD evidence also passed 11/11 tests after first reproducing three
+failures: a stalled `requestVideoFrameCallback`, premature terminal-frame
+unmount, and a throwing programmatic-scroll API.
 
-1. Begin visibly auto-scrolls through the cinematic rather than teleporting to poet selection.
-2. Manual scrolling still scrubs the same animation.
-3. Skip entrance still works immediately.
-4. Reduced motion enters without animation.
-5. Selecting Rumi or Hafez exposes `Choose another poet` on the intention card.
-6. The same control is visible on the poem result and returns to both poet cards.
+## Phone-sized browser walk
+
+Chromium was exercised at 390 by 844 CSS pixels against the built production
+release.
+
+- Welcome → Begin produced 27 progressive scroll samples. `scrollY` advanced
+  from 0 to 1,369 while `video.currentTime` advanced from 0 to 7.95 seconds;
+  the threshold stayed `playing` until the terminal frame, then the poet cards
+  appeared. Begin did not skip the corridor.
+- A manual 600-pixel wheel scroll kept the welcome scene active and scrubbed the
+  video to 3.111 seconds. `Skip entrance` then reached poet selection.
+- Rumi → `Choose another poet` returned both cards. Hafez → reveal produced a
+  real poem result, whose `Choose another poet` control also returned both cards.
+- Browser Back restored the Hafez result; browser Forward restored both poet
+  cards.
+- Selecting Reduced removed the video and Begin entered directly.
+- Dispatching a real video `error` event produced poster state with no video;
+  Begin entered directly.
+- Save-Data and offline capability sessions each produced poster state with no
+  video and entered directly.
+- The first-frame timeout and non-scrollable/rejected-scroll routes are pinned
+  by passing component regressions and cannot wait indefinitely.
+
+## Limitations
+
+- The manual viewport evidence is Chromium emulation on macOS, not a physical
+  iOS/Android phone or the separate cross-browser/assistive-technology launch
+  matrix.
+- Save-Data and offline were injected as browser capability values; the existing
+  Playwright offline lifecycle test separately passed its real network-outage
+  flow.
+- GitHub's prior Quality gate also called `pnpm audit --prod`; npm has retired
+  both configured audit endpoints and returned HTTP 410. That external condition
+  is unrelated to PR #5 and no security/test gate was weakened to hide it.
+- A commit cannot contain its own SHA. This record therefore names the exact
+  verified implementation commit; the final documentation commit is reported in
+  the PR and handoff after it is created.
