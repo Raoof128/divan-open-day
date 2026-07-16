@@ -226,9 +226,8 @@ describe('static origin delivery contract', () => {
     expect(caddyfile).toContain('public, max-age=31536000, immutable');
     expect(caddyfile).toContain('public, max-age=3600');
     expect(caddyfile).toContain('?Cache-Control "no-store"');
-    expect(caddyfile).toMatch(
-      /handle_errors\s*\{[\s\S]*header Cache-Control "no-store"[\s\S]*respond "\{err\.status_code\} \{err\.status_text\}"/u,
-    );
+    expect(caddyfile.match(/pass_thru/gu)).toHaveLength(2);
+    expect(caddyfile.match(/respond "404 Not Found" 404/gu)).toHaveLength(2);
     expect(caddyfile).toMatch(
       /@immutable\s*\{[\s\S]*path_regexp[\s\S]*file[\s\S]*\}/u,
     );

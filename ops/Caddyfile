@@ -55,18 +55,16 @@
 	@technical path /content/* /release.json /service-worker.js /offline /offline.html
 	header @technical X-Robots-Tag "noindex"
 
-	# file_server errors leave the normal handler chain before deferred default
-	# headers run. Handle them explicitly so every missing or denied path stays
-	# non-cacheable without disclosing filesystem details.
-	handle_errors {
-		header Cache-Control "no-store"
-		respond "{err.status_code} {err.status_text}"
-	}
-
 	# Missing static and data paths remain 404 and never receive the SPA shell.
 	@staticAssets path /content/* /assets/* /audio/* /fonts/* /images/* /icons/* /manifest.webmanifest /release.json /service-worker.js /offline.html /favicon.ico /mask-icon.svg
 	handle @staticAssets {
-		file_server
+		route {
+			file_server {
+				pass_thru
+			}
+			header Cache-Control "no-store"
+			respond "404 Not Found" 404
+		}
 	}
 
 	@documents path / /index.html /about /credits /accessibility /privacy /offline
@@ -78,6 +76,12 @@
 
 	# Serve other exact files only; directory browsing and broad SPA fallback stay off.
 	handle {
-		file_server
+		route {
+			file_server {
+				pass_thru
+			}
+			header Cache-Control "no-store"
+			respond "404 Not Found" 404
+		}
 	}
 }
