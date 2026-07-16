@@ -122,10 +122,21 @@ export function PoemResult({
           </div>
         </section>
 
-        <section aria-labelledby="reflection-heading">
-          <h2 id="reflection-heading">A reflection, not a prediction</h2>
-          <p>{item.reflection}</p>
-        </section>
+        {item.reflection !== null ? (
+          <section aria-labelledby="reflection-heading">
+            <h2 id="reflection-heading">A reflection, not a prediction</h2>
+            <p>{item.reflection}</p>
+          </section>
+        ) : null}
+
+        {item.disclosures.length > 0 ? (
+          <section aria-labelledby="source-disclosure-heading">
+            <h2 id="source-disclosure-heading">Source note</h2>
+            {item.disclosures.map((disclosure) => (
+              <p key={disclosure}>{disclosure}</p>
+            ))}
+          </section>
+        ) : null}
 
         <SourceCredit item={item} />
 

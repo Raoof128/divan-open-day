@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-16 — Integrate poetry ingestion into main
+
+**Raouf:**
+
+- Merged `feat/poetry-source-ingestion` into the cinematic/UI `main` release line.
+- Preserved both branches' ignore rules and complete audit histories while combining the cinematic asset contract with source-bound content authority and the exact 24 Hafez / 16 Rumi production corpus.
+- Manual conflict resolution was limited to `.gitignore`, `eslint.config.js`, `AGENT.md`, and `CHANGELOG.md`; overlapping schemas, UI, tests, and Vite configuration merged automatically.
+- Merged-tree verification passed: 682 tests, strict typecheck, tracked lint/format, 5 Playwright tests, exact 40-item production build, dist/leak/privacy checks, 9 source locks, and four static ops contracts. Repository-wide lint/format still see protected untracked/local inputs, which remain untouched. Public-launch governance, manual accessibility, live deployment/rollback, and physical QR gates remain external.
+
 ## 2026-07-16 — Cinematic threshold, layered book, and atmosphere (feat/cinematic-threshold)
 
 **Raouf:**
@@ -19,6 +28,243 @@
 - **Files Changed:** 14 src/build/doc files + 8 test files (+27 net-new tests, none weakened) + `docs/audits/divan/**` + `.gitignore` + `AGENT.md` + `CHANGELOG.md` (see AGENT.md entry for the full list).
 - **Verification:** Node 22.16.0, branch `feat/ui-ux-gauntlet-r1` @ `67958c9`. `scripts/check.sh --e2e` green — lint/typecheck 0, vitest 499/499, Playwright 5/5, `verify:dist`/`verify:privacy` pass, `audit --prod` clean, `build:production` + `verify:qr` fail-closed as intended. axe 0 violations on all ten surfaces; zero external requests/cookies; LCP ~1212 ms / CLS 0.0053 throttled-mobile. Five adversarial reviewers report 0 unresolved Blocker/Critical/High.
 - **Follow-ups:** §31.2 launch gates unchanged and closed. Production-corpus runbook tasks: subset Noto Nastaliq + re-measure reveal, re-check RTL clearance/wrapping with real verse; kiosk idle-reset remains a deployment decision.
+## 2026-07-16 — Source-bound machine authority and 40-item production corpus
+
+**Raouf:**
+
+- Replaced the human-only literature-eligibility gate with a discriminated
+  `ReviewAuthority`: legacy `human` evidence remains valid, while
+  `machine_alignment` binds exact English/Persian source snapshots, selected
+  spans, references, and mappings. The only machine verdicts are
+  `MACHINE_VERIFIED`, `MACHINE_VERIFIED_WITH_DISCLOSURE`, and `EXCLUDED`.
+- Production machine-authority records need no teacher, contributor, named
+  reviewer, final approval, or human-reapproval state. Source/span/reference/
+  mapping mutations fail closed; a corrected mapping receives a fresh machine
+  verdict. Rights permissions join source-lock and licence evidence without
+  fabricating a reviewer identity.
+- Froze the honest pre-migration baseline (10 verified Hafez identifications and
+  21 verified Rumi alignments, but zero canonical records), selected the strongest
+  16 Rumi records, and archived sequences 116, 347, 483, 622, and 668 as
+  `EXCLUDED` with ranking evidence.
+- Built exactly 24 Hafez records from Bell scan spans aligned to Qazvini-Ghani and
+  exactly 16 Rumi records from Whinfield/Nicholson evidence. Public output is
+  English first, Persian live RTL below, with public-domain/CC BY-SA attribution
+  and source limitations; reflections were not invented. Full books, hashes,
+  mappings, rationales, reviewer metadata, and candidate reports remain private.
+- Added deterministic regeneration (`pnpm poetry:build-production`), exact
+  24/16/40 compiler enforcement, production-corpus/leak/archive tests, and disabled
+  Vite 8's obsolete modulepreload-polyfill injection so the pinned Rolldown build
+  stays on Vite's public exports.
+- Local production packaging now succeeds with explicit non-secret configuration;
+  `verify:dist` and `verify:privacy` pass. This is package readiness, not a claim
+  that independent legal/governance, manual-accessibility, live deployment,
+  rollback, or physical-QR launch gates have been completed.
+
+## 2026-07-16 — Harden the Clarke verse filter; 10 verified Hafez identifications
+
+**Raouf:**
+
+- Replaced the Clarke verse/notes filter with a **typographic** one
+  (`scripts/poetry/parse-clarke-odes.ts`). Clarke interleaves glosses with verse and
+  numbers them with the same `N.` form as couplets, numbering only every fifth
+  couplet — so no keyword or numbering rule can separate them. He sets notes in
+  smaller type; hOCR reports `x_size`; the distribution is bimodal (notes ≤52, verse
+  ≥56) with the 53–55 valley classified `uncertain` and never pairable.
+- 13 tests pin it (`tests/content/clarkeParse.test.ts`), including the two defects
+  that have recurred three times: a gloss repeating the couplet's own anchors, and a
+  numbered gloss read as a couplet. They caught a real bug in the hOCR parser
+  (nested spans captured only the first word per line).
+- Alignment run: Haiku matla' aligners over 125 odes → 2 Opus adversarial refuters
+  on distinct lenses. 17 proposed; the refuters returned **identical verdicts on all
+  17**; **10 verified** (≥2 refuters, zero refutations). Hafez 10 of 24, Rumi 21 of
+  16, total 31 of 40.
+- Recorded two defects, both unfixed: the couplet-range prefilter excluded true
+  answers (Qazvini-Ghani rejects spurious couplets, so Clarke's ghazals run *longer*
+  than Q-G's — the filter assumed the reverse), which makes **every "none" in this
+  run inconclusive rather than a refutation; and ode labels are not unique (five
+  duplicated by OCR misreads), so identity must be keyed by volume+page.
+- These are identifications, not records: no excerpt chosen, no reflection, no rights
+  approval. No gate moved.
+
+## 2026-07-16 — Local OCR of Clarke, and the first citation-grade Hafez binding
+
+**Raouf:**
+
+- Added `scripts/poetry/ocr-clarke.sh`: renders and OCRs all 1,078 Clarke pages
+  locally at 400dpi, parallel across cores (~25min vs ~4.5h sequential) and
+  resumable. No page text passes through a model — no content filter, no tokens.
+  Output is git-ignored; per-page text of a complete translation is the whole book.
+- Needed because the Archive's OCR of Clarke recovers ~1.5 numbered couplets per
+  ode where ghazals run 5–15. Local OCR reaches 2.7 and reads headings the Archive
+  loses. The engines fail on different odes (local 273, Archive 356, union 438) and
+  agree on 98% of concordance numbers where both read them, so they are merged as
+  two corroborating readings with disagreements flagged.
+- **Clarke ode 8 = Qazvini-Ghani ghazal 3**, on three independent verse signals:
+  literal matla' rendering, couplet count 8 = 8, and a rare-name cluster
+  (Samarkand + Bukhara) unique to one ghazal. The first Hafez identification in
+  this project resting on citable evidence rather than motif similarity.
+- Retracted an earlier form of that same claim: it was first reported on names
+  found in Clarke's commentary rather than his verse. The binding is real, but the
+  evidence was not, and a true claim on invalid evidence is still unfounded.
+- Measured the ceiling of rare-anchor binding: it can uniquely identify at most 36
+  of 494 ghazals; 448 have no rare anchor at all. Proper nouns are a seed, not the
+  method. Rhyme letter + couplet count narrows a typical ode to ~15 candidates,
+  turning matla' alignment into closed multiple choice.
+- 1 of 24 Hafez bound; 21 of 16 Rumi. No record authored, no gate moved.
+
+## 2026-07-16 — Ingest Clarke 1891 as the Hafez identification source
+
+**Raouf:**
+
+- Added a fifth source edition, `hafez-clarke-1891-en` (H. Wilberforce Clarke,
+  Calcutta 1891) — a complete, literal, per-ode-numbered translation of the whole
+  Divan, acquired through the locked fetcher and hash-pinned in `source-lock.json`.
+  Internet Archive records both volumes as NOT_IN_COPYRIGHT; the rights record
+  stays `pending` with no reviewer.
+- Reason, measured rather than assumed: only 5 of Bell's 40 recovered poems carry
+  a ghazal-discriminating proper noun, none of them unique. Bell cannot identify
+  her Persian counterparts on citable evidence, and at ~43 poems total she cannot
+  reach 24 verified. Clarke's first line tracks the matla' (verified against
+  ghazal 1), turning Hafez identification into a citation check instead of a
+  thematic judgement.
+- Fixed a source-acquisition defect surfaced by the two-volume ingest: artifacts
+  of the same kind under one source id resolved to the same filename, so volume 2
+  silently overwrote volume 1 and the lock recorded two hashes for one path.
+  Artifacts now take an optional `filename`; the schema rejects colliding
+  destinations; the fetcher keys prior hashes by file rather than kind.
+- No pairing verified, no record authored, no gate moved. `build:production` and
+  `verify:qr` remain fail-closed.
+
+## 2026-07-16 — Correct the Rumi count to 21 verified, and retract seq 717
+
+**Raouf:**
+
+- **Scope:** Corrects the 2026-07-15 entry below and the audit it points to, plus the private alignment evidence file. No code, schema, compiler, release-gate or public-output change.
+- **The 27 "unverified" were never unverified.** Yesterday's entry reported **15 verified / 5 refuted / 27 unverified**, attributing the 27 to refuters that never returned before the session limit hit. That reading was wrong. The refuters had returned; their verdicts were sitting in the agent transcripts, unaggregated. Recovering them was a local join — map each `agentId` to its `CLAIM:` line and re-apply the same gate — at a cost of **zero new agents and zero tokens**. Corrected: **21 verified / 14 refuted / 6 insufficient** of 47 examined. No verdict was re-derived, softened, or re-run toward a preferred answer.
+- **Seq 717 is retracted.** It was among the original 15, passing on 3 votes. A 4th vote returned and refuted it. Nothing about the pairing changed — only the number of skeptics who examined it. This is the clearest evidence in the run that the vote threshold does real work rather than ceremony, and it means the earlier figure was not just incomplete but **wrong in the direction that matters**: it published a pairing that further review rejects. The recovery was run through the identical gate, which is precisely why it retracted 717 instead of confirming the number I had already published.
+- **Vote strength is now recorded per pairing** (6 votes: 2 pairings, 5: 5, 4: 9, 3: 4, 2: 1). 20 of the 21 carry ≥3 independent refutation attempts; the lone 2-vote pass is flagged as the weakest evidence in the set and should be read as provisional — seq 717 shows what a low-vote pass risks.
+- **Rumi is over threshold: 21 of 16**, with 5 pairings of margin. **Hafez is 0 of 24** and is now the entire remaining gap (total **21 of 40**).
+- **Not done:** verified pairings remain alignment evidence, not canonical records — they assert that this English renders that Persian, and do not select excerpt boundaries, write reflections, or establish rights. No authoring item exists, so `pnpm build:production` still fails closed at `loadContent.ts:433`, correctly and untouched. The reviewer-union gate is still scoped but unbuilt while the total corpus is below threshold.
+- **Files Changed:** `docs/audits/divan/2026-07-15-bell-reconstruction-and-rumi-alignment.md`, `sources-private/poetry/reports/rumi-alignment-candidates.json` (git-ignored), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green. Evidence file confirmed matched by `.gitignore:27` before writing. `pnpm build:production` still fails closed; launch gates untouched.
+
+## 2026-07-15 — Reconstruct Bell locally; 15 Rumi pairings survive adversarial review
+
+**Raouf:**
+
+- **Scope:** New Bell reconstruction script + its regression suite + audit. Rumi alignment evidence written to private reports. No schema, compiler, release-gate or public-output change.
+- **Bell — recoverable after all.** Model transcription of the scan is blocked by the platform (9/14 readers returned `400 Output blocked by content filtering policy`). The fix is to never route the text through the model: `pdftoppm` renders pages at 400dpi, `tesseract` OCRs them, and the text lands straight in files. No network, no new dependency (`ocrmypdf` absent and not needed), no model output, therefore no filter. On the line that named the problem, the archive OCR reads `easb` and the fresh local OCR reads **`east`**. Two independent engines (IA's ABBYY vs local Tesseract) now corroborate **1,270 of 1,340 lines (94.8%)** across **40 poems**; 5 are fully corroborated, 33 are within two lines of clean. Disagreements are flagged, never resolved by guessing.
+- **Three defects found, all three mine:** (1) splitting on Roman numerals swept Bell's **prose introduction** in as "poem I" — 155 lines of essay, the same class of error that invalidated the Whinfield prose summaries; fixed by the running head (`INTRODUCTION` vs `POEMS FROM THE`), and the verse starts at scan page 71, not 67 as the stale metadata claimed; (2) my comparison counted `rise !` vs `rise!` as a conflict, flagging 396 good lines — comparing words only gives **396 → 70**; (3) the printed page number `111` split a poem in half, because the heading shape allowed digits.
+- **Damaged numerals:** the OCR reads II as `Il` and III as `Ul`, so requiring a valid numeral MISSED the heading and merged poems into their predecessor. Boundary detection is now separate from identity: the numeral is kept verbatim and flagged, never repaired from sequence, since one missed heading would shift every later reference. This costs nothing — Bell's numeral is not a Hafez citation, and the English side is cited by scan page.
+- **Rumi — 15 verified of 47 examined.** Aligners proposed **47 of 47 with zero exclusions**, which is not credible: the previous human pass accepted 8 of 8 and every one was wrong. Three-lens adversarial refutation cut it to **15 verified / 5 refuted / 27 unverified** (refuters never returned — session limit after 10.3M subagent tokens). The 27 are untested, not disproven. Zero content-filter blocks across 189 agents, confirming the filter targets bulk transcription, not short structured verdicts. The skeptics caught real defects: false boundaries, a better section named for seq 480, deviation understated 2× on seq 667 (8 unsupported English couplets), and — on seq 757 — an aligner citing **prose-summary text as verse evidence**, the packet-v1 defect resurfacing.
+- **Not done:** target unmet (Rumi 15 of 16, Hafez 0 of 24, total 15 of 40). Verified pairings are alignment evidence, not canonical records. The reviewer-union gate is scoped but deliberately not built while the corpus is below threshold — removing protection before there is anything to compile costs the protection and buys nothing.
+- **Files Changed:** `scripts/poetry/reconstruct-bell.ts`, `tests/content/bellReconstruction.test.ts`, `docs/audits/divan/2026-07-15-bell-reconstruction-and-rumi-alignment.md`, `.gitignore`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green; new suite 14/14. Rendered pages and OCR text are git-ignored before first write; `rumi-alignment-candidates.json` matches the existing excerpt-bearing ignore rule. `pnpm build:production` still fails closed. Launch gates untouched.
+
+## 2026-07-15 — Recover the Hafez Persian verse, which was never extracted
+
+**Raouf:**
+
+- **Scope:** New Hafez ghazal extractor, its regression suite, and an audit record. No schema, compiler, release-gate, or public-output change.
+- **Summary:** Hafez has scored **zero** candidates for the life of this project, and every earlier report — including the 2026-07-14 preflight — read that as a matching problem: Bell's 1897 selection has no concordance to Qazvini-Ghani, so nothing could pair. That diagnosis was wrong. **The Persian ghazal bodies were never in staging at all.** `extract-epub.py` collects block-level tags only, and the Wikisource Qazvini-Ghani edition sets every ghazal as a centred table — one couplet per `<tr>`, each hemistich in `<td class="b"><span class="beyt">`. None are block tags, so every poem was dropped while the footnote apparatus, which *is* in `<p>`, passed through and became the entire Hafez "corpus". The 91 documents that looked like ghazals held 94 rows between them, and they were manuscript-variant notes. No ranking repair could ever have fixed this; there was nothing to rank.
+- **The repair:** `scripts/poetry/extract-hafez-ghazals.py` reads the ghazal structure directly, recovering **486 citable ghazals, 3,649 couplets, 7,428 hemistichs** — each with its own edition number read from the markup, so references are cited from the source rather than inferred. `BLOCK_TAGS` was deliberately not widened: it would change the Rumi extraction and invalidate its 971 section digests.
+- **Three real source defects, handled without invention:** (1) the EPUB spine lists documents twice — read each once; (2) the source gives two different poems the same number (`c127` and `c128` both carry `۱۲۳`; likewise `c256`/`c257`, `c321`/`c362`) — file order hints the second "should" be 124/252/317, and those are exactly the numbers otherwise absent, but acting on that hint would **invent a poem number against the source**, so both sides are flagged `numberAmbiguous` and excluded (486 unambiguous remain; 24 are needed); (3) unnumbered qasidas, masnavis and rubaiyat are real verse but cannot be cited by ghazal number — skipped, not renumbered.
+- **Not done, and why:** the 24/16/40 target was **not** met and the named-human gate was **not** removed. The gate is not what blocks release — an empty corpus is (`loadContent.ts:433`: "no approved production corpus exists"). Removing it without a corpus to compile buys nothing and costs the protection; the correct order is evidence, then policy, then compile. Bell's English remains raw OCR (`requiresVisualVerification` true on 33/33, `correctedDraftLines` empty on all 33, running heads inside poem bodies, `easb` for "east" in the verse). Transcribing it from the local 5.5 MB scan is blocked by the platform: 9 of 14 readers returned `400 Output blocked by content filtering policy`, yielding 1 complete poem from 14 agents. Publishing `easb` as Gertrude Bell's poetry would be exactly the fabrication this pipeline exists to prevent.
+- **Files Changed:** `scripts/poetry/extract-hafez-ghazals.py`, `tests/content/hafezGhazalExtraction.test.ts`, `tests/fixtures/poetry/build-ghazal-fixture-epub.py`, `docs/audits/divan/2026-07-15-hafez-verse-recovery.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm check` green; new suite 10/10, including a test pinning that the original extractor drops this verse while capturing the footnote, so the defect cannot silently return. Ghazal ۸۸ verified by hand against raw markup → `c92`, `شنیده‌ام سخنی خوش که پیر کنعان گفت`, 9 couplets. `pnpm build:production` still fails closed. Launch gates untouched.
+
+## 2026-07-14 — Git-ignore CLAUDE.md, as it always claimed to be
+
+**Raouf:**
+
+- **Scope:** One line in `.gitignore`. No code, no behaviour, no content change.
+- **Summary:** `CLAUDE.md` states on line 3 that it is "**git-ignored** (local, not committed)", but it was never actually listed in `.gitignore` — so it sat untracked and unignored, contradicting itself and appearing in every `git status`. Ignored it, which is what the file said all along.
+- **Files Changed:** `.gitignore`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `git check-ignore -v CLAUDE.md` resolves to `.gitignore:36`; `git status` is clean but for the untracked audit screenshots, deliberately left alone.
+
+## 2026-07-14 — Pin the approval-identity gate against the packet v1 defect
+
+**Raouf:**
+
+- **Scope:** One regression test. No behaviour change — the identity requirement already held; it was simply unpinned.
+- **Summary:** Packet v1 accepted eight pairings with its `reviewer` field set to the empty string. An approval that names nobody is not an approval: there is no one to have been wrong, and nothing to revoke. `approvalRecordSchema.approved_by` already rejects it via the shared kebab-case identifier schema. Pinned against that concrete incident so it cannot be relaxed quietly.
+- **Files Changed:** `tests/content/reviewIdentityGate.test.ts` (new), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `pnpm test` 588/588 (47 files; +19 net-new across today's alignment repair), typecheck 0, lint 0. `pnpm build:production` still fails closed ("no approved production corpus exists in content-private").
+- **Known limitation:** A single-character identity ("a") is accepted, and the test says so rather than asserting otherwise. The shared `identifierSchema` enforces lowercase kebab-case but no minimum length, and it backs every registry ID, so tightening it for approvers alone belongs in its own change rather than smuggled into a test.
+
+## 2026-07-14 — Verse-only inventory and source-aware alignment (phases 2-3)
+
+**Raouf:**
+
+- **Scope:** Phases 2-3 of the alignment-pipeline repair. Candidate generation only. No canonical record, verdict, approval, or corpus change — the human approval gate stays required and machine output feeds review, never the compiler.
+- **Summary:** Two repairs. (1) The English side is now classified before ranking, and only `verse_translation` segments are eligible, so Whinfield's prose arguments — the eight acceptances the preflight rejected — cannot reach a pairing at all. Every excluded segment is recorded with its classification, reason and digest, so exclusions are auditable rather than silent. (2) Ranking is source-aware. The old scorer matched transliterated proper nouns across whole bodies, which is near-noise across 51,614 Persian lines and put the correct passage outside the top 40 for 33 of 33 reviewed Rumi entries. The new matcher aligns section title against section title — Nicholson titles his Persian sections, and Whinfield titles his verse sections with a translation of the same heading — scoring the union of the story heading (which names the figures) and the verse-section title (which locates the passage). Matching is on word boundaries, not substrings (`نی` occurs inside unrelated words and buried `نی‌نامه`, the Song of the Reed itself), and generic devotional vocabulary is excluded from the lexicon outright, since two passages sharing "love" or "heart" is what the old scorer already produced.
+- **Result:** 643 English segments → 108 pairable verse, 535 excluded (184 heading, 86 apparatus, 85 prose argument, 81 footnote, 55 uncertain, 44 commentary). Of 108 verse units, 47 rank at least one candidate and 61 have no signal. The matcher independently reaches the audit's Moses/Solomon verdict from titles alone: sequence 121 does not appear in *Moses and the Shepherd*'s candidate list, and `انکار کردن موسی بر مناجات شبان` (seq 65) ranks first. Ground-truth pairs verified: Prologue→`نی‌نامه`(0), Prince/Handmaid→`پادشاه و کنیزک`(1), Harper→`پیر چنگی`(466), Arab/Dog→(361).
+- **Files Changed:** `scripts/poetry/{align-verse-sections,build-verse-candidates}.ts` (new), `tests/content/alignVerseSections.test.ts` (new), `docs/audits/divan/2026-07-14-review-conflicts.md` (new), `sources-private/poetry/reports/candidates-summary.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0; `pnpm vitest run tests/content` 346/346 (21 files; +8 net-new), typecheck 0, lint 0. Excerpt-bearing `rumi-verse-candidates.json` is git-ignored by existing pattern; the tracked summary carries counts and caveats only.
+- **Known limitation:** Ranking is a hint, not identification, and single-anchor (score 1) hits are demonstrably unreliable — `عمر` is both the name Omar and the common noun "life", and "The Arab and his Wife" ranks the Arab-and-**dog** story on `اعرابی` alone. Recorded in the tracked summary. 61 of 108 verse units have no title signal at all: abstract section titles ("Trust in God, as opposed to human exertions") name no figure. Persian book boundaries are NOT derived — Nicholson's sections carry no `دفتر` marker and the source offers no concordance, so book is recorded as English-side evidence only, never as a filter. Inventing one would fabricate provenance.
+- **Follow-ups:** Phases 4-5, 7 (canonical records, per-record machine verdicts, packet v2) not done. Corpus remains 0 canonical records; launch gates stay closed and cannot open without human approval by design.
+
+## 2026-07-14 — English block classification: stop prose arguments becoming poetry
+
+**Raouf:**
+
+- **Scope:** Phase 1 of the alignment-pipeline repair mandated by the preflight audit. Classification only — no pairing, verdict, approval, or corpus change. The human approval gate is untouched and stays required.
+- **Summary:** The 2026-07-14 preflight found eight pairings that attached Persian verse to Whinfield's **prose story argument**, all eight accepted by a human reviewer. Root cause was the pairing unit, not reviewer inattention: the English side was the whole story-body block, whose first line is the argument and whose remaining lines are the verse — which the review packet never displayed. Whinfield's EPUB is flat (`<br/>`-separated, one `<p>` per story), so no markup distinguishes argument from verse; the split has to be structural. Added `classify-english-blocks.ts`: a closed enum (`verse_translation`, `prose_summary`, `commentary`, `heading`, `footnote`, `editorial_apparatus`, `uncertain`) with only `verse_translation` pairable. Signals are structural, never thematic — prose is never re-read as verse because it discusses the same story. Thresholds are measured, not guessed: across 8,004 extracted lines the distribution is strongly bimodal (verse p50 47, p90 56 characters; prose mean 571), with an empty band between ~70 and ~150. `NOTES:` is handled positionally, so footnote bodies short enough to look like verse are still apparatus. Section titles are peeled off the front of a verse run by terminal punctuation: of the 127 short lines directly following an argument, 103 end in a full stop and are titles, while verse landing there ends mid-clause ("Second causes only operate in subordination to,").
+- **Result:** Over the live extraction — 643 segments: 108 `verse_translation` (6,983 verse lines, 93 carrying a section title), 85 `prose_summary`, 184 `heading`, 86 `editorial_apparatus`, 81 `footnote`, 44 `commentary`, 55 `uncertain`. Whinfield's genuine verse, never previously offered to the reviewer, is now the only pairable English.
+- **Files Changed:** `scripts/poetry/classify-english-blocks.ts` (new), `tests/content/englishBlockClassification.test.ts` (new), `eslint.config.js`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0. `pnpm vitest run tests/content` 338/338 (20 files; +7 net-new), `pnpm typecheck` 0, `pnpm lint` 0. Regression tests pin all eight defective English blocks as `prose_summary` and unpairable, and keep the reed-flute Prologue and Bell's lineated verse eligible.
+- **Known limitation:** A section title sitting **between** two verse sections has no prose anchor before it and no markup to find it by, so it stays inside its verse run. That is a boundary imprecision within verse, not a category error — excerpt boundaries are settled downstream by review. Not guessed at.
+- **Follow-ups:** Phases 2-9 (verse-only inventory, source-aware matching, canonical records, machine alignment, packet, gates). `eslint.config.js` now ignores `.remember/**` — a git-ignored local plugin artefact outside the TS project that was failing `pnpm lint`.
+
+## 2026-07-14 — Machine alignment verification: require proof a pairing corresponds
+
+**Raouf:**
+
+- **Scope:** The net-new part of the bilingual-alignment plan — the parts that did not already exist. The plan's per-record audit was **not** performed and no verdicts were authored: `content-private/` holds zero canonical records, so there is nothing to review (see Follow-ups). Existing gates were left alone rather than duplicated.
+- **Summary:** Closed a real gap. `compileCorpus` proved a human approved an item and bound that approval to `canonicalSha256(item)`, but **nothing required that anyone had verified the English excerpt is actually a translation of the Persian beside it** — the only prior "alignment" in the codebase was `z.enum(['line','stanza'])`, a display layout. A final approver could sign a mispaired record and it would compile. Added `machineAlignmentSchema.ts`: a strict, reviewer-identity-free attestation (verdict × classification × confidence × anchors) bound to the item digest and both source snapshot digests. Cross-field rules make dishonest records unrepresentable: `pass` demands high confidence and ≥3 independent anchors (one shared "love/heart/wine" is what a keyword scorer already yields); low confidence can never be release-eligible; `mismatch`/`insufficient_evidence` must be blocked; `composite_correspondence` (non-contiguous spans, common in Whinfield/Bell) cannot be released as one excerpt; blocked records must state a reason; a record needing reapproval is never eligible. Wired as a **production-only** gate refusing missing, stale-digest, blocked, reapproval-pending, future-effective, or wrong-edition records. Registry defaults to empty, so production fails closed.
+- **Files Changed:** `src/lib/content/machineAlignmentSchema.ts` (new), `src/lib/content/{compileCorpus,registrySchemas}.ts`, `tests/content/{machineAlignment,machineAlignmentGate}.test.ts` (new), `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, `pnpm check` — vitest 569/569 (44 files; +31 net-new), typecheck/lint 0, `verify:dist`(+leak gate)/`verify:privacy` pass, `build:production`+`verify:qr` still fail-closed. Fixture builds unaffected (40 items). A compiled corpus carries no anchor, evidence, model, or classification data. Wiring verified empirically: with the sentinel gate temporarily neutralised, a production compile fails `Item … is missing machine alignment verification of its Persian-English pairing`.
+- **Known limitation:** `validateItemAlignment` is exported and unit-tested directly. Production compilation of the fixture corpus is impossible by design (the sentinel gate fires first), so the gate is not covered end-to-end — the same pre-existing limitation as `validateItemEvidence`. The alternative, a test corpus built to evade the sentinel gate, would ship a worked example of bypassing production protection and was rejected.
+- **Follow-ups:** No machine alignment record has been authored, because no canonical record exists to bind one to. This gate is inert until real items exist, and it can never substitute for human approval — production requires both. Poetry rights unchanged: all four sources `status: pending`.
+
+## 2026-07-14 — Complete the MIT licence: align README and bind the grant with tests
+
+**Raouf:**
+
+- **Scope:** Finish the MIT licence added earlier today. The licence stays; the repository is made to agree with it. No product behaviour change.
+- **Summary:** `176b360` added `LICENSE` + `"license": "MIT"` but left `README.md` stating the opposite ("All rights reserved. No licence is granted to copy, modify, redistribute, or deploy"). `tests/security/publicReadiness.test.ts:37` guards that position with `not.toHaveProperty('license')`, so the branch was **red from `176b360` onward** (535/536) — the licence entry's "no code/tests affected" claim was false, as only `format:check` was run. Rewrote the README licence section: repository-authored **source code is MIT**, while the Persian poetry/translations, the four third-party source editions (Wikisource transcriptions are CC BY-SA and need attribution), and Persian Society/University marks are explicitly **excluded from the grant**. Replaced the obsolete assertion with two stronger tests binding `LICENSE` + `package.json` + `README.md` into one coherent grant, and asserting the poetry/marks carve-out survives. Verified by mutation: dropping the `license` field, restoring the old README wording, or deleting the carve-out each fail the suite.
+- **Files Changed:** `README.md`, `tests/security/publicReadiness.test.ts`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, `pnpm check` — see footer. Vitest 538/538 (+2 net-new licence tests); the `publicReadiness` failure introduced by `176b360` is resolved without weakening any gate.
+- **Follow-ups:** MIT covers this repository's code only. Poetry-source rights are unaffected and independent — all four sources remain `status: pending`, no approved corpus exists, and `build:production` stays fail-closed.
+
+## 2026-07-14 — Add MIT license
+
+**Raouf:**
+
+- **Scope:** Licence the codebase. No behaviour change.
+- **Summary:** Added standard `LICENSE` (MIT, © 2026 Raouf Abedini) and `"license": "MIT"` in `package.json`. Applies to this repo's own source only — third-party poetry sources (e.g. Wikisource CC BY-SA transcriptions) keep their own terms and are never committed.
+- **Files Changed:** `LICENSE` (new), `package.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** `pnpm format:check` clean.
+
+## 2026-07-14 — Poetry source ingestion: live run + real-data fixes
+
+**Raouf:**
+
+- **Scope:** Owner-authorised live run of the ingestion pipeline. Fetched + extracted the real sources and fixed every real-data defect in a loop. Nothing fabricated; verse stays git-ignored private staging; public corpus stays fail-closed.
+- **Summary:** All four sources fetched (`source-lock.json`, 5 artefacts). Fixes: archival-redirect allowlist now matches registrable-domain **suffixes** (`*.archive.org` datanodes OK, look-alikes rejected); Bell OCR parser handles bare roman numerals (33 candidate poems); the Persian Masnavi EPUB was index-only, so added a **resumable, rate-limited** Wikisource ProofreadPage section fetcher (`poetry:fetch-masnavi`, `<span class="beyt">` verse, scan-page order, per-section checkpoint + `--assemble-only`) — 85+ sections / ~5,000 lines ingested, continuing on resume; candidate scoring replaced with a **transliterated proper-noun bilingual** matcher (token overlap is 0 across scripts) plus colophon/TOC filters. Hafez Divan (1,816 blocks) and Whinfield (397 blocks) verified as genuine verse.
+- **Files Changed:** `src/lib/content/sourceRegistrySchema.ts`, `scripts/poetry/{fetch-masnavi-sections(new),extract-hafez-bell,extract-sources,build-candidate-index}.ts`, `tests/content/{masnaviSections(new),bellOcr,sourceLock}.test.ts`, `sources-private/poetry/{source-lock.json,reports/candidates-summary.json}`, `.gitignore`, `docs/poetry-source-runbook.md`, `package.json`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0. `pnpm check` green — format/lint/typecheck 0, vitest 536/536 (42 files), `verify:dist`(+leak gate)/`verify:privacy` pass, `audit --prod` clean, `build:production`+`verify:qr` fail-closed.
+- **Follow-ups:** Resume `poetry:fetch-masnavi` to finish all ~1001 sections; human excerpt pairing/approval and §31.2 gates remain outstanding.
+
+## 2026-07-14 — Poetry source ingestion (acquisition + extraction + candidates), adapted
+
+**Raouf:**
+
+- **Scope:** Net-new source-provenance layer of the poetry ingestion plan (its Tasks 2–6, 8, 12), wired to feed the existing authoring/registry/compiler/UI pipeline. The plan's content/mapping/compiler/UI tasks already exist in-repo and more strictly, so they were not rebuilt (reconciliation in `docs/decisions/poetry-source-integration-baseline.md`). Test-first; no live downloads (owner-gated); nothing fabricated; production stays fail-closed.
+- **Summary:** Immutable source registry + strict Zod schema (four editions, HTTPS + host-allowlist only). Host-allowlisted streaming downloader with redirect revalidation, size caps, SHA-256 source-lock, HTML-for-EPUB rejection, atomic writes, lock reconciliation — unit-tested without network. Honest source rights _evidence_ (all `pending`; `approved` structurally impossible without a named human reviewer + acquired hash; "ai" rejected). Deterministic stdlib EPUB extraction (raw vs. search text separated, ZWNJ preserved, XXE/entity guard) + orchestrator. Conservative Bell OCR candidate parsing (raw kept, corrections empty, visual-verification flagged). Non-publishable machine candidate index (refused by the production compiler). Archival-leak bundle gate chained into `verify:dist`. New `poetry:*` commands + `docs/poetry-source-runbook.md`.
+- **Files Changed:** `src/lib/content/{sourceRegistrySchema,sourceRightsSchema}.ts`, `scripts/poetry/*` (6 TS + `extract-epub.py`), `sources-private/poetry/**` (registry, rights evidence, report, keeps), 7 new `tests/content/*.test.ts` + `tests/fixtures/poetry/build-fixture-epub.py`, `package.json`, `.gitignore`, `.prettierignore`, `docs/{poetry-source-runbook,rights-register-public,decisions/poetry-source-integration-baseline}.md`, `AGENT.md`, `CHANGELOG.md`.
+- **Verification:** Node 22.16.0, pnpm 10.33.0, Python 3.12.2, branch `feat/poetry-source-ingestion` off `main` @ `6a102f5`. `pnpm check` green: format/lint/typecheck 0, vitest 529/529 (41 files; +57 net-new poetry tests), `verify:dist` (incl. new leak gate) + `verify:privacy` pass, `audit --prod` clean, `build:production` + `verify:qr` fail-closed. Docker skipped (no daemon); no live network fetch performed.
+- **Follow-ups:** Owner-gated `pnpm poetry:fetch` then extract/build-candidates → Society reviewers. Public launch still needs approved corpus + rights (incl. CC BY-SA attribution for the Persian Wikisource transcriptions), cultural review, Bell OCR-vs-scan verification, and every existing §31.2 gate.
 
 ## 2026-07-13 — Frontend design audit fixes
 

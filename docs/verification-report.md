@@ -1,103 +1,195 @@
-# DIVAN Release 1 — Verification Report
+# DIVAN Machine-Authority Production Verification
 
-- **Date:** 2026-07-13 (Australia/Sydney)
-- **Commit:** `c552189` on `feat/divan-open-day-r1`
+- **Date:** 2026-07-16 (Australia/Sydney)
+- **Branch:** `feat/poetry-source-ingestion`
 - **Runtime:** Node 22.16.0, pnpm 10.33.0, Playwright 1.57 (Chromium)
-- **Scope:** Local implementation-complete verification (design §30/§31.1). Public
-  launch (§31.2) and Docker-host evidence remain out of scope for this session.
+- **Scope:** source-bound machine authority, deterministic production corpus,
+  public-bundle safety, and local release verification
 
-This report is produced from a real fixture build. Production content is
-deliberately absent, so `build:production` is expected to fail closed; that is a
-recorded gate, not a defect.
+## Verdict
 
-## 1. Gauntlet results (runnable subset)
+The local production package is **production-eligible**. It contains exactly 24
+Hafez and 16 Rumi items, all derived from hash-locked sources and carrying an
+embedded machine-authority record. Five additional Rumi candidates are excluded
+from the production selection and retained only in the audit record.
 
-| Command                        | Exit  | Evidence                                                    |
-| ------------------------------ | ----- | ----------------------------------------------------------- |
-| `pnpm typecheck`               | 0     | strict TypeScript, no errors                                |
-| `pnpm lint`                    | 0     | ESLint, zero warnings                                       |
-| `pnpm test`                    | 0     | vitest **472 passed / 34 files**                            |
-| `pnpm test:content`            | 0     | 236 passed                                                  |
-| `pnpm test:a11y`               | 0     | 18 passed                                                   |
-| `pnpm test:offline`            | 0     | 53 passed                                                   |
-| `pnpm test:share`              | 0     | 13 passed                                                   |
-| `pnpm test:performance`        | 0     | 5 passed (asserts §21.3 budgets)                            |
-| `pnpm test:security`           | 0     | 52 passed (ops config, hardening, isolation)                |
-| `pnpm test:e2e`                | 0     | Playwright **5 passed** (a11y ×2, offline, visual ×2)       |
-| `pnpm build:fixture`           | 0     | 40-item fixture release built                               |
-| `pnpm verify:dist`             | 0     | dist integrity/leak/remote/source-map checks pass           |
-| `pnpm verify:privacy`          | 0     | no cookies/analytics/trackers/fingerprint/geolocation       |
-| `pnpm verify:container`        | 0     | image contract group (docker-free static)                   |
-| `pnpm verify:headers`          | 0     | CSP/header/cache group (docker-free static)                 |
-| `pnpm verify:origin-isolation` | 0     | compose/tunnel isolation group (docker-free static)         |
-| `pnpm verify:rollback`         | 0     | safe deployment controls group (docker-free static)         |
-| `pnpm audit --prod`            | 0     | no known vulnerabilities                                    |
-| `pnpm build:production`        | **1** | **fail-closed**: "no approved production corpus" (intended) |
-| `pnpm verify:qr`               | **1** | **fail-closed**: Phase-7 QR gate not satisfied (intended)   |
+This is not a claim that the public event is launch-ready. The final short URL,
+physical QR scan matrix, live container evidence, deployment evidence, and manual
+event approvals remain external launch gates.
 
-### Compressed budget evidence (§21.3), fixture build
+## Corpus evidence
 
-| Asset               | Measured | Budget       | Status |
-| ------------------- | -------- | ------------ | ------ |
-| Initial JS (gz)     | 118 KB   | 200 KB       | ✅     |
-| Critical CSS (gz)   | 4.8 KB   | 45 KB        | ✅     |
-| HTML (gz)           | 657 B    | 40 KB        | ✅     |
-| Offline total (raw) | 752 KB   | 8 MB ceiling | ✅     |
+| Property                                  | Verified result                |
+| ----------------------------------------- | ------------------------------ |
+| Release                                   | `machine-authority-2026-07-16` |
+| Build profile                             | `production`                   |
+| Production eligible                       | `true`                         |
+| Hafez                                     | 24                             |
+| Rumi                                      | 16                             |
+| Total                                     | 40                             |
+| `MACHINE_VERIFIED`                        | 13                             |
+| `MACHINE_VERIFIED_WITH_DISCLOSURE`        | 27                             |
+| Items with a public disclosure            | 27                             |
+| Invented reflections                      | 0; all 40 are `null`           |
+| Public archival/staging/reviewer leakage  | none detected                  |
+| Human approval required for machine items | false                          |
+| Stale machine authorities                 | 0                              |
+| `EXCLUDED` records in production          | 0                              |
+| Archived Rumi records in production       | 0                              |
+| Full source books in public output        | 0                              |
 
-## 2. Environment-blocked (Docker daemon unavailable this session)
+The active authority method is `source-bound-alignment-v1`, issued under model
+label `gpt-5.5-codex`. Every production record was revalidated during the build;
+there are no inherited authority timestamps or unbound source references.
 
-These require a host with a running Docker daemon and are **not** claimed as passed:
+The Hafez selection uses Bell's public-domain English text and the locked
+Qazvini-Ghani Persian source. The Rumi selection uses the locked Nicholson
+Persian and Whinfield public-domain English sources. Source SHA-256 values and
+the pre-migration evidence boundary are recorded in
+`docs/audits/divan/2026-07-16-machine-authority-pre-migration.md`.
 
-- `docker buildx build ... -f ops/Dockerfile` (production image build)
-- `syft <image>` (SBOM/scan)
-- `docker compose -f ops/compose.yml config` against a live daemon
-- `ops/scripts/verify.sh` runtime evidence (container hardening, live headers,
-  origin isolation, no host-published ports)
+## Initial-to-final migration
 
-The corresponding **configuration** is statically verified by `tests/security`
-(52 tests) and the `verify:*` static groups above.
+The repository baseline was 10 verified Hafez **identifications**, 21 verified
+Rumi **alignments**, and zero canonical records. The final corpus contains 24
+newly canonical Hafez records and 16 newly canonical Rumi records.
 
-## 3. §31.1 implementation-complete criteria matrix
+The requested “14 new Hafez IDs” cannot be stated truthfully as a subset of the
+final corpus. The ten baseline Hafez results bind Clarke pages to
+Qazvini-Ghani ghazals 256, 111, 245, 7, 94, 258, 367, 98, 263, and 3. The final
+records bind Bell spans to a different set of Qazvini-Ghani ghazals, with no
+overlapping ghazal number. The ten Clarke identifications remain preserved in
+the hashed pre-migration audit, but none was silently relabelled as a Bell
+canonical record. Consequently, all 24 IDs below are new canonical records:
 
-| #   | Criterion                                  | Status             | Evidence                                                                        |
-| --- | ------------------------------------------ | ------------------ | ------------------------------------------------------------------------------- |
-| 1   | Approved URL opens DIVAN                   | met (code)         | `index.html`+`src/main.tsx` boot; final hostname is §31.2                       |
-| 2   | Mobile & desktop visual systems complete   | met                | `src/styles/*` tokens/fonts/geometry; `visual.spec.ts` captures 5 baselines     |
-| 3   | Hafez & Rumi culturally distinct           | met                | distinct portals/accents; `visual.spec.ts` asserts different portal backgrounds |
-| 4   | English precedes Persian                   | met                | `PoemResult.tsx`; e2e/component tests                                           |
-| 5   | Persian live RTL with lang markup          | met                | `lang="fa" dir="rtl"` + `<bdi>`; `SourceCredit.tsx`                             |
-| 6   | Edition provenance/rights/reviews per item | met (fixture)      | `SourceCredit.tsx`, `registrySchemas.ts`; production evidence is a gate         |
-| 7   | Reflection labelled non-predictive         | met                | "A reflection, not a prediction"; `IntentionScene.tsx` disclaimer               |
-| 8   | Keyboard & screen readers complete flow    | met (code)         | `tests/accessibility` 18, e2e keyboard/axe; manual AT is §31.2                  |
-| 9   | Reduced motion preserves experience        | met                | `motion.ts`, `RevealScene`; a11y + e2e motion-precedence tests                  |
-| 10  | No PII requested/stored                    | met                | `verify:privacy`; storage session/local-preference only                         |
-| 11  | No analytics/tracking cookie/social SDK    | met                | `verify:privacy`; CSP `default-src 'none'`                                      |
-| 12  | Secure shuffle bag avoids session repeats  | met                | `shuffleBag.ts`, `secureRandom.ts`; `tests/unit`                                |
-| 13  | Works offline after first load             | met (code)         | `src-sw/service-worker.ts`; `offline.spec.ts` + `tests/offline` (53)            |
-| 14  | Failed update retains previous release     | met (code)         | atomic `releaseManager.ts`; `offline.spec.ts` outage/failure/rollback           |
-| 15  | Audio optional & rights-cleared            | met                | `PoemResult` optional `<audio>`, graceful failure; rights are a gate            |
-| 16  | Share content generated locally            | met                | `src/lib/share/*`; `tests/share` (13) + `shareAction` component test            |
-| 17  | Performance budgets pass controlled tests  | met                | `tests/performance/visualBudgets.test.ts` asserts §21.3                         |
-| 18  | Cloudflare Tunnel only public path         | met (config)       | `ops/compose.yml`, `cloudflared`; live evidence env-blocked                     |
-| 19  | Droplet application ports not public       | met (config)       | no host ports in compose; `tests/security`                                      |
-| 20  | Static web container no egress             | met (config)       | internal network only; `tests/security`                                         |
-| 21  | Rollback tested                            | met (config)       | `rollback.sh` + `tests/security` mocked; live rehearsal is a gate               |
-| 22  | EOI & ballot unchanged                     | met                | no EOI/ballot code touched; isolation asserted in `tests/security`              |
-| 23  | QR physical matrix passes                  | **not met (gate)** | Phase-7 physical deliverable; `verify:qr` fail-closed                           |
-| 24  | Verification evidence complete             | partial            | this report; Docker-host + manual evidence pending                              |
+| Hafez production IDs    | Hafez production IDs    |
+| ----------------------- | ----------------------- |
+| `hafez-ghazal-001-bell` | `hafez-ghazal-002-bell` |
+| `hafez-ghazal-008-bell` | `hafez-ghazal-011-bell` |
+| `hafez-ghazal-046-bell` | `hafez-ghazal-065-bell` |
+| `hafez-ghazal-079-bell` | `hafez-ghazal-090-bell` |
+| `hafez-ghazal-101-bell` | `hafez-ghazal-103-bell` |
+| `hafez-ghazal-134-bell` | `hafez-ghazal-145-bell` |
+| `hafez-ghazal-163-bell` | `hafez-ghazal-164-bell` |
+| `hafez-ghazal-166-bell` | `hafez-ghazal-169-bell` |
+| `hafez-ghazal-184-bell` | `hafez-ghazal-233-bell` |
+| `hafez-ghazal-254-bell` | `hafez-ghazal-255-bell` |
+| `hafez-ghazal-268-bell` | `hafez-ghazal-279-bell` |
+| `hafez-ghazal-288-bell` | `hafez-ghazal-336-bell` |
 
-## 4. §31.2 public-launch gates (all OPEN — not agent-closable)
+The selected Rumi production IDs are:
 
-Official event approval; Society wording approval; University name/logo approval;
-final source/translation/cultural/rights approval; named content-incident owner;
-manual accessibility review; provider-logging review; final production hostname &
-short URL; launch-day fallback pack; approved production corpus; physical QR/print
-scan matrix; live deployment + rollback rehearsal.
+| Rumi production IDs           | Rumi production IDs           |
+| ----------------------------- | ----------------------------- |
+| `rumi-masnavi-0029-whinfield` | `rumi-masnavi-0112-whinfield` |
+| `rumi-masnavi-0300-whinfield` | `rumi-masnavi-0306-whinfield` |
+| `rumi-masnavi-0357-whinfield` | `rumi-masnavi-0397-whinfield` |
+| `rumi-masnavi-0418-whinfield` | `rumi-masnavi-0557-whinfield` |
+| `rumi-masnavi-0633-whinfield` | `rumi-masnavi-0643-whinfield` |
+| `rumi-masnavi-0674-whinfield` | `rumi-masnavi-0724-whinfield` |
+| `rumi-masnavi-0812-whinfield` | `rumi-masnavi-0946-whinfield` |
+| `rumi-masnavi-0947-whinfield` | `rumi-masnavi-0959-whinfield` |
 
-## 5. Conclusion
+The five archived alignments are preserved as `EXCLUDED` selection evidence,
+not canonical YAML and not public output:
 
-Implementation is **complete and locally verified** for every §31.1 criterion that
-code can satisfy (1–22 met; 17 and 13/14 now covered by integrated offline and
-performance suites; 16 by the new share card). Criterion 23 (QR) and criterion 24
-(full evidence) remain open pending Phase-7 physical work and Docker-host/manual
-evidence. **The build is not public-launch-ready**; every §31.2 gate stays closed.
+| Archived Whinfield segment            | Nicholson section | Reason                                                                                    |
+| ------------------------------------- | ----------------: | ----------------------------------------------------------------------------------------- |
+| `rumi-whinfield-abridged-en-b0089-s2` |               116 | Composite reordered material across several sections creates excessive disclosure burden. |
+| `rumi-whinfield-abridged-en-b0217-s2` |               347 | Three votes and composite correspondence rank below stronger continuous candidates.       |
+| `rumi-whinfield-abridged-en-b0225-s2` |               483 | Three votes and composite correspondence rank below stronger continuous candidates.       |
+| `rumi-whinfield-abridged-en-b0225-s8` |               622 | Two votes are the weakest identification signal in the verified set.                      |
+| `rumi-whinfield-abridged-en-b0031-s1` |               668 | Composite correspondence and prose-summary boundaries reduce public suitability.          |
+
+No Hafez production item has an `EXCLUDED` verdict. Unselected private Bell
+candidates remain candidate evidence rather than being promoted to authority
+records.
+
+## Git delivery
+
+| Commit    | Scope                                                                                                    |
+| --------- | -------------------------------------------------------------------------------------------------------- |
+| `dd3d5da` | source-bound authority, compiler/runtime/public contracts, deterministic generator, and regression tests |
+| `482bb09` | exact 40-item canonical corpus, source/permission registries, and production-corpus test                 |
+
+The final documentation commit contains this report, the pre-migration snapshot,
+the Rumi selection/archive audit, and the repository change logs. Its full hash
+is recorded in the final delivery response because a commit cannot contain its
+own hash.
+
+## Verification log
+
+| Command                                                          | Exit | Evidence                                                                      |
+| ---------------------------------------------------------------- | ---: | ----------------------------------------------------------------------------- |
+| `pnpm poetry:build-production`                                   |    0 | generated 24 Hafez + 16 Rumi; archived 5 Rumi separately                      |
+| `pnpm poetry:verify-sources`                                     |    0 | all 9 locked source artifacts intact                                          |
+| `pnpm typecheck`                                                 |    0 | strict TypeScript, no errors                                                  |
+| scoped `eslint` excluding protected untracked inputs             |    0 | repository-owned implementation has zero errors/warnings                      |
+| scoped `prettier --check`                                        |    0 | all changed and relevant project files formatted                              |
+| `pnpm test`                                                      |    0 | 53 files, 625 tests passed                                                    |
+| `pnpm test:offline`                                              |    0 | 5 files, 53 tests passed                                                      |
+| `pnpm test:e2e`                                                  |    0 | 5 Playwright tests passed                                                     |
+| production `pnpm build:production`                               |    0 | production release built with 40 items                                        |
+| `pnpm verify:dist`                                               |    0 | integrity checks and public-bundle leak scan passed                           |
+| `pnpm verify:privacy`                                            |    0 | no tracking, fingerprinting, geolocation, or unsafe storage                   |
+| `pnpm verify:container`                                          |    0 | docker-free image-contract tests passed; live evidence pending                |
+| `pnpm verify:headers`                                            |    0 | static header/CSP/cache tests passed; live evidence pending                   |
+| `pnpm verify:origin-isolation`                                   |    0 | static isolation tests passed; live evidence pending                          |
+| `pnpm verify:rollback`                                           |    0 | static rollback controls passed; live rehearsal pending                       |
+| `osv-scanner scan source --lockfile pnpm-lock.yaml --no-resolve` |    0 | 429 packages scanned; no issues found                                         |
+| `pnpm audit --prod`                                              |    1 | npm audit endpoints returned HTTP 410; replaced by OSV scan above             |
+| `pnpm verify:qr`                                                 |    1 | intentionally fail-closed pending approved short URL and physical scan matrix |
+
+The production build used:
+
+```text
+DIVAN_PUBLIC_ORIGIN=https://divan.example.test
+DIVAN_RELEASE_ID=machine-authority-2026-07-16
+DIVAN_MIN_HAFEZ_COUNT=24
+DIVAN_MIN_RUMI_COUNT=16
+DIVAN_BRANDING_MODE=society_only
+DIVAN_UNIVERSITY_APPROVAL_ID=
+SOURCE_DATE_EPOCH=1784160000
+```
+
+## Full-worktree lint boundary
+
+`pnpm lint` also traverses user-owned, untracked inputs. It reports ten project
+service parse errors beneath `New_Frontend/` and one pre-existing unnecessary
+type assertion in the untracked
+`scripts/poetry/build-hafez-align-tasks.ts`. Those paths were preserved and were
+not modified or staged. The same lint command passes after excluding only those
+protected inputs:
+
+```text
+pnpm exec eslint . --max-warnings 0 \
+  --ignore-pattern New_Frontend \
+  --ignore-pattern scripts/poetry/build-hafez-align-tasks.ts
+```
+
+## Machine-authority safety properties
+
+- Production eligibility does not depend on a teacher, named reviewer, or
+  contributor identity.
+- Allowed machine verdicts are exactly `MACHINE_VERIFIED`,
+  `MACHINE_VERIFIED_WITH_DISCLOSURE`, and `EXCLUDED`.
+- Source bytes, source spans, reference spans, and mapping are independently
+  hashed. Any drift fails validation closed.
+- Full private sources, extraction reports, candidate records, and authority
+  rationale are excluded from the public bundle.
+- English is presented first; Persian remains live text below it with
+  `lang="fa"` and `dir="rtl"`.
+- Uncertain normalization is disclosed publicly instead of being silently
+  treated as certain.
+
+## Open launch gates
+
+- Approved production hostname and short URL.
+- Generated QR artifacts and physical multi-device scan evidence.
+- Live container digest, runtime hardening, headers, cache, tunnel-isolation,
+  and rollback evidence.
+- Manual accessibility and event-owner approvals required by the deployment
+  process.
+
+These gates do not invalidate the local corpus or machine-authority package, but
+they prevent a claim that the public event deployment itself is complete.

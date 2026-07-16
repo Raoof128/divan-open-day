@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import { compileCorpus } from '../../src/lib/content/compileCorpus';
+import { authoringContentItemSchema } from '../../src/lib/content/authoringSchema';
+import {
+  compileCorpus,
+  validateItemEvidence,
+} from '../../src/lib/content/compileCorpus';
+import { registryBundleSchema } from '../../src/lib/content/registrySchemas';
+import {
+  machineAuthorityDigests,
+  type MachineAuthorityBinding,
+} from '../../src/lib/content/reviewAuthority';
 import {
   makeFixtureCorpus,
   refreshFixtureApproval,
@@ -27,6 +36,56 @@ function compileProduction(corpus = makeFixtureCorpus()) {
 }
 
 describe('compileCorpus', () => {
+  it('accepts source-bound machine authority without human review identities', () => {
+    const corpus = makeFixtureCorpus();
+    const rawItem = structuredClone(corpus.items[1]!);
+    rawItem.translation.translator_ids = [];
+    Object.assign(rawItem, { reflection: null, review: null });
+    const binding: MachineAuthorityBinding = {
+      englishSourceId: rawItem.source.english_source_id,
+      englishSourceHash: rawItem.source.english_source_sha256,
+      englishReference: rawItem.source.english_source_reference,
+      persianSourceId: rawItem.source.edition_id,
+      persianSourceHash: rawItem.source.persian_source_sha256,
+      persianReference: `${rawItem.source.reference_type}:${rawItem.source.reference_value}`,
+      englishLines: rawItem.text.english_lines,
+      persianLines: rawItem.text.persian_lines,
+      mapping: rawItem.text.mapping.map((entry) => ({
+        englishIndex: entry.english_index,
+        persianIndices: entry.persian_indices,
+      })),
+    };
+    const digests = machineAuthorityDigests(binding);
+    Object.assign(rawItem, {
+      review_authority: {
+        kind: 'machine_alignment',
+        model: 'gpt-5.5-codex',
+        methodVersion: 'source-bound-alignment-v1',
+        englishSourceHash: binding.englishSourceHash,
+        persianSourceHash: binding.persianSourceHash,
+        englishSpanHash: digests.englishSpanHash,
+        persianSpanHash: digests.persianSpanHash,
+        mappingHash: digests.mappingHash,
+        verdict: 'MACHINE_VERIFIED',
+        confidence: 0.98,
+        disclosures: [],
+        verifiedAt: '2026-07-12',
+        rationale:
+          'Synthetic source-bound evidence exists only to exercise the machine authority compiler path.',
+      },
+    });
+    corpus.registries.contributors.contributors = [];
+    corpus.registries.approvals.approvals = [];
+
+    expect(() =>
+      validateItemEvidence(
+        authoringContentItemSchema.parse(rawItem),
+        registryBundleSchema.parse(corpus.registries),
+        BUILD_DATE,
+      ),
+    ).not.toThrow();
+  });
+
   it('compiles the exact 24 Hafez and 16 Rumi synthetic fixture corpus', () => {
     const corpus = makeFixtureCorpus();
     corpus.items.reverse();
@@ -214,6 +273,15 @@ describe('compileCorpus', () => {
     );
 
     expect(() => compileProduction(corpus)).toThrow(/16 Rumi/u);
+  });
+
+  it('rejects more than the exact production corpus counts', () => {
+    const corpus = makeFixtureCorpus();
+    const extra = structuredClone(corpus.items[0]!);
+    extra.id = 'test-only-hafez-25';
+    corpus.items.push(extra);
+
+    expect(() => compileProduction(corpus)).toThrow(/exactly 24 Hafez/iu);
   });
 
   it('rejects invalid injected build dates', () => {

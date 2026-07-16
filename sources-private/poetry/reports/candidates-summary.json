@@ -1,0 +1,57 @@
+{
+  "note": "Machine candidate index summary. NOT public content. Excerpt-bearing *-candidates.json are git-ignored; every candidate is publishable:false and requiresHumanReview.",
+  "method": "transliterated proper-noun / recurring-image bilingual matching (weak ranking hint only)",
+  "staging": {
+    "hafez_fa_blocks": 1816,
+    "rumi_fa_sections": 971,
+    "bell_en_candidates": 33,
+    "whinfield_en_blocks": 397
+  },
+  "masnavi_full_ingest": {
+    "sections_cached": 1001,
+    "verse_sections": 971,
+    "beyt_lines": 51614
+  },
+  "candidates": {
+    "hafez": {
+      "count": 99,
+      "withSignal": 99,
+      "maxScore": 7,
+      "generatedFrom": {
+        "persian": "hafez-fa.jsonl",
+        "english": "hafez-bell-en.jsonl"
+      }
+    },
+    "rumi": {
+      "count": 2913,
+      "withSignal": 2874,
+      "maxScore": 17,
+      "generatedFrom": {
+        "persian": "rumi-fa.jsonl",
+        "english": "rumi-whinfield-en.jsonl"
+      }
+    }
+  },
+  "englishClassification": {
+    "note": "Added 2026-07-14 after the preflight audit found eight pairings whose English side was Whinfield's prose story argument, not verse. Only verse_translation may be paired.",
+    "segments": 643,
+    "pairableVerseSegments": 108,
+    "excludedSegments": 535,
+    "excludedByClassification": {
+      "uncertain": 55,
+      "heading": 184,
+      "editorial_apparatus": 86,
+      "footnote": 81,
+      "prose_summary": 85,
+      "commentary": 44
+    }
+  },
+  "verseCandidates": {
+    "method": "section-title-alignment (story heading + verse-section title vs Nicholson section title)",
+    "supersedes": "transliterated proper-noun body overlap for Rumi",
+    "unitsWithCandidates": 47,
+    "unitsWithNoSignal": 61,
+    "persianSections": 971,
+    "caveat": "Single-anchor (score 1) hits are unreliable and must not be treated as identification: عمر is both the name Omar and the common noun \"life\", and \"The Arab and his Wife\" ranks the Arab-and-dog story on the shared term اعرابی alone. Ranking is a review hint only."
+  }
+}

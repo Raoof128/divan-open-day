@@ -1,0 +1,74 @@
+id: hafez-ghazal-163-bell
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: Poems from the Divan of Hafiz
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 163
+  opening_hemistich_fa: گل بی رخ یار خوش نباشد
+  page_reference: Bell poem XXII, scan page 97
+  source_language: fa
+  english_source_id: hafez-bell-1897-en
+  english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  english_source_reference: Bell poem XXII, scan page 97
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - گل بی رخ یار خوش نباشد
+  english_lines:
+    - The rose is not fair without the beloved's face,
+    - Nor merry the Spring without the sweet laughter of
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 0
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-163-bell-translation-permission
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  englishSpanHash: 76f745a242ad0cb14535ace20718fdab5b8025c8baeea1bcd11a54c48473d5fd
+  persianSpanHash: 5053712cfd56a0583536faa515988456523f67b98ef037c724589bb6d7dcfa1f
+  mappingHash: 60e34a22faaeb30a9c89673b126c68d0207b9d04fae298a9af090ab4395b70d8
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.97
+  disclosures:
+    - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
+  verifiedAt: 2026-07-16
+  rationale: Bell poem XXII on scan page 97 was aligned to Qazvini-Ghani ghazal 163 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.

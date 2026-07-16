@@ -18,3 +18,8 @@ THIRD_PARTY_NOTICES.md
 
 # Private content boundary
 content-private/
+sources-private/
+
+# Local, not committed (project-local instructions) and regenerable audit evidence
+CLAUDE.md
+docs/audits/

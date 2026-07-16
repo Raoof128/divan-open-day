@@ -1,18 +1,32 @@
-# Private content boundary
+# Canonical source-bound content
 
-This directory is reserved for private authoring inputs and their reviewed human evidence. It intentionally contains no production poetry, translation, reflection, provenance, permission, approval, contributor, or media records.
+This directory contains the selected excerpts and private provenance needed to
+build the public corpus. It does not contain full source books. Raw books,
+extractions, OCR pages, machine rationales outside the selected records, and
+candidate reports remain excluded from release artefacts.
 
-Private authoring inputs and evidence must never be copied into `dist`, a release archive, a container image, a service-worker cache, or any other public artefact. The public corpus may contain only the allowlisted fields produced by the reviewed compiler.
+Every production record uses `review_authority.kind: machine_alignment` and is
+bound to both immutable source-book hashes, the selected English and Persian
+span hashes, the source references, and the line mapping hash. Changing any of
+those values invalidates production eligibility until a fresh machine verdict
+is issued. The only active machine states are `MACHINE_VERIFIED`,
+`MACHINE_VERIFIED_WITH_DISCLOSURE`, and `EXCLUDED`; excluded records are never
+placed in the poet directories.
 
-Before any production item can compile, authorised humans must provide and verify:
+Human authority remains supported for legacy fixture/history records, but a
+teacher, contributor, named reviewer, final approval, or human reapproval state
+is not required for a source-bound machine-authority item. Rights permissions
+are joined to the local source-lock and rights-evidence records without
+fabricating a reviewer identity.
 
-- an approved source edition and stable edition-specific reference;
-- reviewer-accepted Persian source text, English translation, and reflection;
-- active contributor records for the translator, source editor, Persian literary reviewer, English editor, cultural reviewer, rights reviewer, and final approver;
-- written permission evidence covering every public use and worldwide public delivery, with approved attribution, a real ISO effective date, and any expiry recorded no earlier than that effective date;
-- a current final approval bound to the exact canonical SHA-256 digest of the authoring item; and
-- for enabled audio, an approved local asset, performer record, and matching written permission evidence.
+The compiler deliberately allowlists public fields. Public output is English
+first, retains the Persian lines for `lang="fa" dir="rtl"` rendering, carries
+source and translation attribution, and includes any required alignment
+disclosure. Private source hashes, mapping metadata, and rationale must not
+appear in `dist` or other release artefacts.
 
-Synthetic fixtures live only under `tests/fixtures/content/`. They use conspicuous `TEST ONLY`, `NOT POETRY`, `NOT TRANSLATION`, and `NOT INTERPRETATION` sentinels, are never production-eligible, and must be rejected by production compilation.
+Regenerate these records only from the locally acquired, hash-verified sources:
 
-The public-launch gate remains closed. It can be reconsidered only after genuine content and evidence are supplied, every production compiler gate passes, and the separate governance, cultural, rights, accessibility, security, deployment, rollback, and physical-QR approvals are complete.
+```sh
+pnpm poetry:build-production
+```

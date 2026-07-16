@@ -1,0 +1,75 @@
+id: rumi-masnavi-0812-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 812
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0061-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - آینه بیرون کشید او از بغل
+    - سوخته هم آینه‌ی آتش‌زنه‌ست
+  english_lines:
+    - He drew forth a mirror from his side
+    - The tinder is the mirror of the flint and steel
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0812-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: da96f7e1a9ac5aab9e461ffad70d8ac189d5d7987d4bde432423852ebef08da3
+  persianSpanHash: 492eb012b5f20d90122215e52d23fb2c90462956e852e8f29e7f44a288559864
+  mappingHash: 9389caa3f00a6abfff0da94e116a14d3eacdbd6584773675b3b987351aca5ab1
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.9349999999999999
+  disclosures:
+    - "This English text is E. H. Whinfield's abridged translation. It renders a continuous run of verses from the middle of the Persian section: the section's opening lines are condensed into Whinfield's prose summary rather than translated, and the closing third of the Persian section is omitted."
+  verifiedAt: 2026-07-16
+  rationale: "The English verse portion is a close, largely line-by-line rendering of Nicholson section 812. Seven independent identifying anchors align, including the opening hemistich (mirror drawn from the side), the tinder/flint-and-steel image, the bone-setter with the broken leg, the vinegar/honey contrast, the Iblis \"ana khayr\" quotation, and the identical ordering of the tailor/carpenter/bone-setter/alchemist craft analogies. Candidate 21 (the guest's arrival at Joseph's) is the antecedent narrative section but contains none of the mirror-and-not-being verses; candidates 395, 823 and 853 match on the name Joseph only and were discarded on reading. The pairing is nonetheless abridged at both ends: Whinfield begins at \"He drew forth a mirror from his side\", compressing the Persian opening (Joseph demanding the gift, the guest's shame, \"carrying cumin to Kerman\", \"a grain to the mine\") into his English prose headnote, and he stops at the Iblis line, omitting roughly the last third of section 812 (the dung beneath the clear stream, the physician and the wound, the flies on the sore)."

@@ -11,8 +11,16 @@ function readProjectFile(path: string): string {
   return readFileSync(resolve(projectRoot, path), 'utf8');
 }
 
+/**
+ * README prose with runs of whitespace collapsed, so licence assertions match
+ * on wording rather than on wherever Prettier happens to wrap the line.
+ */
+function readmeProse(): string {
+  return readProjectFile('README.md').replace(/\s+/gu, ' ');
+}
+
 describe('public repository status and ownership', () => {
-  test('publishes a WIP README without granting a repository licence', () => {
+  test('publishes a WIP README that licenses the code and withholds the rest', () => {
     const readme = readProjectFile('README.md');
     const packageJson = JSON.parse(readProjectFile('package.json')) as Record<
       string,
@@ -29,12 +37,9 @@ describe('public repository status and ownership', () => {
       'pnpm exec vite preview --host 127.0.0.1 --port 4173',
     );
     expect(readme).toContain('fail-closed release error');
-    expect(readme).toContain('No licence is granted');
-    expect(readme).toContain('All rights reserved');
     expect(readme).toContain('[Security policy](SECURITY.md)');
     expect(readme).toContain('[Third-party notices](THIRD_PARTY_NOTICES.md)');
     expect(readProjectFile('.node-version')).toBe('22.16.0\n');
-    expect(packageJson).not.toHaveProperty('license');
     expect(packageJson).toMatchObject({
       private: true,
       repository: {
@@ -43,6 +48,47 @@ describe('public repository status and ownership', () => {
       },
       homepage: 'https://github.com/Raoof128/divan-open-day#readme',
     });
+  });
+
+  // The MIT grant is stated in three places that can drift apart independently.
+  // They disagreed once already: LICENSE and package.json said MIT while the
+  // README still refused every right MIT grants. Bind them together here so a
+  // future licence change has to move all three or fail.
+  test('states one coherent MIT grant across LICENSE, package.json, and README', () => {
+    const licence = readProjectFile('LICENSE');
+    const readme = readmeProse();
+    const packageJson = JSON.parse(readProjectFile('package.json')) as Record<
+      string,
+      unknown
+    >;
+
+    expect(existsSync(resolve(projectRoot, 'LICENSE'))).toBe(true);
+    expect(licence).toContain('MIT License');
+    expect(licence).toContain('Copyright (c) 2026 Raouf Abedini');
+    expect(packageJson).toHaveProperty('license', 'MIT');
+
+    expect(readme).toContain('MIT Licence');
+    expect(readme).toContain('[LICENSE](LICENSE)');
+    expect(readme).toContain("this repository's own code only");
+
+    // The old all-rights-reserved wording must not survive alongside the grant.
+    expect(readme).not.toContain('All rights reserved');
+    expect(readme).not.toContain('No licence is granted to copy');
+  });
+
+  // MIT covers the code. It must never be read as licensing the poetry, the
+  // third-party source editions, or the Society's marks.
+  test('withholds the poetry, the source editions, and the marks from the MIT grant', () => {
+    const readme = readmeProse();
+
+    expect(readme).toContain('no licence is granted for');
+    expect(readme).toContain('Persian poetry, translations, and reflections');
+    expect(readme).toContain('CC BY-SA');
+    expect(readme).toContain('Persian Society names and marks');
+    expect(readme).toContain('not licensed for reuse');
+    expect(readme).toContain(
+      'Third-party components remain under their own licences',
+    );
   });
 
   test('uses GitHub private vulnerability reporting without invented contact data', () => {

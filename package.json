@@ -2,6 +2,7 @@
   "name": "divan-open-day",
   "version": "0.1.0",
   "description": "Work-in-progress source for the DIVAN Persian poetry Open Day experience.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "repository": {
@@ -35,13 +36,20 @@
     "test:e2e": "playwright test",
     "test:security": "vitest run tests/security",
     "test:performance": "vitest run tests/performance",
-    "verify:dist": "tsx scripts/verify-dist.ts",
+    "verify:dist": "tsx scripts/verify-dist.ts && tsx scripts/poetry/inspect-public-bundle.ts",
     "verify:privacy": "tsx scripts/verify-privacy.ts",
     "verify:container": "tsx scripts/ops/verify-container.ts",
     "verify:headers": "tsx scripts/ops/verify-headers.ts",
     "verify:origin-isolation": "tsx scripts/ops/verify-origin-isolation.ts",
     "verify:rollback": "tsx scripts/ops/verify-rollback.ts",
-    "verify:qr": "tsx scripts/qr/verify-qr.ts"
+    "verify:qr": "tsx scripts/qr/verify-qr.ts",
+    "poetry:fetch": "tsx scripts/poetry/fetch-sources.ts",
+    "poetry:verify-sources": "tsx scripts/poetry/verify-source-lock.ts",
+    "poetry:extract": "tsx scripts/poetry/extract-sources.ts",
+    "poetry:extract-bell": "tsx scripts/poetry/extract-hafez-bell.ts",
+    "poetry:build-candidates": "tsx scripts/poetry/build-candidate-index.ts",
+    "poetry:fetch-masnavi": "tsx scripts/poetry/fetch-masnavi-sections.ts",
+    "poetry:build-production": "tsx scripts/poetry/build-production-corpus.ts"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "5.2.11",

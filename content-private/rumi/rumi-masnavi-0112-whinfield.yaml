@@ -1,0 +1,75 @@
+id: rumi-masnavi-0112-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 112
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0019-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - عشق اصطرلاب اسرار خداست
+    - چون به عشق آمد قلم بر خود شکافت
+  english_lines:
+    - Love is the astrolabe of God's mysteries
+    - On reaching the subject of love it split in twain
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0112-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: 478e3a0a2f511c3d665d9f19a2fdb3e942cb24c14bdfbf3b05dd5bc837238af9
+  persianSpanHash: 6fcec9ed8ab35ba7a17fbf9e6e9a3992f9488689e60c9dcb53676f86b31e07b8
+  mappingHash: 9e403690da4697fcf29012f0891eef9aeb1e9aa550f76a68493da9fd92707665
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.9349999999999999
+  disclosures:
+    - Abridged translation. The English begins partway into the Persian section, omitting the opening couplets on the physician's examination (summarised as prose in the translator's introduction to the story), and adds editorial subheadings not present in the source. The verse that follows corresponds closely and in order.
+  verifiedAt: 2026-07-16
+  rationale: "Persian section 112 ('بردن پادشاه آن طبیب را بر بیمار...', 84 lines) matches this English segment couplet-for-couplet and in order: astrolabe of God's mysteries, the self-splitting pen, reason as an ass in mire, sun-proves-the-sun, انشق‌القمر, the Sun of the soul with no yesterday, then the Shams of Tabriz dialogue (fourth heaven bowing, Yusuf's shirt, the Arabic وقت سیف قاطع and صوفی ابن‌الوقت couplets, the veil/coverlet exchange, blade of grass vs mountain), closing on the same final couplet. Whinfield is unusually close here — not paraphrase. Divergence: the English starts at 'A true lover is proved such by his pain of heart', omitting the section's opening ~7 couplets on the physician examining pulse and complexion; Whinfield absorbed those into the block's prose story-summary. He also inserts editorial subheadings absent from the Persian. Ranked candidates (1, 2, 451, 464, 68) were title-word noise: seq 2 is the story's opening narrative, seq 1 an aggregate block. Verified by reading the Persian directly."

@@ -38,6 +38,19 @@ public corpus. Reviewer IDs, translator IDs, internal edition citations, rights
 owners, permission IDs, approval IDs, evidence references, moral-rights notes,
 and private file paths must not appear in `dist`.
 
-This file must be updated only from verified human records. Do not infer or
+This file must be updated only from source-bound evidence. Do not infer or
 invent a public-domain status, licence, permission, credit, contributor,
 reviewer, rights holder, cultural approval, or University approval.
+
+## Source acquisition evidence (pending, not approved)
+
+Archival source editions considered for the corpus are recorded privately in
+`sources-private/poetry/rights-evidence.yaml` (schema:
+`src/lib/content/sourceRightsSchema.ts`) with the observed public-domain / CC BY-SA
+statements and prospective public credits. Every legacy source-rights record
+remains `pending` for external launch governance. That status is not used as a
+literature-eligibility signature and no reviewer identity is fabricated. The
+canonical corpus instead joins permissions to the acquired source lock and
+publishes the recorded Bell/Whinfield public-domain credits plus Persian
+Wikisource CC BY-SA attribution. Final legal/governance authorisation remains an
+external launch decision.

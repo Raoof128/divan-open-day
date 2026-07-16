@@ -30,6 +30,8 @@ const item: PublicContentItem = {
   translationClassification: 'society_translation',
   translationCredit: 'Translated by the Society',
   reflection: 'A reflection, not a prediction.',
+  verificationStatus: 'MACHINE_VERIFIED',
+  disclosures: [],
   audio: null,
   contentHash: 'abc123',
 };

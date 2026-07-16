@@ -36,6 +36,8 @@ function makePublicPayload() {
     translationClassification: 'society_translation',
     translationCredit: 'TEST ONLY translation credit',
     reflection: TEST_ONLY_REFLECTION,
+    verificationStatus: 'HUMAN_ATTESTED',
+    disclosures: [],
     audio: null as {
       assetPath: string;
       mimeType: string;
@@ -169,23 +171,13 @@ describe('publicContentItemSchema', () => {
     );
   });
 
-  it('requires equal Persian and English unit counts for stanza alignment', () => {
+  it('allows unequal public spans after private mapping validation', () => {
     const payload = makePublicPayload();
     payload.text.alignment = 'stanza';
-    payload.text.englishLines = ['TEST ONLY NOT TRANSLATION UNIT ONE'];
+    payload.text.persianLines = ['TEST ONLY NOT POETRY PERSIAN UNIT ONE'];
 
     const result = publicContentItemSchema.safeParse(withHash(payload));
-
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(
-        result.error.issues.some(
-          (issue) =>
-            issue.message ===
-            'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
-        ),
-      ).toBe(true);
-    }
+    expect(result.success).toBe(true);
   });
 
   it('accepts valid local audio metadata', () => {

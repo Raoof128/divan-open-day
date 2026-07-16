@@ -5,6 +5,7 @@ import {
   POETS,
   TRANSLATION_CLASSIFICATIONS,
 } from '../../contracts/content';
+import { reviewAuthoritySchema } from './reviewAuthority';
 
 const VISUAL_VARIANTS = ['garden_night', 'lamp_constellation'] as const;
 const ACCENTS = ['pomegranate', 'lapis'] as const;
@@ -35,6 +36,7 @@ const BIDI_CONTROL_PATTERN = /[\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/u;
 const WORD_LIKE_PATTERN =
   /[\p{L}\p{N}][\p{L}\p{N}\p{M}\u200C\u200D]*(?:['’.-][\p{L}\p{N}][\p{L}\p{N}\p{M}\u200C\u200D]*)*/gu;
 const IDENTIFIER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const SHA256_PATTERN = /^[a-f0-9]{64}$/u;
 
 function containsRawMarkup(value: string): boolean {
   return (
@@ -66,6 +68,7 @@ const identifierSchema = z
   .regex(IDENTIFIER_PATTERN, 'Identifiers must use lowercase kebab-case.');
 
 const identifierListSchema = z.array(identifierSchema).min(1).max(20);
+const sha256Schema = z.string().regex(SHA256_PATTERN);
 
 function wordCount(value: string): number {
   return value.match(WORD_LIKE_PATTERN)?.length ?? 0;
@@ -111,23 +114,64 @@ const sourceSchema = z
     opening_hemistich_fa: reviewedText(500).nullable(),
     page_reference: reviewedText(100).nullable().optional(),
     source_language: z.literal('fa'),
+    english_source_id: identifierSchema,
+    english_source_sha256: sha256Schema,
+    english_source_reference: reviewedText(300),
+    persian_source_sha256: sha256Schema,
   })
   .strict();
 
 const textSchema = z
   .object({
-    persian_lines: z.array(reviewedText(500)).min(2).max(6),
-    english_lines: z.array(reviewedText(500)).min(2).max(6),
+    persian_lines: z.array(reviewedText(500)).min(1).max(6),
+    english_lines: z.array(reviewedText(500)).min(1).max(6),
     alignment: z.enum(['line', 'stanza']),
+    mapping: z
+      .array(
+        z
+          .object({
+            english_index: z.number().int().min(0).max(5),
+            persian_indices: z
+              .array(z.number().int().min(0).max(5))
+              .min(1)
+              .max(6),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(6),
   })
   .strict()
   .superRefine((text, context) => {
-    if (text.persian_lines.length !== text.english_lines.length) {
+    const mappedEnglish = new Set<number>();
+    for (const [mappingIndex, mapping] of text.mapping.entries()) {
+      if (
+        mapping.english_index >= text.english_lines.length ||
+        mapping.persian_indices.some(
+          (persianIndex) => persianIndex >= text.persian_lines.length,
+        )
+      ) {
+        context.addIssue({
+          code: 'custom',
+          path: ['mapping', mappingIndex],
+          message:
+            'Line mapping index falls outside the selected source spans.',
+        });
+      }
+      if (mappedEnglish.has(mapping.english_index)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['mapping', mappingIndex, 'english_index'],
+          message: 'Each selected English unit must have one mapping entry.',
+        });
+      }
+      mappedEnglish.add(mapping.english_index);
+    }
+    if (mappedEnglish.size !== text.english_lines.length) {
       context.addIssue({
         code: 'custom',
-        path: ['english_lines'],
-        message:
-          'Persian and English unit arrays must have equal lengths for line or stanza alignment.',
+        path: ['mapping'],
+        message: 'Every selected English unit must be mapped.',
       });
     }
   });
@@ -135,7 +179,7 @@ const textSchema = z
 const translationSchema = z
   .object({
     classification: z.enum(TRANSLATION_CLASSIFICATIONS),
-    translator_ids: identifierListSchema,
+    translator_ids: z.array(identifierSchema).max(20),
     rights_owner: reviewedText(300),
     permission_record_id: identifierSchema,
     public_credit: reviewedText(300),
@@ -252,12 +296,13 @@ export const authoringContentItemSchema = z
     source: sourceSchema,
     text: textSchema,
     translation: translationSchema,
-    reflection: reflectionSchema,
+    reflection: reflectionSchema.nullable(),
     audio: z.discriminatedUnion('enabled', [
       disabledAudioSchema,
       enabledAudioSchema,
     ]),
-    review: reviewSchema,
+    review: reviewSchema.nullable(),
+    review_authority: reviewAuthoritySchema,
   })
   .strict()
   .superRefine((item, context) => {
@@ -284,23 +329,44 @@ export const authoringContentItemSchema = z
       });
     }
 
-    const translatorIds = new Set(item.translation.translator_ids);
-    const accountableReviewers = [
-      ...item.reflection.reviewer_ids,
-      ...item.review.source_editor_ids,
-      ...item.review.persian_literary_reviewer_ids,
-      ...item.review.english_editor_ids,
-      ...item.review.cultural_reviewer_ids,
-      ...item.review.rights_reviewer_ids,
-    ];
-    if (
-      !accountableReviewers.some((reviewerId) => !translatorIds.has(reviewerId))
-    ) {
-      context.addIssue({
-        code: 'custom',
-        path: ['review'],
-        message: 'An item cannot be approved only by its translator.',
-      });
+    if (item.review_authority.kind === 'human') {
+      if (item.reflection === null || item.review === null) {
+        context.addIssue({
+          code: 'custom',
+          path: ['review_authority'],
+          message:
+            'Human authority requires the legacy review and reflection evidence.',
+        });
+        return;
+      }
+      if (item.translation.translator_ids.length === 0) {
+        context.addIssue({
+          code: 'custom',
+          path: ['translation', 'translator_ids'],
+          message: 'Human authority requires a credited translator identity.',
+        });
+      }
+
+      const translatorIds = new Set(item.translation.translator_ids);
+      const accountableReviewers = [
+        ...item.reflection.reviewer_ids,
+        ...item.review.source_editor_ids,
+        ...item.review.persian_literary_reviewer_ids,
+        ...item.review.english_editor_ids,
+        ...item.review.cultural_reviewer_ids,
+        ...item.review.rights_reviewer_ids,
+      ];
+      if (
+        !accountableReviewers.some(
+          (reviewerId) => !translatorIds.has(reviewerId),
+        )
+      ) {
+        context.addIssue({
+          code: 'custom',
+          path: ['review'],
+          message: 'An item cannot be approved only by its translator.',
+        });
+      }
     }
   });
 

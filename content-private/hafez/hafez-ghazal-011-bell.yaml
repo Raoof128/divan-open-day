@@ -1,0 +1,74 @@
+id: hafez-ghazal-011-bell
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: Poems from the Divan of Hafiz
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 11
+  opening_hemistich_fa: ساقی بنور باده برافروز جام ما
+  page_reference: Bell poem IX, scan page 80
+  source_language: fa
+  english_source_id: hafez-bell-1897-en
+  english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  english_source_reference: Bell poem IX, scan page 80
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - ساقی بنور باده برافروز جام ما
+  english_lines:
+    - Oh Cup-bearer, set my glass afire
+    - "With the light of wine! oh minstrel, sing :"
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 0
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-011-bell-translation-permission
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  englishSpanHash: a067725a32c98ca8060e06be97fca8e60ffd30c025f2a2f281c66ec792a05701
+  persianSpanHash: 3451f3752e348688401849c54365ff9ce65b177bd322824d9916a793fe87ab5f
+  mappingHash: 01cee21ddfa3c3af9ff16d2b1959701bc9046c962d3d81441a3d38a81af9c515
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.97
+  disclosures:
+    - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
+  verifiedAt: 2026-07-16
+  rationale: Bell poem IX on scan page 80 was aligned to Qazvini-Ghani ghazal 11 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.

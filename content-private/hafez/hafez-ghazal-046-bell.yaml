@@ -1,0 +1,73 @@
+id: hafez-ghazal-046-bell
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: Poems from the Divan of Hafiz
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 46
+  opening_hemistich_fa: گل در بر و می در کف و معشوق بکامست
+  page_reference: Bell poem VIII, scan page 79
+  source_language: fa
+  english_source_id: hafez-bell-1897-en
+  english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  english_source_reference: Bell poem VIII, scan page 79
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - گل در بر و می در کف و معشوق بکامست
+  english_lines:
+    - THE rose has flushed red, the bud has burst,
+    - And drunk with joy is the nightingale—
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 0
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-046-bell-translation-permission
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  englishSpanHash: d2061dadabb4506b33466d9fd032f0c14552af2f35549e93bceeaba0a0718d03
+  persianSpanHash: 62b09bf35efc16bc3a2afcaf22548ea5a6cf33cbaaa49a397150e1c4c017d998
+  mappingHash: 01c5ecd8bdc9376b06d8444220e9dd1693c291ef78828551a1fa3f1573812016
+  verdict: MACHINE_VERIFIED
+  confidence: 0.99
+  disclosures: []
+  verifiedAt: 2026-07-16
+  rationale: Bell poem VIII on scan page 79 was aligned to Qazvini-Ghani ghazal 46 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.

@@ -1,0 +1,73 @@
+id: hafez-ghazal-233-bell
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: Poems from the Divan of Hafiz
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 233
+  opening_hemistich_fa: دست از طلب ندارم تا کام من بر آید
+  page_reference: Bell poem XXXVIII, scan page 116
+  source_language: fa
+  english_source_id: hafez-bell-1897-en
+  english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  english_source_reference: Bell poem XXXVIII, scan page 116
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - دست از طلب ندارم تا کام من بر آید
+  english_lines:
+    - I cease not from desire till my desire
+    - Is satisfied ; or let my mouth attain
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 0
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-233-bell-translation-permission
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  englishSpanHash: 42a9eb4caa86b5f59eee52ef390f280052c8c9a72bb07d1ce932990dacc31729
+  persianSpanHash: 9952748eec82fd5f9cb3d010d458d6c2ec8063e8ad4d76422380fcfd4b915bcf
+  mappingHash: 397289b718fc2a59af73b8ce21303bf5c0f0b1811076d584ee6a054a5db28d73
+  verdict: MACHINE_VERIFIED
+  confidence: 0.99
+  disclosures: []
+  verifiedAt: 2026-07-16
+  rationale: Bell poem XXXVIII on scan page 116 was aligned to Qazvini-Ghani ghazal 233 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.

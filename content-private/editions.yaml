@@ -1,0 +1,14 @@
+schema_version: 1
+editions:
+  - id: hafez-qazvini-ghani-fa-wikisource
+    status: active
+    poet: hafez
+    source_language: fa
+    citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+    public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  - id: rumi-nicholson-fa-wikisource
+    status: active
+    poet: rumi
+    source_language: fa
+    citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+    public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."

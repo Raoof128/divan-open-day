@@ -1,0 +1,78 @@
+id: rumi-masnavi-0674-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 674
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0145-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - آب جو نسبت باشتر هست کم / لیک باشد موش را آن همچو یم
+    - وظیفه چار نان ... اسیر حرص مانند بط است
+  english_lines:
+    - insufficient for a camel / ocean to a mouse
+    - four loaves ... voracious as a duck
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0674-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: 92bb541acf9780775d0e266e4827f739eb9e56ea599d4301b5ceddf3e15696d3
+  persianSpanHash: e9a79f3db5d64d709a753b8319491677715bf63e72904a9c38ef325b9dced1bd
+  mappingHash: 38395acaaa24a64559c0fd2dc33ed6a7b54a5be2a3f111280ea0b82961445f8c
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.975
+  disclosures:
+    - "This English text is E. H. Whinfield's abridged Victorian translation. It condenses the Persian, omitting several passages, and draws on two Nicholson sections rather than one: the bulk corresponds to \"عذر گفتن فقیر به شیخ\", while the closing lines correspond to the separate section \"بیان دعویی که عین آن دعوی گواه صدق خویش است\". Line-by-line correspondence with the Persian should not be assumed."
+  verifiedAt: 2026-07-16
+  rationale: |-
+    The ranked candidates were all wrong: they match on صوفی/قاضی alone and point to an unrelated judge-and-Sufi story. Searching the index directly located seq 674 (عذر گفتن فقیر به شیخ — the dervish excusing himself to the Shaikh), Whinfield's verse source for Story XVI. Anchors are numerous, rare and order-preserving: camel/mouse water proportion, four loaves with the duck simile, fifty-vs-six loaves, ten-vs-five-hundred prostrations, barefoot to the Ka'ba, the verbatim hadith عینای تنام لا ینام قلبی, Saturn in the seventh sphere, bird-vs-fly. Well beyond three independent anchors.
+
+    Two caveats drive the disclosure. First, composite: the first two subsections render seq 674, but the closing subsection (thirsty man with the cup, mother and babe) renders a separate section, seq 186, which I read and confirmed; Whinfield crosses the seam unmarked. Seq 674 is dominant and is reported. Second, abridged: Whinfield omits the Persian passages on the unbounded mean (seven seas of ink), Ja'far Tayyar, and the shaikh vomiting pearls into the basin.

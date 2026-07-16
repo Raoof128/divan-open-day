@@ -8,6 +8,8 @@ export default tseslint.config(
   {
     ignores: [
       '.claude/**',
+      // Local editor/tooling state, git-ignored and outside the TS project.
+      '.remember/**',
       '.tmp-tests/**',
       '.worktrees/**',
       'coverage/**',

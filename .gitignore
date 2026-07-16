@@ -12,6 +12,31 @@ node_modules/
 dist/
 content-private/*
 !content-private/README.md
+!content-private/approvals.yaml
+!content-private/assets.yaml
+!content-private/contributors.yaml
+!content-private/editions.yaml
+!content-private/permissions.yaml
+!content-private/hafez/
+!content-private/hafez/*.yaml
+!content-private/rumi/
+!content-private/rumi/*.yaml
+# Raw archival source books are never committed to ordinary Git (large, and kept
+# out of public history). Manifests, hashes and reports under sources-private/
+# ARE committed; only raw/ and extracted staging are ignored.
+sources-private/poetry/raw/**
+!sources-private/poetry/raw/.gitkeep
+sources-private/poetry/extracted/**
+!sources-private/poetry/extracted/.gitkeep
+# Bell OCR reconstruction: rendered page images and per-page OCR text are a
+# derivative of the whole scanned book. Never commit them.
+sources-private/poetry/bell-ocr/**
+# Clarke 1891 OCR: same reasoning — per-page text of a complete 1,078-page
+# translation is the whole book. Only selected excerpts may ever be published.
+sources-private/poetry/clarke-ocr/**
+# Candidate reports carry verse excerpts — keep them out of Git; the text-free
+# candidates-summary.json is committed instead.
+sources-private/poetry/reports/*-candidates.json
 ops/cloudflared/*.json
 ops/cloudflared/config.yml
 coverage/

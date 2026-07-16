@@ -1,0 +1,74 @@
+id: rumi-masnavi-0946-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 946
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0201-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - ان مع العسر یسرا
+    - آن عقابش را عقابی دان که او / در ربود آن موزه
+  english_lines:
+    - In difficulties there is provided a way of salvation
+    - that eagle of the Prophet's / Which carried off the sandal
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0946-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: 7a61576fecfc321fc7961428348e81ecde62aae755b67c2d94089936e60b2b8f
+  persianSpanHash: 92d0b7cbfce8295916e36c96be9e01fc880529e55a61bea647006f837f8069c4
+  mappingHash: 28eead0b39226e281c41f4cf90093771e1631a886aab37e40a847bac9d097e96
+  verdict: MACHINE_VERIFIED
+  confidence: 0.9299999999999999
+  disclosures: []
+  verifiedAt: 2026-07-16
+  rationale: "The ranked candidates were all wrong — they matched on مصطفی alone. Searching the index for the actual narrative objects (عقاب / موزه / مار) located seq 567, the eagle-and-boot story itself — but the target segment is not that narrative; it is the moral commentary following it. Grepping the Persian for the distinctive تصوف formula alongside the rose/thorn image found seq 946, \"وجه عبرت گرفتن ازین حکایت و یقین دانستن کی ان مع العسر یسرا\", whose title is precisely Whinfield's heading. Reading it confirms a strict twelve-beyt-to-twelve-couplet correspondence in identical order: address to the soul, counsel of acquiescence, pale-faced others versus the smiling rose, the rose's retort about the thorn, what is lost by decree, the Arabic تصوف couplet, the eagle as emblem of affliction, and the Arabic wolf proverb closing both. Five independent anchors, two of them verbatim Arabic interpolations, exceed the three-anchor bar. Segment s1 of this block is Whinfield's prose story-summary and would be excluded separately; s2 is verse throughout and rendered without abridgement, so no disclosure is warranted."

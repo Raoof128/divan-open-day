@@ -1,0 +1,75 @@
+id: rumi-masnavi-0633-whinfield
+schema_version: 2
+status: approved
+poet: rumi
+mode: moment_of_reflection
+display:
+  visual_variant: lamp_constellation
+  accent: lapis
+source:
+  work_en: Masnavi I Ma'navi
+  work_fa: مثنوی معنوی
+  edition_id: rumi-nicholson-fa-wikisource
+  edition_citation: Nicholson Masnavi transcription; local source lock, section snapshot, and alignment evidence.
+  edition_public_credit: "Persian text: Masnavi, Nicholson edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: masnavi
+  reference_value: Nicholson section 633
+  opening_hemistich_fa: null
+  page_reference: null
+  source_language: fa
+  english_source_id: rumi-whinfield-abridged-en
+  english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  english_source_reference: rumi-whinfield-abridged-en-b0039-s2
+  persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+text:
+  persian_lines:
+    - کای امیرالممنین
+    - مرغ بی‌اندازه چون شد در قفص
+  english_lines:
+    - O Commander of the faithful
+    - so noble a bird be confined in a cage
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
+  permission_record_id: rumi-masnavi-0633-whinfield-translation-permission
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.5-codex
+  methodVersion: source-bound-alignment-v1
+  englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
+  persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
+  englishSpanHash: b147d7d7ae3873df2ec400ef2901f5aeda9c6f0c469b2a94360db28603ce36d1
+  persianSpanHash: 0338043da5dca95c98f1a057dbb7243d21c2da8c0889b483b9c242be4562d375
+  mappingHash: dbfdb9cb004dfd459ca8df623d4240bc7943198c455d6a93249cc72894e7af1b
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.955
+  disclosures:
+    - "The translated verse corresponds closely, couplet by couplet and in the same order, to Nicholson section 633. Two differences: the block is preceded by the translator's own English prose summary of the surrounding frame story, which is not translated verse; and the final few couplets of the English continue past the end of this Persian section into adjoining material."
+  verifiedAt: 2026-07-16
+  rationale: "Candidate 633 is correct, verified by reading rather than by the title hint. The English verse tracks the Persian couplet-for-couplet from the ambassador's vocative through the soul's ascent to the Throne, in identical order, sharing well over three non-generic anchors: the امیرالممنین address, the boundless bird in the cage, cotton stuffed in the ear of the soul, raindrop-into-pearl inside the shell, the musk-deer's navel (blood without, musk within), the copper/elixir alembic, bread inert on the cloth but spirit in the body, and the Farhad / انشق القمر couplet. Two qualifications require disclosure rather than a plain direct verdict. First, the block opens with Whinfield's own English prose summary of the frame story (the hare, the envoy from Rum, Omar under the palm-tree), which is editorial argument with no Persian counterpart here. Second, the English runs about four couplets past the end of section 633 (\"If tongue discourses of hidden mysteries\" through \"hell or 'The Friend'\"), continuing into adjoining material I could not locate in this section. The verse body itself is unusually faithful for Whinfield — nearer line-by-line than abridgement."

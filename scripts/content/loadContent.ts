@@ -136,7 +136,13 @@ export function derivePrivateSourceValues(
       item.source.reference_value,
       item.source.opening_hemistich_fa,
       item.translation.public_credit,
-      item.reflection.english,
+      item.reflection?.english,
+      item.review_authority.kind === 'machine_alignment'
+        ? item.review_authority.verdict
+        : 'HUMAN_ATTESTED',
+      ...(item.review_authority.kind === 'machine_alignment'
+        ? item.review_authority.disclosures
+        : []),
       item.audio.enabled ? item.audio.asset_path : null,
       item.audio.enabled ? item.audio.mime_type : null,
       item.audio.enabled ? item.audio.performer_public_credit : null,
@@ -147,20 +153,39 @@ export function derivePrivateSourceValues(
       item.source.edition_id,
       item.source.edition_citation,
       item.source.page_reference,
+      item.source.english_source_id,
+      item.source.english_source_sha256,
+      item.source.english_source_reference,
+      item.source.persian_source_sha256,
       item.translation.rights_owner,
       item.translation.permission_record_id,
       item.translation.moral_rights_notes,
       item.audio.enabled ? item.audio.performer_id : null,
       item.audio.enabled ? item.audio.permission_record_id : null,
-      item.review.approval_record_id,
-      item.review.approved_at,
+      item.review?.approval_record_id,
+      item.review?.approved_at,
       ...item.translation.translator_ids,
-      ...item.reflection.reviewer_ids,
-      ...item.review.source_editor_ids,
-      ...item.review.persian_literary_reviewer_ids,
-      ...item.review.english_editor_ids,
-      ...item.review.cultural_reviewer_ids,
-      ...item.review.rights_reviewer_ids,
+      ...(item.reflection?.reviewer_ids ?? []),
+      ...(item.review?.source_editor_ids ?? []),
+      ...(item.review?.persian_literary_reviewer_ids ?? []),
+      ...(item.review?.english_editor_ids ?? []),
+      ...(item.review?.cultural_reviewer_ids ?? []),
+      ...(item.review?.rights_reviewer_ids ?? []),
+      ...(item.review_authority.kind === 'machine_alignment'
+        ? [
+            item.review_authority.model,
+            item.review_authority.methodVersion,
+            item.review_authority.englishSourceHash,
+            item.review_authority.persianSourceHash,
+            item.review_authority.englishSpanHash,
+            item.review_authority.persianSpanHash,
+            item.review_authority.mappingHash,
+            item.review_authority.rationale,
+          ]
+        : [
+            ...item.review_authority.contributorIds,
+            item.review_authority.attestationHash,
+          ]),
     ]);
   }
 
