@@ -108,3 +108,14 @@ release.
 - A commit cannot contain its own SHA. This record therefore names the exact
   verified implementation commit; the final documentation commit is reported in
   the PR and handoff after it is created.
+
+## Release follow-through
+
+PR #5 was subsequently marked ready and merged normally. Its frontend behaviour
+is unchanged in the annotated `v1.0.3` release at
+`fa9d1e226f7d0f9df86d77eb1888fc0ce25b2791`. The immutable image was deployed to
+the protected `divan.raoufabedini.dev` preview and passed the repository and live
+runtime verifiers. Public launch remains closed by Cloudflare Access and the
+external physical-device, assistive-technology, provider-governance, credential-
+backup, and printed-QR gates documented in
+`2026-07-16-release-1-production-preview.md`.

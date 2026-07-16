@@ -28,6 +28,15 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — Release 1 protected production preview
+
+**Raouf:**
+
+- **Scope:** Published and deployed the clean immutable `v1.0.3` Release 1 image to the Access-protected `divan.raoufabedini.dev` production hostname, exercised live verification and rollback, and produced the print-ready QR pack. No poetry, corpus selection, source evidence, translation, release compiler, service worker, University branding, separate 60-Hafez/60-Rumi work, or unrelated Droplet workload changed.
+- **Summary:** Tagged the merged source at `fa9d1e226f7d0f9df86d77eb1888fc0ce25b2791`, built from a clean archive, published and deployed only digest `sha256:9d526a184ca23743298c8ca679f94abef856f0e4667dae503fe2fd1ac69a4513`, configured the locally managed Cloudflare tunnel/DNS route and hostname-scoped cache rule, and restored an explicit deny-everyone Access policy after verification. Added digitally verified A3, A5, take-home, and staff QR PDFs plus a combined print-ready pack.
+- **Verification:** Repository `scripts/check.sh --ci` passed 62 files / 705 tests, Playwright 5/5, exact 60/60/120 production build, distribution/private-leak, privacy, audit, and operations gates. Docker Scout reported 0 Critical / 0 High / 0 Medium / 0 Low. Remote preflight, deploy, independent verify, same-digest rollback rehearsal, Access restoration, cache/header checks, and neighbouring-service baseline passed; zero host port and zero retained registry credentials. Full evidence is in `docs/verification/2026-07-16-release-1-production-preview.md`.
+- **Follow-ups:** This is a protected preview, not public-launch approval. Keep Access deny-all until printed iOS/Android QR checks, physical-device/cross-browser/assistive-technology evidence, provider log/retention approval, and approved off-device credential backup are complete. Review the unused remote-managed setup tunnel after operator confirmation.
+
 ### 2026-07-16 (Australia/Sydney) — Release 1 runtime image hardening
 
 **Raouf:**
