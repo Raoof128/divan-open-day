@@ -4,6 +4,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from 'react';
 
@@ -54,6 +55,7 @@ export function CinematicThreshold({
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const arrivedRef = useRef(false);
+  const pendingBeginRef = useRef(false);
 
   const scrubbing = plan.shouldLoadVideo && !videoFailed;
 
@@ -62,9 +64,56 @@ export function CinematicThreshold({
       return;
     }
     arrivedRef.current = true;
+    pendingBeginRef.current = false;
     setThresholdState('arrived');
     onArrive();
   }, [onArrive]);
+
+  const traverseCorridor = useCallback(() => {
+    const section = sectionRef.current;
+    if (
+      section === null ||
+      section.offsetHeight <= window.innerHeight ||
+      typeof section.scrollIntoView !== 'function'
+    ) {
+      arrive();
+      return;
+    }
+
+    onAnnounce('Entering the reading alcove.');
+    section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [arrive, onAnnounce]);
+
+  const requestEntrance = useCallback(() => {
+    if (arrivedRef.current) {
+      return;
+    }
+    if (!scrubbing) {
+      arrive();
+      return;
+    }
+    if (thresholdState !== 'playing') {
+      pendingBeginRef.current = true;
+      onAnnounce('Preparing the entrance.');
+      return;
+    }
+    traverseCorridor();
+  }, [arrive, onAnnounce, scrubbing, thresholdState, traverseCorridor]);
+
+  const handleClickCapture = useCallback(
+    (event: ReactMouseEvent<HTMLElement>) => {
+      const target = event.target;
+      if (
+        !(target instanceof Element) ||
+        target.closest('[data-cinematic-begin]') === null
+      ) {
+        return;
+      }
+      event.preventDefault();
+      requestEntrance();
+    },
+    [requestEntrance],
+  );
 
   // First-frame gate: the poster stays until the video genuinely presents a
   // decoded frame; a missing frame within the timeout demotes to poster-only.
@@ -109,8 +158,25 @@ export function CinematicThreshold({
     };
   }, [scrubbing]);
 
-  // Natural scroll drives the clip; seeks are coalesced to one per frame and
-  // never queue behind an unfinished decode.
+  // If Begin was pressed while the first frame was still decoding, honour the
+  // request as soon as the cinematic is ready. Poster-only fallbacks enter
+  // directly so a failed or disabled video can never trap the visitor.
+  useEffect(() => {
+    if (!pendingBeginRef.current) {
+      return;
+    }
+    if (!scrubbing) {
+      arrive();
+      return;
+    }
+    if (thresholdState === 'playing') {
+      pendingBeginRef.current = false;
+      traverseCorridor();
+    }
+  }, [arrive, scrubbing, thresholdState, traverseCorridor]);
+
+  // Natural or automatic scroll drives the clip; seeks are coalesced to one
+  // per frame and never queue behind an unfinished decode.
   useEffect(() => {
     if (thresholdState !== 'playing' || !scrubbing) {
       return;
@@ -159,6 +225,7 @@ export function CinematicThreshold({
       data-scene="welcome"
       data-cinematic-state={videoFailed ? 'poster' : thresholdState}
       data-cinematic-scrub={thresholdState === 'playing' ? 'true' : undefined}
+      onClickCapture={handleClickCapture}
     >
       <div className="cinematic-media" aria-hidden="true">
         <img
@@ -187,6 +254,7 @@ export function CinematicThreshold({
           type="button"
           className="cinematic-skip"
           onClick={() => {
+            pendingBeginRef.current = false;
             onAnnounce('Entrance skipped.');
             arrive();
           }}
