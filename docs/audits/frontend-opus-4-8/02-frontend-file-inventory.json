@@ -1,0 +1,2065 @@
+{
+  "generatedFrom": "2d1b72ab5681e1be452013d6f2374d4967423bc5",
+  "branch": "audit/opus-4-8-exhaustive-frontend",
+  "entryPoints": {
+    "app": "src/main.tsx",
+    "serviceWorker": "src-sw/service-worker.ts"
+  },
+  "counts": {
+    "frontendFiles": 72,
+    "appGraphModules": 56,
+    "serviceWorkerGraphModules": 6,
+    "boundaryDependencies": 14,
+    "unannotated": 0,
+    "withoutDirectTests": 50,
+    "frontendConfigs": 7,
+    "frontendTests": 39,
+    "boundaryTests": 32,
+    "testFixtures": 9,
+    "totalPending": 127
+  },
+  "frontendFiles": [
+    {
+      "path": "index.html",
+      "category": "entry",
+      "language": "html",
+      "bytes": 1451,
+      "lines": 45,
+      "responsibility": "Document shell, meta, mount point",
+      "renderedSurface": "all",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/icon.svg",
+      "category": "asset",
+      "language": "svg",
+      "bytes": 685,
+      "lines": 12,
+      "responsibility": "App icon (SVG — raster budget is 0 bytes)",
+      "renderedSurface": "install",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/images/divan-alcove-desktop.webp",
+      "category": "media",
+      "language": "binary",
+      "bytes": 64474,
+      "lines": null,
+      "responsibility": "Alcove backdrop 16:9",
+      "renderedSurface": "reveal/result",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/images/divan-alcove-mobile.webp",
+      "category": "media",
+      "language": "binary",
+      "bytes": 66134,
+      "lines": null,
+      "responsibility": "Alcove backdrop 9:16",
+      "renderedSurface": "reveal/result",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/images/divan-poster-desktop.webp",
+      "category": "media",
+      "language": "binary",
+      "bytes": 199096,
+      "lines": null,
+      "responsibility": "Cinematic poster 16:9",
+      "renderedSurface": "cinematic",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/images/divan-poster-mobile.webp",
+      "category": "media",
+      "language": "binary",
+      "bytes": 202136,
+      "lines": null,
+      "responsibility": "Cinematic poster 9:16",
+      "renderedSurface": "cinematic",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/manifest.webmanifest",
+      "category": "asset",
+      "language": "webmanifest",
+      "bytes": 479,
+      "lines": 22,
+      "responsibility": "PWA manifest",
+      "renderedSurface": "install",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/offline.html",
+      "category": "asset",
+      "language": "html",
+      "bytes": 1293,
+      "lines": 36,
+      "responsibility": "Offline fallback document",
+      "renderedSurface": "offline",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/video/divan-cinematic-desktop.mp4",
+      "category": "media",
+      "language": "binary",
+      "bytes": 2700797,
+      "lines": null,
+      "responsibility": "Cinematic master 16:9",
+      "renderedSurface": "cinematic",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "public/video/divan-cinematic-mobile.mp4",
+      "category": "media",
+      "language": "binary",
+      "bytes": 2624919,
+      "lines": null,
+      "responsibility": "Cinematic master 9:16",
+      "renderedSurface": "cinematic",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src-sw/cacheTypes.ts",
+      "category": "sw",
+      "language": "ts",
+      "bytes": 469,
+      "lines": 16,
+      "responsibility": "Cache naming/type contract",
+      "renderedSurface": "all (offline)",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": true,
+      "directImports": [],
+      "associatedTests": [
+        "tests/offline/helpers.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src-sw/integrity.ts",
+      "category": "sw",
+      "language": "ts",
+      "bytes": 2512,
+      "lines": 88,
+      "responsibility": "Digest/integrity checks",
+      "renderedSurface": "all (offline)",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": true,
+      "directImports": [
+        "cacheTypes.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src-sw/releaseManager.ts",
+      "category": "sw",
+      "language": "ts",
+      "bytes": 28287,
+      "lines": 872,
+      "responsibility": "Release staging, coherence, retention, cleanup",
+      "renderedSurface": "all (offline)",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": true,
+      "directImports": [
+        "../src/contracts/release.ts",
+        "cacheTypes.ts",
+        "integrity.ts",
+        "schemas.ts"
+      ],
+      "associatedTests": [
+        "tests/offline/releaseManager.test.ts",
+        "tests/offline/runtimeStrategies.test.ts",
+        "tests/offline/serviceWorker.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src-sw/schemas.ts",
+      "category": "sw",
+      "language": "ts",
+      "bytes": 11929,
+      "lines": 389,
+      "responsibility": "Independent SW-side validation (FIXED_MIME)",
+      "renderedSurface": "all (offline)",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": true,
+      "directImports": [
+        "../src/contracts/release.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src-sw/service-worker.ts",
+      "category": "sw",
+      "language": "ts",
+      "bytes": 5681,
+      "lines": 196,
+      "responsibility": "SW entry, fetch/install/activate",
+      "renderedSurface": "all (offline)",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": true,
+      "directImports": [
+        "cacheTypes.ts",
+        "releaseManager.ts"
+      ],
+      "associatedTests": [
+        "tests/offline/artifacts.test.ts",
+        "tests/offline/serviceWorker.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/app/App.tsx",
+      "category": "app",
+      "language": "tsx",
+      "bytes": 25940,
+      "lines": 796,
+      "responsibility": "Reducer host, history, offline, focus orchestration, scene routing",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "app/history.ts",
+        "app/runtime.ts",
+        "app/state.ts",
+        "components/BookStage.tsx",
+        "components/LiveRegion.tsx",
+        "components/MotionControl.tsx",
+        "components/OfflineBadge.tsx",
+        "components/PoemResult.tsx",
+        "components/SkipLink.tsx",
+        "contracts/app.ts",
+        "contracts/content.ts",
+        "lib/accessibility/focus.ts",
+        "lib/accessibility/motion.ts",
+        "lib/draw/secureRandom.ts",
+        "lib/draw/shuffleBag.ts",
+        "lib/storage/session.ts",
+        "pages/index.tsx",
+        "pages/routes.ts",
+        "scenes/BlockingErrorScene.tsx",
+        "scenes/BootScene.tsx",
+        "scenes/ChoosePoetScene.tsx",
+        "scenes/IntentionScene.tsx",
+        "scenes/RevealScene.tsx",
+        "scenes/WelcomeScene.tsx",
+        "sw-client/register.ts"
+      ],
+      "associatedTests": [
+        "tests/accessibility/appAccessibility.test.tsx",
+        "tests/components/appFlow.test.tsx",
+        "tests/components/contextRoutes.test.tsx",
+        "tests/components/failures.test.tsx",
+        "tests/components/offlineIntegration.test.tsx",
+        "tests/components/poetSelectionNavigation.test.tsx",
+        "tests/components/visualLanguage.test.tsx"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/app/ErrorBoundary.tsx",
+      "category": "app",
+      "language": "tsx",
+      "bytes": 1020,
+      "lines": 41,
+      "responsibility": "Top-level error containment",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [
+        "tests/accessibility/appAccessibility.test.tsx",
+        "tests/components/failures.test.tsx"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/app/core.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 3185,
+      "lines": 186,
+      "responsibility": "Base layout and reset-adjacent rules",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/app/history.ts",
+      "category": "app",
+      "language": "ts",
+      "bytes": 3514,
+      "lines": 133,
+      "responsibility": "History serialisation and restore",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "app/state.ts",
+        "contracts/app.ts",
+        "contracts/content.ts"
+      ],
+      "associatedTests": [
+        "tests/unit/history.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/app/runtime.ts",
+      "category": "app",
+      "language": "ts",
+      "bytes": 12995,
+      "lines": 441,
+      "responsibility": "Release fetch, verification, runtime assembly",
+      "renderedSurface": "boot",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/content.ts",
+        "contracts/release.ts"
+      ],
+      "associatedTests": [
+        "tests/components/fixtures.ts",
+        "tests/components/runtime.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/app/state.ts",
+      "category": "app",
+      "language": "ts",
+      "bytes": 7956,
+      "lines": 283,
+      "responsibility": "Pure reducer, state validity, recovery",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/app.ts",
+        "contracts/content.ts"
+      ],
+      "associatedTests": [
+        "tests/unit/history.test.ts",
+        "tests/unit/state.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/BookStage.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 1038,
+      "lines": 40,
+      "responsibility": "Live book scene receiving cinematic handoff",
+      "renderedSurface": "reveal/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/ButterflyField.tsx",
+        "components/CandleScene.tsx",
+        "components/PoetryMotes.tsx",
+        "lib/cinematic/capability.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/ButterflyField.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 1429,
+      "lines": 43,
+      "responsibility": "Decorative butterflies (skill cap: max 2)",
+      "renderedSurface": "reveal/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/CandleScene.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 546,
+      "lines": 14,
+      "responsibility": "Candle body and glow",
+      "renderedSurface": "reveal/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/CinematicThreshold.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 10068,
+      "lines": 345,
+      "responsibility": "Two-scene entrance, poster-first, scroll-scrub, Skip, handoff",
+      "renderedSurface": "welcome/cinematic",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "lib/cinematic/capability.ts",
+        "lib/cinematic/scrollScrub.ts"
+      ],
+      "associatedTests": [
+        "tests/components/cinematicBegin.test.tsx",
+        "tests/components/cinematicThreshold.test.tsx"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/DecorativeGeometry.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 3262,
+      "lines": 96,
+      "responsibility": "Original SVG geometric motifs",
+      "renderedSurface": "multiple",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/FlowBackButton.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 289,
+      "lines": 11,
+      "responsibility": "Visible return-to-poet navigation",
+      "renderedSurface": "intention/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "lib/navigation/flowNavigation.ts",
+        "styles/flow-navigation.css"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/IlluminatedFrame.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 394,
+      "lines": 20,
+      "responsibility": "Manuscript border framing",
+      "renderedSurface": "result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/LiveRegion.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 285,
+      "lines": 17,
+      "responsibility": "Single shared polite live region",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/ManuscriptPortal.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 443,
+      "lines": 20,
+      "responsibility": "Portal motif",
+      "renderedSurface": "welcome",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/MotionControl.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 733,
+      "lines": 26,
+      "responsibility": "Motion preference control",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/app.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/OfflineBadge.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 98,
+      "lines": 4,
+      "responsibility": "Offline status indicator",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/PoemResult.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 6311,
+      "lines": 207,
+      "responsibility": "Verse, translation, credits, share/save actions",
+      "renderedSurface": "result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/FlowBackButton.tsx",
+        "components/IlluminatedFrame.tsx",
+        "components/SourceCredit.tsx",
+        "contracts/content.ts",
+        "lib/share/shareCard.ts",
+        "lib/share/shareService.ts"
+      ],
+      "associatedTests": [
+        "tests/components/poetSelectionNavigation.test.tsx",
+        "tests/components/shareAction.test.tsx"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/PoetryMotes.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 538,
+      "lines": 18,
+      "responsibility": "Ambient motes",
+      "renderedSurface": "reveal/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/SkipLink.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 398,
+      "lines": 17,
+      "responsibility": "Skip-to-content link",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "lib/accessibility/focus.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/components/SourceCredit.tsx",
+      "category": "component",
+      "language": "tsx",
+      "bytes": 1495,
+      "lines": 51,
+      "responsibility": "Source/rights attribution",
+      "renderedSurface": "result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/content.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/contracts/app.ts",
+      "category": "contract",
+      "language": "ts",
+      "bytes": 795,
+      "lines": 31,
+      "responsibility": "App stage and motion preference types",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/content.ts"
+      ],
+      "associatedTests": [
+        "tests/components/appFlow.test.tsx",
+        "tests/components/poetSelectionNavigation.test.tsx",
+        "tests/unit/shuffleBag.test.ts",
+        "tests/unit/storage.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/contracts/content.ts",
+      "category": "contract",
+      "language": "ts",
+      "bytes": 1876,
+      "lines": 64,
+      "responsibility": "Poet and poem item types",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [
+        "tests/accessibility/appAccessibility.test.tsx",
+        "tests/components/appFlow.test.tsx",
+        "tests/components/fixtures.ts",
+        "tests/components/runtime.test.ts",
+        "tests/components/shareAction.test.tsx",
+        "tests/content/compileItem.test.ts",
+        "tests/share/shareCard.test.ts",
+        "tests/share/shareService.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/contracts/release.ts",
+      "category": "contract",
+      "language": "ts",
+      "bytes": 1074,
+      "lines": 44,
+      "responsibility": "Release shape — SHARED by app and service worker",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": true,
+      "directImports": [],
+      "associatedTests": [
+        "tests/components/runtime.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/accessibility/focus.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 796,
+      "lines": 33,
+      "responsibility": "Focus target resolution",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/accessibility/motion.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 1497,
+      "lines": 54,
+      "responsibility": "Reduced-motion resolution and persistence",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/app.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/cinematic/capability.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 1820,
+      "lines": 65,
+      "responsibility": "Media/Save-Data/reduced-motion capability routing",
+      "renderedSurface": "cinematic",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "lib/accessibility/motion.ts"
+      ],
+      "associatedTests": [
+        "tests/unit/cinematicCapability.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/cinematic/scrollScrub.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 2221,
+      "lines": 91,
+      "responsibility": "Scroll-to-currentTime scrub, seek coalescing",
+      "renderedSurface": "cinematic",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [
+        "tests/unit/scrollScrub.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/draw/secureRandom.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 1749,
+      "lines": 68,
+      "responsibility": "CSPRNG wrapper",
+      "renderedSurface": "reveal",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [
+        "tests/unit/secureRandom.test.ts",
+        "tests/unit/shuffleBag.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/draw/shuffleBag.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 3287,
+      "lines": 125,
+      "responsibility": "No-repeat draw bag",
+      "renderedSurface": "reveal",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/content.ts",
+        "lib/draw/secureRandom.ts",
+        "lib/storage/session.ts"
+      ],
+      "associatedTests": [
+        "tests/unit/shuffleBag.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/navigation/flowNavigation.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 1339,
+      "lines": 55,
+      "responsibility": "Flow navigation targets",
+      "renderedSurface": "intention/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/app.ts",
+        "lib/storage/session.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/share/shareCard.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 5367,
+      "lines": 120,
+      "responsibility": "Share card composition",
+      "renderedSurface": "result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/content.ts"
+      ],
+      "associatedTests": [
+        "tests/share/shareCard.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/share/shareService.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 3590,
+      "lines": 126,
+      "responsibility": "Web Share / download / clipboard fallbacks",
+      "renderedSurface": "result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/content.ts",
+        "lib/share/shareCard.ts"
+      ],
+      "associatedTests": [
+        "tests/share/shareService.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/lib/storage/session.ts",
+      "category": "lib",
+      "language": "ts",
+      "bytes": 8046,
+      "lines": 309,
+      "responsibility": "sessionStorage public IDs; localStorage motion pref only",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "contracts/app.ts",
+        "contracts/content.ts"
+      ],
+      "associatedTests": [
+        "tests/unit/shuffleBag.test.ts",
+        "tests/unit/storage.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/main.tsx",
+      "category": "entry",
+      "language": "tsx",
+      "bytes": 486,
+      "lines": 21,
+      "responsibility": "React root mount and SW registration bootstrap",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "app/App.tsx",
+        "app/ErrorBoundary.tsx",
+        "app/core.css",
+        "styles/index.css"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/AboutPage.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 2354,
+      "lines": 58,
+      "responsibility": "About",
+      "renderedSurface": "about",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "pages/ContextLayout.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/AccessibilityPage.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 2059,
+      "lines": 50,
+      "responsibility": "Accessibility statement",
+      "renderedSurface": "accessibility",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "pages/ContextLayout.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/ContextLayout.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 624,
+      "lines": 28,
+      "responsibility": "Shared context page chrome",
+      "renderedSurface": "context pages",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/CreditsPage.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 4009,
+      "lines": 123,
+      "responsibility": "Credits and rights",
+      "renderedSurface": "credits",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "app/runtime.ts",
+        "pages/ContextLayout.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/OfflinePage.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 1741,
+      "lines": 45,
+      "responsibility": "Offline context page",
+      "renderedSurface": "offline",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "pages/ContextLayout.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/PrivacyPage.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 2635,
+      "lines": 66,
+      "responsibility": "Privacy statement",
+      "renderedSurface": "privacy",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "pages/ContextLayout.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/index.tsx",
+      "category": "page",
+      "language": "tsx",
+      "bytes": 777,
+      "lines": 29,
+      "responsibility": "Context page registry",
+      "renderedSurface": "context pages",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "app/runtime.ts",
+        "pages/AboutPage.tsx",
+        "pages/AccessibilityPage.tsx",
+        "pages/CreditsPage.tsx",
+        "pages/OfflinePage.tsx",
+        "pages/PrivacyPage.tsx",
+        "pages/routes.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/pages/routes.ts",
+      "category": "page",
+      "language": "ts",
+      "bytes": 321,
+      "lines": 14,
+      "responsibility": "Context route table",
+      "renderedSurface": "context pages",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/scenes/BlockingErrorScene.tsx",
+      "category": "scene",
+      "language": "tsx",
+      "bytes": 717,
+      "lines": 23,
+      "responsibility": "Fail-closed error surface",
+      "renderedSurface": "error",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "app/runtime.ts",
+        "components/IlluminatedFrame.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/scenes/BootScene.tsx",
+      "category": "scene",
+      "language": "tsx",
+      "bytes": 624,
+      "lines": 24,
+      "responsibility": "Boot/loading",
+      "renderedSurface": "boot",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/scenes/ChoosePoetScene.tsx",
+      "category": "scene",
+      "language": "tsx",
+      "bytes": 1615,
+      "lines": 48,
+      "responsibility": "Hafez/Rumi selection",
+      "renderedSurface": "choose_poet",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx",
+        "contracts/content.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/scenes/IntentionScene.tsx",
+      "category": "scene",
+      "language": "tsx",
+      "bytes": 1406,
+      "lines": 40,
+      "responsibility": "Hold a thought + Reveal",
+      "renderedSurface": "intention",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx",
+        "components/FlowBackButton.tsx",
+        "contracts/content.ts"
+      ],
+      "associatedTests": [
+        "tests/components/poetSelectionNavigation.test.tsx"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/scenes/RevealScene.tsx",
+      "category": "scene",
+      "language": "tsx",
+      "bytes": 2815,
+      "lines": 89,
+      "responsibility": "Reveal transition + Skip",
+      "renderedSurface": "revealing",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/DecorativeGeometry.tsx",
+        "contracts/content.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/scenes/WelcomeScene.tsx",
+      "category": "scene",
+      "language": "tsx",
+      "bytes": 1493,
+      "lines": 50,
+      "responsibility": "Welcome + Begin",
+      "renderedSurface": "welcome",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "components/CinematicThreshold.tsx",
+        "components/ManuscriptPortal.tsx",
+        "lib/cinematic/capability.ts"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/styles/flow-navigation.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 807,
+      "lines": 36,
+      "responsibility": "Flow navigation styling",
+      "renderedSurface": "intention/result",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/styles/fonts.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 1318,
+      "lines": 54,
+      "responsibility": "Self-hosted font faces, swap, no remote URL",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/styles/index.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 95,
+      "lines": 5,
+      "responsibility": "Style entry aggregator",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [
+        "styles/fonts.css",
+        "styles/motion.css",
+        "styles/tokens.css",
+        "styles/visual.css"
+      ],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/styles/motion.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 7248,
+      "lines": 352,
+      "responsibility": "Motion and reduced-motion rules",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 1451,
+      "lines": 53,
+      "responsibility": "Authoritative colour/spacing tokens (locked: defined once)",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/styles/visual.css",
+      "category": "style",
+      "language": "css",
+      "bytes": 22643,
+      "lines": 1049,
+      "responsibility": "Main visual system",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/sw-client/register.ts",
+      "category": "sw-client",
+      "language": "ts",
+      "bytes": 7585,
+      "lines": 264,
+      "responsibility": "SW registration bridge, update messaging",
+      "renderedSurface": "all",
+      "inAppGraph": true,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [
+        "tests/accessibility/appAccessibility.test.tsx",
+        "tests/components/failures.test.tsx",
+        "tests/components/offlineIntegration.test.tsx",
+        "tests/offline/client.test.ts"
+      ],
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "src/vite-env.d.ts",
+      "category": "config",
+      "language": "ts",
+      "bytes": 38,
+      "lines": 2,
+      "responsibility": "Vite ambient type reference",
+      "renderedSurface": "none",
+      "inAppGraph": false,
+      "inServiceWorkerGraph": false,
+      "directImports": [],
+      "associatedTests": [],
+      "auditStatus": "PENDING"
+    }
+  ],
+  "boundaryDependencies": [
+    {
+      "path": "src/lib/content/authoringSchema.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 11356,
+      "lines": 374,
+      "associatedTests": [
+        "tests/content/authoringSchema.test.ts",
+        "tests/content/compileCorpus.test.ts",
+        "tests/content/machineAlignmentGate.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/canonical.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 2561,
+      "lines": 101,
+      "associatedTests": [
+        "tests/components/runtime.test.ts",
+        "tests/content/buildRelease.test.ts",
+        "tests/content/canonical.test.ts",
+        "tests/content/publicSchema.test.ts",
+        "tests/fixtures/content/corpus.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/canonicalIdentity.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 742,
+      "lines": 22,
+      "associatedTests": []
+    },
+    {
+      "path": "src/lib/content/compileCorpus.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 14941,
+      "lines": 510,
+      "associatedTests": [
+        "tests/content/buildRelease.test.ts",
+        "tests/content/compileCorpus.test.ts",
+        "tests/content/machineAlignmentGate.test.ts",
+        "tests/content/productionCorpus.test.ts",
+        "tests/content/release.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/compileItem.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 2827,
+      "lines": 76,
+      "associatedTests": [
+        "tests/content/candidateIndex.test.ts",
+        "tests/content/compileItem.test.ts",
+        "tests/content/machineAlignmentGate.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/productionManifest.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 7284,
+      "lines": 217,
+      "associatedTests": [
+        "tests/content/productionManifest.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/productionSelection.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 3689,
+      "lines": 107,
+      "associatedTests": [
+        "tests/content/productionCorpus.test.ts",
+        "tests/content/productionSelection.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/publicSchema.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 6895,
+      "lines": 234,
+      "associatedTests": [
+        "tests/components/runtime.test.ts",
+        "tests/content/compileItem.test.ts",
+        "tests/content/publicSchema.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/registrySchemas.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 11879,
+      "lines": 607,
+      "associatedTests": [
+        "tests/content/compileCorpus.test.ts",
+        "tests/content/machineAlignmentGate.test.ts",
+        "tests/content/registrySchemas.test.ts",
+        "tests/content/release.test.ts",
+        "tests/content/reviewIdentityGate.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/release.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 13979,
+      "lines": 446,
+      "associatedTests": [
+        "tests/content/release.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/remoteResource.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 420,
+      "lines": 12,
+      "associatedTests": []
+    },
+    {
+      "path": "src/lib/content/reviewAuthority.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 5981,
+      "lines": 193,
+      "associatedTests": [
+        "tests/content/compileCorpus.test.ts",
+        "tests/content/machineAlignment.test.ts",
+        "tests/content/machineAlignmentGate.test.ts",
+        "tests/content/reviewAuthority.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/sourceRegistrySchema.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 6389,
+      "lines": 200,
+      "associatedTests": [
+        "tests/content/poetryRights.test.ts",
+        "tests/content/sourceRegistry.test.ts"
+      ]
+    },
+    {
+      "path": "src/lib/content/sourceRightsSchema.ts",
+      "category": "boundary-dependency",
+      "reason": "Build-time content/rights/review machinery; not reachable from any browser entry",
+      "inAppGraph": false,
+      "bytes": 3502,
+      "lines": 108,
+      "associatedTests": [
+        "tests/content/poetryRights.test.ts"
+      ]
+    }
+  ],
+  "frontendConfigs": [
+    {
+      "path": "vite.config.ts",
+      "category": "config",
+      "lines": 31,
+      "bytes": 1028,
+      "responsibility": "Build config; publicDir:false, asset allow-listing interacts with dist integrity",
+      "renderedSurface": "all",
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "vitest.config.ts",
+      "category": "config",
+      "lines": 37,
+      "bytes": 1062,
+      "responsibility": "Unit/component runner; excludes e2e",
+      "renderedSurface": "n/a",
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "playwright.config.ts",
+      "category": "config",
+      "lines": 2,
+      "bytes": 71,
+      "responsibility": "E2E runner; port 4173",
+      "renderedSurface": "n/a",
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tsconfig.json",
+      "category": "config",
+      "lines": 35,
+      "bytes": 888,
+      "responsibility": "Strict TS incl. noUncheckedIndexedAccess",
+      "renderedSurface": "all",
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "eslint.config.js",
+      "category": "config",
+      "lines": 67,
+      "bytes": 1780,
+      "responsibility": "Lint, --max-warnings 0",
+      "renderedSurface": "all",
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": ".prettierrc.json",
+      "category": "config",
+      "lines": 9,
+      "bytes": 132,
+      "responsibility": "Format: single quotes, semi, trailing comma, width 80",
+      "renderedSurface": "all",
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": ".prettierignore",
+      "category": "config",
+      "lines": 29,
+      "bytes": 548,
+      "responsibility": "Excludes AGENT.md/CHANGELOG.md/design doc from format churn",
+      "renderedSurface": "n/a",
+      "auditStatus": "PENDING"
+    }
+  ],
+  "frontendTests": [
+    {
+      "path": "tests/accessibility/appAccessibility.test.tsx",
+      "category": "test",
+      "suite": "accessibility",
+      "lines": 415,
+      "bytes": 13624,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/accessibility/styles.test.ts",
+      "category": "test",
+      "suite": "accessibility",
+      "lines": 154,
+      "bytes": 6182,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/appFlow.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 409,
+      "bytes": 13052,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/cinematicBegin.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 88,
+      "bytes": 2787,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/cinematicThreshold.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 179,
+      "bytes": 5703,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/contextRoutes.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 97,
+      "bytes": 3544,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/document.test.ts",
+      "category": "test",
+      "suite": "components",
+      "lines": 30,
+      "bytes": 1291,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/failures.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 253,
+      "bytes": 7414,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/fixtures.ts",
+      "category": "test",
+      "suite": "components",
+      "lines": 96,
+      "bytes": 3331,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/offlineIntegration.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 150,
+      "bytes": 4198,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/poetSelectionNavigation.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 147,
+      "bytes": 4192,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/runtime.test.ts",
+      "category": "test",
+      "suite": "components",
+      "lines": 389,
+      "bytes": 11334,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/shareAction.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 188,
+      "bytes": 5949,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/components/visualLanguage.test.tsx",
+      "category": "test",
+      "suite": "components",
+      "lines": 69,
+      "bytes": 2318,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/e2e/accessibility.playwright.config.ts",
+      "category": "test",
+      "suite": "e2e",
+      "lines": 25,
+      "bytes": 688,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/e2e/accessibility.spec.ts",
+      "category": "test",
+      "suite": "e2e",
+      "lines": 281,
+      "bytes": 9594,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/e2e/offline-server.ts",
+      "category": "test",
+      "suite": "e2e",
+      "lines": 305,
+      "bytes": 9017,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/e2e/offline.spec.ts",
+      "category": "test",
+      "suite": "e2e",
+      "lines": 163,
+      "bytes": 5913,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/e2e/visual.spec.ts",
+      "category": "test",
+      "suite": "e2e",
+      "lines": 347,
+      "bytes": 10673,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/offline/artifacts.test.ts",
+      "category": "test",
+      "suite": "offline",
+      "lines": 62,
+      "bytes": 2142,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/offline/client.test.ts",
+      "category": "test",
+      "suite": "offline",
+      "lines": 238,
+      "bytes": 7477,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/offline/helpers.ts",
+      "category": "test",
+      "suite": "offline",
+      "lines": 319,
+      "bytes": 10841,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/offline/releaseManager.test.ts",
+      "category": "test",
+      "suite": "offline",
+      "lines": 571,
+      "bytes": 20142,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/offline/runtimeStrategies.test.ts",
+      "category": "test",
+      "suite": "offline",
+      "lines": 377,
+      "bytes": 12675,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/offline/serviceWorker.test.ts",
+      "category": "test",
+      "suite": "offline",
+      "lines": 251,
+      "bytes": 7306,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/performance/visualBudgets.test.ts",
+      "category": "test",
+      "suite": "performance",
+      "lines": 142,
+      "bytes": 5080,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/security/opsConfig.test.ts",
+      "category": "test",
+      "suite": "security",
+      "lines": 1038,
+      "bytes": 37069,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/security/publicReadiness.test.ts",
+      "category": "test",
+      "suite": "security",
+      "lines": 239,
+      "bytes": 9493,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/security/qrGenerator.test.ts",
+      "category": "test",
+      "suite": "security",
+      "lines": 89,
+      "bytes": 2902,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/setup/vitest.ts",
+      "category": "test",
+      "suite": "setup",
+      "lines": 2,
+      "bytes": 43,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/share/shareCard.test.ts",
+      "category": "test",
+      "suite": "share",
+      "lines": 183,
+      "bytes": 6916,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/share/shareService.test.ts",
+      "category": "test",
+      "suite": "share",
+      "lines": 113,
+      "bytes": 3822,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/cinematicCapability.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 70,
+      "bytes": 2252,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/history.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 123,
+      "bytes": 3009,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/scrollScrub.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 113,
+      "bytes": 3246,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/secureRandom.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 84,
+      "bytes": 2434,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/shuffleBag.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 147,
+      "bytes": 4328,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/state.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 151,
+      "bytes": 4145,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/unit/storage.test.ts",
+      "category": "test",
+      "suite": "unit",
+      "lines": 225,
+      "bytes": 7328,
+      "auditStatus": "PENDING"
+    }
+  ],
+  "boundaryTests": [
+    {
+      "path": "tests/content/alignVerseSections.test.ts",
+      "category": "boundary-test",
+      "lines": 134,
+      "bytes": 4600
+    },
+    {
+      "path": "tests/content/authoringSchema.test.ts",
+      "category": "boundary-test",
+      "lines": 254,
+      "bytes": 8396
+    },
+    {
+      "path": "tests/content/bellOcr.test.ts",
+      "category": "boundary-test",
+      "lines": 86,
+      "bytes": 2603
+    },
+    {
+      "path": "tests/content/bellReconstruction.test.ts",
+      "category": "boundary-test",
+      "lines": 229,
+      "bytes": 8008
+    },
+    {
+      "path": "tests/content/buildRelease.test.ts",
+      "category": "boundary-test",
+      "lines": 1369,
+      "bytes": 46977
+    },
+    {
+      "path": "tests/content/candidateIndex.test.ts",
+      "category": "boundary-test",
+      "lines": 85,
+      "bytes": 2428
+    },
+    {
+      "path": "tests/content/canonical.test.ts",
+      "category": "boundary-test",
+      "lines": 49,
+      "bytes": 1399
+    },
+    {
+      "path": "tests/content/clarkeParse.test.ts",
+      "category": "boundary-test",
+      "lines": 166,
+      "bytes": 5834
+    },
+    {
+      "path": "tests/content/compileCorpus.test.ts",
+      "category": "boundary-test",
+      "lines": 321,
+      "bytes": 11021
+    },
+    {
+      "path": "tests/content/compileItem.test.ts",
+      "category": "boundary-test",
+      "lines": 97,
+      "bytes": 3390
+    },
+    {
+      "path": "tests/content/contentLoader.test.ts",
+      "category": "boundary-test",
+      "lines": 244,
+      "bytes": 7101
+    },
+    {
+      "path": "tests/content/corpusInventory.test.ts",
+      "category": "boundary-test",
+      "lines": 84,
+      "bytes": 2537
+    },
+    {
+      "path": "tests/content/englishBlockClassification.test.ts",
+      "category": "boundary-test",
+      "lines": 199,
+      "bytes": 8417
+    },
+    {
+      "path": "tests/content/extraction.test.ts",
+      "category": "boundary-test",
+      "lines": 145,
+      "bytes": 5028
+    },
+    {
+      "path": "tests/content/finalAlignmentEvidence.test.ts",
+      "category": "boundary-test",
+      "lines": 104,
+      "bytes": 2944
+    },
+    {
+      "path": "tests/content/fixtures.ts",
+      "category": "boundary-test",
+      "lines": 105,
+      "bytes": 3715
+    },
+    {
+      "path": "tests/content/hafezGhazalExtraction.test.ts",
+      "category": "boundary-test",
+      "lines": 216,
+      "bytes": 7661
+    },
+    {
+      "path": "tests/content/machineAlignment.test.ts",
+      "category": "boundary-test",
+      "lines": 75,
+      "bytes": 2123
+    },
+    {
+      "path": "tests/content/machineAlignmentGate.test.ts",
+      "category": "boundary-test",
+      "lines": 94,
+      "bytes": 3771
+    },
+    {
+      "path": "tests/content/masnaviSections.test.ts",
+      "category": "boundary-test",
+      "lines": 45,
+      "bytes": 1718
+    },
+    {
+      "path": "tests/content/poetryRights.test.ts",
+      "category": "boundary-test",
+      "lines": 153,
+      "bytes": 4550
+    },
+    {
+      "path": "tests/content/productionCorpus.test.ts",
+      "category": "boundary-test",
+      "lines": 78,
+      "bytes": 2462
+    },
+    {
+      "path": "tests/content/productionManifest.test.ts",
+      "category": "boundary-test",
+      "lines": 62,
+      "bytes": 1749
+    },
+    {
+      "path": "tests/content/productionSelection.test.ts",
+      "category": "boundary-test",
+      "lines": 48,
+      "bytes": 1607
+    },
+    {
+      "path": "tests/content/publicBundleLeak.test.ts",
+      "category": "boundary-test",
+      "lines": 77,
+      "bytes": 2983
+    },
+    {
+      "path": "tests/content/publicSchema.test.ts",
+      "category": "boundary-test",
+      "lines": 221,
+      "bytes": 6723
+    },
+    {
+      "path": "tests/content/registrySchemas.test.ts",
+      "category": "boundary-test",
+      "lines": 353,
+      "bytes": 10512
+    },
+    {
+      "path": "tests/content/release.test.ts",
+      "category": "boundary-test",
+      "lines": 310,
+      "bytes": 9905
+    },
+    {
+      "path": "tests/content/reviewAuthority.test.ts",
+      "category": "boundary-test",
+      "lines": 133,
+      "bytes": 4805
+    },
+    {
+      "path": "tests/content/reviewIdentityGate.test.ts",
+      "category": "boundary-test",
+      "lines": 77,
+      "bytes": 2512
+    },
+    {
+      "path": "tests/content/sourceLock.test.ts",
+      "category": "boundary-test",
+      "lines": 310,
+      "bytes": 9213
+    },
+    {
+      "path": "tests/content/sourceRegistry.test.ts",
+      "category": "boundary-test",
+      "lines": 263,
+      "bytes": 7394
+    }
+  ],
+  "testFixtures": [
+    {
+      "path": "tests/fixtures/content/corpus.ts",
+      "category": "test-fixture",
+      "lines": 294,
+      "bytes": 10193,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/ops/README.md",
+      "category": "test-fixture",
+      "lines": 12,
+      "bytes": 574,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/ops/immutable-image.txt",
+      "category": "test-fixture",
+      "lines": 2,
+      "bytes": 97,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/ops/mock-bin/docker",
+      "category": "test-fixture",
+      "lines": 55,
+      "bytes": 1299,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/ops/mock-bin/stat",
+      "category": "test-fixture",
+      "lines": 36,
+      "bytes": 677,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/ops/rendered-config.yml",
+      "category": "test-fixture",
+      "lines": 10,
+      "bytes": 283,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/ops/synthetic-not-a-credential.json",
+      "category": "test-fixture",
+      "lines": 2,
+      "bytes": 49,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/poetry/build-fixture-epub.py",
+      "category": "test-fixture",
+      "lines": 86,
+      "bytes": 2959,
+      "auditStatus": "PENDING"
+    },
+    {
+      "path": "tests/fixtures/poetry/build-ghazal-fixture-epub.py",
+      "category": "test-fixture",
+      "lines": 157,
+      "bytes": 5538,
+      "auditStatus": "PENDING"
+    }
+  ],
+  "trackedVisualBaselines": 0
+}
