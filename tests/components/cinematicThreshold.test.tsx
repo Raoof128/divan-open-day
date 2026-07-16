@@ -27,7 +27,9 @@ function renderThreshold(
       onAnnounce={onAnnounce}
       {...overrides}
     >
-      <button type="button">Begin</button>
+      <button type="button" data-cinematic-begin>
+        Begin
+      </button>
     </CinematicThreshold>,
   );
   return { onArrive, onAnnounce };
@@ -85,7 +87,7 @@ describe('CinematicThreshold', () => {
     expect(thresholdSection().dataset['cinematicState']).toBe('arrived');
   });
 
-  it('demotes to the poster route when the video errors, never blocking entry', () => {
+  it('demotes to the poster route when the video errors and still permits entry', () => {
     const { onArrive } = renderThreshold();
     const video = document.querySelector('video');
 
@@ -93,7 +95,7 @@ describe('CinematicThreshold', () => {
 
     expect(thresholdSection().dataset['cinematicState']).toBe('poster');
     fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
-    expect(onArrive).not.toHaveBeenCalled(); // Begin is owned by the parent.
+    expect(onArrive).toHaveBeenCalledTimes(1);
     expect(
       screen.queryByRole('button', { name: 'Skip entrance' }),
     ).not.toBeInTheDocument();
