@@ -878,3 +878,140 @@ button:active {
     opacity: 1;
   }
 }
+
+/* ── Layered book (reveal) ───────────────────────────────────────────── */
+
+.book-leaf {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, var(--paper), var(--parchment) 72%);
+  border: 1px solid rgb(157 130 74 / 45%);
+  border-radius: var(--radius-paper);
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+.book-leaf--second {
+  opacity: 0.94;
+}
+
+.book-leaf--third {
+  opacity: 0.88;
+}
+
+.book-contact-shadow {
+  position: absolute;
+  inset: auto -8% -7% -8%;
+  block-size: 18%;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgb(2 5 18 / 62%),
+    transparent 70%
+  );
+  border-radius: 999px;
+  opacity: 0.35;
+  transform-origin: center;
+}
+
+.book-illumination {
+  position: absolute;
+  inset: -3.5%;
+  border: 2px solid rgb(212 166 74 / 68%);
+  border-radius: calc(var(--radius-paper) + 0.4rem);
+  box-shadow:
+    0 0 1.1rem rgb(212 166 74 / 30%),
+    inset 0 0 1.4rem rgb(212 166 74 / 22%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Atmosphere: candle, butterfly, motes ────────────────────────────── */
+
+.candle-scene,
+.butterfly-field,
+.poetry-motes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.candle-scene__glow {
+  position: absolute;
+  inset: 22% -18% 8% 38%;
+  background: radial-gradient(
+    ellipse 42% 38% at 62% 52%,
+    rgb(212 166 74 / 26%),
+    rgb(166 25 46 / 7%) 58%,
+    transparent 76%
+  );
+  opacity: 0.8;
+}
+
+.candle-scene__reflection {
+  position: absolute;
+  inset: 62% 4% 10% 46%;
+  background: radial-gradient(
+    ellipse 46% 42% at 56% 44%,
+    rgb(212 166 74 / 15%),
+    transparent 72%
+  );
+  opacity: 0.85;
+}
+
+.butterfly {
+  position: absolute;
+  inset-block-start: 64%;
+  inset-inline-start: 24%;
+  inline-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--gold);
+}
+
+.butterfly__wing {
+  transform-origin: 50% 52%;
+}
+
+.poetry-mote {
+  position: absolute;
+  inline-size: 0.22rem;
+  block-size: 0.22rem;
+  background: radial-gradient(circle, var(--gold-light), transparent 78%);
+  border-radius: 999px;
+  opacity: 0;
+}
+
+.poetry-mote--1 {
+  inset-block-start: 46%;
+  inset-inline-start: 66%;
+}
+
+.poetry-mote--2 {
+  inset-block-start: 58%;
+  inset-inline-start: 74%;
+  inline-size: 0.16rem;
+  block-size: 0.16rem;
+}
+
+.poetry-mote--3 {
+  inset-block-start: 38%;
+  inset-inline-start: 82%;
+}
+
+.poetry-mote--4 {
+  inset-block-start: 66%;
+  inset-inline-start: 86%;
+  inline-size: 0.28rem;
+  block-size: 0.28rem;
+}
+
+.poetry-mote--5 {
+  inset-block-start: 52%;
+  inset-inline-start: 90%;
+  inline-size: 0.14rem;
+  block-size: 0.14rem;
+}
+
+.poetry-mote--6 {
+  inset-block-start: 72%;
+  inset-inline-start: 70%;
+}

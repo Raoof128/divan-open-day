@@ -4,6 +4,9 @@ import {
   resolveCinematicPlan,
   resolveMediaClass,
 } from '../lib/cinematic/capability';
+import { ButterflyField } from './ButterflyField';
+import { CandleScene } from './CandleScene';
+import { PoetryMotes } from './PoetryMotes';
 
 // The stage backdrop is the actual final rendered frame of the cinematic
 // clip, so arriving from the threshold lands on an identical composition.
@@ -28,6 +31,9 @@ export function BookStage() {
         decoding="async"
       />
       <div className="book-stage__scrim" />
+      <CandleScene />
+      <ButterflyField />
+      <PoetryMotes />
     </div>
   );
 }

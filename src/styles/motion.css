@@ -27,9 +27,13 @@
     transform: rotateY(0deg) translate3d(0, 0, 0);
   }
 
-  72%,
+  14% {
+    transform: rotateY(-9deg) translate3d(-0.1rem, 0, 0.4rem);
+  }
+
+  78%,
   100% {
-    transform: rotateY(-58deg) translate3d(-0.8rem, 0, 2rem);
+    transform: rotateY(-128deg) translate3d(-0.8rem, 0, 2rem);
   }
 }
 
@@ -108,6 +112,13 @@
 .app-shell[data-motion='reduced'] .reveal-cover,
 .app-shell[data-motion='reduced'] .reveal-paper,
 .app-shell[data-motion='reduced'] .reveal-ornament,
+.app-shell[data-motion='reduced'] .book-leaf,
+.app-shell[data-motion='reduced'] .book-contact-shadow,
+.app-shell[data-motion='reduced'] .book-illumination,
+.app-shell[data-motion='reduced'] .candle-scene__glow,
+.app-shell[data-motion='reduced'] .butterfly,
+.app-shell[data-motion='reduced'] .butterfly__wing,
+.app-shell[data-motion='reduced'] .poetry-mote,
 .app-shell[data-motion='reduced'] .poet-options button {
   animation: none !important;
   transform: none;
@@ -124,4 +135,182 @@
     transition: none !important;
     transform: none !important;
   }
+
+  /* Phones carry fewer motes; ambience yields to battery and thermals. */
+  .poetry-mote--4,
+  .poetry-mote--5,
+  .poetry-mote--6 {
+    display: none;
+  }
+}
+
+@keyframes divan-leaf-turn {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    transform: rotateY(var(--leaf-arc, -140deg)) translate3d(0, 0, 0.5rem);
+  }
+}
+
+@keyframes divan-contact-shadow {
+  0% {
+    opacity: 0.18;
+    transform: scale3d(0.94, 1, 1);
+  }
+
+  55% {
+    opacity: 0.52;
+    transform: scale3d(1.06, 1, 1);
+  }
+
+  100% {
+    opacity: 0.36;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes divan-illumination-settle {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.9;
+  }
+}
+
+.app-shell[data-motion='full'] .book-leaf {
+  animation: divan-leaf-turn 950ms cubic-bezier(0.3, 0.6, 0.18, 1) both;
+}
+
+.app-shell[data-motion='full'] .book-leaf--first {
+  --leaf-arc: -148deg;
+
+  animation-delay: 340ms;
+}
+
+.app-shell[data-motion='full'] .book-leaf--second {
+  --leaf-arc: -136deg;
+
+  animation-delay: 520ms;
+}
+
+.app-shell[data-motion='full'] .book-leaf--third {
+  --leaf-arc: -124deg;
+
+  animation-delay: 640ms;
+}
+
+.app-shell[data-motion='full'] .book-contact-shadow {
+  animation: divan-contact-shadow 1.35s ease-out both;
+}
+
+.app-shell[data-motion='full'] .book-illumination {
+  animation: divan-illumination-settle 420ms ease-out 1.08s both;
+}
+
+@keyframes divan-glow-breathe {
+  from {
+    opacity: 0.72;
+  }
+
+  to {
+    opacity: 0.9;
+  }
+}
+
+@keyframes divan-butterfly-arrive {
+  0% {
+    transform: translate3d(-14vw, -30vh, 0) rotate(-8deg);
+  }
+
+  32% {
+    transform: translate3d(-6vw, -14vh, 0) rotate(6deg);
+  }
+
+  58% {
+    transform: translate3d(-9vw, -5vh, 0) rotate(-5deg);
+  }
+
+  82% {
+    transform: translate3d(-2vw, -1.5vh, 0) rotate(3deg);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes divan-wing-flutter {
+  from {
+    transform: rotateY(12deg);
+  }
+
+  to {
+    transform: rotateY(58deg);
+  }
+}
+
+@keyframes divan-mote-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1.5vh, 0);
+  }
+
+  22% {
+    opacity: 0.7;
+  }
+
+  78% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0.4vw, -5vh, 0);
+  }
+}
+
+.app-shell[data-motion='full'] .candle-scene__glow {
+  animation: divan-glow-breathe 4.6s ease-in-out infinite alternate;
+}
+
+.app-shell[data-motion='full'] .butterfly {
+  animation: divan-butterfly-arrive 6.2s cubic-bezier(0.36, 0.2, 0.22, 1) both;
+}
+
+.app-shell[data-motion='full'] .butterfly__wing--left {
+  animation: divan-wing-flutter 340ms ease-in-out 17 alternate;
+}
+
+.app-shell[data-motion='full'] .butterfly__wing--right {
+  animation: divan-wing-flutter 340ms ease-in-out 17 alternate-reverse;
+}
+
+.app-shell[data-motion='full'] .poetry-mote {
+  animation: divan-mote-drift 11s linear infinite;
+}
+
+.app-shell[data-motion='full'] .poetry-mote--2 {
+  animation-delay: 2.2s;
+}
+
+.app-shell[data-motion='full'] .poetry-mote--3 {
+  animation-delay: 4.1s;
+}
+
+.app-shell[data-motion='full'] .poetry-mote--4 {
+  animation-delay: 6.4s;
+  animation-duration: 13s;
+}
+
+.app-shell[data-motion='full'] .poetry-mote--5 {
+  animation-delay: 8.3s;
+}
+
+.app-shell[data-motion='full'] .poetry-mote--6 {
+  animation-delay: 9.6s;
+  animation-duration: 14s;
 }

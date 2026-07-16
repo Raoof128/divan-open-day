@@ -60,14 +60,19 @@ export function RevealScene({
     >
       <DecorativeGeometry motif="field" />
       <div className="reveal-object" aria-hidden="true">
+        <div className="book-contact-shadow" />
         <div className="reveal-paper reveal-paper--back" />
         <div className="reveal-paper" />
+        <div className="book-leaf book-leaf--third" />
+        <div className="book-leaf book-leaf--second" />
+        <div className="book-leaf book-leaf--first" />
         <div className="reveal-cover">
           <DecorativeGeometry
             className="reveal-ornament"
             motif={poet === 'hafez' ? 'pomegranate-cypress' : 'reed-rosette'}
           />
         </div>
+        <div className="book-illumination" />
       </div>
       <h1 tabIndex={-1} data-focus-target="scene-heading">
         {poet === 'hafez' ? 'Opening the Divan' : 'Revealing a passage'}

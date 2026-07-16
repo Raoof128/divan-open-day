@@ -1,6 +1,8 @@
+import type { EffectiveMotion } from '../accessibility/motion';
+
 export type MediaClass = 'mobile' | 'desktop';
 
-export type EffectiveMotion = 'full' | 'reduced';
+export type { EffectiveMotion };
 
 export interface CinematicConditions {
   readonly effectiveMotion: EffectiveMotion;
