@@ -261,6 +261,7 @@ const MIME_TYPES = [
   'text/css',
   'text/html',
   'text/javascript',
+  'video/mp4',
 ] as const;
 
 const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
@@ -269,6 +270,12 @@ const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
   ['manifest.webmanifest', 'application/manifest+json'],
   ['offline.html', 'text/html'],
   ['service-worker.js', 'text/javascript'],
+  ['images/divan-poster-mobile.webp', 'image/webp'],
+  ['images/divan-poster-desktop.webp', 'image/webp'],
+  ['images/divan-alcove-mobile.webp', 'image/webp'],
+  ['images/divan-alcove-desktop.webp', 'image/webp'],
+  ['video/divan-cinematic-mobile.mp4', 'video/mp4'],
+  ['video/divan-cinematic-desktop.mp4', 'video/mp4'],
 ]);
 const VITE_ASSET_PATTERN =
   /^assets\/[A-Za-z0-9][A-Za-z0-9._-]*-[a-f0-9]{16}\.(css|js|woff2|avif|png|svg|webp)$/u;
@@ -298,7 +305,13 @@ const offlineAssetSchema = z
       fixedMime ??
       (viteMatch === null ? undefined : VITE_MIME.get(viteMatch[1]!));
     if (browserMime !== undefined) {
-      if (asset.mimeType !== browserMime || !asset.requiredOffline) {
+      // Cinematic video is listed for integrity but never precached; all
+      // other browser assets are shell content and must stage offline.
+      const mustPrecache = browserMime !== 'video/mp4';
+      if (
+        asset.mimeType !== browserMime ||
+        asset.requiredOffline !== mustPrecache
+      ) {
         context.addIssue({
           code: 'custom',
           message:

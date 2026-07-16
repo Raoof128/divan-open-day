@@ -473,7 +473,9 @@ async function collectBrowserAssets(
       mimeType,
       sha256: createHash('sha256').update(contents).digest('hex'),
       bytes: contents.byteLength,
-      requiredOffline: true,
+      // Cinematic video ships with integrity metadata but is never part of
+      // the precached offline shell; the poster route is the offline path.
+      requiredOffline: mimeType !== 'video/mp4',
       contents,
     });
   }
@@ -636,9 +638,17 @@ async function buildBrowserAssets(
       'icon.svg',
       'manifest.webmanifest',
       'offline.html',
+      'images/divan-poster-mobile.webp',
+      'images/divan-poster-desktop.webp',
+      'images/divan-alcove-mobile.webp',
+      'images/divan-alcove-desktop.webp',
+      'video/divan-cinematic-mobile.mp4',
+      'video/divan-cinematic-desktop.mp4',
     ] as const) {
+      const target = path.join(stageRoot, filename);
+      await mkdir(path.dirname(target), { recursive: true });
       await writeFile(
-        path.join(stageRoot, filename),
+        target,
         await readReviewedRepositoryFile(`public/${filename}`),
         { flag: 'wx' },
       );

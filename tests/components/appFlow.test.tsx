@@ -186,7 +186,7 @@ it('moves focus to the reveal heading while revealing and to the result heading 
   expect(revealHeading).toHaveFocus();
   expect(document.activeElement).not.toBe(document.body);
 
-  await act(() => vi.advanceTimersByTimeAsync(1600));
+  await act(() => vi.advanceTimersByTimeAsync(2000));
 
   const resultHeading = oneActiveHeading();
   expect(resultHeading).toHaveTextContent('Your verse');

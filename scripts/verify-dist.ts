@@ -323,6 +323,15 @@ async function verifyAssetFiles(
     ) {
       throw new Error(`AVIF signature mismatch for ${asset.path}.`);
     }
+    if (
+      asset.mimeType === 'video/mp4' &&
+      !(
+        loaded.prefix.byteLength >= 12 &&
+        new TextDecoder().decode(loaded.prefix.slice(4, 8)) === 'ftyp'
+      )
+    ) {
+      throw new Error(`MP4 signature mismatch for ${asset.path}.`);
+    }
     if (isTextAsset) {
       if (loaded.contents === null) {
         throw new Error(`Text browser asset was not collected: ${asset.path}.`);

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "releaseGateEnabled": true,
+  "verificationReport": "docs/verification/divan-cinematic-enhancement-report.md",
+  "assetManifest": "docs/verification/divan-cinematic-assets.json",
+  "protectedPaths": [
+    "content-private",
+    "sources-private",
+    "sources/poetry",
+    "content/poetry",
+    "tools/poetry",
+    "tools/simurgh-attestation",
+    "ballot",
+    "eoi"
+  ],
+  "notes": "Adapted to repository truth 2026-07-16: build uses build:fixture because build:production is fail-closed by design until an approved corpus exists (see CLAUDE.md launch gates). The gate script executes format/lint/typecheck/test/build plus accessibility/e2e/visual/offline; the extra keys (security, performance, verifyDist, verifyPrivacy) are covered by running 'pnpm check' during Phase 7 verification and are recorded here for completeness.",
+  "packageManager": "pnpm",
+  "commands": {
+    "format": [
+      "pnpm",
+      "format:check"
+    ],
+    "lint": [
+      "pnpm",
+      "lint"
+    ],
+    "typecheck": [
+      "pnpm",
+      "typecheck"
+    ],
+    "test": [
+      "pnpm",
+      "test"
+    ],
+    "accessibility": [
+      "pnpm",
+      "test:a11y"
+    ],
+    "e2e": [
+      "pnpm",
+      "test:e2e"
+    ],
+    "visual": [
+      "pnpm",
+      "test:visual"
+    ],
+    "offline": [
+      "pnpm",
+      "test:offline"
+    ],
+    "build": [
+      "pnpm",
+      "build:fixture"
+    ],
+    "security": [
+      "pnpm",
+      "test:security"
+    ],
+    "performance": [
+      "pnpm",
+      "test:performance"
+    ],
+    "verifyDist": [
+      "pnpm",
+      "verify:dist"
+    ],
+    "verifyPrivacy": [
+      "pnpm",
+      "verify:privacy"
+    ]
+  },
+  "generatedAt": "2026-07-16T01:50:09.722Z"
+}

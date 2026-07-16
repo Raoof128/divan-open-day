@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { BookStage } from '../components/BookStage';
 import { LiveRegion } from '../components/LiveRegion';
 import { MotionControl } from '../components/MotionControl';
 import { OfflineBadge } from '../components/OfflineBadge';
@@ -637,6 +638,8 @@ export function App({ services }: AppProps) {
       case 'welcome':
         scene = (
           <WelcomeScene
+            effectiveMotion={effectiveMotion}
+            onAnnounce={setLiveMessage}
             onBegin={() => {
               focusRequestRef.current = FOCUS_TARGETS.heading;
               dispatch({ type: 'BEGIN' });
@@ -775,6 +778,15 @@ export function App({ services }: AppProps) {
         )}
       </header>
       <main id="main-content" ref={mainRef} tabIndex={-1}>
+        {activeContextRoute === null &&
+        !blockingError &&
+        (state.stage === 'choose_poet' ||
+          state.stage === 'intention' ||
+          state.stage === 'revealing' ||
+          state.stage === 'result' ||
+          state.stage === 'result_action') ? (
+          <BookStage />
+        ) : null}
         {scene}
       </main>
       <LiveRegion message={liveMessage} />

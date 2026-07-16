@@ -1,14 +1,24 @@
-import { DecorativeGeometry } from '../components/DecorativeGeometry';
+import { CinematicThreshold } from '../components/CinematicThreshold';
 import { ManuscriptPortal } from '../components/ManuscriptPortal';
+import type { EffectiveMotion } from '../lib/cinematic/capability';
 
 export interface WelcomeSceneProps {
   readonly onBegin: () => void;
+  readonly effectiveMotion: EffectiveMotion;
+  readonly onAnnounce: (message: string) => void;
 }
 
-export function WelcomeScene({ onBegin }: WelcomeSceneProps) {
+export function WelcomeScene({
+  onBegin,
+  effectiveMotion,
+  onAnnounce,
+}: WelcomeSceneProps) {
   return (
-    <section className="scene scene--welcome" data-scene="welcome">
-      <DecorativeGeometry motif="field" />
+    <CinematicThreshold
+      effectiveMotion={effectiveMotion}
+      onArrive={onBegin}
+      onAnnounce={onAnnounce}
+    >
       <ManuscriptPortal>
         <h1 tabIndex={-1} data-focus-target="scene-heading">
           A verse is waiting for you.
@@ -34,6 +44,6 @@ export function WelcomeScene({ onBegin }: WelcomeSceneProps) {
           <a href="/credits">Credits</a>
         </nav>
       </ManuscriptPortal>
-    </section>
+    </CinematicThreshold>
   );
 }

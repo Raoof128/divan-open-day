@@ -1,4 +1,5 @@
 # Generated / vendored
+.claude/
 node_modules/
 dist/
 coverage/

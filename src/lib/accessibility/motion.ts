@@ -4,7 +4,9 @@ export type EffectiveMotion = 'reduced' | 'full';
 
 export const REVEAL_DURATION_MS = {
   reduced: 150,
-  full: 1_600,
+  // 2.0s sits inside the 1.6-2.2s opening contract and gives the cover's
+  // gravity catch and the illumination settle room to land before the poem.
+  full: 2_000,
 } as const satisfies Readonly<Record<EffectiveMotion, number>>;
 
 export function resolveEffectiveMotion(

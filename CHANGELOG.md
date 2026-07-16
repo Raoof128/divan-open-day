@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-16 — Cinematic threshold, layered book, and atmosphere (feat/cinematic-threshold)
+
+**Raouf:**
+
+- **Scope:** The v3 gauntlet-final cinematic enhancement in a dedicated worktree off `origin/main`: poster-first scroll-scrubbed entrance (illuminated Persian miniature), seamless final-frame handoff into a live book stage, layered weighted book-opening, restrained candle/butterfly/mote atmosphere. No poetry, translation, rights, approvals, ballot/EOI, or production configuration touched; launch gates stay closed.
+- **Summary:** Four approved `gpt-image-2` stills + two native `gemini-omni-flash-preview` clips (Raouf's API keys; Higgsfield dropped on cost). Posters are the clips' first decoded frames; book-stage backdrops are their actual final rendered frames (handoff SSIM 0.9662/0.9832 — codec noise only). Release contract now carries media end-to-end: `video/mp4` in both mirrored schemas, four precached webp (offline guarantee) + two never-precached mp4 (contract-enforced), mp4 signatures in `verify-dist`, `publicDir:false` preserving the raster-zero lock. Threshold: natural-scroll scrub with per-frame seek coalescing, immediate "Skip entrance", live-region arrival, and poster-only routes for reduced motion / Save-Data / offline / decode failure / timeout — the poem never requires video. Book: two-faced cover with gravity catch, three trailing leaves, spine compression, illumination after settling (2.0 s), refined via a frame-by-frame paused-animation audit. Atmosphere: breathing candle glow, one deterministic settling golden butterfly, six abstract motes (three on coarse pointers), all aria-hidden.
+- **Files Changed:** release contract (6 files), app scenes/orchestration (3), five new components + two cinematic libraries, styles + timing, released media (`public/images`, `public/video`), committed `.claude/` cinematic pack, 3 new + 4 updated test files, docs (ledger, design lock, provenance, asset manifest, verification report), lint/format/ignore config (see AGENT.md for the full list).
+- **Verification:** Node 22.16.0, worktree @ `4ee014a`. format/lint/typecheck 0; vitest 529/529; Playwright 5/5; `build:fixture` + `verify:dist` + `verify:privacy` pass; media budget PASS (6 assets, 5,857,556 B); LCP 1396 ms / CLS 0.00 (390×844, 4× CPU, Fast 4G); reduced-motion route live-verified (0 video requests); offline poem flow live-verified; armed pack release gate PASS. `pnpm audit --prod` blocked by npm's retired endpoint (identical on main — environmental). Report verdict: PASS WITH EXTERNAL LAUNCH GATES.
+- **Follow-ups:** §31.2 gates unchanged. Seedance-class parallax clips remain a drop-in upgrade (same `end_image` frame-lock contract). Poster preload deferred (LCP 1396 ms). Rotate the two API keys if the one-time local `.env` echo concerns you. Repo-wide pnpm upgrade for the retired npm audit endpoint.
+
 ## 2026-07-14 — Full UI/UX audit gauntlet and remediation (multi-agent)
 
 **Raouf:**
