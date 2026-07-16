@@ -5,6 +5,8 @@
     "poster-desktop",
     "cinematic-mobile",
     "cinematic-desktop",
+    "backdrop-mobile",
+    "backdrop-desktop",
     "decorative"
   ],
   "requiredRoles": [
@@ -18,6 +20,8 @@
     "poster-desktop": 327680,
     "cinematic-mobile": 3145728,
     "cinematic-desktop": 6291456,
+    "backdrop-mobile": 307200,
+    "backdrop-desktop": 307200,
     "decorative": 614400
   },
   "maxAllReleasedAssetBytes": 11010048,

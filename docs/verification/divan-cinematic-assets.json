@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-16T02:36:18.843Z",
+  "assets": [
+    {
+      "id": "poster-mobile",
+      "role": "poster-mobile",
+      "path": "public/images/divan-poster-mobile.webp",
+      "bytes": 202136,
+      "sha256": "0c540d84c63fea1a613a0c5c712218ffe8a939335d24c396b09fffe13538ffb6"
+    },
+    {
+      "id": "poster-desktop",
+      "role": "poster-desktop",
+      "path": "public/images/divan-poster-desktop.webp",
+      "bytes": 199096,
+      "sha256": "26996b688d2649c032f6b74b7e87a2c9094467c5c8026d4adb4cdfc0cb1294ce"
+    },
+    {
+      "id": "backdrop-mobile",
+      "role": "backdrop-mobile",
+      "path": "public/images/divan-alcove-mobile.webp",
+      "bytes": 66134,
+      "sha256": "f3863f6f2ec9474050d98d446e88cc6f6b81e19bd860adfdc849128d8f424116"
+    },
+    {
+      "id": "backdrop-desktop",
+      "role": "backdrop-desktop",
+      "path": "public/images/divan-alcove-desktop.webp",
+      "bytes": 64474,
+      "sha256": "b4b17f2bfe4aace2440fdc88d267cfeab09463239b120092d265b25db86d4f1e"
+    },
+    {
+      "id": "cinematic-mobile",
+      "role": "cinematic-mobile",
+      "path": "public/video/divan-cinematic-mobile.mp4",
+      "bytes": 2624919,
+      "sha256": "2f1ac181cd7b77cb0392b3c3ba9d97e2cab4ccbec784d5329d8f1bafe156abfb"
+    },
+    {
+      "id": "cinematic-desktop",
+      "role": "cinematic-desktop",
+      "path": "public/video/divan-cinematic-desktop.mp4",
+      "bytes": 2700797,
+      "sha256": "cfe5c338d933f1f573921f2b29cd2d094324d55f0bba941e51b0be71e243d18a"
+    }
+  ]
+}
