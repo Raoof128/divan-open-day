@@ -1,0 +1,75 @@
+id: hafez-ghazal-091-clarke
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: The Divan, Written in the Fourteenth Century by Khwaja Shams-ud-Din Muhammad-i-Hafiz-i-Shirazi
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 91
+  opening_hemistich_fa: ای غایب از نظر بخدا می‌سپارمت
+  page_reference: Clarke volume-1, ode 83 (49), scan page 242
+  source_language: fa
+  english_source_id: hafez-clarke-1891-en
+  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_reference: Clarke volume-1, ode 83 (49), scan page 242
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - ای غایب از نظر بخدا می‌سپارمت
+    - جانم بسوختیّ و بدل دوست دارمت
+  english_lines:
+    - O (beloved) hidden from (my) sight! to God, I entrust, —— thee. (In pain of separation), thou consumedest my soul; yet with heart, friend
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-091-clarke-translation-permission
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: hafez-clarke-1891-en
+  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  persianSourceId: hafez-qazvini-ghani-fa-wikisource
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  canonicalIdentityHash: 26180ed7c3d6f085e72a2fcc3f44eff2da78b30f9531faf92d5db2e22de48877
+  englishSpanHash: 1b17541fc787e6c1354515c17d350e6a25f4b4ee48a33d1789fa7659860377fc
+  persianSpanHash: e06192af4722b2edfa74f25659cea93425a27cf4a59dafa28425a02cb5c3bf92
+  mappingHash: 5cf603aa90a47a9ac9f52281c75de81339b1a00be017bc29112268c32f11478b
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+  verifiedAt: 2026-07-16
+  rationale: The selected Clarke opening at Clarke volume-1, ode 83 (49), scan page 242 resolves to Qazvini-Ghani ghazal 91 through an exact continuous source span and 3 independent bilingual anchors.

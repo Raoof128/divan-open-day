@@ -1,0 +1,78 @@
+id: hafez-ghazal-062-clarke
+schema_version: 2
+status: approved
+poet: hafez
+mode: open_the_divan
+display:
+  visual_variant: garden_night
+  accent: pomegranate
+source:
+  work_en: The Divan, Written in the Fourteenth Century by Khwaja Shams-ud-Din Muhammad-i-Hafiz-i-Shirazi
+  work_fa: دیوان حافظ
+  edition_id: hafez-qazvini-ghani-fa-wikisource
+  edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
+  edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
+  reference_type: ghazal
+  reference_value: Ghazal 62
+  opening_hemistich_fa: مرحبا ای پیک مشتاقان بده پیغام دوست
+  page_reference: Clarke volume-1, ode 30 (38), scan page 138
+  source_language: fa
+  english_source_id: hafez-clarke-1891-en
+  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_reference: Clarke volume-1, ode 30 (38), scan page 138
+  persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+text:
+  persian_lines:
+    - مرحبا ای پیک مشتاقان بده پیغام دوست
+    - تا کنم جان از سر رغبت فدای نام دوست
+  english_lines:
+    - "Welcome ! O Messenger of the Longing Ones, give the message of the Friend :"
+    - That, with the essence of pleasure, I may make my soul a sacrifice for the Friend.
+  alignment: line
+  mapping:
+    - english_index: 0
+      persian_indices:
+        - 0
+    - english_index: 1
+      persian_indices:
+        - 1
+translation:
+  classification: public_domain_translation
+  translator_ids: []
+  rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
+  permission_record_id: hafez-ghazal-062-clarke-translation-permission
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  permitted_uses:
+    - website_display
+    - downloadable_share_card
+    - event_print
+    - archival_hosting
+  moral_rights_notes: null
+reflection: null
+audio:
+  enabled: false
+  asset_path: null
+  mime_type: null
+  performer_id: null
+  performer_public_credit: null
+  permission_record_id: null
+  duration_seconds: null
+review: null
+review_authority:
+  kind: machine_alignment
+  model: gpt-5.6-sol
+  methodVersion: source-bound-alignment-v2
+  englishSourceId: hafez-clarke-1891-en
+  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  persianSourceId: hafez-qazvini-ghani-fa-wikisource
+  persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
+  canonicalIdentityHash: af10e7c97e2c8f4a5f8bb011667a7dd48bff0b36df72776f41b86684bbaccb8e
+  englishSpanHash: f371caf7c661f44095a390a247404acf4e4485ca3324ab52a828092ac70b4575
+  persianSpanHash: 1f2a3472b3674f335dfc9713dfa5a684b3963d0b0eed2e5d4346cc4fdb76e675
+  mappingHash: 43f907027d2e3dc3454fdaa00cf78e5d639082ad00a8e2b2d2450dcca922675f
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.8
+  disclosures:
+    - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+  verifiedAt: 2026-07-16
+  rationale: The selected Clarke opening at Clarke volume-1, ode 30 (38), scan page 138 resolves to Qazvini-Ghani ghazal 62 through an exact continuous source span and 2 independent bilingual anchors.
