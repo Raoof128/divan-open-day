@@ -28,6 +28,14 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — owner-authorised public access
+
+**Raouf:**
+
+- **Scope:** Removed only the Cloudflare Access application that exactly matched `divan.raoufabedini.dev`, following the repository owner's explicit instruction to make the deployed release publicly reachable. The tunnel, DNS route, cache rule, TLS, immutable image, Droplet runtime, poetry, corpus/source/translation evidence, service worker, QR artwork, and unrelated services were unchanged.
+- **Verification:** Cloudflare returned one matching Access application before deletion and zero afterwards. Fresh anonymous checks returned root HTTP 200 with no redirect, Access header, or cookie; `/healthz` and a missing path remained 404; the release remained `divan-release-1-v1-0-3` with exact 60/60/120 counts; and the reviewed security and cache headers remained intact.
+- **Truth boundary:** Public reachability is an owner-authorised operational override, not a `PUBLIC PRODUCTION PASS`. Printed iOS/Android QR, physical-device/cross-browser/assistive-technology, provider logging/retention, and approved off-device credential-backup evidence remain incomplete and must not be reported as passed.
+
 ### 2026-07-16 (Australia/Sydney) — Release 1 protected production preview
 
 **Raouf:**
