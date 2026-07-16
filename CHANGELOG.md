@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-16 — Release 1 protected production preview
+
+**Raouf:**
+
+- Published the annotated `v1.0.3` source at `fa9d1e226f7d0f9df86d77eb1888fc0ce25b2791` and deployed only the clean immutable GHCR digest to `divan.raoufabedini.dev` through the dedicated locally managed Cloudflare tunnel.
+- Passed the exact repository gate (705 Vitest tests, Playwright 5/5, 60 Hafez / 60 Rumi / 120 production records, dist/private-leak, privacy, audit, and operations), a 0 Critical / 0 High / 0 Medium / 0 Low final-image scan, remote preflight/deploy/independent verification, and a same-digest rollback rehearsal.
+- Preserved all five unrelated Droplet services, published no host port, shared no unrelated network/volume/credential, and removed registry authentication after deployment.
+- Activated the hostname-scoped cache rule and restored exactly one explicit deny-everyone Cloudflare Access policy with no bypass. This is a protected production preview, not a public launch.
+- Generated and digitally verified print-ready A3, A5, take-home, and staff QR PDFs plus a combined four-page pack. Printed iOS/Android distance and lighting checks remain blocked on human evidence.
+- Left poetry, corpus/source/translation evidence, service-worker behaviour, University branding, release compilation, and the separate 60-Hafez/60-Rumi work unchanged. Physical-device/cross-browser/assistive-technology, provider logging/retention, and approved off-device credential-backup gates remain open.
+
 ## 2026-07-16 — Harden Release 1 runtime images
 
 **Raouf:**
