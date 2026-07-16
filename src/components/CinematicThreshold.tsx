@@ -22,6 +22,7 @@ import {
 } from '../lib/cinematic/scrollScrub';
 
 const FIRST_FRAME_TIMEOUT_MS = 4000;
+const FINAL_FRAME_SETTLE_TIMEOUT_MS = 1000;
 
 type ThresholdState = 'poster' | 'playing' | 'arrived';
 
@@ -80,8 +81,14 @@ export function CinematicThreshold({
       return;
     }
 
-    onAnnounce('Entering the reading alcove.');
-    section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    try {
+      onAnnounce('Entering the reading alcove.');
+      section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    } catch {
+      // Programmatic scrolling is an enhancement. A constrained or unusual
+      // browser must still be able to enter the core poetry experience.
+      arrive();
+    }
   }, [arrive, onAnnounce]);
 
   const requestEntrance = useCallback(() => {
@@ -131,19 +138,27 @@ export function CinematicThreshold({
       return;
     }
     let cancelled = false;
+    let timeout: number | null = null;
+    const clearFirstFrameTimeout = () => {
+      if (timeout !== null) {
+        window.clearTimeout(timeout);
+        timeout = null;
+      }
+    };
     const presented = () => {
       if (!cancelled) {
+        clearFirstFrameTimeout();
         setThresholdState((state) => (state === 'poster' ? 'playing' : state));
       }
     };
     const fail = () => {
       if (!cancelled) {
+        clearFirstFrameTimeout();
         setVideoFailed(true);
       }
     };
-    const timeout = window.setTimeout(fail, FIRST_FRAME_TIMEOUT_MS);
+    timeout = window.setTimeout(fail, FIRST_FRAME_TIMEOUT_MS);
     const onLoadedData = () => {
-      window.clearTimeout(timeout);
       if (typeof video.requestVideoFrameCallback === 'function') {
         video.requestVideoFrameCallback(presented);
         // Painting a frame requires a decode request; a paused scrubbed video
@@ -157,7 +172,7 @@ export function CinematicThreshold({
     video.addEventListener('error', fail);
     return () => {
       cancelled = true;
-      window.clearTimeout(timeout);
+      clearFirstFrameTimeout();
       video.removeEventListener('loadeddata', onLoadedData);
       video.removeEventListener('error', fail);
     };
@@ -191,10 +206,47 @@ export function CinematicThreshold({
     if (section === null || video === null) {
       return;
     }
+    let arrivalRequested = false;
+    let arrivalScheduled = false;
+    let arrivalTimeout: number | null = null;
+    let firstPaintFrame: number | null = null;
+    let secondPaintFrame: number | null = null;
     const coalescer = createSeekCoalescer((time) => {
       video.currentTime = time;
     });
-    const onSeeked = () => coalescer.settled();
+    const completeArrival = () => {
+      if (arrivedRef.current) {
+        return;
+      }
+      onAnnounce('You have arrived at the reading alcove.');
+      arrive();
+    };
+    const scheduleArrivalAfterPaint = () => {
+      if (arrivalScheduled || arrivedRef.current) {
+        return;
+      }
+      arrivalScheduled = true;
+      if (arrivalTimeout !== null) {
+        window.clearTimeout(arrivalTimeout);
+        arrivalTimeout = null;
+      }
+      // `seeked` confirms the terminal frame is decoded. Two animation-frame
+      // boundaries allow that frame to paint before React unmounts the
+      // threshold and advances to poet selection.
+      firstPaintFrame = window.requestAnimationFrame(() => {
+        secondPaintFrame = window.requestAnimationFrame(completeArrival);
+      });
+    };
+    const onSeeked = () => {
+      coalescer.settled();
+      if (!arrivalRequested || !Number.isFinite(video.duration)) {
+        return;
+      }
+      const finalTime = progressToTime(1, video.duration);
+      if (Math.abs(video.currentTime - finalTime) <= 0.1) {
+        scheduleArrivalAfterPaint();
+      }
+    };
     video.addEventListener('seeked', onSeeked);
     const onScroll = () => {
       // A corridor that has not laid out (or cannot scroll) must never count
@@ -208,17 +260,37 @@ export function CinematicThreshold({
         window.innerHeight,
       );
       section.style.setProperty('--cinematic-progress', String(progress));
-      coalescer.request(progressToTime(progress, video.duration));
-      if (isArrival(progress) && !arrivedRef.current) {
-        onAnnounce('You have arrived at the reading alcove.');
-        arrive();
+      if (isArrival(progress)) {
+        if (!Number.isFinite(video.duration) || video.duration <= 0) {
+          completeArrival();
+          return;
+        }
+        arrivalRequested = true;
+        coalescer.request(progressToTime(1, video.duration));
+        if (arrivalTimeout === null) {
+          arrivalTimeout = window.setTimeout(
+            completeArrival,
+            FINAL_FRAME_SETTLE_TIMEOUT_MS,
+          );
+        }
+        return;
       }
+      coalescer.request(progressToTime(progress, video.duration));
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => {
       window.removeEventListener('scroll', onScroll);
       video.removeEventListener('seeked', onSeeked);
+      if (arrivalTimeout !== null) {
+        window.clearTimeout(arrivalTimeout);
+      }
+      if (firstPaintFrame !== null) {
+        window.cancelAnimationFrame(firstPaintFrame);
+      }
+      if (secondPaintFrame !== null) {
+        window.cancelAnimationFrame(secondPaintFrame);
+      }
       coalescer.cancel();
     };
   }, [thresholdState, scrubbing, arrive, onAnnounce]);

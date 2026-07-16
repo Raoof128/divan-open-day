@@ -51,14 +51,34 @@ describe('cinematic Begin control', () => {
       behavior: 'smooth',
       block: 'end',
     });
-    expect(onAnnounce).toHaveBeenCalledWith(
-      'Entering the reading alcove.',
-    );
+    expect(onAnnounce).toHaveBeenCalledWith('Entering the reading alcove.');
     expect(onArrive).not.toHaveBeenCalled();
   });
 
   it('arrives directly when reduced motion disables the cinematic corridor', () => {
     const { onArrive } = renderThreshold('reduced');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    expect(onArrive).toHaveBeenCalledTimes(1);
+  });
+
+  it('arrives directly when the environment rejects programmatic scrolling', () => {
+    const { onArrive } = renderThreshold();
+    const video = document.querySelector('video');
+    fireEvent(video!, new Event('loadeddata'));
+    const section = document.querySelector('.cinematic-threshold');
+    Object.defineProperty(section!, 'offsetHeight', { value: 2600 });
+    Object.defineProperty(window, 'innerHeight', {
+      value: 800,
+      configurable: true,
+    });
+    Object.defineProperty(section!, 'scrollIntoView', {
+      value: vi.fn(() => {
+        throw new Error('scrolling unavailable');
+      }),
+      configurable: true,
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
 

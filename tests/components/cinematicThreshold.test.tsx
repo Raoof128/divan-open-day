@@ -114,7 +114,27 @@ describe('CinematicThreshold', () => {
     expect(document.querySelector('video')).toBeNull();
   });
 
-  it('announces and arrives exactly once when the corridor is fully scrolled', () => {
+  it('keeps the timeout armed until a requested video frame is presented', () => {
+    vi.useFakeTimers();
+    const { onArrive } = renderThreshold();
+    const video = document.querySelector('video');
+    expect(video).not.toBeNull();
+    Object.defineProperty(video!, 'requestVideoFrameCallback', {
+      value: vi.fn(),
+      configurable: true,
+    });
+
+    fireEvent(video!, new Event('loadeddata'));
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+    act(() => {
+      vi.advanceTimersByTime(4100);
+    });
+
+    expect(document.querySelector('video')).toBeNull();
+    expect(onArrive).toHaveBeenCalledTimes(1);
+  });
+
+  it('presents the terminal video frame before completing corridor arrival', () => {
     const { onArrive, onAnnounce } = renderThreshold();
     const video = document.querySelector('video')!;
     Object.defineProperty(video, 'duration', { value: 8 });
@@ -130,8 +150,25 @@ describe('CinematicThreshold', () => {
       value: 1800,
       configurable: true,
     });
+    const animationFrames: FrameRequestCallback[] = [];
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      animationFrames.push(callback);
+      return animationFrames.length;
+    });
+
     fireEvent.scroll(window);
-    fireEvent.scroll(window);
+
+    expect(onArrive).not.toHaveBeenCalled();
+    expect(animationFrames).toHaveLength(1);
+
+    animationFrames.shift()!(0);
+    expect(video.currentTime).toBeCloseTo(7.95, 5);
+    fireEvent(video, new Event('seeked'));
+    expect(onArrive).not.toHaveBeenCalled();
+
+    animationFrames.shift()!(16);
+    expect(onArrive).not.toHaveBeenCalled();
+    animationFrames.shift()!(32);
 
     expect(onArrive).toHaveBeenCalledTimes(1);
     expect(onAnnounce).toHaveBeenCalledWith(
