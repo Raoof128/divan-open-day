@@ -1,6 +1,6 @@
 # 04 — File-by-File Ledger
 
-**Status: IN PROGRESS — 7 of 127 rows resolved. 120 remain `PENDING`.**
+**Status: IN PROGRESS — 11 of 127 rows touched (9 resolved, 2 partial). 116 remain `PENDING`.**
 
 This ledger is the goal's primary artefact and is far from complete. Every row below was **read in
 full** by the primary agent, not sampled and not delegated. A `NO DEFECT` verdict is recorded only
@@ -140,6 +140,110 @@ consistent with `divan-book-motion-system`'s "use a single state owner".
 
 ---
 
+## `src-sw/integrity.ts` — 87 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **yes** |
+| Purpose | Canonical JSON, SHA-256, response reconstruction, fatal-UTF-8 parsing |
+| Lenses | T, S, O |
+| Tests | **none directly** (exercised transitively via `tests/offline/releaseManager.test.ts`) |
+| Verdict | **NO DEFECT** |
+
+**Security.** Strong. `parseJson`/`parseCanonicalJson` use `TextDecoder('utf-8', { fatal: true })`,
+so malformed UTF-8 throws rather than silently substituting U+FFFD — which matters directly for
+Persian byte integrity. `parseCanonicalJson` re-serialises and compares against the source text, so
+a release whose encoding differs from the canonical form is rejected outright rather than accepted
+and re-canonicalised. `canonicalStringify` sorts keys, rejects non-finite numbers, and throws on
+unsupported types.
+
+`responseFromBytes` deletes hop-by-hop and encoding headers before caching, including
+**`set-cookie`/`set-cookie2`** — consistent with the no-cookies invariant — with a comment
+explaining the real reason (replaying transfer metadata alongside reconstructed bytes misdescribes
+the body and breaks Cache matching). `sha256` copies via `bytes.slice().buffer`, avoiding
+offset/SharedArrayBuffer aliasing.
+
+**Considered and dismissed.** `canonicalStringify` would emit `{}` for a `Date` or `RegExp` rather
+than throwing, since both are `typeof 'object'` with no own enumerable keys. Unreachable in
+practice: every input originates from `JSON.parse`, which never produces them. Not a defect;
+recorded so a later reader need not re-derive it.
+
+---
+
+## `src/main.tsx` — 20 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **yes** |
+| Purpose | React root mount |
+| Lenses | R |
+| Tests | **none** |
+| Verdict | **NO DEFECT** |
+
+`StrictMode` is enabled (so the double-invoked-effect safety the goal's 4.1 lens asks about is
+actually exercised in development), `ErrorBoundary` wraps `App` *inside* `StrictMode`, and a null
+root throws explicitly rather than failing silently. Notably it does **not** register the service
+worker — that is `sw-client/register.ts`, called from `App`, keeping the entry free of lifecycle
+concerns.
+
+---
+
+## `src-sw/cacheTypes.ts` — 15 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **yes** |
+| Purpose | Structural cache/crypto interfaces |
+| Lenses | T |
+| Tests | via `tests/offline/helpers.ts` |
+| Verdict | **NO DEFECT** |
+
+Narrow structural types for injection. `CryptoLike` is `Pick<SubtleCrypto, 'digest'>` — the minimum
+surface, so a test double cannot accidentally satisfy more than the code needs.
+
+---
+
+## `src/contracts/app.ts` — 30 lines
+
+| Field | Value |
+| --- | --- |
+| Full read | **yes** |
+| Purpose | Stage/motion unions, history-state shape, storage key registry |
+| Lenses | T, S |
+| Tests | via `tests/unit/storage.test.ts`, `shuffleBag.test.ts` |
+| Verdict | **NO DEFECT** — one **Informational** note (I-01) |
+
+`APP_STAGES` and `MOTION_PREFERENCES` are `as const` and drive their unions, so the reducer's
+exhaustive `switch` is compiler-enforced.
+
+### I-01 (Informational) — `SESSION_STORAGE_KEYS` contains a localStorage key
+
+`SESSION_STORAGE_KEYS.motionPreference` is a **misnomer**: the motion preference is a *localStorage*
+key. `CLAUDE.md` invariant 4 explicitly permits this ("localStorage only for the motion
+preference"), and the write is correct — `App.tsx:85` uses `browserStorage('localStorage')`.
+
+**Verified, not assumed.** Rendered test at 390×844:
+
+| Step | `localStorage` | `sessionStorage['divan.motionPreference']` | select |
+| --- | --- | --- | --- |
+| fresh | `{}` | `null` | `system` |
+| set Reduced | `{divan.motionPreference: 'reduced'}` | **`null`** | `reduced` |
+| reload | `{divan.motionPreference: 'reduced'}` | **`null`** | `reduced` |
+| new context | `{}` | — | `system` |
+
+The preference is written to localStorage **only**, never sessionStorage, and persists correctly.
+The invariant holds.
+
+**The latent smell:** `restoreSessionState(storage, …)` calls `readLocalMotionPreference(storage)`
+with the **sessionStorage** adapter (`App.tsx:256`), i.e. it looks up a localStorage key name inside
+sessionStorage and can only ever return `null`. Harmless today because `App.tsx:85` reads
+localStorage directly and that value wins. It is dead-but-misleading code sitting on a privacy
+boundary, and the misnamed constant invites a future author to persist the preference through the
+session path. **Not a defect** — no behaviour is wrong — so no change is proposed under goal rule 3.
+Recorded so the next reader does not mistake it for a bug, or repeat this investigation.
+
+---
+
 ## `src/components/PoemResult.tsx` — 206 lines
 
 | Field | Value |
@@ -177,20 +281,35 @@ z-index, safe-area, scroll locking, forced-colours, hover/active/disabled states
 
 | Metric | Count |
 | --- | ---: |
-| Rows resolved (full read + verdict) | **5** |
+| Rows resolved (full read + verdict) | **9** |
 | Rows partially read, still `PENDING` | 2 |
-| Rows untouched `PENDING` | **120** |
+| Rows untouched `PENDING` | **116** |
 | Total | 127 |
 | Defects found in resolved rows | 2 (F-02, F-03) |
-| `NO DEFECT` verdicts | 3 |
+| Informational notes | 1 (I-01) |
+| `NO DEFECT` verdicts | 7 |
 
-**The audit cannot pass in this state.** 120 rows have not been opened. Any later reader must treat
+**The audit cannot pass in this state.** 116 rows have not been opened. Any later reader must treat
 the absence of a finding for those files as **unaudited**, not as evidence of soundness.
 
 ### Signal from the ordering
 
-Prioritising the inventory's "no direct test" files produced a defect (F-03) in the first three
-files audited, from a module backing a navigation control that shipped as a dedicated fix (PR #5)
-and still has no test importing it. The remaining untested files —
-`src-sw/integrity.ts`, `src-sw/schemas.ts`, and `src/main.tsx` — should be audited next on the same
-reasoning.
+Prioritising the inventory's "no direct test" files produced F-03 in the third file audited, from a
+module backing a navigation control that shipped as a dedicated fix (PR #5) and still has no test
+importing it.
+
+The rest of that untested set has now been audited and came back clean: `integrity.ts` is the
+strongest code read so far (fatal UTF-8 decoding, canonical-form re-verification, `set-cookie`
+stripping before cache), `main.tsx` and `cacheTypes.ts` are correct, and `contracts/app.ts` yielded
+only I-01. **Absence of tests did not predict defects here** — the honest read is that the untested
+files are mostly small and defensive, and F-03 came from the one with real cross-store behaviour.
+
+Two hypotheses were raised and **disproved by measurement** rather than filed: the motion
+preference write/read mismatch (I-01 — verified written to localStorage only, persisting correctly)
+and the reducer double-tap (F-02 — every dispatch site guarded). Recording the disproofs matters as
+much as the findings.
+
+**Next, by risk rather than by path order:** `src-sw/schemas.ts` (388L, no direct test, and the
+independent SW-side validator that `CLAUDE.md` warns must stay in sync with
+`src/lib/content/release.ts` `FIXED_BROWSER_ASSETS`), then `src-sw/releaseManager.ts` (871L), then
+`App.tsx` (795L) where the focus, history, and release races concentrate.
