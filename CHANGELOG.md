@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-07-16 — Source-bound machine authority and 40-item production corpus
+
+**Raouf:**
+
+- Replaced the human-only literature-eligibility gate with a discriminated
+  `ReviewAuthority`: legacy `human` evidence remains valid, while
+  `machine_alignment` binds exact English/Persian source snapshots, selected
+  spans, references, and mappings. The only machine verdicts are
+  `MACHINE_VERIFIED`, `MACHINE_VERIFIED_WITH_DISCLOSURE`, and `EXCLUDED`.
+- Production machine-authority records need no teacher, contributor, named
+  reviewer, final approval, or human-reapproval state. Source/span/reference/
+  mapping mutations fail closed; a corrected mapping receives a fresh machine
+  verdict. Rights permissions join source-lock and licence evidence without
+  fabricating a reviewer identity.
+- Froze the honest pre-migration baseline (10 verified Hafez identifications and
+  21 verified Rumi alignments, but zero canonical records), selected the strongest
+  16 Rumi records, and archived sequences 116, 347, 483, 622, and 668 as
+  `EXCLUDED` with ranking evidence.
+- Built exactly 24 Hafez records from Bell scan spans aligned to Qazvini-Ghani and
+  exactly 16 Rumi records from Whinfield/Nicholson evidence. Public output is
+  English first, Persian live RTL below, with public-domain/CC BY-SA attribution
+  and source limitations; reflections were not invented. Full books, hashes,
+  mappings, rationales, reviewer metadata, and candidate reports remain private.
+- Added deterministic regeneration (`pnpm poetry:build-production`), exact
+  24/16/40 compiler enforcement, production-corpus/leak/archive tests, and disabled
+  Vite 8's obsolete modulepreload-polyfill injection so the pinned Rolldown build
+  stays on Vite's public exports.
+- Local production packaging now succeeds with explicit non-secret configuration;
+  `verify:dist` and `verify:privacy` pass. This is package readiness, not a claim
+  that independent legal/governance, manual-accessibility, live deployment,
+  rollback, or physical-QR launch gates have been completed.
+
 ## 2026-07-16 — Harden the Clarke verse filter; 10 verified Hafez identifications
 
 **Raouf:**

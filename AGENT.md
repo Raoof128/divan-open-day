@@ -28,6 +28,58 @@
 
 ## Raouf change log
 
+### 2026-07-16 (Australia/Sydney) — source-bound machine authority; exact 40-item production corpus
+
+**Raouf:**
+
+**Scope.** Literature eligibility, canonical source-bound records, public
+attribution/disclosures, production packaging, and evidence. No live deployment,
+DNS, infrastructure, University branding, external approval, or physical QR was
+changed or claimed.
+
+**Authority migration.** Production no longer treats a named person as the only
+possible literature signature. `ReviewAuthority` is an explicit union: legacy
+human authority remains supported, while machine authority binds both source-book
+hashes, both selected-span hashes, both references, and the mapping hash. The
+active machine states are only `MACHINE_VERIFIED`,
+`MACHINE_VERIFIED_WITH_DISCLOSURE`, and `EXCLUDED`. A changed source, span,
+reference, or mapping invalidates the record; correcting a mapping means issuing
+a fresh machine verdict, never `NEEDS_HUMAN_REAPPROVAL`.
+
+**No fabricated identities.** Machine-authority items compile with empty
+contributor and approval registries. A teacher, contributor, reviewer, final
+approver, or human reapproval is not required solely for eligibility. Permission
+records are source-bound to the acquired public-domain/CC BY-SA evidence; the
+separate legacy rights register remains pending for external governance rather
+than being falsified with a made-up reviewer.
+
+**Corpus.** The pre-migration snapshot records the real boundary: 10 Hafez
+identifications and 21 Rumi alignments existed, but no canonical records did.
+Production now contains exactly 24 Bell-to-Qazvini-Ghani Hafez excerpts and 16
+Whinfield-to-Nicholson Rumi excerpts. Five lower-ranked Rumi records (sections
+116, 347, 483, 622, 668) are archived as `EXCLUDED`. No fresh translation or
+reflection was written. Bell small-cap OCR normalisations are explicit and
+publicly disclosed.
+
+**Public/private contract.** English renders before Persian; Persian remains live
+text under `lang="fa" dir="rtl"`. Source edition and translation credits plus
+alignment limitations are public. Full books, source hashes, exact references,
+mapping metadata, rationales, private IDs, candidate reports, and archival staging
+are excluded from the release and service-worker cache.
+
+**Verification.** TDD RED first failed on the absent authority module and absent
+selection module; GREEN covers machine eligibility without identities, both
+authority kinds, neither-authority rejection, stale source/span/reference/mapping
+failures, corrected mappings, `EXCLUDED`, exact counts, and archived-Rumi
+exclusion. The explicit production build produced release
+`machine-authority-2026-07-16` with 40 items; distribution and privacy leak checks
+passed. Final command totals are recorded in `docs/verification-report.md`.
+
+**Remaining boundary.** Local production-package readiness does not close
+independent public-launch governance/legal decisions, manual assistive-technology
+and device evidence, live domain/container/deployment/rollback evidence, or the
+physical QR matrix.
+
 ### 2026-07-16 (Australia/Sydney) — harden the Clarke verse filter; 10 verified Hafez identifications
 
 **Raouf:**
