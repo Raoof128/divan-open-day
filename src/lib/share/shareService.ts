@@ -82,7 +82,16 @@ export interface DownloadDeps {
   readonly createUrl?: (blob: Blob) => string;
   readonly revokeUrl?: (url: string) => void;
   readonly triggerDownload?: (url: string, filename: string) => void;
+  readonly setTimer?: (callback: () => void, milliseconds: number) => unknown;
 }
+
+/**
+ * Revoking synchronously after anchor.click() races the browser's download
+ * commit (Mozilla #1282407, Chromium #41380177) and can silently drop the
+ * file. One second is comfortably past the commit while still revoking long
+ * before the tab closes (§15.2).
+ */
+const REVOKE_DELAY_MS = 1_000;
 
 function defaultTriggerDownload(url: string, filename: string): void {
   if (typeof document === 'undefined') {
@@ -99,8 +108,9 @@ function defaultTriggerDownload(url: string, filename: string): void {
 
 /**
  * Generate the share card as a downloadable SVG entirely in the browser,
- * creating and revoking the Blob URL correctly so nothing is retained after the
- * tab closes (§15.2).
+ * creating the Blob URL for the click and revoking it on a deferred timer so
+ * the download can commit while nothing is retained after the tab closes
+ * (§15.2).
  */
 export function downloadShareCard(
   item: PublicContentItem,
@@ -116,10 +126,16 @@ export function downloadShareCard(
       URL.revokeObjectURL(u);
     });
   const triggerDownload = deps?.triggerDownload ?? defaultTriggerDownload;
+  const setTimer =
+    deps?.setTimer ??
+    ((callback: () => void, milliseconds: number) =>
+      setTimeout(callback, milliseconds));
   const url = createUrl(blob);
   try {
     triggerDownload(url, `divan-${item.id}.svg`);
   } finally {
-    revokeUrl(url);
+    setTimer(() => {
+      revokeUrl(url);
+    }, REVOKE_DELAY_MS);
   }
 }
