@@ -28,6 +28,21 @@
 
 ## Raouf change log
 
+### 2026-07-17 (Australia/Sydney) — Live navigation outage: edge HTML injection versus the verified byte ceiling
+
+**Raouf:**
+
+- **Symptom:** Raouf reported `ERR_FAILED` on `https://divan.raoufabedini.dev/credits`. Reproduced in a real Chromium session: the first (uncontrolled) load returns 200, and the reload — the first navigation the service worker controls — fails. `/about` fails identically. The outage therefore affected **every route for every returning visitor**, not one page.
+- **Root cause:** Cloudflare Web Analytics auto-injection appends a `beacon.min.js` script tag to HTML **for real user agents only**. The built shell is 1,708 bytes (manifest `sha256:2cad898f…`); a real navigation receives 2,212 bytes (`sha256:0ecdeb07…`). `#networkNavigation` reads the shell with `#readBoundedBody(response, indexAsset.bytes)`, which **throws** past the ceiling. That throw escaped `respond()`, and `service-worker.ts` passed the promise straight to `event.respondWith()` with no rejection handler; a rejected `respondWith()` promise is rendered by the browser as an unrecoverable network error.
+- **Not a v1.0.4 regression:** `git diff v1.0.3..v1.0.4 -- src-sw/` touches only the hashed-asset path and the audio range passthrough. The byte ceiling and the unguarded `respondWith` are byte-identical in v1.0.3. The defect was latent and became live when edge injection was enabled.
+- **Verification gap, recorded honestly:** the v1.0.4 evidence claims all six repairs verified "in live public bytes". That claim stands — but it was gathered with `curl`, which Cloudflare does not inject into, so the method was structurally blind to this defect. No browser-rendered check of the live origin was performed. Live-bytes verification by `curl` alone is not sufficient evidence that the site loads.
+- **Repairs (defence in depth, neither weakens the release contract):**
+  - `ops/Caddyfile`: HTML shell and no-cache release files now send RFC 9111 `no-transform`, which forbids intermediary rewriting; Cloudflare documents that it honours this. The release is content-addressed, so proxy-injected bytes are never correct by definition.
+  - `src-sw/releaseManager.ts`: `#networkNavigation` now resolves every rejection to `null`, the existing "fall back to the verified cache" signal already used for digest and status mismatches. Unverified network bytes are still never served — the cached, verified release answers instead.
+  - `src-sw/service-worker.ts`: `respondWith()` receives a caught promise that fails closed with a served 503 rather than rejecting, so no unexpected throw can take the origin down for controlled clients again.
+- **Tests (3 added, 716 total):** each new test was confirmed to **fail against the unfixed source** with the exact production error (`Required release response exceeds the offline byte ceiling.`) and pass after the repair — an edge-injected navigation shell now serves the verified cached shell and contains no injected beacon; a throwing manager yields 503 rather than a rejection; the Caddyfile `no-transform` contract is locked.
+- **Not claimed:** Cloudflare's honouring of `no-transform` for this zone is **documented but not yet observed** on this origin, and is unverified until v1.0.5 is deployed and re-checked in a real user agent. Disabling Web Analytics auto-injection at the zone remains the guaranteed remedy and the correct fix for the "no analytics" invariant; the `CLOUDFLARE_API_TOKEN` in `.env` is scoped to zone listing only and returned `Authentication error` for both the RUM and zone-settings APIs, so the change was not made by agent.
+
 ### 2026-07-17 (Australia/Sydney) — Release v1.0.4: merge and deploy the frontend audit repairs
 
 **Raouf:**

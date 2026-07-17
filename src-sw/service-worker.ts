@@ -124,7 +124,24 @@ export function installDivanServiceWorker(
   });
 
   scope.addEventListener('fetch', (event) => {
-    event.respondWith(manager.respond(event.request));
+    event.respondWith(
+      manager.respond(event.request).catch((error: unknown) => {
+        // Only a navigation is rescued. A rejected respondWith() promise for a
+        // navigation is not a fail-closed answer: the browser renders it as an
+        // unrecoverable network error and the whole origin goes dark for every
+        // controlled client. Everywhere else a rejection is the correct
+        // semantic — it is exactly what a real network failure looks like, and
+        // the private health route depends on it to stay a true liveness probe
+        // rather than something this worker can answer.
+        if (event.request.mode !== 'navigate') {
+          throw error;
+        }
+        return new Response('The experience is temporarily unavailable.', {
+          status: 503,
+          headers: { 'content-type': 'text/plain; charset=utf-8' },
+        });
+      }),
+    );
   });
 
   scope.addEventListener('activate', (event) => {

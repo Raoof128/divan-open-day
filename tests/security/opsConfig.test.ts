@@ -236,6 +236,21 @@ describe('static origin delivery contract', () => {
     expect(caddyfile).not.toMatch(/browse/u);
   });
 
+  test('forbids intermediaries from transforming the verified HTML shell', () => {
+    const caddyfile = readProjectFile('ops/Caddyfile');
+
+    // An edge that injects into the shell (Cloudflare Web Analytics
+    // auto-injection) breaks the byte ceiling the service worker verifies the
+    // navigation against, which takes every controlled client offline. The
+    // release is content-addressed, so transformed bytes are never correct.
+    expect(caddyfile).toMatch(
+      /header @documents Cache-Control "[^"]*no-transform[^"]*"/u,
+    );
+    expect(caddyfile).toMatch(
+      /header @noCacheFiles Cache-Control "[^"]*no-transform[^"]*"/u,
+    );
+  });
+
   test('serves the offline recovery file exactly without rewriting it to the SPA', () => {
     const caddyfile = readProjectFile('ops/Caddyfile');
     const staticPaths =

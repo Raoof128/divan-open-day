@@ -17,20 +17,20 @@ explicit instruction to obtain the origin host details, then restored after use.
 
 ## Immutable release identity
 
-| Field                    | Verified value                                                                                                    |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Source tag               | annotated `v1.0.4`                                                                                                |
-| Merge commit             | `0e21a0c53b657e92db65666daf8a608c099342bf` (PR #13)                                                                |
-| Merge tree               | `f592a325b9d086e0a6d0b507d22617152e354b95` — byte-identical to CI-verified `43eca15`                               |
-| Release ID               | `divan-release-1-v1-0-4`                                                                                          |
-| Public origin            | `https://divan.raoufabedini.dev`                                                                                  |
-| Production content       | exactly 60 Hafez + 60 Rumi = 120                                                                                  |
-| Image                    | `ghcr.io/raoof128/divan-open-day:v1.0.4@sha256:5394144cc083b7c5e0a16fc0f1d048c7a6698a9e43e09e4c1f7830678b7c50d0`  |
-| Platform                 | `linux/amd64` (matches origin `x86_64`)                                                                            |
-| Image scan               | Docker Scout: 0 Critical / 0 High / 0 Medium / 0 Low (159 packages)                                                |
-| `SOURCE_DATE_EPOCH`      | `1784269584` (the `v1.0.4` tag commit timestamp)                                                                   |
-| Branding                 | `society_only`; University approval ID empty                                                                       |
-| Restore image            | `ghcr.io/raoof128/divan-open-day@sha256:9d526a184ca23743298c8ca679f94abef856f0e4667dae503fe2fd1ac69a4513` (v1.0.3) |
+| Field               | Verified value                                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Source tag          | annotated `v1.0.4`                                                                                                 |
+| Merge commit        | `0e21a0c53b657e92db65666daf8a608c099342bf` (PR #13)                                                                |
+| Merge tree          | `f592a325b9d086e0a6d0b507d22617152e354b95` — byte-identical to CI-verified `43eca15`                               |
+| Release ID          | `divan-release-1-v1-0-4`                                                                                           |
+| Public origin       | `https://divan.raoufabedini.dev`                                                                                   |
+| Production content  | exactly 60 Hafez + 60 Rumi = 120                                                                                   |
+| Image               | `ghcr.io/raoof128/divan-open-day:v1.0.4@sha256:5394144cc083b7c5e0a16fc0f1d048c7a6698a9e43e09e4c1f7830678b7c50d0`   |
+| Platform            | `linux/amd64` (matches origin `x86_64`)                                                                            |
+| Image scan          | Docker Scout: 0 Critical / 0 High / 0 Medium / 0 Low (159 packages)                                                |
+| `SOURCE_DATE_EPOCH` | `1784269584` (the `v1.0.4` tag commit timestamp)                                                                   |
+| Branding            | `society_only`; University approval ID empty                                                                       |
+| Restore image       | `ghcr.io/raoof128/divan-open-day@sha256:9d526a184ca23743298c8ca679f94abef856f0e4667dae503fe2fd1ac69a4513` (v1.0.3) |
 
 ## Corpus is provably unchanged
 
@@ -62,17 +62,17 @@ The origin `ops/` tooling was confirmed hash-identical to `v1.0.4` for all six f
 any script ran. Access used the documented key-only `eoiadmin` route with `sudo`; password
 SSH was not used and is disabled on the host.
 
-| Step                    | Result                                                                        |
-| ----------------------- | ----------------------------------------------------------------------------- |
-| `preflight.sh --dry-run` | PASS; validated image, state, tunnel, and credential boundaries               |
-| `preflight.sh`           | PASS; "Preflight passed without changing running services."                   |
-| `deploy.sh` (attempt 1)  | **ABORTED FAIL-CLOSED, exit 64**; live site untouched (see below)             |
-| `deploy.sh` (attempt 2)  | PASS; "Activated immutable image …@sha256:5394144c…"                          |
+| Step                     | Result                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| `preflight.sh --dry-run` | PASS; validated image, state, tunnel, and credential boundaries                |
+| `preflight.sh`           | PASS; "Preflight passed without changing running services."                    |
+| `deploy.sh` (attempt 1)  | **ABORTED FAIL-CLOSED, exit 64**; live site untouched (see below)              |
+| `deploy.sh` (attempt 2)  | PASS; "Activated immutable image …@sha256:5394144c…"                           |
 | `verify.sh`              | PASS; independent operator step; "Automated private and public checks passed." |
 
 ### The fail-closed abort is expected behaviour, recorded honestly
 
-Attempt 1 failed at the *first* step — pulling the saved **restore** image — with
+Attempt 1 failed at the _first_ step — pulling the saved **restore** image — with
 `error from registry: unauthorized`, and stopped before any `compose up`. The v1.0.3
 evidence records that "Registry credentials were removed locally and remotely after use",
 so the origin had no GHCR credential. The runbook's stated contract ("an absent … restore
@@ -90,14 +90,14 @@ from **both** the origin (`docker logout ghcr.io`; zero residual `ghcr.io` entri
 Each repair was confirmed in the bytes actually served by the origin, not inferred from the
 repository. The service worker reports `divan-release-1-v1-0-4`.
 
-| Defect | Evidence in the live release                                                                                  |
-| ------ | ------------------------------------------------------------------------------------------------------------- |
-| D-1    | `let t=await n?.match(e);if(t!==void 0)return t;try{return await this.#t(e,{redirect:`error`})}catch{…504}`     |
-| D-7    | `if(t===null||!this.#D(e)||e.headers.has(`range`))return this.#t(e)`                                           |
-| D-2    | `.poem-result [lang=fa] h2{font-family:var(--font-persian-display);font-weight:400;line-height:2}`             |
-| D-3    | `content:"✦";` followed by `content:"✦" / "";` (and the same pattern for `←`)                                  |
-| D-4    | `Preparing the entrance.` … `try{d.current?.play()?.catch(()=>void 0)}catch{}`                                 |
-| D-6    | `c=n?.setTimer??((e,t)=>setTimeout(e,t)) … try{s(l,`divan-${e.id}.svg`)}finally{c(()=>{o(l)},de)}`             |
+| Defect | Evidence in the live release                                                                                |
+| ------ | ----------------------------------------------------------------------------------------------------------- |
+| D-1    | `let t=await n?.match(e);if(t!==void 0)return t;try{return await this.#t(e,{redirect:`error`})}catch{…504}` |
+| D-7    | `if(t===null                                                                                                |     | !this.#D(e) |     | e.headers.has(`range`))return this.#t(e)` |
+| D-2    | `.poem-result [lang=fa] h2{font-family:var(--font-persian-display);font-weight:400;line-height:2}`          |
+| D-3    | `content:"✦";` followed by `content:"✦" / "";` (and the same pattern for `←`)                               |
+| D-4    | `Preparing the entrance.` … `try{d.current?.play()?.catch(()=>void 0)}catch{}`                              |
+| D-6    | `c=n?.setTimer??((e,t)=>setTimeout(e,t)) … try{s(l,`divan-${e.id}.svg`)}finally{c(()=>{o(l)},de)}`          |
 
 Public `release.json` reports `buildProfile: production`, `productionEligible: true`,
 `itemCount: 120`, `hafezCount: 60`, `rumiCount: 60`, `builtAt: 2026-07-17T06:26:24.000Z`.
@@ -107,15 +107,15 @@ Public `release.json` reports `buildProfile: production`, `productionEligible: t
 Checked immediately after activation. Only `divan-divan-web-1` was recreated;
 `divan-cloudflared-1` was not.
 
-| Container                        | Status after deployment |
-| -------------------------------- | ----------------------- |
-| `divan-divan-web-1`              | Up 2 minutes (healthy)  |
-| `divan-cloudflared-1`            | Up 20 hours             |
+| Container                         | Status after deployment |
+| --------------------------------- | ----------------------- |
+| `divan-divan-web-1`               | Up 2 minutes (healthy)  |
+| `divan-cloudflared-1`             | Up 20 hours             |
 | `persian-society-eoi-cloudflared` | Up 4 days               |
-| `persian-society-eoi-api`        | Up 4 days (healthy)     |
-| `persian-society-eoi-postgres`   | Up 5 days (healthy)     |
-| `reasoning-engine-mcp`           | Up 5 days (healthy)     |
-| `nexus-api`                      | Up 5 days (healthy)     |
+| `persian-society-eoi-api`         | Up 4 days (healthy)     |
+| `persian-society-eoi-postgres`    | Up 5 days (healthy)     |
+| `reasoning-engine-mcp`            | Up 5 days (healthy)     |
+| `nexus-api`                       | Up 5 days (healthy)     |
 
 ## Not claimed / outstanding
 

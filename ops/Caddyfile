@@ -50,7 +50,7 @@
 		path /release.json /service-worker.js /offline.html
 		file
 	}
-	header @noCacheFiles Cache-Control "no-cache, must-revalidate"
+	header @noCacheFiles Cache-Control "no-cache, must-revalidate, no-transform"
 
 	@technical path /content/* /release.json /service-worker.js /offline /offline.html
 	header @technical X-Robots-Tag "noindex"
@@ -67,8 +67,14 @@
 		}
 	}
 
+	# `no-transform` is load-bearing, not decorative. Cloudflare Web Analytics
+	# auto-injection rewrites HTML in flight for real user agents only, which
+	# pushes the shell past the byte ceiling the service worker verifies it
+	# against and takes every controlled client offline. RFC 9111 no-transform
+	# forbids that rewrite at every intermediary, and Cloudflare honours it.
+	# The release is content-addressed: proxy-injected bytes are never correct.
 	@documents path / /index.html /about /credits /accessibility /privacy /offline
-	header @documents Cache-Control "no-cache, must-revalidate"
+	header @documents Cache-Control "no-cache, must-revalidate, no-transform"
 	handle @documents {
 		rewrite * /index.html
 		file_server
