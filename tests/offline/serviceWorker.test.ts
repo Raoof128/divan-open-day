@@ -11,7 +11,12 @@ import {
   type DivanWorkerScope,
   type WorkerReleaseIdentity,
 } from '../../src-sw/service-worker';
-import { FakeCacheStorage, fetchFrom, releaseFixture } from './helpers';
+import {
+  FakeCacheStorage,
+  fetchFrom,
+  navigationRequest,
+  releaseFixture,
+} from './helpers';
 
 type WorkerListener = (event: never) => void;
 
@@ -181,6 +186,38 @@ describe('service-worker lifecycle harness', () => {
       code: 'active',
       releaseId: 'release-one',
     });
+  });
+
+  it('answers a navigation with a served status instead of rejecting when the manager throws', async () => {
+    const fixture = releaseFixture('release-one');
+    const caches = new FakeCacheStorage();
+    const harness = new WorkerHarness(fixture.files, caches);
+    await harness.install();
+    vi.spyOn(caches, 'keys').mockRejectedValue(new Error('cache unreadable'));
+
+    // A rejected respondWith() promise is not a fail-closed answer: the browser
+    // renders it as an unrecoverable network error for every controlled client.
+    const response = await harness.fetch(navigationRequest());
+
+    expect(response.status).toBe(503);
+  });
+
+  it('lets a non-navigation rejection stay a rejection', async () => {
+    const fixture = releaseFixture('release-one');
+    const caches = new FakeCacheStorage();
+    const harness = new WorkerHarness(fixture.files, caches);
+    await harness.install();
+    vi.spyOn(caches, 'keys').mockRejectedValue(new Error('cache unreadable'));
+
+    // Only a navigation is rescued. Rescuing anything else would fabricate a
+    // response where a genuine network failure belongs, which is how the
+    // private health route stays a real liveness probe this worker cannot
+    // answer for.
+    await expect(
+      harness.fetch(
+        new Request('https://divan.test/assets/app-0123456789abcdef.js'),
+      ),
+    ).rejects.toThrow('cache unreadable');
   });
 
   it('activates the exact requested rollback target and reports lifecycle status accurately', async () => {

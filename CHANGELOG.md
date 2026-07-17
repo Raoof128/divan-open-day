@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-17 — Fix: edge HTML injection took every controlled client offline
+
+**Raouf:**
+
+- Fixed a live outage in which every route failed with `ERR_FAILED` for any returning visitor. Reported against `/credits`; reproduced in a real Chromium session and confirmed to affect all routes — the first load succeeds, and the first navigation the service worker controls fails.
+- Root cause: Cloudflare Web Analytics auto-injection appends a beacon script to HTML for real user agents only, taking the shell from 1,708 bytes (the manifest digest the worker verifies) to 2,212. The navigation integrity read throws past that ceiling, and the throw reached `event.respondWith()` unguarded — a rejected `respondWith()` promise is an unrecoverable browser network error, not a fallback.
+- Not a v1.0.4 regression: the byte ceiling and the unguarded `respondWith` are byte-identical in v1.0.3. The v1.0.4 "verified in live public bytes" evidence was gathered with `curl`, which Cloudflare does not inject into, so the method could not have caught this. Recorded in `AGENT.md`.
+- Repairs: `ops/Caddyfile` now sends `no-transform` on the HTML shell and no-cache release files, forbidding intermediary rewriting; `#networkNavigation` resolves rejections to the existing fall-back-to-verified-cache path; `respondWith()` fails closed with a served 503. Unverified network bytes are still never served.
+- 3 tests added (716 total), each confirmed to fail against the unfixed source with the exact production error before passing.
+- Not claimed: Cloudflare honouring `no-transform` on this zone is documented but unobserved until v1.0.5 is deployed and re-checked in a real user agent. Disabling Web Analytics auto-injection at the zone remains the guaranteed remedy and the correct fix for the "no analytics" invariant.
+
 ## 2026-07-17 — Release v1.0.4: frontend audit repairs deployed to the live origin
 
 **Raouf:**

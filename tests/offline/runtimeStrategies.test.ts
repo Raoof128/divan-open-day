@@ -111,6 +111,41 @@ describe('release-coherent runtime strategies', () => {
     await expect(response.text()).resolves.toContain('<title>DIVAN</title>');
   });
 
+  it('serves the active cached shell when an edge injects bytes into the navigation shell', async () => {
+    // Cloudflare Web Analytics auto-injection appends a beacon script to HTML
+    // for browser requests only, pushing the shell past its manifest byte
+    // ceiling. That must degrade to the verified cache, never reject: a
+    // rejected respondWith() is an unrecoverable ERR_FAILED for the origin.
+    const fixture = releaseFixture();
+    const network = ((input: RequestInfo | URL, init?: RequestInit) => {
+      const pathname = new URL(
+        typeof input === 'string'
+          ? input
+          : input instanceof URL
+            ? input
+            : input.url,
+        'https://divan.test',
+      ).pathname;
+      if (pathname === '/') {
+        return Promise.resolve(
+          new Response(
+            `<!doctype html><title>DIVAN</title><script defer src="https://static.cloudflareinsights.com/beacon.min.js"></script>`,
+            { status: 200, headers: { 'content-type': 'text/html' } },
+          ),
+        );
+      }
+      return fetchFrom(fixture.files)(input, init);
+    }) as typeof fetch;
+    const { subject } = await activeManager(network);
+
+    const response = await subject.respond(navigationRequest());
+
+    expect(response.status).toBe(200);
+    const body = await response.text();
+    expect(body).toContain('<title>DIVAN</title>');
+    expect(body).not.toContain('cloudflareinsights');
+  });
+
   it('never caches or falls back for the private health route', async () => {
     const calls: { path: string; init?: RequestInit }[] = [];
     const fixture = releaseFixture();

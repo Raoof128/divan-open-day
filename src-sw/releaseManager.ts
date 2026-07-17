@@ -734,6 +734,23 @@ export class OfflineReleaseManager {
     request: Request,
     active: CacheLike | null,
   ): Promise<Response | null> {
+    try {
+      return await this.#verifiedNetworkNavigation(request, active);
+    } catch {
+      // Every rejection on this path resolves to the verified cache instead of
+      // escaping. A respondWith() promise that rejects is not a fallback: the
+      // browser turns it into an unrecoverable network error for the whole
+      // origin. An edge or proxy that rewrites the shell (byte ceiling breach,
+      // digest mismatch, unparsable record) must degrade to the cached
+      // release, which is exactly what a null return already means here.
+      return null;
+    }
+  }
+
+  async #verifiedNetworkNavigation(
+    request: Request,
+    active: CacheLike | null,
+  ): Promise<Response | null> {
     if (active === null) {
       return this.#timedFetch(request);
     }
