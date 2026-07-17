@@ -45,7 +45,8 @@ export function AboutPage() {
       <p className="context-note">
         Everyone is welcome to experience the poetry and meet the Persian
         Society team at the stall. No ethnicity, language background, or prior
-        knowledge is required.
+        knowledge is required. This project is made by the Macquarie Persian
+        Society — with love, for everyone.
       </p>
       <nav className="context-links" aria-label="Related information">
         <a href="/credits">Credits and sources</a>

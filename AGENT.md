@@ -28,6 +28,14 @@
 
 ## Raouf change log
 
+### 2026-07-18 (Australia/Sydney) — Society credit on Credits and About pages
+
+**Raouf:**
+
+- **Added the maker credit on owner instruction:** "This project is made by the Macquarie Persian Society — with love, for everyone." — a "Made by" section on the Credits page and a closing line in the About page's welcome note.
+- **Branding boundary respected:** this is the Society's own name used as factual attribution. No University mark, logo, or endorsement claim is added; `DIVAN_BRANDING_MODE` stays `society_only`; the existing guards that forbid the exact phrase "Macquarie University" in the app body and noscript, and any "Macquarie"/"University" string in the manifest and offline.html, all still pass and were extended: two new RED-first tests pin the credit's presence on both pages while asserting the University phrase stays absent.
+- 720/720 unit tests, lint/typecheck/format clean.
+
 ### 2026-07-17 (Australia/Sydney) — Release v1.0.6: outage fix deployed and verified in a real user agent
 
 **Raouf:**

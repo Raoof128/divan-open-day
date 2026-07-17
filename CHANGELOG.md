@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-07-18 — Society credit on Credits and About pages
+
+**Raouf:**
+
+- Added, on owner instruction: "This project is made by the Macquarie Persian Society — with love, for everyone." (Credits "Made by" section + About welcome note).
+- Society name as factual attribution only — no University mark or endorsement claim; branding stays `society_only`; guards forbidding "Macquarie University" in app body/noscript and "Macquarie"/"University" in manifest/offline.html still pass; two RED-first tests pin the credit.
+
 ## 2026-07-17 — Release v1.0.6: outage fix deployed, verified in a real user agent
 
 **Raouf:**
