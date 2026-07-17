@@ -28,6 +28,19 @@
 
 ## Raouf change log
 
+### 2026-07-18 (Australia/Sydney) — Full corpus and translation repair on branch `repair/fable-5-full-corpus` (not merged, not deployed)
+
+**Raouf:**
+
+- **Repaired the complete 120-record corpus against the locked sources** under the "DIVAN Claude Fable 5 Full Corpus and Translation Repair Goal": 60 Hafez + 60 Rumi, every span re-verified verbatim against the locked artifacts, 83 records re-authorised under `source-bound-alignment-v3-fable5-repair`, 37 Rumi records carried byte-identical with their v2 authority. Full evidence: `docs/audits/corpus-fable-5/00`–`10` + `final-record-report.json`.
+- **One wrong-poem pairing replaced:** `hafez-ghazal-046-bell` published ghazal 46's Persian against Bell poem VIII, which is provably her rendering of **ghazal 25** ("Hail, Sufis! lovers of wine" = صلای سرخوشی ای صوفیان باده پرست). Bell translated no ghazal 46; the selection was re-pointed and the record replaced by `hafez-ghazal-025-bell`. Caught by an adversarial reviewer reading all 24 Bell records bilingually — verbatim checks alone cannot catch this class.
+- **Persian extractor bug fixed:** Wikisource footnote markup truncated hemistichs (`باغ[` class) in 162/494 extracted ghazals; the extractor now tracks span/ref depth, with a RED-first regression test on a fixture reproducing the exact production truncation. One published record (ghazal 65) was affected and repaired.
+- **31 disclosed OCR/typography recoveries** (13 Bell openings incl. one small-caps phrase, 2 Roman numerals, 2 drop-caps, 1 wrap join, 10 Clarke records incl. 3 restructured couplets, 3 Rumi footnote strips) — each verified against the scan or transcript and now **premise-asserted at build time** (the build hash-asserts both Clarke transcripts and the Bell archive text and refuses to apply a correction whose premise is absent).
+- **Rights honesty preserved:** all five rights records remain `pending` with no reviewer claimed, now coupled to their locked artifact hashes; no uncertain rights called approved, no attribution requirement removed, zero Tier 3 project translations used.
+- **Adversarial re-audit:** four independent falsification-posture reviewers over nine dimensions, two fix rounds, 13 findings/observations — 8 fixed, 1 refuted with scan evidence, 4 recorded as residual risks (`09-adversarial-reviews.md`). Reviewer-verified: all digests recompute, zero identity/span reuse, two-build byte reproducibility, deterministic regeneration, fail-closed mutation probes all rejected, independent leak scan clean.
+- **Gate:** 732 tests across 63 files (13-test `corpusIntegrity` suite added RED-first), e2e 5/5, full `check.sh` green, live-diff shows same 120 ids with 54 public textual/disclosure improvements.
+- **Not done, by instruction:** no merge, no deploy, no live-site mutation, no gate claimed open. Branch pushed and PR opened against `main` for review.
+
 ### 2026-07-17 (Australia/Sydney) — Release v1.0.6: outage fix deployed and verified in a real user agent
 
 **Raouf:**
