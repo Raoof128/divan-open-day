@@ -142,8 +142,14 @@ describe('release-coherent runtime strategies', () => {
     ]);
   });
 
-  it('uses exact cache matching and rejects a query-mutated hashed asset', async () => {
-    const { subject } = await activeManager();
+  it('uses exact cache matching and answers a query-mutated hashed asset from the network, never a fuzzy cache hit', async () => {
+    const { subject, caches } = await activeManager();
+    // Poison the exact-match key so any fuzzy/ignoreSearch cache hit is detectable.
+    const active = await caches.open(`${RELEASE_CACHE_PREFIX}release-one`);
+    await active.put(
+      '/assets/app-0123456789abcdef.js',
+      new Response('cache body must not answer the query variant'),
+    );
 
     const response = await subject.respond(
       new Request(
@@ -151,7 +157,81 @@ describe('release-coherent runtime strategies', () => {
       ),
     );
 
+    // §16.4 cache-first: the cache cannot answer the query variant exactly, so
+    // the canonical network bytes answer instead of a fabricated 504.
+    expect(response.status).toBe(200);
+    await expect(response.text()).resolves.toBe('console.log("DIVAN")');
+  });
+
+  it('falls back to the network when the active release cache cannot answer an asset request', async () => {
+    const calls: { path: string; init?: RequestInit }[] = [];
+    const fixture = releaseFixture();
+    const { subject, caches } = await activeManager(
+      fetchFrom(fixture.files, calls),
+    );
+    // Model a lost/corrupted release cache while the pointer record survives
+    // (manual Cache Storage clearing, failed writes, engine anomaly).
+    await caches.delete(`${RELEASE_CACHE_PREFIX}release-one`);
+
+    const script = await subject.respond(
+      new Request('https://divan.test/assets/app-0123456789abcdef.js'),
+    );
+    const poster = await subject.respond(
+      new Request('https://divan.test/images/divan-poster-mobile.webp'),
+    );
+
+    expect(script.status).toBe(200);
+    await expect(script.text()).resolves.toBe('console.log("DIVAN")');
+    expect(poster.status).toBe(200);
+    // Parity with every other release network path: redirects fail closed.
+    expect(
+      calls.filter(({ path }) => path.startsWith('/assets/app')).at(-1)?.init,
+    ).toMatchObject({ redirect: 'error' });
+  });
+
+  it('returns a graceful 504 only when both the cache and the network cannot answer', async () => {
+    const { subject, caches } = await activeManager();
+    await caches.delete(`${RELEASE_CACHE_PREFIX}release-one`);
+    const offline = new OfflineReleaseManager({
+      caches,
+      fetch: () => Promise.reject(new TypeError('offline')),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+
+    const response = await offline.respond(
+      new Request('https://divan.test/assets/app-0123456789abcdef.js'),
+    );
+
     expect(response.status).toBe(504);
+    void subject;
+  });
+
+  it('passes a range-bearing direct audio request through to the network untouched', async () => {
+    const fixture = releaseFixture();
+    const seenRangeHeaders: (string | null)[] = [];
+    const network = ((input: RequestInfo | URL, init?: RequestInit) => {
+      if (input instanceof Request && input.url.includes('/audio/')) {
+        seenRangeHeaders.push(input.headers.get('range'));
+      }
+      return fetchFrom(fixture.files)(input, init);
+    }) as typeof fetch;
+    const { subject } = await activeManager(network);
+    const audioPath = `/${(fixture.manifest['assets'] as { path: string }[]).find(({ path }) => path.startsWith('audio/'))!.path}`;
+
+    const response = await subject.respond(
+      new Request(`https://divan.test${audioPath}`, {
+        headers: { 'sec-fetch-dest': 'audio', range: 'bytes=0-1' },
+      }),
+    );
+
+    expect(response.ok).toBe(true);
+    // The original Request (with its Range header) reached the network; the
+    // verify-and-cache path never ran for the partial request.
+    expect(seenRangeHeaders).toEqual(['bytes=0-1']);
+    await expect(
+      (await subject.activeCache())?.match(audioPath),
+    ).resolves.toBeUndefined();
   });
 
   it('keeps serving the active release when a ready candidate is incomplete at navigation', async () => {

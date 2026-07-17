@@ -212,9 +212,20 @@ export class OfflineReleaseManager {
       url.pathname === '/offline.html'
     ) {
       const cached = await active?.match(request);
-      return (
-        cached ?? new Response('Release asset unavailable.', { status: 504 })
-      );
+      if (cached !== undefined) {
+        return cached;
+      }
+      // §16.4 cache first: when the verified cache cannot answer (lost or
+      // corrupted release cache, exact-match miss on a query variant), the
+      // network answers with the origin's canonical bytes. Hashed and
+      // content-addressed paths stay release-coherent by construction; a 504
+      // is fabricated only when the network is unreachable too. Redirects
+      // fail closed for parity with every other release network path.
+      try {
+        return await this.#fetch(request, { redirect: 'error' });
+      } catch {
+        return new Response('Release asset unavailable.', { status: 504 });
+      }
     }
     return this.#fetch(request);
   }
@@ -791,6 +802,12 @@ export class OfflineReleaseManager {
       return this.#fetch(request);
     }
     if (!this.#isDirectAudioRequest(request)) {
+      return this.#fetch(request);
+    }
+    // A range-bearing media request must reach the network untouched: WebKit
+    // rejects a reconstructed full 200 answering a Range request, and partial
+    // responses can never enter CacheStorage anyway.
+    if (request.headers.has('range')) {
       return this.#fetch(request);
     }
     const readyResponse = await active.match(READY_PATH);

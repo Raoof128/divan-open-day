@@ -101,12 +101,77 @@ describe('downloadShareCard', () => {
     const createUrl = vi.fn().mockReturnValue('blob:mock');
     const revokeUrl = vi.fn();
     const triggerDownload = vi.fn();
-    downloadShareCard(item, config, { createUrl, revokeUrl, triggerDownload });
+    const timers: (() => void)[] = [];
+    downloadShareCard(item, config, {
+      createUrl,
+      revokeUrl,
+      triggerDownload,
+      setTimer: (callback) => {
+        timers.push(callback);
+        return timers.length;
+      },
+    });
     expect(createUrl).toHaveBeenCalledOnce();
     expect(triggerDownload).toHaveBeenCalledWith(
       'blob:mock',
       expect.stringMatching(/\.svg$/u),
     );
+    for (const timer of timers.splice(0)) {
+      timer();
+    }
+    expect(revokeUrl).toHaveBeenCalledOnce();
     expect(revokeUrl).toHaveBeenCalledWith('blob:mock');
+  });
+
+  it('defers revocation past the download click so the browser can commit the download', () => {
+    // Synchronous revocation immediately after anchor.click() races the
+    // download commit (Mozilla #1282407, Chromium #41380177) and can silently
+    // produce no file.
+    const createUrl = vi.fn().mockReturnValue('blob:mock');
+    const revokeUrl = vi.fn();
+    const triggerDownload = vi.fn();
+    const timers: (() => void)[] = [];
+    downloadShareCard(item, config, {
+      createUrl,
+      revokeUrl,
+      triggerDownload,
+      setTimer: (callback) => {
+        timers.push(callback);
+        return timers.length;
+      },
+    });
+
+    expect(triggerDownload).toHaveBeenCalledOnce();
+    expect(revokeUrl).not.toHaveBeenCalled();
+
+    for (const timer of timers.splice(0)) {
+      timer();
+    }
+    expect(revokeUrl).toHaveBeenCalledOnce();
+  });
+
+  it('still schedules revocation when triggering the download throws', () => {
+    const createUrl = vi.fn().mockReturnValue('blob:mock');
+    const revokeUrl = vi.fn();
+    const timers: (() => void)[] = [];
+
+    expect(() =>
+      downloadShareCard(item, config, {
+        createUrl,
+        revokeUrl,
+        triggerDownload: () => {
+          throw new Error('TEST ONLY download failure');
+        },
+        setTimer: (callback) => {
+          timers.push(callback);
+          return timers.length;
+        },
+      }),
+    ).toThrow('TEST ONLY download failure');
+
+    for (const timer of timers.splice(0)) {
+      timer();
+    }
+    expect(revokeUrl).toHaveBeenCalledOnce();
   });
 });

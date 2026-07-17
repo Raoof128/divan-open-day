@@ -107,6 +107,15 @@ export function CinematicThreshold({
     if (thresholdState !== 'playing') {
       pendingBeginRef.current = true;
       onAnnounce('Preparing the entrance.');
+      // WebKit does not reliably composite seeked frames on a muted inline
+      // video that has never played; this user gesture is the sanctioned
+      // moment to prime it. Best-effort only — the first presented frame
+      // pauses the prime, and a rejected play changes nothing.
+      try {
+        void videoRef.current?.play()?.catch(() => undefined);
+      } catch {
+        // Priming is an enhancement; the poster fallback remains intact.
+      }
       return;
     }
     traverseCorridor();
@@ -148,6 +157,13 @@ export function CinematicThreshold({
     const presented = () => {
       if (!cancelled) {
         clearFirstFrameTimeout();
+        // The clip is scrub-driven and never intentionally plays; a Begin
+        // gesture may have primed it, so settle it back to paused.
+        try {
+          video.pause();
+        } catch {
+          // Pausing is best-effort on stub media implementations.
+        }
         setThresholdState((state) => (state === 'poster' ? 'playing' : state));
       }
     };
