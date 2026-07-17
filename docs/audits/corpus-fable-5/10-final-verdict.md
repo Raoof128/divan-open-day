@@ -73,6 +73,14 @@ and no Rumi span is reused; uncertainty is carried as on-record disclosures, not
    evidence file remains tracked as historical record.
 6. **Whinfield "tho" transcription typo** (unpublished; selected window avoids it) noted
    for an upstream-source decision.
+7. **Rumi Persian provenance names the index snapshot** (found by the post-campaign
+   backend audit; corrected in `06`): every Rumi record's `persian_source_sha256` locks
+   the Wikisource Masnavi EPUB, which is a section index containing no verse; the verse
+   artifact is the deterministic extraction `extracted/rumi-fa.jsonl`. The build now
+   hash-asserts that extraction (`f3246de7…`), closing silent drift, but the extraction
+   is not yet an entry in `source-lock.json` and the record-level hash semantics remain
+   an owner decision (rebinding would touch all 60 Rumi records including the 37
+   carried byte-identical).
 
 ## Scope compliance
 

@@ -37,10 +37,22 @@ the poet directories, verified by `productionCorpus.test.ts`.
 - **Bell**: bound to the scan PDF — the reconstruction is a two-reading consensus
   (`tesseract-400dpi + archive-ocr`) for which the scan is the visual authority; the locked
   archive text (`e736637a…`) is the corroborating reading used for the Phase 2 proofs.
-- **Persian**: both editions bound to their locked Wikisource EPUB snapshots; the published
-  spans are verbatim slices of deterministic extractions of those artifacts
-  (whole-corpus mechanical verification: `checked 60 hafez + 60 rumi — ALL SPANS
-  VERBATIM-VERIFIED`).
+- **Persian (Hafez)**: bound to the locked Qazvini-Ghani Wikisource EPUB (`a968d2f8…`,
+  1.1 MB), which contains the verse itself; the published couplets are verbatim slices of
+  its deterministic extraction.
+- **Persian (Rumi) — corrected claim**: the records' `persian_source_sha256`
+  (`04a80365…`) locks the Wikisource Masnavi EPUB snapshot, which is a **section index
+  with no verse** (the pipeline's own `fetch-masnavi-sections.ts` documents this). The
+  verse comes from the deterministic per-section extraction
+  `sources-private/poetry/extracted/rumi-fa.jsonl`, from which the published spans are
+  verbatim consecutive slices. An earlier version of this report wrongly described both
+  editions as verse-bound EPUBs; a post-campaign backend audit caught it. The build now
+  hash-locks the extraction artifact too (`nicholsonExtraction: f3246de7…` asserted at
+  generation time), so the verse artifact can no longer drift silently — but the
+  extraction is still absent from `source-lock.json` and the record-level hash still
+  names the index snapshot, recorded as an open provenance gap in `10-final-verdict.md`.
+- Whole-corpus mechanical verification against those verse artifacts:
+  `checked 60 hafez + 60 rumi — ALL SPANS VERBATIM-VERIFIED`.
 
 ## Staleness
 

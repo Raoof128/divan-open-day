@@ -58,6 +58,12 @@ const SOURCE_HASHES = {
   hafezPersian:
     'a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b',
   nicholson: '04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7',
+  // The `nicholson` hash above locks the Wikisource EPUB snapshot, which is a
+  // section INDEX — it contains no verse. The verse itself lives in the
+  // deterministic per-section extraction below; locking it here means the
+  // build refuses to run against a drifted or tampered extraction.
+  nicholsonExtraction:
+    'f3246de71aa83558c5f2e8c4719d25c23758a6f33325513c4fb0805501310c87',
   whinfield: 'd629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d',
 } as const;
 
@@ -1052,6 +1058,10 @@ export async function buildProductionCorpus(): Promise<void> {
     assertSourceHash(
       'raw/rumi-nicholson-fa-wikisource/source.epub',
       SOURCE_HASHES.nicholson,
+    ),
+    assertSourceHash(
+      'extracted/rumi-fa.jsonl',
+      SOURCE_HASHES.nicholsonExtraction,
     ),
     assertSourceHash(
       'raw/rumi-whinfield-abridged-en/source.epub',
