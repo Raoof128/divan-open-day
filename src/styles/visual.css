@@ -577,7 +577,9 @@ button:active {
 /* The Persian heading (متن فارسی) must stay on the curated Persian stack:
    `.poem-result h2` outranks `[lang='fa']`, which otherwise strands it on the
    Latin display face and arbitrary system Arabic fallbacks (§8.1). Nastaliq
-   ships weight 400 only and needs a tall line box. */
+   ships weight 400 only and needs a tall line box.
+   Do NOT add `color` here: this rule ties the equal-specificity lapis keying
+   above on source order and would silently override Rumi's heading colour. */
 .poem-result [lang='fa'] h2 {
   font-family: var(--font-persian-display);
   font-weight: 400;

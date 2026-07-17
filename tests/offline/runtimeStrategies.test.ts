@@ -164,7 +164,11 @@ describe('release-coherent runtime strategies', () => {
   });
 
   it('falls back to the network when the active release cache cannot answer an asset request', async () => {
-    const { subject, caches } = await activeManager();
+    const calls: { path: string; init?: RequestInit }[] = [];
+    const fixture = releaseFixture();
+    const { subject, caches } = await activeManager(
+      fetchFrom(fixture.files, calls),
+    );
     // Model a lost/corrupted release cache while the pointer record survives
     // (manual Cache Storage clearing, failed writes, engine anomaly).
     await caches.delete(`${RELEASE_CACHE_PREFIX}release-one`);
@@ -179,6 +183,10 @@ describe('release-coherent runtime strategies', () => {
     expect(script.status).toBe(200);
     await expect(script.text()).resolves.toBe('console.log("DIVAN")');
     expect(poster.status).toBe(200);
+    // Parity with every other release network path: redirects fail closed.
+    expect(
+      calls.filter(({ path }) => path.startsWith('/assets/app')).at(-1)?.init,
+    ).toMatchObject({ redirect: 'error' });
   });
 
   it('returns a graceful 504 only when both the cache and the network cannot answer', async () => {

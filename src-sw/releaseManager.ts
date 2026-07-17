@@ -219,9 +219,10 @@ export class OfflineReleaseManager {
       // corrupted release cache, exact-match miss on a query variant), the
       // network answers with the origin's canonical bytes. Hashed and
       // content-addressed paths stay release-coherent by construction; a 504
-      // is fabricated only when the network is unreachable too.
+      // is fabricated only when the network is unreachable too. Redirects
+      // fail closed for parity with every other release network path.
       try {
-        return await this.#fetch(request);
+        return await this.#fetch(request, { redirect: 'error' });
       } catch {
         return new Response('Release asset unavailable.', { status: 504 });
       }
