@@ -25,34 +25,115 @@ function renderThreshold(effectiveMotion: 'full' | 'reduced' = 'full') {
   return { onArrive, onAnnounce };
 }
 
-describe('cinematic Begin control', () => {
-  it('smoothly traverses the scroll corridor instead of arriving immediately', () => {
-    const { onArrive, onAnnounce } = renderThreshold();
-    const video = document.querySelector('video');
-    expect(video).not.toBeNull();
-    fireEvent(video!, new Event('loadeddata'));
+interface WalkHarness {
+  readonly frames: Array<(now: number) => void>;
+  advance(now: number): void;
+  readonly scrollTo: ReturnType<typeof vi.fn>;
+}
 
-    const section = document.querySelector('.cinematic-threshold');
-    expect(section).not.toBeNull();
-    Object.defineProperty(section!, 'offsetHeight', { value: 2600 });
-    Object.defineProperty(window, 'innerHeight', {
-      value: 800,
+// Drives requestAnimationFrame manually with controlled timestamps so the
+// paced corridor walk can be observed frame by frame.
+function installWalkHarness(): WalkHarness {
+  const frames: Array<(now: number) => void> = [];
+  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+    frames.push(callback);
+    return frames.length;
+  });
+  vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => undefined);
+  let scrollY = 0;
+  const scrollTo = vi.fn((_x: number, y: number) => {
+    scrollY = y;
+    Object.defineProperty(window, 'scrollY', {
+      value: scrollY,
       configurable: true,
     });
-    const scrollIntoView = vi.fn();
-    Object.defineProperty(section!, 'scrollIntoView', {
-      value: scrollIntoView,
-      configurable: true,
-    });
+  });
+  Object.defineProperty(window, 'scrollTo', {
+    value: scrollTo,
+    configurable: true,
+  });
+  Object.defineProperty(window, 'scrollY', {
+    value: 0,
+    configurable: true,
+  });
+  return {
+    frames,
+    advance(now: number) {
+      const pending = frames.splice(0, frames.length);
+      for (const frame of pending) {
+        frame(now);
+      }
+    },
+    scrollTo,
+  };
+}
+
+function prepareCorridor() {
+  const video = document.querySelector('video');
+  expect(video).not.toBeNull();
+  fireEvent(video!, new Event('loadeddata'));
+  const section = document.querySelector('.cinematic-threshold');
+  expect(section).not.toBeNull();
+  Object.defineProperty(section!, 'offsetHeight', { value: 2600 });
+  Object.defineProperty(window, 'innerHeight', {
+    value: 800,
+    configurable: true,
+  });
+  return section!;
+}
+
+describe('cinematic Begin control', () => {
+  it('walks the corridor at a paced human speed instead of jumping to the end', () => {
+    const harness = installWalkHarness();
+    const { onArrive, onAnnounce } = renderThreshold();
+    prepareCorridor();
 
     fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
 
-    expect(scrollIntoView).toHaveBeenCalledWith({
-      behavior: 'smooth',
-      block: 'end',
-    });
     expect(onAnnounce).toHaveBeenCalledWith('Entering the reading alcove.');
     expect(onArrive).not.toHaveBeenCalled();
+
+    // One second into the walk the corridor must still be mostly untravelled —
+    // a native smooth scroll would already have finished by now.
+    harness.advance(0);
+    harness.advance(1000);
+    const travelled = window.scrollY;
+    expect(travelled).toBeGreaterThan(0);
+    expect(travelled).toBeLessThan(1800 * 0.3);
+
+    // The walk keeps requesting frames until the corridor end.
+    expect(harness.frames.length).toBeGreaterThan(0);
+    harness.advance(20_000);
+    expect(window.scrollY).toBe(1800);
+  });
+
+  it('takes several seconds to finish the walk', () => {
+    const harness = installWalkHarness();
+    renderThreshold();
+    prepareCorridor();
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    harness.advance(0);
+    harness.advance(4000);
+    // Four seconds in, the walk must still be under way.
+    expect(window.scrollY).toBeLessThan(1800);
+    harness.advance(20_000);
+    expect(window.scrollY).toBe(1800);
+  });
+
+  it('yields to the visitor when they scroll during the walk', () => {
+    const harness = installWalkHarness();
+    renderThreshold();
+    prepareCorridor();
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    harness.advance(0);
+    harness.advance(1000);
+    const beforeInterrupt = window.scrollY;
+    fireEvent.wheel(window);
+    harness.advance(2000);
+    harness.advance(20_000);
+    expect(window.scrollY).toBe(beforeInterrupt);
   });
 
   it('arrives directly when reduced motion disables the cinematic corridor', () => {
@@ -65,19 +146,16 @@ describe('cinematic Begin control', () => {
 
   it('arrives directly when the environment rejects programmatic scrolling', () => {
     const { onArrive } = renderThreshold();
-    const video = document.querySelector('video');
-    fireEvent(video!, new Event('loadeddata'));
-    const section = document.querySelector('.cinematic-threshold');
-    Object.defineProperty(section!, 'offsetHeight', { value: 2600 });
-    Object.defineProperty(window, 'innerHeight', {
-      value: 800,
-      configurable: true,
-    });
-    Object.defineProperty(section!, 'scrollIntoView', {
+    prepareCorridor();
+    Object.defineProperty(window, 'scrollTo', {
       value: vi.fn(() => {
         throw new Error('scrolling unavailable');
       }),
       configurable: true,
+    });
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      callback(0);
+      return 1;
     });
 
     fireEvent.click(screen.getByRole('button', { name: 'Begin' }));

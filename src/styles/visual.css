@@ -1006,10 +1006,11 @@ button:active {
 
 .butterfly {
   position: absolute;
-  inset-block-start: 64%;
-  inset-inline-start: 24%;
-  inline-size: clamp(1.4rem, 3vw, 2rem);
-  color: var(--gold);
+  inset-block-start: 58%;
+  inset-inline-start: 8%;
+  inline-size: clamp(7rem, 15vw, 10rem);
+  color: var(--amethyst);
+  filter: drop-shadow(0 0.4rem 1.2rem rgb(94 58 146 / 35%));
 }
 
 .butterfly__wing {

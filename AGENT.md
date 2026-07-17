@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-18 (Australia/Sydney) — Cinematic motion polish: paced Begin walk, living amethyst butterfly, softened book settle
+
+**Raouf:**
+
+- **Begin now walks the corridor at human pace.** The Begin control previously delegated to native `scrollIntoView({ behavior: 'smooth' })`, which browsers complete in a few hundred milliseconds regardless of distance — the entire garden scrub flew past unseen. It is replaced by a requestAnimationFrame-paced walk (220 px/s, easeInOutSine, clamped 4–9 s) that drives `window.scrollTo` so the existing scroll→scrub→arrival machinery is unchanged. The walk yields immediately to visitor scroll intent (wheel, touchmove, scroll keys — Tab does not cancel), is cancelled by Skip, arrival, and unmount, and falls back to direct arrival where programmatic scrolling is unavailable. Reduced-motion entry is untouched (direct arrival, no corridor).
+- **Butterfly repaired and reworked to owner's spec.** The wing flutter ran exactly 17 iterations (~5.8 s) and the arrival path once, after which the butterfly froze into a decal — the reported "stopped and won't move" defect. Flight now hands off to a perpetual gentle hover (9 s loop meeting the arrival transform at translate3d(0,0,0)) and a slow resting wing beat (1.8 s), so it never freezes. Per instruction it is 5× larger (`clamp(7rem, 15vw, 10rem)`) and amethyst purple — new `--amethyst`/`--amethyst-deep` tokens in `tokens.css` per the locked one-source colour rule — anchored further into the left third (8%) so the larger silhouette stays out of the reading column, behind the card, `aria-hidden`, pointer-events none. Reduced motion still disables all of it.
+- **Book opening softened.** Cover swing-back reduced from 9° to 6° with a single settle (rubbery bounce removed), cover and contact shadow synchronised at 1.6 s (inside the locked 1.6 s e2e animation ceiling — deliberately not raised), shadow peak softened 0.52→0.46, page rise given more weight (1.3 s, 240 ms), illumination now lands at 1.7 s — after the last trailing leaf and cover settle, per the book-motion contract.
+- **Tests:** `cinematicBegin.test.tsx` rewritten RED-first for the new contract (paced multi-frame walk, several-seconds duration, visitor-interrupt yield, reduced-motion direct arrival, scroll-rejection fallback); one `cinematicThreshold` assertion updated to the new pending-Begin semantics (walk starts rather than instant arrival). 720/720 unit tests, e2e 5/5 (real Chromium walks the corridor), full `check.sh` gate green including visual budgets (CSS 35 KB < 45 KB ceiling, transform/opacity only) and axe.
+- **Not claimed:** no physical-device or branded-Safari evidence; corpus, rights, service worker, and ops untouched; no deploy.
+
 ### 2026-07-17 (Australia/Sydney) — Release v1.0.6: outage fix deployed and verified in a real user agent
 
 **Raouf:**

@@ -24,6 +24,26 @@ import {
 const FIRST_FRAME_TIMEOUT_MS = 4000;
 const FINAL_FRAME_SETTLE_TIMEOUT_MS = 1000;
 
+// The Begin walk paces the corridor like a person strolling into the garden;
+// a native smooth scroll finishes in a few hundred milliseconds and skips the
+// whole cinematic. Distance-proportional, clamped so short corridors still
+// breathe and tall ones never feel like a forced march.
+const WALK_PACE_PX_PER_SECOND = 220;
+const WALK_MIN_DURATION_MS = 4000;
+const WALK_MAX_DURATION_MS = 9000;
+
+// Keys that express scroll intent hand the corridor back to the visitor;
+// focus-only keys (Tab) must not cancel the entrance.
+const WALK_INTERRUPT_KEYS = new Set([
+  ' ',
+  'ArrowDown',
+  'ArrowUp',
+  'End',
+  'Home',
+  'PageDown',
+  'PageUp',
+]);
+
 type ThresholdState = 'poster' | 'playing' | 'arrived';
 
 export interface CinematicThresholdProps {
@@ -57,10 +77,12 @@ export function CinematicThreshold({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const arrivedRef = useRef(false);
   const pendingBeginRef = useRef(false);
+  const cancelWalkRef = useRef<(() => void) | null>(null);
 
   const scrubbing = plan.shouldLoadVideo && !videoFailed;
 
   const arrive = useCallback(() => {
+    cancelWalkRef.current?.();
     if (arrivedRef.current) {
       return;
     }
@@ -72,24 +94,94 @@ export function CinematicThreshold({
 
   const traverseCorridor = useCallback(() => {
     const section = sectionRef.current;
-    if (
-      section === null ||
-      section.offsetHeight <= window.innerHeight ||
-      typeof section.scrollIntoView !== 'function'
-    ) {
+    if (section === null || section.offsetHeight <= window.innerHeight) {
       arrive();
       return;
     }
 
     try {
       onAnnounce('Entering the reading alcove.');
-      section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      cancelWalkRef.current?.();
+      const target = section.offsetHeight - window.innerHeight;
+      const start = window.scrollY;
+      const distance = target - start;
+      if (distance <= 0) {
+        arrive();
+        return;
+      }
+      const duration = Math.min(
+        WALK_MAX_DURATION_MS,
+        Math.max(
+          WALK_MIN_DURATION_MS,
+          (distance / WALK_PACE_PX_PER_SECOND) * 1000,
+        ),
+      );
+
+      let stopped = false;
+      let frame: number | null = null;
+      let startTime: number | null = null;
+      const stop = () => {
+        if (stopped) {
+          return;
+        }
+        stopped = true;
+        if (frame !== null) {
+          window.cancelAnimationFrame(frame);
+          frame = null;
+        }
+        window.removeEventListener('wheel', interrupt);
+        window.removeEventListener('touchmove', interrupt);
+        window.removeEventListener('keydown', onKeydown);
+        if (cancelWalkRef.current === stop) {
+          cancelWalkRef.current = null;
+        }
+      };
+      // The visitor's own scroll intent always outranks the guided walk; the
+      // scrub keeps following wherever they take the corridor.
+      const interrupt = () => {
+        stop();
+      };
+      const onKeydown = (event: KeyboardEvent) => {
+        if (WALK_INTERRUPT_KEYS.has(event.key)) {
+          stop();
+        }
+      };
+      const step = (now: number) => {
+        if (stopped) {
+          return;
+        }
+        startTime ??= now;
+        const progress = Math.min(1, (now - startTime) / duration);
+        // easeInOutSine: a walk gathers pace gently and settles gently.
+        const eased = 0.5 - Math.cos(Math.PI * progress) / 2;
+        try {
+          window.scrollTo(0, start + distance * eased);
+        } catch {
+          // Programmatic scrolling is an enhancement. A constrained or
+          // unusual browser must still reach the core poetry experience.
+          stop();
+          arrive();
+          return;
+        }
+        if (progress < 1) {
+          frame = window.requestAnimationFrame(step);
+        } else {
+          stop();
+        }
+      };
+      cancelWalkRef.current = stop;
+      window.addEventListener('wheel', interrupt, { passive: true });
+      window.addEventListener('touchmove', interrupt, { passive: true });
+      window.addEventListener('keydown', onKeydown);
+      frame = window.requestAnimationFrame(step);
     } catch {
-      // Programmatic scrolling is an enhancement. A constrained or unusual
-      // browser must still be able to enter the core poetry experience.
+      // Same fallback as above for environments without rAF or listeners.
       arrive();
     }
   }, [arrive, onAnnounce]);
+
+  // A dismount mid-walk must not leave a headless scroller running.
+  useEffect(() => () => cancelWalkRef.current?.(), []);
 
   const requestEntrance = useCallback(() => {
     if (arrivedRef.current) {

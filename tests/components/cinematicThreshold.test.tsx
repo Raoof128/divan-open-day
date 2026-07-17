@@ -162,11 +162,12 @@ describe('CinematicThreshold', () => {
     expect(video!.muted).toBe(true);
 
     // The scrub design never plays the clip: the first presented frame pauses
-    // the prime again, and the pending Begin is honoured immediately (this
-    // environment has no programmatic scroll, so arrival is direct).
+    // the prime again, and the pending Begin is honoured by starting the
+    // paced corridor walk (arrival is earned by travelling the corridor).
     fireEvent(video!, new Event('loadeddata'));
     expect(pause).toHaveBeenCalled();
-    expect(thresholdSection().dataset['cinematicState']).toBe('arrived');
+    expect(onAnnounce).toHaveBeenCalledWith('Entering the reading alcove.');
+    expect(thresholdSection().dataset['cinematicState']).toBe('playing');
   });
 
   it('presents the terminal video frame before completing corridor arrival', () => {
