@@ -1,0 +1,1314 @@
+{
+  "generatedFrom": "git ls-files @ e348048",
+  "frontendCount": 131,
+  "boundaryCount": 14,
+  "frontend": [
+    {
+      "path": "docs/verification/divan-cinematic-assets.json",
+      "category": "doc-frontend-verification",
+      "type": "json",
+      "bytes": 1529,
+      "lines": 49,
+      "surface": "cinematic/navigation verification evidence",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "docs/verification/divan-cinematic-enhancement-report.md",
+      "category": "doc-frontend-verification",
+      "type": "md",
+      "bytes": 9748,
+      "lines": 149,
+      "surface": "cinematic/navigation verification evidence",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "docs/verification/divan-cinematic-provenance.md",
+      "category": "doc-frontend-verification",
+      "type": "md",
+      "bytes": 9276,
+      "lines": 133,
+      "surface": "cinematic/navigation verification evidence",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "docs/verification/visible-navigation-and-cinematic-begin.md",
+      "category": "doc-frontend-verification",
+      "type": "md",
+      "bytes": 6674,
+      "lines": 122,
+      "surface": "cinematic/navigation verification evidence",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "eslint.config.js",
+      "category": "config",
+      "type": "js",
+      "bytes": 1780,
+      "lines": 67,
+      "surface": "build/lint/test configuration",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "index.html",
+      "category": "entry-html",
+      "type": "html",
+      "bytes": 1451,
+      "lines": 45,
+      "surface": "document shell, meta, noscript",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "playwright.config.ts",
+      "category": "config",
+      "type": "ts",
+      "bytes": 71,
+      "lines": 2,
+      "surface": "build/lint/test configuration",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "public/icon.svg",
+      "category": "public-asset",
+      "type": "svg",
+      "bytes": 685,
+      "lines": 12,
+      "surface": "installability/offline shell",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "public/images/divan-alcove-desktop.webp",
+      "category": "media-image",
+      "type": "binary",
+      "bytes": 64474,
+      "lines": null,
+      "surface": "released webp posters/backdrops (binary)",
+      "status": "INSPECTED (binary: metadata+integrity manifest)"
+    },
+    {
+      "path": "public/images/divan-alcove-mobile.webp",
+      "category": "media-image",
+      "type": "binary",
+      "bytes": 66134,
+      "lines": null,
+      "surface": "released webp posters/backdrops (binary)",
+      "status": "INSPECTED (binary: metadata+integrity manifest)"
+    },
+    {
+      "path": "public/images/divan-poster-desktop.webp",
+      "category": "media-image",
+      "type": "binary",
+      "bytes": 199096,
+      "lines": null,
+      "surface": "released webp posters/backdrops (binary)",
+      "status": "INSPECTED (binary: metadata+integrity manifest)"
+    },
+    {
+      "path": "public/images/divan-poster-mobile.webp",
+      "category": "media-image",
+      "type": "binary",
+      "bytes": 202136,
+      "lines": null,
+      "surface": "released webp posters/backdrops (binary)",
+      "status": "INSPECTED (binary: metadata+integrity manifest)"
+    },
+    {
+      "path": "public/manifest.webmanifest",
+      "category": "public-asset",
+      "type": "webmanifest",
+      "bytes": 479,
+      "lines": 22,
+      "surface": "installability/offline shell",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "public/offline.html",
+      "category": "public-asset",
+      "type": "html",
+      "bytes": 1293,
+      "lines": 36,
+      "surface": "installability/offline shell",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "public/video/divan-cinematic-desktop.mp4",
+      "category": "media-video",
+      "type": "binary",
+      "bytes": 2700797,
+      "lines": null,
+      "surface": "released cinematic mp4 (binary)",
+      "status": "INSPECTED (binary: metadata+integrity manifest)"
+    },
+    {
+      "path": "public/video/divan-cinematic-mobile.mp4",
+      "category": "media-video",
+      "type": "binary",
+      "bytes": 2624919,
+      "lines": null,
+      "surface": "released cinematic mp4 (binary)",
+      "status": "INSPECTED (binary: metadata+integrity manifest)"
+    },
+    {
+      "path": "scripts/build.ts",
+      "category": "build-script",
+      "type": "ts",
+      "bytes": 35811,
+      "lines": 1177,
+      "surface": "packages/verifies the browser distribution",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "scripts/check.sh",
+      "category": "quality-gate",
+      "type": "sh",
+      "bytes": 3972,
+      "lines": 127,
+      "surface": "single quality gate",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "scripts/verify-dist.ts",
+      "category": "build-script",
+      "type": "ts",
+      "bytes": 21646,
+      "lines": 728,
+      "surface": "packages/verifies the browser distribution",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "scripts/verify-privacy.ts",
+      "category": "build-script",
+      "type": "ts",
+      "bytes": 4360,
+      "lines": 150,
+      "surface": "packages/verifies the browser distribution",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src-sw/cacheTypes.ts",
+      "category": "service-worker",
+      "type": "ts",
+      "bytes": 469,
+      "lines": 16,
+      "surface": "hand-written SW + schemas",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src-sw/integrity.ts",
+      "category": "service-worker",
+      "type": "ts",
+      "bytes": 2512,
+      "lines": 88,
+      "surface": "hand-written SW + schemas",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src-sw/releaseManager.ts",
+      "category": "service-worker",
+      "type": "ts",
+      "bytes": 28287,
+      "lines": 872,
+      "surface": "hand-written SW + schemas",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src-sw/schemas.ts",
+      "category": "service-worker",
+      "type": "ts",
+      "bytes": 11929,
+      "lines": 389,
+      "surface": "hand-written SW + schemas",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src-sw/service-worker.ts",
+      "category": "service-worker",
+      "type": "ts",
+      "bytes": 5681,
+      "lines": 196,
+      "surface": "hand-written SW + schemas",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/app/App.tsx",
+      "category": "app-core",
+      "type": "tsx",
+      "bytes": 25940,
+      "lines": 796,
+      "surface": "reducer/history/runtime/error/core CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/app/core.css",
+      "category": "app-core",
+      "type": "css",
+      "bytes": 3185,
+      "lines": 186,
+      "surface": "reducer/history/runtime/error/core CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/app/ErrorBoundary.tsx",
+      "category": "app-core",
+      "type": "tsx",
+      "bytes": 1020,
+      "lines": 41,
+      "surface": "reducer/history/runtime/error/core CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/app/history.ts",
+      "category": "app-core",
+      "type": "ts",
+      "bytes": 3514,
+      "lines": 133,
+      "surface": "reducer/history/runtime/error/core CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/app/runtime.ts",
+      "category": "app-core",
+      "type": "ts",
+      "bytes": 12995,
+      "lines": 441,
+      "surface": "reducer/history/runtime/error/core CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/app/state.ts",
+      "category": "app-core",
+      "type": "ts",
+      "bytes": 7956,
+      "lines": 283,
+      "surface": "reducer/history/runtime/error/core CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/BookStage.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 1038,
+      "lines": 40,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/ButterflyField.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 1429,
+      "lines": 43,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/CandleScene.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 546,
+      "lines": 14,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/CinematicThreshold.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 10068,
+      "lines": 345,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/DecorativeGeometry.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 3262,
+      "lines": 96,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/FlowBackButton.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 289,
+      "lines": 11,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/IlluminatedFrame.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 394,
+      "lines": 20,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/LiveRegion.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 285,
+      "lines": 17,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/ManuscriptPortal.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 443,
+      "lines": 20,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/MotionControl.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 733,
+      "lines": 26,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/OfflineBadge.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 98,
+      "lines": 4,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/PoemResult.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 6311,
+      "lines": 207,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/PoetryMotes.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 538,
+      "lines": 18,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/SkipLink.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 398,
+      "lines": 17,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/components/SourceCredit.tsx",
+      "category": "component",
+      "type": "tsx",
+      "bytes": 1495,
+      "lines": 51,
+      "surface": "UI components",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/contracts/app.ts",
+      "category": "contract",
+      "type": "ts",
+      "bytes": 795,
+      "lines": 31,
+      "surface": "typed frontend boundaries",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/contracts/content.ts",
+      "category": "contract",
+      "type": "ts",
+      "bytes": 1876,
+      "lines": 64,
+      "surface": "typed frontend boundaries",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/contracts/release.ts",
+      "category": "contract",
+      "type": "ts",
+      "bytes": 1074,
+      "lines": 44,
+      "surface": "typed frontend boundaries",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/accessibility/focus.ts",
+      "category": "lib-a11y",
+      "type": "ts",
+      "bytes": 796,
+      "lines": 33,
+      "surface": "focus/motion helpers",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/accessibility/motion.ts",
+      "category": "lib-a11y",
+      "type": "ts",
+      "bytes": 1497,
+      "lines": 54,
+      "surface": "focus/motion helpers",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/cinematic/capability.ts",
+      "category": "lib-cinematic",
+      "type": "ts",
+      "bytes": 1820,
+      "lines": 65,
+      "surface": "capability/scroll-scrub",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/cinematic/scrollScrub.ts",
+      "category": "lib-cinematic",
+      "type": "ts",
+      "bytes": 2221,
+      "lines": 91,
+      "surface": "capability/scroll-scrub",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/content/publicSchema.ts",
+      "category": "release-contract",
+      "type": "ts",
+      "bytes": 6895,
+      "lines": 234,
+      "surface": "release/public corpus contract feeding dist + SW",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/content/release.ts",
+      "category": "release-contract",
+      "type": "ts",
+      "bytes": 13979,
+      "lines": 446,
+      "surface": "release/public corpus contract feeding dist + SW",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/draw/secureRandom.ts",
+      "category": "lib-draw",
+      "type": "ts",
+      "bytes": 1749,
+      "lines": 68,
+      "surface": "secure random/shuffle bag",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/draw/shuffleBag.ts",
+      "category": "lib-draw",
+      "type": "ts",
+      "bytes": 3287,
+      "lines": 125,
+      "surface": "secure random/shuffle bag",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/navigation/flowNavigation.ts",
+      "category": "lib-navigation",
+      "type": "ts",
+      "bytes": 1339,
+      "lines": 55,
+      "surface": "flow navigation",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/share/shareCard.ts",
+      "category": "lib-share",
+      "type": "ts",
+      "bytes": 5367,
+      "lines": 120,
+      "surface": "share card/service",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/share/shareService.ts",
+      "category": "lib-share",
+      "type": "ts",
+      "bytes": 3590,
+      "lines": 126,
+      "surface": "share card/service",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/lib/storage/session.ts",
+      "category": "lib-storage",
+      "type": "ts",
+      "bytes": 8046,
+      "lines": 309,
+      "surface": "session/local storage",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/main.tsx",
+      "category": "entry-js",
+      "type": "tsx",
+      "bytes": 486,
+      "lines": 21,
+      "surface": "browser bootstrap",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/AboutPage.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 2354,
+      "lines": 58,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/AccessibilityPage.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 2059,
+      "lines": 50,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/ContextLayout.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 624,
+      "lines": 28,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/CreditsPage.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 4009,
+      "lines": 123,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/index.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 777,
+      "lines": 29,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/OfflinePage.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 1741,
+      "lines": 45,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/PrivacyPage.tsx",
+      "category": "page",
+      "type": "tsx",
+      "bytes": 2635,
+      "lines": 66,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/pages/routes.ts",
+      "category": "page",
+      "type": "ts",
+      "bytes": 321,
+      "lines": 14,
+      "surface": "context document routes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/scenes/BlockingErrorScene.tsx",
+      "category": "scene",
+      "type": "tsx",
+      "bytes": 717,
+      "lines": 23,
+      "surface": "interactive flow scenes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/scenes/BootScene.tsx",
+      "category": "scene",
+      "type": "tsx",
+      "bytes": 624,
+      "lines": 24,
+      "surface": "interactive flow scenes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/scenes/ChoosePoetScene.tsx",
+      "category": "scene",
+      "type": "tsx",
+      "bytes": 1615,
+      "lines": 48,
+      "surface": "interactive flow scenes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/scenes/IntentionScene.tsx",
+      "category": "scene",
+      "type": "tsx",
+      "bytes": 1406,
+      "lines": 40,
+      "surface": "interactive flow scenes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/scenes/RevealScene.tsx",
+      "category": "scene",
+      "type": "tsx",
+      "bytes": 2815,
+      "lines": 89,
+      "surface": "interactive flow scenes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/scenes/WelcomeScene.tsx",
+      "category": "scene",
+      "type": "tsx",
+      "bytes": 1493,
+      "lines": 50,
+      "surface": "interactive flow scenes",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/styles/flow-navigation.css",
+      "category": "style",
+      "type": "css",
+      "bytes": 807,
+      "lines": 36,
+      "surface": "design system CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/styles/fonts.css",
+      "category": "style",
+      "type": "css",
+      "bytes": 1318,
+      "lines": 54,
+      "surface": "design system CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/styles/index.css",
+      "category": "style",
+      "type": "css",
+      "bytes": 95,
+      "lines": 5,
+      "surface": "design system CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/styles/motion.css",
+      "category": "style",
+      "type": "css",
+      "bytes": 7248,
+      "lines": 352,
+      "surface": "design system CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "category": "style",
+      "type": "css",
+      "bytes": 1451,
+      "lines": 53,
+      "surface": "design system CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/styles/visual.css",
+      "category": "style",
+      "type": "css",
+      "bytes": 22643,
+      "lines": 1049,
+      "surface": "design system CSS",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/sw-client/register.ts",
+      "category": "sw-client",
+      "type": "ts",
+      "bytes": 7585,
+      "lines": 264,
+      "surface": "service worker registration bridge",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "src/vite-env.d.ts",
+      "category": "config-types",
+      "type": "ts",
+      "bytes": 38,
+      "lines": 2,
+      "surface": "Vite env typing",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/accessibility/appAccessibility.test.tsx",
+      "category": "test-a11y",
+      "type": "tsx",
+      "bytes": 13624,
+      "lines": 415,
+      "surface": "accessibility tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/accessibility/styles.test.ts",
+      "category": "test-a11y",
+      "type": "ts",
+      "bytes": 6182,
+      "lines": 154,
+      "surface": "accessibility tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/appFlow.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 13052,
+      "lines": 409,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/cinematicBegin.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 2787,
+      "lines": 88,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/cinematicThreshold.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 5703,
+      "lines": 179,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/contextRoutes.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 3544,
+      "lines": 97,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/document.test.ts",
+      "category": "test-component",
+      "type": "ts",
+      "bytes": 1291,
+      "lines": 30,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/failures.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 7414,
+      "lines": 253,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/fixtures.ts",
+      "category": "test-component",
+      "type": "ts",
+      "bytes": 3331,
+      "lines": 96,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/offlineIntegration.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 4198,
+      "lines": 150,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/poetSelectionNavigation.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 4192,
+      "lines": 147,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/runtime.test.ts",
+      "category": "test-component",
+      "type": "ts",
+      "bytes": 11334,
+      "lines": 389,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/shareAction.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 5949,
+      "lines": 188,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/components/visualLanguage.test.tsx",
+      "category": "test-component",
+      "type": "tsx",
+      "bytes": 2318,
+      "lines": 69,
+      "surface": "React component tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/content/buildRelease.test.ts",
+      "category": "test-release-contract",
+      "type": "ts",
+      "bytes": 46977,
+      "lines": 1369,
+      "surface": "release/dist contract tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/content/canonical.test.ts",
+      "category": "test-release-contract",
+      "type": "ts",
+      "bytes": 1399,
+      "lines": 49,
+      "surface": "release/dist contract tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/content/contentLoader.test.ts",
+      "category": "test-release-contract",
+      "type": "ts",
+      "bytes": 7101,
+      "lines": 244,
+      "surface": "release/dist contract tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/content/productionManifest.test.ts",
+      "category": "test-release-contract",
+      "type": "ts",
+      "bytes": 1749,
+      "lines": 62,
+      "surface": "release/dist contract tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/content/publicSchema.test.ts",
+      "category": "test-release-contract",
+      "type": "ts",
+      "bytes": 6723,
+      "lines": 221,
+      "surface": "release/dist contract tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/content/release.test.ts",
+      "category": "test-release-contract",
+      "type": "ts",
+      "bytes": 9905,
+      "lines": 310,
+      "surface": "release/dist contract tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/e2e/accessibility.playwright.config.ts",
+      "category": "test-e2e",
+      "type": "ts",
+      "bytes": 688,
+      "lines": 25,
+      "surface": "Playwright specs + config + server",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/e2e/accessibility.spec.ts",
+      "category": "test-e2e",
+      "type": "ts",
+      "bytes": 9594,
+      "lines": 281,
+      "surface": "Playwright specs + config + server",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/e2e/offline-server.ts",
+      "category": "test-e2e",
+      "type": "ts",
+      "bytes": 9017,
+      "lines": 305,
+      "surface": "Playwright specs + config + server",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/e2e/offline.spec.ts",
+      "category": "test-e2e",
+      "type": "ts",
+      "bytes": 5913,
+      "lines": 163,
+      "surface": "Playwright specs + config + server",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/e2e/visual.spec.ts",
+      "category": "test-e2e",
+      "type": "ts",
+      "bytes": 10673,
+      "lines": 347,
+      "surface": "Playwright specs + config + server",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/fixtures/content/corpus.ts",
+      "category": "test-fixture",
+      "type": "ts",
+      "bytes": 10193,
+      "lines": 294,
+      "surface": "synthetic corpus fixture",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/offline/artifacts.test.ts",
+      "category": "test-offline",
+      "type": "ts",
+      "bytes": 2142,
+      "lines": 62,
+      "surface": "SW/offline tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/offline/client.test.ts",
+      "category": "test-offline",
+      "type": "ts",
+      "bytes": 7477,
+      "lines": 238,
+      "surface": "SW/offline tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/offline/helpers.ts",
+      "category": "test-offline",
+      "type": "ts",
+      "bytes": 10841,
+      "lines": 319,
+      "surface": "SW/offline tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/offline/releaseManager.test.ts",
+      "category": "test-offline",
+      "type": "ts",
+      "bytes": 20142,
+      "lines": 571,
+      "surface": "SW/offline tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/offline/runtimeStrategies.test.ts",
+      "category": "test-offline",
+      "type": "ts",
+      "bytes": 12675,
+      "lines": 377,
+      "surface": "SW/offline tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/offline/serviceWorker.test.ts",
+      "category": "test-offline",
+      "type": "ts",
+      "bytes": 7306,
+      "lines": 251,
+      "surface": "SW/offline tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/performance/visualBudgets.test.ts",
+      "category": "test-performance",
+      "type": "ts",
+      "bytes": 5080,
+      "lines": 142,
+      "surface": "locked visual/perf budgets",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/security/publicReadiness.test.ts",
+      "category": "test-security-frontend",
+      "type": "ts",
+      "bytes": 9493,
+      "lines": 239,
+      "surface": "public readiness (licence/README binding)",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/setup/vitest.ts",
+      "category": "test-setup",
+      "type": "ts",
+      "bytes": 43,
+      "lines": 2,
+      "surface": "vitest setup",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/share/shareCard.test.ts",
+      "category": "test-share",
+      "type": "ts",
+      "bytes": 6916,
+      "lines": 183,
+      "surface": "share tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/share/shareService.test.ts",
+      "category": "test-share",
+      "type": "ts",
+      "bytes": 3822,
+      "lines": 113,
+      "surface": "share tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/cinematicCapability.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 2252,
+      "lines": 70,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/history.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 3009,
+      "lines": 123,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/scrollScrub.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 3246,
+      "lines": 113,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/secureRandom.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 2434,
+      "lines": 84,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/shuffleBag.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 4328,
+      "lines": 147,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/state.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 4145,
+      "lines": 151,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tests/unit/storage.test.ts",
+      "category": "test-unit",
+      "type": "ts",
+      "bytes": 7328,
+      "lines": 225,
+      "surface": "domain/unit tests",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "tsconfig.json",
+      "category": "config",
+      "type": "json",
+      "bytes": 888,
+      "lines": 35,
+      "surface": "build/lint/test configuration",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "vite.config.ts",
+      "category": "config",
+      "type": "ts",
+      "bytes": 1028,
+      "lines": 31,
+      "surface": "build/lint/test configuration",
+      "status": "READ/AUDITED"
+    },
+    {
+      "path": "vitest.config.ts",
+      "category": "config",
+      "type": "ts",
+      "bytes": 1062,
+      "lines": 37,
+      "surface": "build/lint/test configuration",
+      "status": "READ/AUDITED"
+    }
+  ],
+  "boundary": [
+    {
+      "path": "scripts/content/loadContent.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 15693,
+      "lines": 532,
+      "surface": "build-time content loading (boundary)",
+      "status": "PENDING"
+    },
+    {
+      "path": "scripts/content/readAssetFile.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 3563,
+      "lines": 115,
+      "surface": "build-time content loading (boundary)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/authoringSchema.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 11356,
+      "lines": 374,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/canonical.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 2561,
+      "lines": 101,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/canonicalIdentity.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 742,
+      "lines": 22,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/compileCorpus.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 14941,
+      "lines": 510,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/compileItem.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 2827,
+      "lines": 76,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/productionManifest.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 7284,
+      "lines": 217,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/productionSelection.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 3689,
+      "lines": 107,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/registrySchemas.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 11879,
+      "lines": 607,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/remoteResource.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 420,
+      "lines": 12,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/reviewAuthority.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 5981,
+      "lines": 193,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/sourceRegistrySchema.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 6389,
+      "lines": 200,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    },
+    {
+      "path": "src/lib/content/sourceRightsSchema.ts",
+      "category": "boundary-content-pipeline",
+      "type": "ts",
+      "bytes": 3502,
+      "lines": 108,
+      "surface": "build-time content compiler (boundary dependency)",
+      "status": "PENDING"
+    }
+  ]
+}

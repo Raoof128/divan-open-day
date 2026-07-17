@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-17 — Fable 5 exhaustive frontend audit and repair
+
+**Raouf:**
+
+- Ran the complete Fable 5 frontend audit on an isolated branch off `main` @ `e348048`: 24 frontend-relevant skills fully read and applied, fresh primary-source research (six read-only agents), all 131 inventoried frontend files read line-by-line, rendered state-space exercised on the real 120-record production build in Chromium, Playwright WebKit, and Firefox across ten viewports, defect ledger before any edit, TDD repairs, four-lens adversarial re-audit, fresh full gauntlet.
+- Repaired six verified defects: service-worker cache-first network fallback (evicted/corrupted release cache no longer leaves an online page permanently 504-broken) with redirect-fail-closed parity; range-bearing direct audio passthrough (latent WebKit media break); the متن فارسی heading restored to the Persian display stack with Nastaliq-safe leading (was falling to the Latin stack via specificity in all three engines); decorative ✦/← glyphs removed from accessible names via CSS alt-text with graceful fallback; gesture-gated muted prime for the cinematic clip (WebKit cold-start first-frame flakiness); deferred verse-card Blob URL revocation past the download click.
+- Added 8 regression tests (713/713 total, none weakened); `scripts/check.sh --ci` green end-to-end including exact-120 production build, Playwright 5/5, dist/privacy verifiers, OSV, and fail-closed `verify:qr`. Poetry, corpus, rights, deployment, DNS, tunnel, Docker, and the live preview were untouched; launch gates unchanged and closed. Audit evidence: `docs/audits/frontend-fable-5/` (preflight, skill inventory, research, inventory, baseline, file ledger, rendered matrix, defect ledger, adversarial review, final verification).
+- Verdict: PASS WITH DOCUMENTED RESIDUAL RISK — residuals are the unchanged external §31.2 gates (physical devices, branded Safari, assistive technology), the designed WebKit poster fallback without a Begin gesture, the corpus-level absence of reflections, and the pre-documented SVG apple-touch-icon limitation.
+
 ## 2026-07-16 — Make the deployed DIVAN hostname publicly reachable
 
 **Raouf:**
