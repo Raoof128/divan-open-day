@@ -74,5 +74,6 @@ review_authority:
   confidence: 0.97
   disclosures:
     - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+    - Whinfield renders the closing image as “the palm-trees of the 'Truth'” where the Nicholson transcription reads نخل امید (“the palm of hope”); the divergence reflects the translator's underlying edition, not an alteration by this project.
   verifiedAt: 2026-07-17
   rationale: Continuous Whinfield lines 2-3 of rumi-whinfield-abridged-en-b0055-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 959 starting at hemistich 2; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 9 anchors). Lion-valour counsel couplet; avoids a mid-quotation window.

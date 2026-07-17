@@ -1,4 +1,4 @@
-id: hafez-ghazal-046-bell
+id: hafez-ghazal-025-bell
 schema_version: 2
 status: approved
 poet: hafez
@@ -13,8 +13,8 @@ source:
   edition_citation: Qazvini-Ghani Divan transcription; local source lock and extraction evidence.
   edition_public_credit: "Persian text: Divan of Hafez, Qazvini-Ghani edition, Persian Wikisource transcription (CC BY-SA)."
   reference_type: ghazal
-  reference_value: Ghazal 46
-  opening_hemistich_fa: گل در بر و می در کف و معشوق بکامست
+  reference_value: Ghazal 25
+  opening_hemistich_fa: شکفته شد گل حمرا و گشت بلبل مست
   page_reference: Bell poem VIII, scan page 79
   source_language: fa
   english_source_id: hafez-bell-1897-en
@@ -23,8 +23,8 @@ source:
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
   persian_lines:
-    - گل در بر و می در کف و معشوق بکامست
-    - سلطان جهانم بچنین روز غلامست
+    - شکفته شد گل حمرا و گشت بلبل مست
+    - صلای سرخوشی ای صوفیان باده پرست
   english_lines:
     - The rose has flushed red, the bud has burst,
     - And drunk with joy is the nightingale—
@@ -42,7 +42,7 @@ translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
-  permission_record_id: hafez-ghazal-046-bell-translation-permission
+  permission_record_id: hafez-ghazal-025-bell-translation-permission
   public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
   permitted_uses:
     - website_display
@@ -68,14 +68,14 @@ review_authority:
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
-  canonicalIdentityHash: c87023abbec41c6e459105218791991a136e9ba7321ab356b80a88671f0659f3
+  canonicalIdentityHash: 3bf0c4683b5ed13a86af957ad1b378414540f988ac6b0b7c407da34aae33ac42
   englishSpanHash: 586a299958a5f010072ab97ad1be02f3e08109330e4e06c8cd68744e376e65b0
-  persianSpanHash: 680dab0a91a850e99a50cfd4d2ed93dd7d91512d74edf73aa75c667b09face44
-  mappingHash: 29e1cf12b1148b7b0e3b2802fd64aaa1cf36d281a979547b630eccc047f76309
+  persianSpanHash: dd343d78be902085cc1133feabbc0d4d7dd78d1aeca3257acefd6bc51132515a
+  mappingHash: 008f020a7654536885bf8504f29623d361dbf3c822e9a623efc3f345d983c636
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
     - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - The small-cap typography of the opening word was normalized against the Bell scan; wording is otherwise verbatim.
   verifiedAt: 2026-07-17
-  rationale: Bell poem VIII on scan page 79 was aligned to Qazvini-Ghani ghazal 46 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.
+  rationale: Bell poem VIII on scan page 79 was aligned to Qazvini-Ghani ghazal 25 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

@@ -8,7 +8,12 @@ export const HAFEZ_PRODUCTION_SELECTION = [
   ['hafez-bell-1897-p071', 71, 1],
   ['hafez-bell-1897-p077', 77, 268],
   ['hafez-bell-1897-p078', 78, 79],
-  ['hafez-bell-1897-p079', 79, 46],
+  // p079 is Bell poem VIII — her rendering of ghazal 25 (شکفته شد گل حمرا…),
+  // proven by the poem's continuation ("Hail, Sufis! lovers of wine" =
+  // صلای سرخوشی ای صوفیان باده پرست). The former ghazal-46 pairing was a
+  // wrong-poem alignment caught by the Fable 5 adversarial review; Bell never
+  // translated ghazal 46.
+  ['hafez-bell-1897-p079', 79, 25],
   ['hafez-bell-1897-p080', 80, 11],
   ['hafez-bell-1897-p083', 83, 65],
   ['hafez-bell-1897-p084', 84, 2],

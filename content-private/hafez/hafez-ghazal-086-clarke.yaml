@@ -27,7 +27,7 @@ text:
     - کار چراغ خلوتیان باز درگرفت
   english_lines:
     - Saki (Murshid) ! come ; for the true Beloved (God) hath taken up the veil,
-    - The work of the lamp (love's glory) of theKhilvatis again kindled.
+    - The work of the lamp (love's glory) of the Khilvatis again kindled.
   alignment: line
   mapping:
     - english_index: 0
@@ -67,12 +67,13 @@ review_authority:
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 7a1f595c2caf0202e5739852ca0332b33ff8fda49d525a17adff5a7a478a5178
-  englishSpanHash: 21c78c1c267f6786e5c0000a1da4da1045565cd852455307b08ab8e5e51eb1e3
+  englishSpanHash: 3c69471b79f658d09ebb48e22d7b707fd017977bfd0a1d07d4b82a30dd4fd11d
   persianSpanHash: ca23d0714835f6aa14bcfd1944bc1ad3ad6562ffd58a605c274890507c529b54
   mappingHash: fc430fde159884ae80750ebcdd7152b3011180a98bef3176c4d657b365f3279e
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+    - A missing space jamming 'the Khilvatis' in the transcript was corrected against the volume-1 scan, page 219.
   verifiedAt: 2026-07-17
   rationale: The selected Clarke opening at Clarke volume-1, ode 68 (103), scan page 219 resolves to Qazvini-Ghani ghazal 86 through an exact continuous source span and 3 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

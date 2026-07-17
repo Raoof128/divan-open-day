@@ -36,6 +36,12 @@ records:
     english_span_hash: e6e71aa747bdaae2c2d8641f7f4dc39761e79ec82cdd8967819c9cba64129891
     persian_span_hash: 98de1b7a6768ec451d335d279d4f7c7ce69486807110bae0c0f81ff820657826
     mapping_hash: f4eebde88ecf00d74923ef17cd236e6291a8322a76b0bebb9aa81fb8b155d702
+  - item_id: hafez-ghazal-025-bell
+    poet: hafez
+    canonical_identity_hash: 3bf0c4683b5ed13a86af957ad1b378414540f988ac6b0b7c407da34aae33ac42
+    english_span_hash: 586a299958a5f010072ab97ad1be02f3e08109330e4e06c8cd68744e376e65b0
+    persian_span_hash: dd343d78be902085cc1133feabbc0d4d7dd78d1aeca3257acefd6bc51132515a
+    mapping_hash: 008f020a7654536885bf8504f29623d361dbf3c822e9a623efc3f345d983c636
   - item_id: hafez-ghazal-028-clarke
     poet: hafez
     canonical_identity_hash: c27893c264cc8567904b4d7c667ae262e6c9c15f01779dc9161addc3e6b3b9ab
@@ -57,15 +63,9 @@ records:
   - item_id: hafez-ghazal-043-clarke
     poet: hafez
     canonical_identity_hash: 4703faa33a73d2decd3b6c955f23bbecb9e047b10a3f28bbd33c22f657edf833
-    english_span_hash: ea88e6ef72d42d90186d3799b8629b46eb14ac431d811465a3d634a975805c63
+    english_span_hash: a07eb52e118338d9d1e4f60fe946e399a55de858035cf542881e6c1edda7a13f
     persian_span_hash: 29552fbd4302416956f5f984942259b1d00680623ee2f628f5d8b7c100802117
     mapping_hash: dc5076b93422e2702a1c7fd649db2cfd45b943049b64105073665e7158ab4b28
-  - item_id: hafez-ghazal-046-bell
-    poet: hafez
-    canonical_identity_hash: c87023abbec41c6e459105218791991a136e9ba7321ab356b80a88671f0659f3
-    english_span_hash: 586a299958a5f010072ab97ad1be02f3e08109330e4e06c8cd68744e376e65b0
-    persian_span_hash: 680dab0a91a850e99a50cfd4d2ed93dd7d91512d74edf73aa75c667b09face44
-    mapping_hash: 29e1cf12b1148b7b0e3b2802fd64aaa1cf36d281a979547b630eccc047f76309
   - item_id: hafez-ghazal-052-clarke
     poet: hafez
     canonical_identity_hash: b86f392c5affd50d5df1c316ef44a8cc431a5331efc2e5302c3ac18129fa59ae
@@ -111,7 +111,7 @@ records:
   - item_id: hafez-ghazal-086-clarke
     poet: hafez
     canonical_identity_hash: 7a1f595c2caf0202e5739852ca0332b33ff8fda49d525a17adff5a7a478a5178
-    english_span_hash: 21c78c1c267f6786e5c0000a1da4da1045565cd852455307b08ab8e5e51eb1e3
+    english_span_hash: 3c69471b79f658d09ebb48e22d7b707fd017977bfd0a1d07d4b82a30dd4fd11d
     persian_span_hash: ca23d0714835f6aa14bcfd1944bc1ad3ad6562ffd58a605c274890507c529b54
     mapping_hash: fc430fde159884ae80750ebcdd7152b3011180a98bef3176c4d657b365f3279e
   - item_id: hafez-ghazal-089-clarke
@@ -303,7 +303,7 @@ records:
   - item_id: hafez-ghazal-337-clarke
     poet: hafez
     canonical_identity_hash: 17b2fb6fea46b182d2d07c52f3e3b366c42d4c762978ac52b5fe6d1037cafa96
-    english_span_hash: 47a13616845b7b300b95d9e2aa3c1363a37b8887a8c33915baf5e10c89e41d36
+    english_span_hash: aa0bae623c077546621d8032ac2ff8983bec2e3c6f37e8c1265ceb551cfa0172
     persian_span_hash: 0c4b124d5f1cac9ab91f3c93a8612ba8f463ecd5a1ff375ba26e055e10712a58
     mapping_hash: f71b44188c1a22870b91b504b6e3669b8f52ff0b88b1429124839778c337435b
   - item_id: hafez-ghazal-342-clarke

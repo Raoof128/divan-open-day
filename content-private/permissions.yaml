@@ -51,10 +51,10 @@ permissions:
       - worldwide
     effective_on: 2026-07-16
     expires_on: null
-  - id: hafez-ghazal-046-bell-translation-permission
+  - id: hafez-ghazal-025-bell-translation-permission
     status: active
     kind: translation
-    subject_id: hafez-ghazal-046-bell
+    subject_id: hafez-ghazal-025-bell
     rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
     evidence_reference: sources-private/poetry/rights-evidence.yaml and source-lock.json
     permitted_uses:

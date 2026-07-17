@@ -569,9 +569,11 @@ function makeClarkeHafezItems(
             `${id}: expected transcript artefact ${JSON.stringify(replacement.from)} is absent; refusing to apply a blind correction.`,
           );
         }
-        if (!transcript.includes(compact(replacement.from))) {
+        const premise =
+          replacement.verify === 'artefact' ? replacement.from : replacement.to;
+        if (!transcript.includes(compact(premise))) {
           throw new Error(
-            `${id}: claimed transcript artefact ${JSON.stringify(replacement.from)} is not in the transcript; the correction premise fails.`,
+            `${id}: the ${replacement.verify === 'artefact' ? 'corrupt' : 'corrected'} reading ${JSON.stringify(premise)} is not in the transcript; the correction premise fails.`,
           );
         }
         englishLines[replacement.lineIndex] = line.replace(
@@ -801,7 +803,10 @@ function makeRederivedRumiItems(
         model: V3_MODEL,
         methodVersion: V3_METHOD_VERSION,
         verifiedAt: V3_VERIFIED_AT,
-        disclosures: [abridgedDisclosure(span.englishLines.length)],
+        disclosures: [
+          abridgedDisclosure(span.englishLines.length),
+          ...(spec.extraDisclosures ?? []),
+        ],
         confidence: 0.97,
         rationale: `Continuous Whinfield lines ${String(spec.englishStart)}-${String(spec.englishEnd)} of ${spec.segmentId} correspond line-for-line to consecutive hemistichs of Nicholson section ${String(selection.persianSequence)} starting at hemistich ${String(spec.persianStart)}; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (${String(alignment.votes)} ranking votes, ${String(alignment.anchors.length)} anchors). ${spec.note}`,
       }),

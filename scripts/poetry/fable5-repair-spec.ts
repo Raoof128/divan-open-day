@@ -27,6 +27,8 @@ export interface RumiWindowSpec {
     readonly lineOffset: number;
     readonly marker: string;
   };
+  /** Additional public disclosures specific to this record. */
+  readonly extraDisclosures?: readonly string[];
   readonly note: string;
 }
 
@@ -163,6 +165,9 @@ export const RUMI_REDERIVED_WINDOWS: readonly RumiWindowSpec[] = [
     englishStart: 2,
     englishEnd: 3,
     persianStart: 2,
+    extraDisclosures: [
+      "Whinfield renders the closing image as “the palm-trees of the 'Truth'” where the Nicholson transcription reads نخل امید (“the palm of hope”); the divergence reflects the translator's underlying edition, not an alteration by this project.",
+    ],
     note: 'Lion-valour counsel couplet; avoids a mid-quotation window.',
   },
 ];
@@ -232,6 +237,14 @@ export interface ClarkeLineReplacement {
   readonly lineIndex: number;
   readonly from: string;
   readonly to: string;
+  /**
+   * What the generator verifies against the locked transcript (whitespace-free
+   * comparison): 'artefact' asserts the corrupt `from` reading exists there
+   * (the transcript itself is wrong and the scan proves the correction);
+   * 'reading' asserts the corrected `to` reading exists there (the artefact
+   * arose in the evidence normalisation, not the transcript).
+   */
+  readonly verify: 'artefact' | 'reading';
   readonly proof: string;
 }
 
@@ -270,6 +283,7 @@ export const CLARKE_LINE_RECOVERY: Readonly<Record<string, ClarkeRecovery>> = {
         lineIndex: 0,
         from: '(0 true Beloved!)',
         to: '(O true Beloved!)',
+        verify: 'artefact',
         proof:
           'volume-1 scan page 125 (printed 73) prints the letter O; the transcript carries the digit 0.',
       },
@@ -277,6 +291,7 @@ export const CLARKE_LINE_RECOVERY: Readonly<Record<string, ClarkeRecovery>> = {
         lineIndex: 0,
         from: 'dwelling of—- Thine',
         to: 'dwelling of— Thine',
+        verify: 'artefact',
         proof:
           "The scan prints Clarke's long radif rule; the transcript garbles it as em-dash+hyphen. Normalised to the single em-dash convention used across the corpus.",
       },
@@ -292,12 +307,41 @@ export const CLARKE_LINE_RECOVERY: Readonly<Record<string, ClarkeRecovery>> = {
     disclosure:
       "The couplet's two verse lines were previously jammed into one truncated line that dropped the closing words 'I hold— thee.'; both complete lines were recovered from the locked transcript (volume-1, scan page 242) and mapped line-for-line.",
   },
+  'hafez-ghazal-043-clarke': {
+    replacements: [
+      {
+        lineIndex: 1,
+        from: 'time of winedrinkers',
+        to: 'time of wine-drinkers',
+        verify: 'reading',
+        proof:
+          "The transcript wraps 'wine-'/'drinkers' across a line break and the evidence normalisation dropped the hyphen; Clarke's compound is printed hyphenated (nine mid-line occurrences in volume-1, and the same scan page's commentary prints '(wine-drinkers) signifies').",
+      },
+    ],
+    disclosure:
+      "A line-wrap join in the transcript normalisation had dropped the hyphen of Clarke's compound 'wine-drinkers'; restored against the transcript and the volume-1 scan, page 183.",
+  },
+  'hafez-ghazal-086-clarke': {
+    replacements: [
+      {
+        lineIndex: 1,
+        from: 'of theKhilvatis',
+        to: 'of the Khilvatis',
+        verify: 'artefact',
+        proof:
+          "The transcript jams 'theKhilvatis' (volume-1 line 15932); the scan (page 219, printed 167) prints 'of the Khilvatis'.",
+      },
+    ],
+    disclosure:
+      "A missing space jamming 'the Khilvatis' in the transcript was corrected against the volume-1 scan, page 219.",
+  },
   'hafez-ghazal-130-clarke': {
     replacements: [
       {
         lineIndex: 1,
         from: '(0 wind thou sawest)',
         to: '(O wind thou sawest)',
+        verify: 'artefact',
         proof:
           'volume-1 scan page 294: the letter O; transcript carries the digit 0.',
       },
@@ -305,12 +349,27 @@ export const CLARKE_LINE_RECOVERY: Readonly<Record<string, ClarkeRecovery>> = {
     disclosure:
       'A transcript OCR artefact (digit 0 for the vocative O) was corrected against the volume-1 scan, page 294.',
   },
+  'hafez-ghazal-337-clarke': {
+    replacements: [
+      {
+        lineIndex: 0,
+        from: 'Land,- why',
+        to: 'Land,— why',
+        verify: 'artefact',
+        proof:
+          "The scan (volume-2 page 81, printed 657) prints Clarke's long radif rule after 'Land,'; the transcript garbles it to a bare hyphen. Normalised to the single em-dash convention used across the corpus.",
+      },
+    ],
+    disclosure:
+      "A garbled radif dash in the transcript ('Land,-') was normalised against the volume-2 scan, page 81.",
+  },
   'hafez-ghazal-350-clarke': {
     replacements: [
       {
         lineIndex: 0,
         from: 'Iii the morning',
         to: 'In the morning',
+        verify: 'artefact',
         proof:
           'volume-2 scan page 60 (printed 636): degraded type read "Iii" by the archive OCR; the tesseract reading, the grammar, and the Persian سحر all give "In".',
       },
@@ -324,6 +383,7 @@ export const CLARKE_LINE_RECOVERY: Readonly<Record<string, ClarkeRecovery>> = {
         lineIndex: 0,
         from: 'O them, in whose face',
         to: 'O thou, in whose face',
+        verify: 'artefact',
         proof:
           'volume-2 scan page 255 (printed 831) plainly prints "O thou"; the Persian ای در رخ تو confirms the second-person address.',
       },

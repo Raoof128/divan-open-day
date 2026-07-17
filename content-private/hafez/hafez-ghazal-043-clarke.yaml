@@ -27,7 +27,7 @@ text:
     - وقت گل خوش باد کزوی وقت میخواران خوشست
   english_lines:
     - The court of the garden (the world) is joy-giving (producing manifestations of Love's glories); and the society of friends (the soul and the body that intervene between the seeker and the Sought), pleasant;
-    - Pleasant, be the time of the rose (the Murshid), whereby the time of winedrinkers (lovers of God) is pleasant.
+    - Pleasant, be the time of the rose (the Murshid), whereby the time of wine-drinkers (lovers of God) is pleasant.
   alignment: line
   mapping:
     - english_index: 0
@@ -67,12 +67,13 @@ review_authority:
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 4703faa33a73d2decd3b6c955f23bbecb9e047b10a3f28bbd33c22f657edf833
-  englishSpanHash: ea88e6ef72d42d90186d3799b8629b46eb14ac431d811465a3d634a975805c63
+  englishSpanHash: a07eb52e118338d9d1e4f60fe946e399a55de858035cf542881e6c1edda7a13f
   persianSpanHash: 29552fbd4302416956f5f984942259b1d00680623ee2f628f5d8b7c100802117
   mappingHash: dc5076b93422e2702a1c7fd649db2cfd45b943049b64105073665e7158ab4b28
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
+    - A line-wrap join in the transcript normalisation had dropped the hyphen of Clarke's compound 'wine-drinkers'; restored against the transcript and the volume-1 scan, page 183.
   verifiedAt: 2026-07-17
   rationale: The selected Clarke opening at Clarke volume-1, ode 52 (54), scan page 183 resolves to Qazvini-Ghani ghazal 43 through an exact continuous source span and 3 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.
