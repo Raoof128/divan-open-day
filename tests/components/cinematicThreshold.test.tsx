@@ -134,6 +134,41 @@ describe('CinematicThreshold', () => {
     expect(onArrive).toHaveBeenCalledTimes(1);
   });
 
+  it('primes the muted video from the Begin gesture while the first frame is pending, then pauses on presentation', () => {
+    const { onAnnounce } = renderThreshold();
+    const video = document.querySelector('video');
+    expect(video).not.toBeNull();
+    const play = vi.fn(() => Promise.resolve());
+    const pause = vi.fn();
+    Object.defineProperty(video!, 'play', { value: play, configurable: true });
+    Object.defineProperty(video!, 'pause', {
+      value: pause,
+      configurable: true,
+    });
+    const section = thresholdSection();
+    Object.defineProperty(section, 'offsetHeight', { value: 2600 });
+    Object.defineProperty(window, 'innerHeight', {
+      value: 800,
+      configurable: true,
+    });
+
+    // WebKit will not composite a seeked frame on a never-played muted video;
+    // the Begin gesture is the sanctioned moment to prime it (project skill
+    // contract). The prime must be muted, inline, and best-effort.
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    expect(onAnnounce).toHaveBeenCalledWith('Preparing the entrance.');
+    expect(play).toHaveBeenCalledTimes(1);
+    expect(video!.muted).toBe(true);
+
+    // The scrub design never plays the clip: the first presented frame pauses
+    // the prime again, and the pending Begin is honoured immediately (this
+    // environment has no programmatic scroll, so arrival is direct).
+    fireEvent(video!, new Event('loadeddata'));
+    expect(pause).toHaveBeenCalled();
+    expect(thresholdSection().dataset['cinematicState']).toBe('arrived');
+  });
+
   it('presents the terminal video frame before completing corridor arrival', () => {
     const { onArrive, onAnnounce } = renderThreshold();
     const video = document.querySelector('video')!;
