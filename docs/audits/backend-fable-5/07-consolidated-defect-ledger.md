@@ -318,3 +318,52 @@ occurrences), shell/command injection (no `exec`/`shell:true` anywhere), `maxBuf
 untrusted filename reaches argv), prototype pollution via YAML (`eemeli/yaml` defines an own property;
 `.strict()` rejects it regardless), Node 22.16.0 CVE exposure (every applicable CVE requires
 `--permission` or a network server). Full reasoning in `02-primary-source-research.md`.
+
+---
+
+## Round 3 — everything technically repairable, closed
+
+On instruction ("fix all things you can for now"), every remaining finding that
+does **not** require a human decision was repaired. The corpus, rights, poetry and
+public-statement items stay escalated for the owner and are untouched.
+
+### Closed in round 3
+
+| ID | Severity | Repair | Proof |
+| -- | -------- | ------ | ----- |
+| B-D-13 / C-4 | High | `FIXED_BROWSER_ASSETS` and `FIXED_MIME` both exported and bound by a test comparing the **real maps**. Was: 4 hand-copied tables, both authorities module-private, **no test imported either**. | **Mutation-verified** — dropping `icon.svg` from the worker mirror alone now fails the test. Plus 13 unsafe-audio-path parity cases with a control assertion so no case can pass vacuously. |
+| B-D-24 | High | `verify-privacy` refused to claim a `dist` pass with no `dist`. Was: `walk()` returns `[]` for a missing dir → scanned zero files → printed *"passed … in source or dist"*. Scope widened to `public/` and the root `index.html` (the app shell sat outside every `SOURCE_DIR`) and to `.svg`. `walk()` now `lstat`s, so a symlink cycle no longer stack-overflows and a broken link no longer throws ENOENT uncaught at module scope. | Executed both ways: passes with `dist`, fails honestly without it. |
+| B-D-25 (was M7) | Medium | `verifyLock` rejects an emptied lock. Was: *"Source-lock verification passed: 0 artefacts intact"*, exit 0. Lock paths now containment-checked — a traversal entry was previously only flagged for a *hash mismatch*. | RED on both; real lock still verifies its 9 artefacts. |
+| B-D-16 | Medium | `inspect-public-bundle` reports symlinks and over-ceiling text assets. Was: `readdir` withFileTypes uses lstat semantics, so a symlink answered false to **both** `isFile()` and `isDirectory()` and was dropped in silence; a >5 MB text asset turned "too big to check" into "passes". | RED on both; real `verify:dist` still passes. |
+| B-D-12 | Medium | All 5 CI actions SHA-pinned (**the v4 majors already in use — pinning, not a version bump**); `persist-credentials: false`; `security-events: write` + `actions: read` dropped (their only consumer is gated on `upload-sarif: true` and always skipped); `cancel-in-progress` no longer applies to `main`. | Real SHAs resolved from the API; test asserts every `uses:` matches `@[0-9a-f]{40}`. |
+| B-D-26 | Medium | `pnpm minimumReleaseAge: 1440`. Default is 0 — a compromised release of any of 429 locked packages was installable the instant it was published. | `pnpm install --frozen-lockfile` verified still reproducible. |
+
+### Downgraded on verification — recorded so it is not re-litigated
+
+**The reported `isSafeAudioPath` "real drift" is not real.** Group E read the source
+correctly — `src-sw/schemas.ts` rejects `segment.startsWith('.')` and
+`publicSchema.ts` does not — and concluded `audio/.hidden.mp3` would compile and
+then fail SW staging. **Executed against both real schemas, they agree:**
+
+```
+audio/test-only-hafez-01-ea5a2658.mp3   build=true   worker=true   agree   (control)
+audio/.test-only-hafez-01-ea5a2658.mp3  build=false  worker=false  agree
+audio/.sub/test-only-hafez-01-ea5a2658.mp3  build=false worker=false agree
+```
+
+The compiler's digest-bearing filename pattern rejects the dot-prefixed name
+before the segment rule is ever reached. The divergence exists in the source and
+is **unreachable**. It is now pinned by parity tests regardless of which rule does
+the rejecting — so if the digest pattern ever loosens, the parity test fails
+rather than the field. **My first draft of that test passed for the wrong reason**
+(both paths were rejected by an unrelated rule); the control assertion was added
+specifically to prevent that.
+
+### Still open — all require a human, none are mine to make
+
+Unchanged and escalated: the 22 corpus content/provenance classes (truncated
+Persian, headings-as-verse, OCR corruption, footnote digits, PDF-vs-transcript
+binding), the rights coupling, the 12 hand-typed English lines, the ~222 verse
+lines in tracked evidence, the vacuous raster budget (needs a product decision),
+and the public-statement accuracy of `README.md` / `SECURITY.md` /
+`asset-register.md` / `phase-0` (needs an owner decision on what to publish).
