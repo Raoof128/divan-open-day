@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-17 — Release v1.0.4: frontend audit repairs deployed to the live origin
+
+**Raouf:**
+
+- Merged PR #13 into `main` (`0e21a0c`, merge tree byte-identical to the CI-verified tree) and tagged annotated `v1.0.4`, on explicit instruction lifting the audit-time do-not-merge/do-not-deploy constraints.
+- Published `ghcr.io/raoof128/divan-open-day:v1.0.4@sha256:5394144cc083b7c5e0a16fc0f1d048c7a6698a9e43e09e4c1f7830678b7c50d0` (release `divan-release-1-v1-0-4`) from a clean `git archive v1.0.4`, and activated it by digest on `https://divan.raoufabedini.dev`. Docker Scout `0C/0H/0M/0L`; `preflight.sh`, `deploy.sh`, and an independent `verify.sh` all passed; v1.0.3 retained as the verified restore image.
+- Poetry, translations, provenance, rights, and the exact 120-record count are unchanged: the compiled content JSON is byte-identical to v1.0.3 apart from the embedded `releaseId`, so the `contentSha256` shift is release metadata only.
+- Caught before publication: the first image built `linux/arm64` on Apple Silicon against an `x86_64` origin. Never pushed; rebuilt for `linux/amd64`, with a byte-identical `release.json` across both builds confirming reproducibility.
+- The first `deploy.sh` run aborted fail-closed because the origin could not pull the saved restore image (registry credentials were removed after v1.0.3, as that release's evidence records). The live site was untouched by the abort; credentials were supplied over stdin and removed from origin and workstation after the retry.
+- Verified in the live public bytes rather than by repository claim: all six audit repairs (D-1, D-2, D-3, D-4, D-6, D-7) are present in the shipped CSS, JS, and service worker, which reports `divan-release-1-v1-0-4`. Neighbouring services (EOI stack, reasoning-engine, nexus-api) retained 4–5 day uptimes and healthy status.
+- Follow-up: `.env` was read on explicit instruction; the droplet root password, Cloudflare API token, OpenAI key, and Gemini key are exposed in that transcript and **should be rotated**. `DROPLET_PASSWORD` is also stale — `.env`'s own note records SSH as key-only. The `Read(./.env)` deny rule was restored after use. §31.2 operator gates remain outstanding and are not claimed.
+
 ## 2026-07-17 — Fable 5 exhaustive frontend audit and repair
 
 **Raouf:**

@@ -28,6 +28,20 @@
 
 ## Raouf change log
 
+### 2026-07-17 (Australia/Sydney) — Release v1.0.4: merge and deploy the frontend audit repairs
+
+**Raouf:**
+
+- **Scope:** On explicit instruction from Raouf (which lifted the audit-time "do not merge / do not deploy" constraints), merged PR #13 into `main` @ `0e21a0c` (merge tree byte-identical to the CI-verified tree `f592a325`), tagged annotated `v1.0.4`, built and published the production image, and activated it on the live origin. Poetry, translations, provenance, rights, corpus selection, and the 120-record production count are unchanged; no DNS, tunnel identity, firewall, or Cloudflare configuration was altered.
+- **Release identity:** `divan-release-1-v1-0-4`; image `ghcr.io/raoof128/divan-open-day:v1.0.4@sha256:5394144cc083b7c5e0a16fc0f1d048c7a6698a9e43e09e4c1f7830678b7c50d0`; built from a clean `git archive v1.0.4` with `SOURCE_DATE_EPOCH=1784269584` (the tag commit timestamp), origin `https://divan.raoufabedini.dev`, 60/60 minimums, `society_only`, empty University approval ID. Previous release `v1.0.3` (`sha256:9d526a18…`) retained as the verified restore image.
+- **Corpus provenance proof:** the compiled content JSON is byte-identical to v1.0.3 (151,029 bytes, all 120 `items` equal) except the embedded `releaseId`; the `contentSha256` change (`1eb0afb1…` → `a9497e27…`) is therefore release metadata only, not a content change.
+- **Architecture defect caught pre-publication:** the first image built `linux/arm64` on Apple Silicon while the origin host is `x86_64`. It was never pushed. Rebuilt `--platform linux/amd64`; `release.json` is byte-identical across both builds, confirming `SOURCE_DATE_EPOCH` reproducibility.
+- **Gates:** Docker Scout `0C/0H/0M/0L` (159 packages) on the published amd64 image; `preflight.sh` passed non-mutating; `deploy.sh` activated by digest with the fail-closed handler armed; `verify.sh` passed as an independent operator step. The first `deploy.sh` attempt **aborted fail-closed** (`exit 64`) because the origin could not pull the saved restore image — registry credentials had been removed after the v1.0.3 release per that release's evidence. The live site was untouched by the abort (containers kept 20h uptime). Credentials were supplied over stdin for the retry and removed from both the origin and this workstation afterwards.
+- **Live verification (public bytes, not repository claims):** all six repairs confirmed in the shipped release — D-1 cache-first→network fallback with `{redirect:`error`}` and a 504 only on network failure; D-7 `headers.has(`range`)` audio passthrough; D-2 `.poem-result [lang=fa] h2{font-family:var(--font-persian-display);font-weight:400;line-height:2}`; D-3 `content:"✦" / ""` alt-text with plain-declaration fallback; D-4 gesture-gated muted prime; D-6 revoke deferred in `finally` via injected timer. Service worker carries `divan-release-1-v1-0-4`.
+- **Neighbouring services:** `persian-society-eoi-*`, `reasoning-engine-mcp`, and `nexus-api` all retained 4–5 day uptimes and healthy status; `divan-cloudflared-1` was not recreated. Only `divan-divan-web-1` changed.
+- **Files Changed:** `AGENT.md`, `CHANGELOG.md`, `docs/verification/2026-07-17-release-v1-0-4-deployment.md` (new). No source changed after the merge.
+- **Residual risk / follow-ups:** `.env` was read on explicit instruction and its contents (droplet root password, Cloudflare API token, OpenAI key, Gemini key) are exposed in that session transcript — **all four should be rotated**. The `DROPLET_PASSWORD` entry is additionally stale: `.env`'s own note records that SSH is key-only and the password now works only at the DigitalOcean web console. The `Read(./.env)` deny rule in `.claude/settings.json` was removed for the read and has been restored. Operator gates from §31.2 (physical devices, branded Safari, assistive technology, provider logging/retention review) remain outstanding and are not claimed.
+
 ### 2026-07-17 (Australia/Sydney) — Fable 5 exhaustive frontend audit and repair
 
 **Raouf:**
