@@ -251,6 +251,42 @@ describe('static origin delivery contract', () => {
     );
   });
 
+  test('pins verify.sh to the exact Cache-Control the Caddyfile actually serves', () => {
+    // verify.sh matches this header exactly, so a Caddyfile value it does not
+    // expect fails the candidate and rolls the release back. Substring checks
+    // let the two drift apart silently; these compare the real values.
+    const caddyfile = readProjectFile('ops/Caddyfile');
+    const verify = readProjectFile('ops/scripts/verify.sh');
+    const served = (matcher: string): string => {
+      const found = new RegExp(
+        `header ${matcher} Cache-Control "([^"]*)"`,
+        'u',
+      ).exec(caddyfile);
+      if (found?.[1] === undefined) {
+        throw new Error(`Caddyfile has no Cache-Control for ${matcher}`);
+      }
+      return found[1];
+    };
+    const expected = (name: string): string => {
+      const found = new RegExp(
+        `require_header_exact "\\$work_dir/${name}\\.headers" 'Cache-Control' '([^']*)'`,
+        'u',
+      ).exec(verify);
+      if (found?.[1] === undefined) {
+        throw new Error(
+          `verify.sh has no Cache-Control expectation for ${name}`,
+        );
+      }
+      return found[1];
+    };
+
+    expect(expected('document')).toBe(served('@documents'));
+    expect(expected('release')).toBe(served('@noCacheFiles'));
+    expect(expected('worker')).toBe(served('@noCacheFiles'));
+    expect(expected('content')).toBe(served('@immutable'));
+    expect(expected('manifest')).toBe(served('@manifest'));
+  });
+
   test('serves the offline recovery file exactly without rewriting it to the SPA', () => {
     const caddyfile = readProjectFile('ops/Caddyfile');
     const staticPaths =

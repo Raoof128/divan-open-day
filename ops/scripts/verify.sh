@@ -233,11 +233,11 @@ wait_for_public_health
 
 fetch_public '/' "$work_dir/document.headers" "$work_dir/index.html"
 require_global_headers "$work_dir/document.headers"
-require_header_exact "$work_dir/document.headers" 'Cache-Control' 'no-cache, must-revalidate'
+require_header_exact "$work_dir/document.headers" 'Cache-Control' 'no-cache, must-revalidate, no-transform'
 
 fetch_public '/release.json' "$work_dir/release.headers" "$work_dir/release.json"
 require_global_headers "$work_dir/release.headers"
-require_header_exact "$work_dir/release.headers" 'Cache-Control' 'no-cache, must-revalidate'
+require_header_exact "$work_dir/release.headers" 'Cache-Control' 'no-cache, must-revalidate, no-transform'
 require_matching_release_files "$work_dir/running-release.json" "$work_dir/release.json"
 
 release_id=$(extract_json_string "$work_dir/release.json" releaseId)
@@ -292,7 +292,7 @@ require_header_exact "$work_dir/assets.headers" 'Cache-Control' 'public, max-age
 
 fetch_public '/service-worker.js' "$work_dir/worker.headers" "$work_dir/service-worker.js"
 require_global_headers "$work_dir/worker.headers"
-require_header_exact "$work_dir/worker.headers" 'Cache-Control' 'no-cache, must-revalidate'
+require_header_exact "$work_dir/worker.headers" 'Cache-Control' 'no-cache, must-revalidate, no-transform'
 fetch_public '/manifest.webmanifest' "$work_dir/manifest.headers" "$work_dir/manifest.webmanifest"
 require_global_headers "$work_dir/manifest.headers"
 require_header_exact "$work_dir/manifest.headers" 'Cache-Control' 'public, max-age=3600'
