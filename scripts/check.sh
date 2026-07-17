@@ -73,14 +73,29 @@ step() {
   fi
 }
 
-# Launch gate: expected to be fail-closed. Non-zero exit is the healthy state;
-# a zero exit means a gate opened and is surfaced as a failure.
+# Launch gate: expected to be fail-closed. A zero exit means a gate opened.
+#
+# A non-zero exit alone is NOT evidence of a healthy closed gate: the verifier
+# exits non-zero both when it genuinely blocks and when it dies on argv, a
+# missing interpreter, or a syntax error. This gate previously reported
+# "fail-closed (as intended)" for `Usage: verify-qr.ts --pack <directory>` —
+# it never reached a single manifest, checksum, vector or PDF check, and would
+# have reported the same had the script been deleted. So the gate must also
+# prove the verifier actually ran, by matching a marker only it can print.
 gate_closed() {
-  local name="$1"; shift
+  local name="$1"; local expected_reason="$2"; shift 2
   printf '%s▸ %s %s(expect fail-closed)%s\n' "$BOLD" "$name" "$DIM" "$RESET"
-  if "$@" >/dev/null 2>&1; then
+  local output rc
+  output=$("$@" 2>&1)
+  rc=$?
+  if [[ "$rc" -eq 0 ]]; then
     printf '  %s✗ %s unexpectedly succeeded — a launch gate opened%s\n' "$RED" "$name" "$RESET"
     FAILURES+=("$name (gate opened)")
+  elif [[ "$output" != *"$expected_reason"* ]]; then
+    printf '  %s✗ %s exited non-zero without reaching its own contract; expected %s in the output%s\n' \
+      "$RED" "$name" "$expected_reason" "$RESET"
+    printf '  %s%s%s\n' "$DIM" "$output" "$RESET"
+    FAILURES+=("$name (closed for the wrong reason)")
   else
     printf '  %s✓ %s is fail-closed (as intended)%s\n' "$GREEN" "$name" "$RESET"
   fi
@@ -109,7 +124,10 @@ if [[ "$QUICK" -eq 0 ]]; then
 
   echo
   echo "${BOLD}Launch gates${RESET} ${DIM}(must stay closed until evidence exists)${RESET}"
-  gate_closed 'verify:qr' pnpm -s verify:qr
+  # `--pack` is required: without it the verifier dies on argv and the gate
+  # proves nothing about the QR deliverable. `docs/qr` is where generate:qr
+  # writes the pack; while it does not exist the verifier reports that honestly.
+  gate_closed 'verify:qr' 'Digital QR pack:' pnpm -s verify:qr --pack docs/qr
 
   if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
     printf '%s▸ Docker evidence%s %s(skipped — no running daemon; run ops/scripts/verify.sh on a Docker host)%s\n' \

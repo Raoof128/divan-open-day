@@ -237,6 +237,29 @@ describe('public operational evidence boundary', () => {
     expect(workflow).toContain('needs: osv-scan');
   });
 
+  test('proves the QR launch gate is closed by the QR contract, not by a usage error', () => {
+    // `gate_closed` treats ANY non-zero exit as a healthy closed gate. verify-qr
+    // exits 1 both when it passes-but-is-humanly-blocked and when it dies on
+    // argv, so wiring it without `--pack` made the gate report "fail-closed (as
+    // intended)" for `Usage: verify-qr.ts --pack <directory>` — it never reached
+    // a single manifest, checksum, vector or PDF check, and would report the
+    // same if the script were deleted. The gate must prove the verifier ran.
+    const check = readProjectFile('scripts/check.sh');
+    const packageJson = JSON.parse(readProjectFile('package.json')) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(packageJson.scripts['verify:qr']).toContain(
+      'scripts/qr/verify-qr.ts',
+    );
+    // The gate must hand the verifier a pack to verify.
+    expect(check).toMatch(/gate_closed 'verify:qr'[^\n]*--pack /u);
+    // And it must assert the verifier's own marker, so a usage error, a deleted
+    // script, or a missing tsx cannot masquerade as a closed launch gate.
+    expect(check).toMatch(/gate_closed\(\)[\s\S]*expected_reason/u);
+    expect(check).toContain("gate_closed 'verify:qr' 'Digital QR pack:'");
+  });
+
   test('ignores every private poetry report, not only the -candidates shape', () => {
     // These reports carry verse excerpts. The rule used to name one filename
     // shape (`*-candidates.json`), so a report named anything else — e.g. a
