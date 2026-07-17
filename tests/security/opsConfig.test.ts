@@ -251,6 +251,26 @@ describe('static origin delivery contract', () => {
     );
   });
 
+  test('keeps private source material out of the image build context', () => {
+    // ops/Dockerfile is `COPY . .`, so .dockerignore is the only thing standing
+    // between a plain `docker build .` and ~149 MB of raw source books plus the
+    // per-page OCR of two complete translations — material .gitignore calls out
+    // by name as "the whole book … Never commit them". The final stage is
+    // scratch and copies only /app/dist, so nothing reaches the published
+    // image; the exposure is the build layer and the local/CI build cache.
+    // CLAUDE.md is excluded for a different reason: it carries the origin SSH
+    // host and deploy root.
+    const dockerignore = readProjectFile('.dockerignore');
+    const dockerfile = readProjectFile('ops/Dockerfile');
+
+    expect(dockerfile).toContain('COPY . .');
+    for (const excluded of ['sources-private', 'CLAUDE.md', '.claude']) {
+      expect(dockerignore.split('\n')).toContain(excluded);
+    }
+    // The production compiler reads content-private/, so it must NOT be excluded.
+    expect(dockerignore.split('\n')).not.toContain('content-private');
+  });
+
   test('forbids intermediaries from transforming the digest-verified assets', () => {
     const caddyfile = readProjectFile('ops/Caddyfile');
 

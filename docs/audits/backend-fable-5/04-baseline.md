@@ -23,4 +23,4 @@ All gates run fresh on `adde8b4` BEFORE any repair. Node 22.16.0 / pnpm 10.33.0 
 | `pnpm verify:rollback` | 0 | 8 |
 | `pnpm verify:qr` | 1 | 1 |
 
-No baseline failure predates the audit except `verify:qr` (exit 1), which is **fail-closed by design** — a launch gate, not a defect. `pnpm audit --prod` also passes (exit 0), contradicting the CHANGELOG's HTTP 410 record.
+**CORRECTION (round 2).** This baseline originally recorded `verify:qr` (exit 1) as "fail-closed by design — a launch gate, not a defect". That was inferred from the exit code, and it was wrong. The full read proved the script dies at argv validation (`Digital QR pack: FAIL — Usage: verify-qr.ts --pack <directory>`) because `verify:qr` was wired without `--pack`; it never reached a single manifest, checksum, vector or PDF check. The exit code was real; the reason I attributed to it was not. This is the same error `gate_closed` was making, and it is recorded here rather than quietly amended — see B-D-23. No other baseline failure predates the audit. `pnpm audit --prod` also passes (exit 0), contradicting the CHANGELOG's HTTP 410 record.

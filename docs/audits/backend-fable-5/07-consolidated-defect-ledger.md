@@ -210,6 +210,105 @@ exact moment that output is trusted. Confirmed to be the only script of this sha
 | B-D-20 | Ops: `lib.sh:253-266` clears `HUP INT TERM` before running the ~10s fail-closed teardown, so a second Ctrl-C aborts the stop; `deploy.sh:46-49`/`rollback.sh:43-44` write the state-file **pair** non-atomically (a crash between them discards the rollback target). | Low | Both fail in the safe direction and are narrow (deliberate double-signal; crash in a 2-line window). `read_immutable_state_file` re-validates mode/ownership/digest on read, so a torn file fails closed. Recorded with remedies. |
 | B-D-21 | No `shellcheck` in any gate; the ops scripts (which run as root against the live origin) are the highest-risk code in the repo and are linted by nothing. `shellcheck` is **not installed** on this machine (recorded honestly, not skipped silently); `bash -n` passes on all 7 scripts. | Low | Recorded as a gate gap with the exact remedy. |
 
+## Round 2 — the complete file-by-file read (all 392 files)
+
+The first pass audited the high-trust core and delegated breadth. On instruction, a second pass read
+**every one of the 392 inventoried files completely**, divided across five readers, with the lead
+personally reading `src-sw/releaseManager.ts`, `scripts/build.ts` and `scripts/verify-dist.ts`.
+It found two repairable defects the first pass missed, and a large body of corpus-content defects.
+
+### B-D-22 — the precached PWA icon is unreachable offline · **MEDIUM** · repaired
+
+`src-sw/releaseManager.ts:205-213`. `/icons/` (plural) does **not** prefix-match `/icon.svg`, so the
+manifest icon fell through to the network-only arm at `:230`. Both schemas independently force
+`requiredOffline` on it (`release.ts:37` + `:126-135`; `schemas.ts:268` + `:310-320`), so it is
+fetched, digest-verified, **charged against the 8 MB ceiling**, written to the cache — and then never
+read from it. `#candidateComplete` even requires it present, so the cost is load-bearing while the
+benefit is unreachable. An installed PWA loses its icon offline while still paying for it.
+
+**RED reproduced the real symptom** (`TypeError: offline` — the request reached the network).
+Repaired by naming the path in the cache-first arm. Verified red→green by reverting the fix.
+
+### B-D-23 — a usage error passed as a closed launch gate · **HIGH** · repaired
+
+`scripts/check.sh` `gate_closed` treated **any** non-zero exit as a healthy closed gate.
+`verify-qr.ts` exits 1 on **two** different paths — the intended
+`Digital QR pack: PASS` + `Physical scan matrix: BLOCKED`, and `Digital QR pack: FAIL — Usage: …`.
+`package.json:46` wired `verify:qr` with **no `--pack`**, so the script died at argv validation and
+`check.sh` printed `✓ verify:qr is fail-closed (as intended)`.
+
+Executed proof:
+```
+$ pnpm -s verify:qr
+Digital QR pack: FAIL — Usage: verify-qr.ts --pack <directory>
+>>> exit: 1                      # → gate_closed reports "as intended"
+```
+Not one line of the manifest / checksum / vector / PDF verification ran, and no pack exists at all
+(`docs/qr` absent). **The gate would have reported identically had the script been deleted.** Every
+release document describing this gate as "correctly blocked on the approved short URL and physical
+scan matrix" was describing a state that never occurred.
+
+**This one convicts my own Phase 4 baseline**, which recorded `verify:qr → exit 1` as "fail-closed by
+design" — inferred from the exit code, which is exactly the error the gate itself was making.
+`04-baseline.md` is corrected.
+
+Repaired: `gate_closed` now takes an expected reason, captures output, and requires **both** a
+non-zero exit **and** the verifier's own marker; `verify:qr` is passed `--pack docs/qr`. Verified in
+both directions — the real verifier still reports the gate closed (now for a *true* reason: the pack
+does not exist), and a deleted verifier now **fails** with "closed for the wrong reason".
+
+### Corpus content defects — 22 classes across the 120 records · **ESCALATED, not repaired**
+
+Every one of the 120 records was read individually. The findings below are **content and provenance
+defects that this goal forbids me to touch** ("Do not alter poetry wording, translations, literary
+mappings… Never perform literary reinterpretation"). They are recorded with exact file and field for
+the corpus owner. Full detail in the round-2 evidence.
+
+| Class | Severity | Evidence |
+| ----- | -------- | -------- |
+| Truncated Persian with a stray `[` | High | `hafez-ghazal-065-bell` — `خوشتر ز عیش و صحبت و باغ[`; only `[`/`]` in the corpus (lead-verified) |
+| Truncated English lines | High | `hafez-ghazal-163-bell` ends `…the sweet laughter of`; `hafez-ghazal-091-clarke`; `rumi-masnavi-0699` opens a quote it never closes |
+| OCR corruption published as translation | High | `hafez-ghazal-350-clarke` `Iii the morning`; `034-clarke` / `130-clarke` digit `0` for `O`; `489-clarke` `O them` for `O thou` |
+| Section **headings** published as verse | High | `rumi-masnavi-0418` (known) **and `rumi-masnavi-0643`** — whose own disclosure admits the opening line is "the translator's own summary heading rather than translated verse", and ships it as `persian_lines[0]` anyway |
+| Keyword fragments published as verse | High | `rumi-masnavi-0306` `سگ کهف`; `0300` an Arabic hadith fragment; `0633`, `0724`, `0029` |
+| Footnote digits inside verse | High | `rumi-masnavi-0718` `…by the force of his weaving. 4`; `0751`, `0813`, `0408` |
+| Literal `...` elision marks in published lines | High | 10 lines across 6 Rumi records, 0 Hafez |
+| **Provenance binds the wrong artefact** | High | All 36 Clarke records bind `english_source_sha256` to the **PDF** while their disclosure says the text was normalised "from the locked … **transcript**". The transcripts are in `source-lock.json` under different hashes and are bound by **no** record. Same shape for 24 Bell records. Digests recompute fine — they certify an artefact the pipeline never read. |
+| Rights chain not coupled | High | 120 `active` permissions cite `rights-evidence.yaml`, whose 5 records are all `status: pending`, `rights_reviewer_id: null`, `source_lock_reference: null` — **although the source-lock SHA-256s exist**. `evidence_reference` is free text and is never resolved. No disclosure claims a human check, so the honesty holds; the coupling does not. |
+| Same Bell poem cited for two ghazals | Medium | `hafez-ghazal-169-bell` and `-336-bell` both cite `Bell poem XLII` |
+| Corrupt citation numeral | Medium | `hafez-ghazal-090-bell` — `Bell poem Ul`; not a Roman numeral, the only one of 23 |
+| Registry gap | Medium | `editions.yaml` holds only the 2 Persian editions; the 3 English editions referenced by `english_source_id` have **no** entry |
+| Undisclosed drop-cap; verdict inconsistent | Medium | `hafez-ghazal-046-bell`, `-288-bell` ship `THE rose has flushed red` with `MACHINE_VERIFIED`, `confidence 0.99`, `disclosures: []` — while 12 sibling records disclose and normalise this exact class |
+| Confidence is a template literal, not a score | Medium | `0.8` is an exact literal in **41** records; 7 serialise raw float noise (`0.9349999999999999`); `verifiedAt` is the identical literal `2026-07-16` in all 120 |
+| Crossed mapping (human judgement) | High | `rumi-masnavi-0836` — فرعون/موسی sit in `persian_lines[1]` while "Pharaoh…Moses" maps to `[0]`. **Observation only; no proposal made.** |
+
+**Structural checks that PASS** and should not be re-litigated: 60/60/120 exact; selection ↔ disk 1:1;
+all four authority digests recompute exactly for all 120; 0 duplicate identities; 0 Rumi span
+overlaps; 0 fixture sentinels; 0 bidi controls; private-field stripping clean; mapping indices all
+resolve; `source-lock.json` hex clean; determinism proven (reversed input → byte-identical output).
+
+**The single highest-yield metadata-only gate available** (suggested, not applied): require
+`english_source_reference` to carry a `:lines-N-M` window. **All 16 Rumi records lacking one carry a
+defect, and no windowed record does.**
+
+## Lead's personal full reads — findings and cleared code
+
+The lead read these in full, line by line, in addition to the core read during Phase 5. Recorded so
+the audit's own claim about who read what is checkable.
+
+| File | Lines | Verdict |
+| ---- | ----- | ------- |
+| `src-sw/releaseManager.ts` | 906 | **NO NEW DEFECT.** The v1.0.6 rescue at `#networkNavigation` (733-748) is correctly scoped. `#serialized` (897-904) genuinely serialises staging/activation, closing the multi-tab race. The pointer write (395) is a real single-`put` commit boundary, with cleanup explicitly demoted to non-fatal maintenance (403-441) so a committed activation can never be reported as failed. The 8 MB ceiling is checked **inside** the asset loop (316) as well as after (322). `#fetchBytes` correctly treats a compressed `content-length` as wire metadata (610-623) rather than comparing it to decoded bytes. Noted, not a defect: the `readyRecordSchema.parse` calls in `#audioResponse` (834, 839) are unguarded, unlike every other parse — but they are unreachable with a corrupt record because `activeCache()` gates them via `#readReady`, which returns `null` on a parse failure. |
+| `scripts/build.ts` | 1177 | **NO NEW DEFECT beyond B-D-06.** Independently implements nearly every hardening the Node research names: `open(lock,'wx',0o600)` atomic exclusive create with dev/ino identity re-verification before unlink (356-423); `lstat` not `stat` throughout; `realpath` containment checked **both** before and after resolve in `readProductionAsset` (733/741); every staged write uses `flag:'wx'` so nothing is silently overwritten (654/659/890/892); `mkdtemp` is rooted **inside `projectRoot`** (624, 1000), not `os.tmpdir()` — which is exactly the `EXDEV` cross-filesystem `rename` trap the research flagged, avoided; `resolveSafeOutputDirectory` (290-328) forbids `/`, cwd, `$HOME`, and the project root itself and requires `distDir === projectRoot/dist`; activation restores the previous dist on failure and demotes backup cleanup to a warning (960-979) so a successful activation is never reported as a failure. `parseSourceDateEpoch` (147-166) **requires** the variable and validates integer/range/UTC. |
+| `scripts/verify-dist.ts` | 728 | **NO NEW DEFECT.** `walkDistribution` **explicitly rejects symlinks** (167-171) and any non-file entry (176-178) — this is the compensating control for B-D-16's symlink gap in `inspect-public-bundle.ts`. `readCanonicalJson` re-derives the canonical form and rejects any byte difference (143), a genuine tamper check. The exact-file-set assertion (681-693) reports both unexpected **and** missing. Magic bytes verified for woff2/png/webp/avif/mp4/mp3/ogg; text assets decoded with `{fatal:true}`. Binary assets are not content-scanned for private values, which is sound: they are SHA-256-bound to the registry, so injected content cannot survive the hash. |
+
+**Scope correction to B-D-06 from these reads:** the `localeCompare` sort appears in *both*
+`scripts/build.ts:438` and `scripts/verify-dist.ts:162`. Only the **build.ts** instance reaches
+output — its order flows into the asset array → the asset manifest → `canonicalSha256(assetManifest)`
+→ `assetManifestSha256`. In `verify-dist.ts` the resulting order only feeds set membership
+(`expectedFiles.has` / `files.includes`), so it is **harmless there**. The finding stands, now
+precisely scoped to one line.
+
 ## Rejected — no evidence
 
 Speculative items raised during research and rejected by the lead after reading real code:

@@ -91,7 +91,7 @@ verification[0:3]: [{'command': 'pnpm poetry:build-production', 'result': 'PASS'
 | `pnpm format:check` | 0 | 0 |
 | `pnpm lint` | 0 | 0 |
 | `pnpm typecheck` | 0 | 0 |
-| `pnpm test` (62 files) | 718 | **721 passed** (+3 net-new, none weakened) |
+| `pnpm test` (62 files) | 718 | **723 passed** (+5 net-new, none weakened) |
 | `pnpm test:security` | 0 | 0 (63 passed) |
 | `pnpm poetry:verify-sources` | 0 | 0 |
 | `pnpm build:fixture` | 0 | 0 |
@@ -111,18 +111,20 @@ verification[0:3]: [{'command': 'pnpm poetry:build-production', 'result': 'PASS'
   all four authority digests recompute exactly; 0 duplicate identities; 0 Rumi span overlaps;
   0 fixture sentinels; 0 bidi controls; selection is explicit, not directory order; reversed input →
   byte-identical compiled output).
-- Findings: **Blocker 0** · **Critical 1 closed** · **High 3 closed / 5 open** · **Medium 2 closed /
-  ~8 open** · Low/Informational ~12 open (all recorded with remedies).
+- Findings after round 2: **Blocker 0** · **Critical 1 closed** · **High 4 closed / ~12 open** ·
+  **Medium 3 closed / ~14 open** · Low/Informational ~20 open (all recorded with remedies).
+  The open Highs are dominated by **corpus content and provenance defects this goal forbids repairing**.
 
 ## Honest limitations
 
-- **The lead did not personally read all 392 inventoried files.** The high-trust core was read in
-  full by the lead (`canonical.ts`, `canonicalIdentity.ts`, `compileCorpus.ts`, `productionManifest.ts`,
-  `productionSelection.ts`, `secureRandom.ts`, `Caddyfile`, `check.sh`, `ci.yml`, `runOpsCheck.ts`,
-  `verify-container.ts`, `extract-sources.ts`, `AGENT.md`, `package.json`). The remainder was read
-  file-by-file by six read-only subagents whose findings the lead **re-verified against real code or
-  by execution** before acceptance. That is not the same as the lead reading every line, and the goal
-  asked for the latter. Recorded rather than glossed.
+- **All 392 inventoried files have now been read completely** (round 2). The lead personally read
+  the high-trust core plus `src-sw/releaseManager.ts` (906), `scripts/build.ts` (1177) and
+  `scripts/verify-dist.ts` (728); the remaining files were read line-by-line by five readers with the
+  inventory divided so that no file was dropped (23 + 31 + 80 + 134 + 119 = 387, plus the 5 the lead
+  read = 392). Every finding was **re-verified by the lead against real code or by execution** before
+  acceptance; several were downgraded, and one — the `verify:qr` gate — **convicted the lead's own
+  Phase 4 baseline**, which is corrected in `04-baseline.md` rather than quietly amended. This is
+  still not "the lead personally read every line", and that distinction is stated rather than blurred.
 - **Phases 6 and 10 were not completed as specified.** The adversarial matrix was executed only in
   part (the container/regexp/vitest-filter probes above); the nine-dimension independent re-audit did
   not run. The audit ran out of capacity. `06-adversarial-matrix.md` and `08-adversarial-reviews/`
