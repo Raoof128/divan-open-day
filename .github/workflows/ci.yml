@@ -50,10 +50,16 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 
+      # DIVAN_OSV_SCAN_COMPLETED is deliberately NOT set. It used to suppress
+      # `pnpm audit` here on the grounds that the osv-scan job already covered
+      # dependencies. That made the only dependency control fail-open: the
+      # pinned reusable workflow runs its scanner with `continue-on-error: true`
+      # and its reporter exits 0 even when no results file was produced, so a
+      # scanner error yields a green `osv-scan`, a satisfied `needs:`, and zero
+      # dependency scanning. Letting `pnpm audit --prod` run underneath restores
+      # a fail-closed backstop that does not depend on upstream behaviour.
       - name: Run quality gate
         run: bash scripts/check.sh --ci
-        env:
-          DIVAN_OSV_SCAN_COMPLETED: '1'
 
       - name: Upload Playwright report on failure
         if: failure()

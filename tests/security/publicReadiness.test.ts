@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
@@ -234,5 +235,44 @@ describe('public operational evidence boundary', () => {
       'osv-scanner-reusable.yml@8dc09193bb540e09b23da07ad7e30bd33bf87018',
     );
     expect(workflow).toContain('needs: osv-scan');
+  });
+
+  test('ignores every private poetry report, not only the -candidates shape', () => {
+    // These reports carry verse excerpts. The rule used to name one filename
+    // shape (`*-candidates.json`), so a report named anything else — e.g. a
+    // complete 494-matla' reference with "no prefilter, no exclusion" — was
+    // left unignored and one `git add -A` away from public history. The two
+    // reviewed, text-free reports stay tracked by explicit negation.
+    const ignore = readProjectFile('.gitignore');
+
+    expect(ignore).toContain('sources-private/poetry/reports/*');
+    expect(ignore).toContain(
+      '!sources-private/poetry/reports/candidates-summary.json',
+    );
+    expect(ignore).toContain(
+      '!sources-private/poetry/reports/source-rights-report.md',
+    );
+
+    const ignored = (path: string): boolean =>
+      spawnSync('git', ['check-ignore', '-q', path], { cwd: projectRoot })
+        .status === 0;
+
+    expect(
+      ignored('sources-private/poetry/reports/hafez-ghazal-matlas.json'),
+    ).toBe(true);
+    expect(ignored('sources-private/poetry/reports/anything-new.json')).toBe(
+      true,
+    );
+    // The reviewed text-free reports must stay committable.
+    expect(
+      ignored('sources-private/poetry/reports/candidates-summary.json'),
+    ).toBe(false);
+    expect(
+      ignored('sources-private/poetry/reports/source-rights-report.md'),
+    ).toBe(false);
+    // The approved corpus must stay tracked — the negation pattern this mirrors.
+    expect(ignored('content-private/hafez/hafez-ghazal-001-bell.yaml')).toBe(
+      false,
+    );
   });
 });

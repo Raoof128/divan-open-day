@@ -251,6 +251,35 @@ describe('static origin delivery contract', () => {
     );
   });
 
+  test('forbids intermediaries from transforming the digest-verified assets', () => {
+    const caddyfile = readProjectFile('ops/Caddyfile');
+
+    // `@immutable` carries the content-addressed corpus (/content/<sha256>.json)
+    // and every hashed asset — the exact bytes the service worker verifies by
+    // SHA-256 before it will stage a release. `immutable` (RFC 8246) only
+    // constrains client revalidation; it says nothing to an intermediary about
+    // rewriting content. Only RFC 9111 `no-transform` does. An edge image
+    // transform is a dashboard toggle away, and rewritten bytes fail the digest
+    // check for every client, exactly as edge HTML injection did in v1.0.6.
+    expect(caddyfile).toMatch(
+      /header @immutable Cache-Control "[^"]*no-transform[^"]*"/u,
+    );
+  });
+
+  test('denies public /healthz for every spelling the origin answers to', () => {
+    const caddyfile = readProjectFile('ops/Caddyfile');
+    const template = readProjectFile('ops/cloudflared/config.yml.example');
+
+    // The tunnel denies /healthz with a Go regexp, which is case-sensitive, so
+    // `/HEALTHZ` misses the deny rule and is forwarded to the origin. Caddy's
+    // `path` matcher is case-INSENSITIVE, so the origin would answer it "ok".
+    // The two layers must agree: the origin matcher has to be case-exact, which
+    // `path_regexp` provides and `path` does not.
+    expect(template).toContain('path: ^/healthz$');
+    expect(caddyfile).toMatch(/@health path_regexp health \^\/healthz\$/u);
+    expect(caddyfile).not.toMatch(/@health path \/healthz/u);
+  });
+
   test('pins verify.sh to the exact Cache-Control the Caddyfile actually serves', () => {
     // verify.sh matches this header exactly, so a Caddyfile value it does not
     // expect fails the candidate and rolls the release back. Substring checks
@@ -284,6 +313,7 @@ describe('static origin delivery contract', () => {
     expect(expected('release')).toBe(served('@noCacheFiles'));
     expect(expected('worker')).toBe(served('@noCacheFiles'));
     expect(expected('content')).toBe(served('@immutable'));
+    expect(expected('assets')).toBe(served('@immutable'));
     expect(expected('manifest')).toBe(served('@manifest'));
   });
 
