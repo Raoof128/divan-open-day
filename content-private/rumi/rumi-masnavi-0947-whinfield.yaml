@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0205-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0205-s2:lines-2-3
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - گفت یزدان تو بده بایست او / برگشا در اختیار آن دست او
     - اختیار آمد عبادت را نمک
+    - ورنه می‌گردد بناخواه این فلک
   english_lines:
-    - God said, "Do thou grant his earnest request... according to his freewill"
-    - Freewill is as the salt to piety
+    - Freewill is as the salt to piety,
+    - Otherwise heaven itself were matter of compulsion.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 8d5a95956677e6fa32e2cd7f26c79c5e6c1afe16c12cdbfeb058bf3f3c6d1fd1
-  englishSpanHash: 6cb141b1c4400129f9ff54c6dfeb7781aa0d7ec2eb9a2c0fa0087ffd75cbcba7
-  persianSpanHash: 3a089443ec397f6f1fb1f72522452cfe8a30f67e875fa48af6c1c12d7f9326ea
-  mappingHash: 8db4e49f28a2480ccdeb0333cb5da450d014742237a44b13e5094a132a1a9df9
+  canonicalIdentityHash: 7716d1a4d308da60c8bbb385ae12f82d03824c7bd7c347a464e47469035371dd
+  englishSpanHash: 11fa88f2c0fb0c54d8ced2a2395cf726870925ab7ea5b44228e013d6a99ea56b
+  persianSpanHash: 794023e4487789361865067b7a0a728dafe698d90c761842a99716a38688c630
+  mappingHash: ad269f7e43f316341d91a02271bef28ceb98e9290f7add693b12ef785c0aacf4
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.95
+  confidence: 0.97
   disclosures:
-    - "Abridged translation. E. H. Whinfield renders this section closely but not completely: the English omits the section's closing couplets, and substitutes \"wasps\" for the Persian \"snake\" in the honeybee/serpent contrast. The block also opens with Whinfield's own prose summary of the surrounding story, which is not translated verse."
-  verifiedAt: 2026-07-16
-  rationale: "The verse portion of English block 205 (\"Why freewill is good for man\") corresponds couplet-by-couplet to Nicholson section 947, وحی آمدن از حق تعالی به موسی کی بیاموزش چیزی کی استدعا کند یا بعضی از آن — the divine reply within the Moses / language-of-animals cycle. Six independent identifying anchors align in the same sequence: the opening divine grant of ikhtiyar, the salt-of-worship metaphor, the sword/ghazi-or-brigand test, the karramna + halved-Adam contrast, the prison-makes-ascetics argument, and the closing capital/reckoning figure. The ranked candidates (350, 107, 65, 194, 949) all matched on موسی alone and are unrelated — I located 947 by searching the Persian for کرمنا together with زنبور. Disclosure is warranted because the English block prefixes the verse with Whinfield's own prose plot summary, he renders نیم مار (\"half a snake\") as \"wasps\" and normalizes the snake/wasp imagery throughout, and he drops the concluding couplets (آدمی بر خنگ کرمنا سوار onward, and Moses's renewed warning) that close the Persian section."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 2-3 of rumi-whinfield-abridged-en-b0205-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 947 starting at hemistich 2; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (5 ranking votes, 6 anchors). Freewill-as-salt couplet; avoids a mid-quotation window.

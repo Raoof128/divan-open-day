@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0019-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0019-s2:lines-0-1
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - عشق اصطرلاب اسرار خداست
-    - چون به عشق آمد قلم بر خود شکافت
+    - عاشقی پیداست از زاری دل
+    - نیست بیماری چو بیماری دل
   english_lines:
-    - Love is the astrolabe of God's mysteries
-    - On reaching the subject of love it split in twain
+    - A true lover is proved such by his pain of heart;
+    - No sickness is there like sickness of heart.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 97df02ce2992ef89ae446fe7ead686d1c0f6ec9ca328bb18d6646ab3f2904fc9
-  englishSpanHash: 478e3a0a2f511c3d665d9f19a2fdb3e942cb24c14bdfbf3b05dd5bc837238af9
-  persianSpanHash: 6fcec9ed8ab35ba7a17fbf9e6e9a3992f9488689e60c9dcb53676f86b31e07b8
-  mappingHash: 9e403690da4697fcf29012f0891eef9aeb1e9aa550f76a68493da9fd92707665
+  canonicalIdentityHash: 35dda63e785d5e19dd05f7139438833365d1356f34e200efc0713401407b8584
+  englishSpanHash: 15ade98a25d5e321a944fdd9f8361b21c65ae79090463a79aaeb0b051197d7fb
+  persianSpanHash: 5eb818571de040bc49ddc259737ea2cebe9bfdf155a3cafd70f515577cf61e52
+  mappingHash: 27d1bb2f23d51590fd5f357cdb1b3b820b787c3cddd46ab9b6f065753f6f0f10
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.9349999999999999
+  confidence: 0.97
   disclosures:
-    - Abridged translation. The English begins partway into the Persian section, omitting the opening couplets on the physician's examination (summarised as prose in the translator's introduction to the story), and adds editorial subheadings not present in the source. The verse that follows corresponds closely and in order.
-  verifiedAt: 2026-07-16
-  rationale: "Persian section 112 ('بردن پادشاه آن طبیب را بر بیمار...', 84 lines) matches this English segment couplet-for-couplet and in order: astrolabe of God's mysteries, the self-splitting pen, reason as an ass in mire, sun-proves-the-sun, انشق‌القمر, the Sun of the soul with no yesterday, then the Shams of Tabriz dialogue (fourth heaven bowing, Yusuf's shirt, the Arabic وقت سیف قاطع and صوفی ابن‌الوقت couplets, the veil/coverlet exchange, blade of grass vs mountain), closing on the same final couplet. Whinfield is unusually close here — not paraphrase. Divergence: the English starts at 'A true lover is proved such by his pain of heart', omitting the section's opening ~7 couplets on the physician examining pulse and complexion; Whinfield absorbed those into the block's prose story-summary. He also inserts editorial subheadings absent from the Persian. Ranked candidates (1, 2, 451, 464, 68) were title-word noise: seq 2 is the story's opening narrative, seq 1 an aggregate block. Verified by reading the Persian directly."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 0-1 of rumi-whinfield-abridged-en-b0019-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 112 starting at hemistich 14; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 7 anchors). True-lover/heart-sickness couplet at the segment opening.

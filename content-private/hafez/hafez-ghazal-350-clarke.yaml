@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-2, ode 369 (374), scan page 60
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  english_source_sha256: ac0ea92c5f128363b68976af266210f18b34fefc1b81882a20b75e3df86c0399
   english_source_reference: Clarke volume-2, ode 369 (374), scan page 60
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,7 +26,7 @@ text:
     - بعزم توبه سحر گفتم استخاره کنم
     - بهار توبه شکن میرسد چه چاره کنم
   english_lines:
-    - 'Iii the morning, with the desire of repentance (to my heart), I said : — " I seek the counsel of God,"'
+    - 'In the morning, with the desire of repentance (to my heart), I said : — " I seek the counsel of God,"'
     - "Spring, repentance-shatterer, arriveth : what remedy may— I make ?"
   alignment: line
   mapping:
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  englishSourceHash: ac0ea92c5f128363b68976af266210f18b34fefc1b81882a20b75e3df86c0399
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 90368827fa1ffc0e7d5be7776ed1c4cd867bf6b69507f706c9327579da8abbfc
-  englishSpanHash: 81052dfa9b009c40d4b47c1b8761eb1c7e5d2cbca053e15071508af6b2b3ead0
+  englishSpanHash: 12ba1f06cb25b6d9c818970ab8d5d56381ad91ce2c2ba857679fc1a4b33dc83a
   persianSpanHash: e1f300850ecd0055d83df89cab447ae02bb25fc000a07e8f9539d671cd50fc41
   mappingHash: a1422884f74a02613a706530b4c4cfc54d45635d10a2d31c5bae672da3d5886f
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-2, ode 369 (374), scan page 60 resolves to Qazvini-Ghani ghazal 350 through an exact continuous source span and 2 independent bilingual anchors.
+    - A transcript OCR artefact ("Iii" for "In") in the opening word was corrected against the volume-2 scan, page 60.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-2, ode 369 (374), scan page 60 resolves to Qazvini-Ghani ghazal 350 through an exact continuous source span and 2 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

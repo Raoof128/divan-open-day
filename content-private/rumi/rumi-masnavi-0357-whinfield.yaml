@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0101-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0101-s2:lines-6-7
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - باز در ویران بر جغدان فتاد
     - تاب نور چشم با پیهست جفت
+    - نور دل در قطره‌ی خونی نهفت
   english_lines:
-    - falcon lost his way ... inhabited by owls
-    - light of the eye is mated with fat
+    - The power of the light of the eye is mated with fat,
+    - The light of the heart is hidden in a drop of blood.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 0075958395cfe535158a7960dc544ee62d8728b906c4f882250ac5e2ac456a03
-  englishSpanHash: d59972d534b17f62c178dd638cb76415df65d0e08996fa47b461f6d600666eb4
-  persianSpanHash: e944eae12ee67f33b2feed8057c80ee41fde82b8932a8cabbb84be1167eea9e9
-  mappingHash: fd89b253bed255be46e69493273079f7c3b4143832590b1cbec06336229c92e8
+  canonicalIdentityHash: 3876b8ffd27d750504e73f4d7f7e462df720532aa9b1c3b7789613f3e04979c1
+  englishSpanHash: 0592a33cf5cb05a0656f0b03a6dfa2590e9e15fccb2efa24f227972513084833
+  persianSpanHash: cf0aeaa2613bf919ef99cbb263483a548772fdfea9855138db4b75589f4a1f92
+  mappingHash: bf693a2f83b1d97034188b15ccccb7ceb1d60c49070d0c061e794fb9e3468788
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.9299999999999999
+  confidence: 0.97
   disclosures:
-    - This English passage is E. H. Whinfield's abridged Victorian translation. It renders a contiguous excerpt (lines 260-283) from a much longer Persian section; the surrounding story is compressed into English prose elsewhere in the block, and one or two English couplets have no counterpart in the Nicholson-aligned Persian text.
-  verifiedAt: 2026-07-16
-  rationale: "The ranked candidates were all false positives from the token باز (here \"again\", not \"falcon\"); I discarded them and searched the Persian for جغد, locating section 357 (حسد کردن حشم بر غلام خاص). That section carries the falcon-among-owls parable (lines 168-259) and then, at lines 260-283, the exact verse Whinfield heads \"The right use of forms\": نفریبد شما را شکل من → \"That my outward form may not mislead you\"; صورت راه زد ... بر الله زد → \"aimed at form, and found Allah\"; the eye/fat, heart/blood-drop, kidneys/liver, reason-candle-in-brain series; the Universal/Partial Soul, the pearl in the bosom, Mary, the two Messiahs, the world begetting worlds, and the closing \"till the Last Day I could not count\". Six independent anchors, several of them rare conceits, in identical sequence. The correspondence is real but not a whole-section pairing: the English verse renders only a 24-line run inside a 290-line Persian discourse, and Whinfield's 28 English lines include roughly two couplets (e.g. \"Smell in the nostrils and speech in the tongue\") without counterpart in the Nicholson text."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 6-7 of rumi-whinfield-abridged-en-b0101-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 357 starting at hemistich 266; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 6 anchors). Eye-light/heart-light couplet located deep in the long section.

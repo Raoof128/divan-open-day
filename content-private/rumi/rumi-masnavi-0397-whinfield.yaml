@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0023-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0023-s2:lines-0-1
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - حس دنیا نردبان این جهان / حس دینی نردبان آسمان
-    - پوست را بشکافت و پیکان را کشید / پوست تازه ... بر دمید
+    - حس دنیا نردبان این جهان
+    - حس دینی نردبان آسمان
   english_lines:
-    - Worldly senses are the ladder of earth, / Spiritual senses ... of heaven
-    - Has cut its flesh to extract a spear-head, / Causing a fresh skin to grow
+    - Worldly senses are the ladder of earth,
+    - Spiritual senses are the ladder of heaven.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,24 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: a9661eaf58407fb0f52054bbf3ac5b408e69e60e02d573547e7fffce8255c23c
-  englishSpanHash: 6fa1b97ad81f5aa345334ad3dd22adaf49d272a73d83e5158a553c7e80fadf2d
-  persianSpanHash: cc0693d1e6e2ad71b81678f6d81d5893b7fb3349631d7b679feb1f5276bd5460
-  mappingHash: d2dd36cd95338039e4762a54ad62ef8a0dcecae202a6f5d69e6e18b863dbff37
+  canonicalIdentityHash: 7d9b66459ea84a9149430ee4d79aab03d344161eb53be6b886c3464532143c04
+  englishSpanHash: 8192a4b71238e74acd923025489941bfd785ab89f8671c21d230ce8cd6638956
+  persianSpanHash: 6e9ac445aa9fdaba57bfbadcc2f60e6aed9ac13f8fa54dd6152716cfe6457037
+  mappingHash: 1531ef1e4f8846025f93304bfa00c53aea97c449fe3b94f645c491389776a679
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.9199999999999999
+  confidence: 0.97
   disclosures:
-    - This English passage is E. H. Whinfield's abridged translation. It renders only the closing discourse of the Persian section (from "Worldly senses are the ladder of earth" onward), omitting the verse narrative of the parrot — summarised separately as prose — and a substantial intervening passage of the discourse. The subheading "Confusion of saints with hypocrites" is the translator's addition and does not appear in the Persian.
-  verifiedAt: 2026-07-16
-  rationale: |-
-    Block 23 is a prose retelling of the Oilman-and-Parrot story followed by a 46-line verse discourse; s2 is the verse discourse only, so it is translated verse, not commentary. It matches the closing discourse of Nicholson section 397 (Book 1). Correspondence is exceptionally tight: twelve distinct images in identical order with no transposition, including anchors identifying nothing else in the Masnavi (Musaylima vs Muhammad, the woollen lion, the spear-head cut from flesh, the two ladders). Generic material (wine, musk, love of God) was disregarded.
-
-    Disclosure is needed because the pairing is abridged, not direct: the English verse begins at char 3042 of a 4177-char section, rendering only the final ~27%. Whinfield omits the verse narrative of the parrot (compressed into English prose above) and roughly 1,100 characters of intervening discourse, including the bees/deer/reeds comparisons, Moses' magicians, the monkey and the touchstone. The subheading is Whinfield's own.
-
-    Section choice: seq 5 has near-identical text but a colloquial title in a scrambled front run; 397 carries the canonical Nicholson heading inside a contiguous Nicholson-headed Book 1 run.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 0-1 of rumi-whinfield-abridged-en-b0023-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 397 starting at hemistich 112; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (3 ranking votes, 8 anchors). Ladders of earth/heaven couplet; replaces elided compression.

@@ -4,26 +4,26 @@ records:
     poet: hafez
     canonical_identity_hash: e803b848cf2b3938e7d9b3038ee0f5c0fc663751ef4263b2f80ee3007640fd6c
     english_span_hash: 7e7239fbfd10aa303570f473d70506872219dc9e9de3efe7ad2c6b44fdf46142
-    persian_span_hash: 7aaea84dcf89148157efc58326cdc5f027ea1dfbc5e221b5c7c35cdc77ec9ee8
-    mapping_hash: c25468b3075317e4b83057fa0412a69f436c1559732950e2bfd61d58ad4889a3
+    persian_span_hash: b39d4f6d39e579bb7b83f3f18d796074fbffe6e0b2fdc30664b000e25999a238
+    mapping_hash: 05266823cdf23e8826518a34d0ac8e3c4230e292861b8d85cbcf531edcdcb816
   - item_id: hafez-ghazal-002-bell
     poet: hafez
     canonical_identity_hash: 730457a6b63dc64bed5d20f7274b972bbaed3ee48edfb998a87acda24942523e
     english_span_hash: 44d1eb4a90d479ea1c7defaec9832c572b6073e1c75083b9d198b4832b829cc7
-    persian_span_hash: f727e3573f93d52376842d537963c2a1d2435edf841eea591e45f7816e87b88c
-    mapping_hash: 80f7c8e48ece33b6a42b5f9e2b9f545e47eb86bbf625247151f807f01b619e37
+    persian_span_hash: 8dc056cbcf6da354700ef64faa1ad21560709ee09160ab8a631220fc3e858cff
+    mapping_hash: a8e3237dcdf659f593d5644b05ae4e4691c5fbb38a21b9ca804b70031f3082e7
   - item_id: hafez-ghazal-008-bell
     poet: hafez
     canonical_identity_hash: ba4a0f4edbae60c53051f6c05548a213af6cdd5c94bf036fd0e8f286452f18e1
     english_span_hash: f7cf4e44bcce60653f61a86154979e3591b3cae9b8c4a1eb82d088fd8313a628
-    persian_span_hash: dffbc80a557f4676c310f3c1035cd7f84738d6cccf998011047b93b17724138b
-    mapping_hash: 58055363d824f77372f30abd79f8543fb5405575a08a7d4a0934e966959088a5
+    persian_span_hash: fa778c6e5e7ae15b68f3056de724eb6dbc60a1aced9e48ee7ea35fbd2f6fdcaf
+    mapping_hash: 3e9c4ba2a8876ece857e9ae52e82b8a096b66ff71fb3a2d364ceb21204bf0efb
   - item_id: hafez-ghazal-011-bell
     poet: hafez
     canonical_identity_hash: fa91475b648f979c5d864e62e68366b19173cad47027cb91a5b8e3e242a49ad0
     english_span_hash: a067725a32c98ca8060e06be97fca8e60ffd30c025f2a2f281c66ec792a05701
-    persian_span_hash: 3451f3752e348688401849c54365ff9ce65b177bd322824d9916a793fe87ab5f
-    mapping_hash: 01cee21ddfa3c3af9ff16d2b1959701bc9046c962d3d81441a3d38a81af9c515
+    persian_span_hash: 91aefb3c5f0e84ff37625c1af0a1d4df4eda6499cf5f3432a0dbadd58bfcaeda
+    mapping_hash: 4bb2cea17b099d17f5b00d5fdc96b5e3e2320117d050a3d45b6ba080237d278a
   - item_id: hafez-ghazal-017-clarke
     poet: hafez
     canonical_identity_hash: 6ea23197931391b6be90f0934805e5bd2a502e28c960245860e759375113f284
@@ -45,15 +45,15 @@ records:
   - item_id: hafez-ghazal-034-clarke
     poet: hafez
     canonical_identity_hash: c651e040e1fb6009b74108ea15f7dd8405e6d0a452e8358376ceb6a781f5e14a
-    english_span_hash: 9ad518c42579e7628a025700bdf7592689ca21b32bfccc7a817f3fda6ca141d1
+    english_span_hash: cd094fb43a9a9983d76a1f8f4d60cb58811b32ae42be787a6c5446fb47f19277
     persian_span_hash: 7be902cb4c6ab93f3fb9b0f7231907d16fafb40dc1d4e6a00f117eee95e39238
     mapping_hash: 9194cefad4fa3cca913dda3e1660bb07555fa95642c09fd2aa7985fcc8fba4e5
   - item_id: hafez-ghazal-038-clarke
     poet: hafez
     canonical_identity_hash: 96d648656bfac5b869f5a4fafc75f07d969c64093fc7ba05a71ae29fed5f558d
-    english_span_hash: 00778d3dca87621f30e220392040432602fba906dad1a306a58dde6a2bfa0ae1
+    english_span_hash: cebc957bf743b28331bcbddf34776fec3923232a741bdf078492c5a32fcc3adf
     persian_span_hash: ef1a70d09e7d0433cc576339494bdb8608dd313d2d44c6cd1f109d751d31b7b1
-    mapping_hash: ba6c319780fe23a34b393c23526d639f0fa54493444efb276db1b7e7cad293ad
+    mapping_hash: 2863d2a94055527f74e80706505fede8c3589d19b7eefb7b4407ab052de2e57e
   - item_id: hafez-ghazal-043-clarke
     poet: hafez
     canonical_identity_hash: 4703faa33a73d2decd3b6c955f23bbecb9e047b10a3f28bbd33c22f657edf833
@@ -63,9 +63,9 @@ records:
   - item_id: hafez-ghazal-046-bell
     poet: hafez
     canonical_identity_hash: c87023abbec41c6e459105218791991a136e9ba7321ab356b80a88671f0659f3
-    english_span_hash: d2061dadabb4506b33466d9fd032f0c14552af2f35549e93bceeaba0a0718d03
-    persian_span_hash: 62b09bf35efc16bc3a2afcaf22548ea5a6cf33cbaaa49a397150e1c4c017d998
-    mapping_hash: 01c5ecd8bdc9376b06d8444220e9dd1693c291ef78828551a1fa3f1573812016
+    english_span_hash: 586a299958a5f010072ab97ad1be02f3e08109330e4e06c8cd68744e376e65b0
+    persian_span_hash: 680dab0a91a850e99a50cfd4d2ed93dd7d91512d74edf73aa75c667b09face44
+    mapping_hash: 29e1cf12b1148b7b0e3b2802fd64aaa1cf36d281a979547b630eccc047f76309
   - item_id: hafez-ghazal-052-clarke
     poet: hafez
     canonical_identity_hash: b86f392c5affd50d5df1c316ef44a8cc431a5331efc2e5302c3ac18129fa59ae
@@ -94,8 +94,8 @@ records:
     poet: hafez
     canonical_identity_hash: 261e9d9d99e49e3158af2ca32a1629a8025d6a687c010bbfb1373559670f7b55
     english_span_hash: 0e7a062d553789d0c10030292369a6fd5ea688ce64c0fa9d5b1a5ec0c5cb5547
-    persian_span_hash: 05fe90b4e67fb60c6d2ca071e739579c8fc4d46921078110c956b13af3c68288
-    mapping_hash: d20bb79c25dab85eab60d2bffe13696f8bdb697d1647178532be960e571edab5
+    persian_span_hash: dcaf93eb5178c734b6b24f2c3853007b4532289bbd9ca374ef7dae700e23c28b
+    mapping_hash: ef89d3aa9abed34633f960b6fb3b5201644c4fb6ee2789815a248eb75d854e67
   - item_id: hafez-ghazal-077-clarke
     poet: hafez
     canonical_identity_hash: 9cd8f7dde143d41e1d0fb3c805f11811358f9589094b9d76d2248f61ee5703b2
@@ -106,8 +106,8 @@ records:
     poet: hafez
     canonical_identity_hash: 7d16bda614ce994c1be24364345cc34db9793c0a57d225b5ef619ef148c4cdc9
     english_span_hash: 5d0412d5ad1ed2638f3ef19268d67ac95c20a4c009f6817e2a8f15565d4ff637
-    persian_span_hash: 1c6b4ed5a25a3ed7f09f57f90432a57f52971aa0d4b491efb1ee3a8c5ad05959
-    mapping_hash: ffc23b2415e4f7130e271ca6aae1e7269399cac00e1f7c4ddceb27da122efec9
+    persian_span_hash: 47aacddb0142bc74ee6a4a90df9f4c4b9934438e7951ea99614a361853fab176
+    mapping_hash: 93ee8058f13327e43ddc35f66fd3c2e6d3d82b89122cc39aef1b2d91dddf3f49
   - item_id: hafez-ghazal-086-clarke
     poet: hafez
     canonical_identity_hash: 7a1f595c2caf0202e5739852ca0332b33ff8fda49d525a17adff5a7a478a5178
@@ -117,21 +117,21 @@ records:
   - item_id: hafez-ghazal-089-clarke
     poet: hafez
     canonical_identity_hash: df7c1573ae8eedfc4e631a68c5fafa9e621aca5abf6ee0d25ef075ac9bb10706
-    english_span_hash: a8a312813ba725145e733b28268a91ebecdc77a2bc38ad99832438ce5f3c9854
+    english_span_hash: 2f91893750784aa12cc5a4ee054c486fbc62a7973e7c22ed7bf41cacd6c285a2
     persian_span_hash: a994046cac4053e33dd3d6fa027d59f362fd0eb70f9393881e647398e0ffb183
-    mapping_hash: f503f9177dba2d96842004c1b61703a0f447ed4ebe0cfbe1b3d6a3cfafa12794
+    mapping_hash: 2e40137d9a8e85672a960915d19a98fa06a34e2b90e272c4e95b8589d9d086dc
   - item_id: hafez-ghazal-090-bell
     poet: hafez
     canonical_identity_hash: a9798be60a74eb1856e802c8d20ba0548b5220f019aeff344305b08ecfb0c9de
     english_span_hash: 56b58a6a46320c84231dc8ab3f268ea2e70902cd59863ccf41c358c564154685
-    persian_span_hash: ea71d83dc66b1da4fe78376da29ff1851c5b7645d07fc29f8cbb8700a28c3dd7
-    mapping_hash: 650c481e0fbcf651a9112c7f61f064f38740b27934c393429b924b388b97ae2f
+    persian_span_hash: 5e1c65a808c5b00f6c45b8a7922cbb16d7cd1d39271da136a2735f9702bcf0ca
+    mapping_hash: f782dcb4d16ee8155a2ab688d26f41164198a3c7ed7d0abed2f3ee9f0efc3b17
   - item_id: hafez-ghazal-091-clarke
     poet: hafez
     canonical_identity_hash: 26180ed7c3d6f085e72a2fcc3f44eff2da78b30f9531faf92d5db2e22de48877
-    english_span_hash: 1b17541fc787e6c1354515c17d350e6a25f4b4ee48a33d1789fa7659860377fc
+    english_span_hash: c2acf8ed605fcf1050e0aad29a0fddc94459bd2f16af260c0949f7b0858e39df
     persian_span_hash: e06192af4722b2edfa74f25659cea93425a27cf4a59dafa28425a02cb5c3bf92
-    mapping_hash: 5cf603aa90a47a9ac9f52281c75de81339b1a00be017bc29112268c32f11478b
+    mapping_hash: bd1e9c1bdc270918cd06fe2a73e82eda916fd061a9c97e7eaaf69e202d2b304d
   - item_id: hafez-ghazal-094-clarke
     poet: hafez
     canonical_identity_hash: 1083ef2e4ac55cfc94700dd53678a829d60692459fb3534a9509e255268e5403
@@ -142,14 +142,14 @@ records:
     poet: hafez
     canonical_identity_hash: 344e424f3b980c4c3a87649509732f403b3b0ca1dc48f68433826943d59163f5
     english_span_hash: 9b4a16712a11d38ee99d25f626e6ecb5ac0b35ef6d40964a7230e5d9f546c8d7
-    persian_span_hash: d89cdd174b998cffd018a5e3b6f21560a02e5b7cd0c2ef6119c424636de9995b
-    mapping_hash: d695b542e4436cb1af6e1777c16628d445e0ff1ca479f5de937525d56c1e746b
+    persian_span_hash: 0d0a799242f1ec90bef1fe1facf11141c08485223eb661cb859b1fd61292a816
+    mapping_hash: 31d17fb0ef95cdb9e13841a5c3e75a7cd9beb8c55dfba1159c0d6bb16055ab0f
   - item_id: hafez-ghazal-103-bell
     poet: hafez
     canonical_identity_hash: 0fb96f434be6ac6a1c199ede506b96274927615ed015ea1eec42210756f9cf91
     english_span_hash: 2be33625f5d89d391abaac61dd5e41abb24f7e3857989cf628e7be3f80b583c1
-    persian_span_hash: ba8d774d9163ae3b164381fe47991265d3d35efc86c056a383ec79339d30cc9b
-    mapping_hash: 3be937f334cef0b4b92b4c68a9453bff396eaaa92114413dfceb8e503da53d4a
+    persian_span_hash: 39fab3592f593895ac99bef25f43c9073324c3e0115eec6219747dc808244afb
+    mapping_hash: 1ece9349c01a2cd20bb5b7cae155124d9624838a1e10ecfb95e75d1d3ba87331
   - item_id: hafez-ghazal-119-clarke
     poet: hafez
     canonical_identity_hash: 4336af3aac303438b5262fa137385dd6a48e4e8736a1ab421ea8cd0b468c9d27
@@ -159,15 +159,15 @@ records:
   - item_id: hafez-ghazal-130-clarke
     poet: hafez
     canonical_identity_hash: 3b581f7b8690f5c2aec2e7041eb83fd49d73d490641a33cf9ffc5afa5fd5e25d
-    english_span_hash: 618b8a084b6a24c105ae15b252f68973bd325610c583d3854d54569989ed8ab5
+    english_span_hash: 61b48237d7ea38d02fc2b85759002e856c86db4bb2e8e644cad31acca55b313d
     persian_span_hash: 4c9c5750f07ec8da8218f61ad209fe52743cd9694e55a1f287f8857b5385212d
     mapping_hash: 6a5af204ff61dd7ea29fe3d0187e36c3fbff778278f3e14ebc4e5ed8b3b9dae8
   - item_id: hafez-ghazal-134-bell
     poet: hafez
     canonical_identity_hash: 6a6c352ba64be3fb294be2741887858bc50c7af55f9a5a63cb577f9654c7f6f1
     english_span_hash: fc42a386a54d7f9f7391292f4749806f0e0c63cb8f3ae6ccf32625b4ef30e642
-    persian_span_hash: b02d57d27336e656217f431fbfa9d8e5a4933760a0a17e79a813c86de36201fe
-    mapping_hash: cd1fff788fd7a41a0ac660cc1e0a94278228907bcbe19997a035fe52138fac60
+    persian_span_hash: 919226a27203c8fd86e006b4d599914f9ee4648d5e2248eb83825e46bc5ff472
+    mapping_hash: 7b0a7e64def296098c1dfc1fec4e5c0d19c26a524e8a8b51376eb199bd563765
   - item_id: hafez-ghazal-135-clarke
     poet: hafez
     canonical_identity_hash: e8be3a0b7c94d3fda6f3234ece23fd15eae41861181e4817223d1aede49d49c8
@@ -184,8 +184,8 @@ records:
     poet: hafez
     canonical_identity_hash: ea73363b47a5c5ae0af1b717e281d458a9fdfe7302b97487d57f471ef8349d32
     english_span_hash: 96be5aa7f534f7f337b871a339dc00586c1738220a8e1b7183f31975f6d61079
-    persian_span_hash: cde4bbda753563042857e31c0a735d389943063a076bcdf4145ddf728c842f7f
-    mapping_hash: 5112d681ce44e60c2e1bdb79098b9ce148d63fbb591c41bb600508c4b2a77f0e
+    persian_span_hash: 6e774504bc8bba88f82205611aaffaf31848d971097e34ec61e76ec70692d61d
+    mapping_hash: 880cb603acf041eba42bb465ae6e7e19151500b0b336f9df13bcbb546e488a30
   - item_id: hafez-ghazal-161-clarke
     poet: hafez
     canonical_identity_hash: bd9fa69665cf39f8369b6ff7bf66169f7b3b8088820a6500ac477fccaf55d770
@@ -195,27 +195,27 @@ records:
   - item_id: hafez-ghazal-163-bell
     poet: hafez
     canonical_identity_hash: 5527ced2b83ca4ce62c1b3d08b8019071f2754d8442a193ee79ceef7111594af
-    english_span_hash: 76f745a242ad0cb14535ace20718fdab5b8025c8baeea1bcd11a54c48473d5fd
-    persian_span_hash: 5053712cfd56a0583536faa515988456523f67b98ef037c724589bb6d7dcfa1f
-    mapping_hash: 60e34a22faaeb30a9c89673b126c68d0207b9d04fae298a9af090ab4395b70d8
+    english_span_hash: 488ce8d411fb9511c764b0a335a6b3fb25e08925e9d399ce484ab7141b194223
+    persian_span_hash: b345118df49fe71c3014b9b53ad8da66050f6dc89c8b8bf7eff38e2873789f17
+    mapping_hash: f025cd96edf20c82d6e06e95b579c8d73535cedf2e0f0b17724bf6a353db817e
   - item_id: hafez-ghazal-164-bell
     poet: hafez
     canonical_identity_hash: f0c481599df20ac6d857f4e2ceb4fa1b580b7f7bb97f72e25094a05495a1b743
     english_span_hash: 3a6c06928bca55e11ad5c5fbf823d98aab73f13f393f3574f099855e90b8013e
-    persian_span_hash: ee6101c82ca92b3aaeb7a613bfa8b03f1ec871937f94588daf37da80fa0bad3b
-    mapping_hash: 9eacb42af4d049f948f9d50f3a4ded5ae90f8136259388b2fa5c25b77c1e5567
+    persian_span_hash: 9088866be547302a0bd511c0cead98ff6f84f8c98d87a26fa66b8f7104c0b889
+    mapping_hash: 743a06c54fc7e5a3727a8b58d41cfeb1952d242eb4e7621aeb41fff0c88ee49a
   - item_id: hafez-ghazal-166-bell
     poet: hafez
     canonical_identity_hash: a02e0dfb1035c692561af49358ea98a9b3440503115bfb80e1037f0e7e9f4772
     english_span_hash: 3c96ae9ce6022c0802508f565af3bf7eaa58592bdac2acb8baca90f53c557fff
-    persian_span_hash: 85ecc9367b67a07d4ea0ec2670c7e35d3826c05c4310379e36b64b68cbc5acca
-    mapping_hash: 4b4a7ee2d77af4b784ed379d6eba3873c4879987364549540a7b7963ca0cd22d
+    persian_span_hash: 3044da2381b0f74a9fb0181456bc78ff5a20f1b499ba1f49a27f04b737e7bb2b
+    mapping_hash: da28b1ee5c70ed06bf24ee4f364287ed3d55815734fe95d20e373e78d99d62ce
   - item_id: hafez-ghazal-169-bell
     poet: hafez
     canonical_identity_hash: 291035fb4b701eaf798abb683ce86e7f2337d98b1b2df2ee9a0003e32f6e745e
     english_span_hash: 2202ca88df434c33025f10e34dcc7aa4a81e18e30f2c10568e6e2d3dcbb41482
-    persian_span_hash: 32df3e0f67e27ce8f13b14e00c03d14499ecd34edb5e9c40a4471969826cdf76
-    mapping_hash: 02ddb4bed6ecdbfed7468021f43e1e45e21fc96dae37a73b243892afef51b029
+    persian_span_hash: c1f09997d717a8faf8e39ebb84229ba42c3d04c2f07fa2db31988855fa5017ec
+    mapping_hash: 28444416a42d7888ce242d4844dc50d032b72bada1228e7e3d014b45a1a1446a
   - item_id: hafez-ghazal-173-clarke
     poet: hafez
     canonical_identity_hash: e0806dca11756b987eecf275b5b5de73d0c2a6dfb3a76b19c0aaa116e496931a
@@ -232,8 +232,8 @@ records:
     poet: hafez
     canonical_identity_hash: 566b763bbc7aac77ac56901669ae96551f18aa97322949f7517794a37ab3e03d
     english_span_hash: bb1c8e0127940233efa399fcb1fafa57396ac1b3550833261f11c7744efeb65b
-    persian_span_hash: 5f425e735323f344674ecb3d85f3f1d5b69b2a526e71d508fa96cf5fcf43634b
-    mapping_hash: 5636f059e88cfc9010428fe98e0309d384a2030d3a78623e00076f8b9b4b7e37
+    persian_span_hash: 05a8be396d1d34155f0d2fa3ef5eddc6a9b262062352db412f0776f4a0b17ee7
+    mapping_hash: 58bab411fe893a880b954c5efe77e32967b173b4b7bf3f822602ebf703502276
   - item_id: hafez-ghazal-209-clarke
     poet: hafez
     canonical_identity_hash: fb96f2c585e5f2b5ac473917e3b56b1aff882b66fb7b455305b042bcce91c1a0
@@ -244,8 +244,8 @@ records:
     poet: hafez
     canonical_identity_hash: dda01e4bd65e571e1d4529ad1a56f9f312de06c5f2653d5a7c9f3d6ebe0977a5
     english_span_hash: 42a9eb4caa86b5f59eee52ef390f280052c8c9a72bb07d1ce932990dacc31729
-    persian_span_hash: 9952748eec82fd5f9cb3d010d458d6c2ec8063e8ad4d76422380fcfd4b915bcf
-    mapping_hash: 397289b718fc2a59af73b8ce21303bf5c0f0b1811076d584ee6a054a5db28d73
+    persian_span_hash: cd577ffde1b68626e63001c14ffa1bb8c681f729f035302c3d46bdb2c8947c6e
+    mapping_hash: 5a4034d6b8f3121e6f422ed6ae6d6b58a943d84c6807ae97bcd213df95b53b46
   - item_id: hafez-ghazal-234-clarke
     poet: hafez
     canonical_identity_hash: a44fe6035c9935e0726c0d7f1f72cc2f334dc77838b7e252a6b406290061da13
@@ -262,20 +262,20 @@ records:
     poet: hafez
     canonical_identity_hash: eb27e927646d406cf1ad71005a952f680b30e0b82af5a29068a0a5c228c8a8ef
     english_span_hash: b9b05648c03f880f598c90591edd2cce285d3d51383672bde8bf1d77dae79785
-    persian_span_hash: 5862b79d5d440aad46b06e9b657b4d7a19154dc856f283ee88837b1e09dd825b
-    mapping_hash: 7ac1a8653416ae950f465514c850b995bc48e98d536e408d9295c1ffdab628f6
+    persian_span_hash: f93de96d8d3a5f18dc73568032d209d5586ef64f1f94bb2ddd1879f1770c0168
+    mapping_hash: 5c14115a72436b92ba3351d311ec26aaa117f668ec7c86ef24a6a854da96735a
   - item_id: hafez-ghazal-255-bell
     poet: hafez
     canonical_identity_hash: 13905889ead4d3ae3bf9df8a23052d1e8746004839ae1dc503b0a1fbf92eefaf
     english_span_hash: ee173f67b36cf7ca7ac68361ea692adbe0e10f273835c9ed70bb483b018d1f18
-    persian_span_hash: 88ae21fdd6fc793fa7387e7043819cd30c65dbe15810418af2f6349113ff2490
-    mapping_hash: 03ebac01307947e17b2c15d7008c730243d539c3549c661104268f7c08b48f7d
+    persian_span_hash: 14d74adf75c1d791ab3b74eee25af682c2c09c2d9066d20269900ed62b6d2ad4
+    mapping_hash: 23512f6212f7f37d31868166de8e64ed8e7cf3cf7d4cde4cc47b37d7b9dcace2
   - item_id: hafez-ghazal-268-bell
     poet: hafez
     canonical_identity_hash: 6f2d732de8a5209b0a683a7368bc44a6638c9457979d789b0d5efc9996ed1eaa
     english_span_hash: 4097eaf36ce2eb9870308b0d5ad35e5a35c32069c65b947df2845cc1e6621558
-    persian_span_hash: 329e40e6b3490b24fd14cffdeb942a5ccd12eb7e85208ac282791c448e340cf0
-    mapping_hash: 913dd005b101328b930b57a71c4fa27ec5e08570828e8aab503c1edfeaae635a
+    persian_span_hash: 3092882abe57bcfa22eb52c29685ebe174f093ebf39a49fed83ae850e2f9d280
+    mapping_hash: d8a1ec076f167581db39b67a8fcda43b75dcf1245fc0fdda27341d6737d02aa3
   - item_id: hafez-ghazal-278-clarke
     poet: hafez
     canonical_identity_hash: 5e6da589e48d4d6b965dd467c292692e70d45db36a9c8e6edce07a83063312b3
@@ -286,20 +286,20 @@ records:
     poet: hafez
     canonical_identity_hash: bbcd66bf7b4abfcdee413aa22434d579d717e6a247397d373560c82564d8b04f
     english_span_hash: 8ca07e717739377d38f2e3e44e444f9235b8c9b3778f7ff81028161c12c8a176
-    persian_span_hash: 64e6e471ed7604bd0e37c2d4de4fe1dc059cf95ab125c624588848dc57be3667
-    mapping_hash: 2eabf98521d4c7d89fadf3efa09ea383662c2919a4c921917f83ec10fc915208
+    persian_span_hash: 59a5276a3cd29c1fdb5cf72d6d6998c4445fed0942b3b4ed3aa131eb49d63358
+    mapping_hash: 78bcb6ea18b39e2eae9c7114aec0fe947bffe20cd1820cce6f5bcc657caf90ed
   - item_id: hafez-ghazal-288-bell
     poet: hafez
     canonical_identity_hash: 6fa77682959098f9d71f5bc1217c4eacb600afdcab7bc5b3fe0f3685d82a2bd7
-    english_span_hash: f76fa11a33729c08569ad2f45de18add8829a69570718aa9cf0cf76df15d4d9a
-    persian_span_hash: 78749b2264dc88fa5d19146fa7b0a07d016b1addbf848a7c412a1ec6ff7ed415
-    mapping_hash: 6b8e70b055fca2f8fd979b5559d5904751c12f26310905dd5d7067abc78e3bda
+    english_span_hash: 0a6d2046df272299104d5b38eb4f7b23877166e57fea0b582e0fed04f476088e
+    persian_span_hash: 3a4f6b192f90fa82d14f6962820fcbf24641be58e921d7576a4b56b4ab296915
+    mapping_hash: 0bf974564fb935327d7a58f23dbe835414f9c9dee271f38c0d04a33310760bcd
   - item_id: hafez-ghazal-336-bell
     poet: hafez
     canonical_identity_hash: 865885a2e703748946d60d280a8d4cfc1806644e328f4b67d820a60bc1efdf26
     english_span_hash: 5e8c8f8672de1257580a2708b119e37a621d91acf7000898a7e35857af63621a
-    persian_span_hash: a17ca4bac780684b56bf02d25b4d8ca828bc5eeb72e2eae1b8edd07e967636e6
-    mapping_hash: 6891eef87a0720ba29546089093adf1a75f11c5748eb3ac2c52fb43371cb1cfc
+    persian_span_hash: 8f1d088fe3aa3f97dcfd129d6f200bd49baa67aa3cf3d736dd630227cf48461b
+    mapping_hash: 3aa74a233836f8453b2b114bd463514fc6a0780facd00a4bd904e277a6c608df
   - item_id: hafez-ghazal-337-clarke
     poet: hafez
     canonical_identity_hash: 17b2fb6fea46b182d2d07c52f3e3b366c42d4c762978ac52b5fe6d1037cafa96
@@ -315,7 +315,7 @@ records:
   - item_id: hafez-ghazal-350-clarke
     poet: hafez
     canonical_identity_hash: 90368827fa1ffc0e7d5be7776ed1c4cd867bf6b69507f706c9327579da8abbfc
-    english_span_hash: 81052dfa9b009c40d4b47c1b8761eb1c7e5d2cbca053e15071508af6b2b3ead0
+    english_span_hash: 12ba1f06cb25b6d9c818970ab8d5d56381ad91ce2c2ba857679fc1a4b33dc83a
     persian_span_hash: e1f300850ecd0055d83df89cab447ae02bb25fc000a07e8f9539d671cd50fc41
     mapping_hash: a1422884f74a02613a706530b4c4cfc54d45635d10a2d31c5bae672da3d5886f
   - item_id: hafez-ghazal-377-clarke
@@ -357,7 +357,7 @@ records:
   - item_id: hafez-ghazal-489-clarke
     poet: hafez
     canonical_identity_hash: 2f4f2c446d55eca7ae4b558b204e36efc0de84ee66b0b67d6348d379edfceb3a
-    english_span_hash: 2813e1157743271cc7ee2bf3695b84eebf8c765e9b822298ec8bb89124b86352
+    english_span_hash: 141ba19b512fd596a251b900a969ac431e61e7ec1fb55ab3444e2cd78bdd2f17
     persian_span_hash: 5a65cc1297b40db1eee1713e066d5e603a1503a1f9720756470580ef86a1fbc2
     mapping_hash: d104cd9a08e4f1f55411b2c4895e67b3f2b8d1c35a307e0b79e4f0eb07131d0f
   - item_id: rumi-masnavi-0000-whinfield
@@ -368,10 +368,10 @@ records:
     mapping_hash: 7716e73d84a5fded73085a8263fc50b840a0faf132c21d2b24b9f9956552e7f3
   - item_id: rumi-masnavi-0029-whinfield
     poet: rumi
-    canonical_identity_hash: c0d459068ea18a083b656c17fd65ae392312cb28b3ac1c19967efbc0e3e95847
-    english_span_hash: a984397110f7d5ac46b1add4fdd5166afed12bad1901eb6f11d1d33830851db3
-    persian_span_hash: a899a9505a02c69818136d9c6fa1adc4d905b93a672060ca08a3eb8348f59ff2
-    mapping_hash: 5c690f31c5f3a2c5539b112f445bf8fa69fae1ec593c6371e5fa78968d4af42d
+    canonical_identity_hash: 32eacc400e6d06f0ee4e55fd903efdf5162ba470504b7206a05a2781c5cc70b7
+    english_span_hash: a2fa5703cdba6317101fc1b0f904d6b73b8b9db9f644f89edad75ed1a12d2bb9
+    persian_span_hash: a78fddae3442b43b34c96a9a3e62d12f2f04eefac9fc2dc2633a65e2adf8c16c
+    mapping_hash: 8aeb3a68f0870fb6b8173a6ccd5f4687fb0897b812ffc4e71c22bc9596c3eba1
   - item_id: rumi-masnavi-0039-whinfield
     poet: rumi
     canonical_identity_hash: 8592893411b18ba3fccb46a4b9f0994207552539472f66101e24a7f50f02d75f
@@ -386,10 +386,10 @@ records:
     mapping_hash: b058678534c2f1ee6ca8d8257693670b8073c9f08bb7bab20e5ab6ff210bfbd2
   - item_id: rumi-masnavi-0112-whinfield
     poet: rumi
-    canonical_identity_hash: 97df02ce2992ef89ae446fe7ead686d1c0f6ec9ca328bb18d6646ab3f2904fc9
-    english_span_hash: 478e3a0a2f511c3d665d9f19a2fdb3e942cb24c14bdfbf3b05dd5bc837238af9
-    persian_span_hash: 6fcec9ed8ab35ba7a17fbf9e6e9a3992f9488689e60c9dcb53676f86b31e07b8
-    mapping_hash: 9e403690da4697fcf29012f0891eef9aeb1e9aa550f76a68493da9fd92707665
+    canonical_identity_hash: 35dda63e785d5e19dd05f7139438833365d1356f34e200efc0713401407b8584
+    english_span_hash: 15ade98a25d5e321a944fdd9f8361b21c65ae79090463a79aaeb0b051197d7fb
+    persian_span_hash: 5eb818571de040bc49ddc259737ea2cebe9bfdf155a3cafd70f515577cf61e52
+    mapping_hash: 27d1bb2f23d51590fd5f357cdb1b3b820b787c3cddd46ab9b6f065753f6f0f10
   - item_id: rumi-masnavi-0143-whinfield
     poet: rumi
     canonical_identity_hash: e0600863d262c0bcd175d767e1bfd79f63c0b8463bc2c58c7ef07ee56d8db0f4
@@ -446,16 +446,16 @@ records:
     mapping_hash: 650a5403137d6fbec94c873b7d38194b33267a0e54b1b527666d05237d6eb331
   - item_id: rumi-masnavi-0300-whinfield
     poet: rumi
-    canonical_identity_hash: cbefc7e79b3d3d51ad5b623d6c628986277b82094470e23cca3ac68d3d1ad96e
-    english_span_hash: 1ff8587cd84e41ff2a8c013829e2bce95bc7b36ea860ffdf4b15122a78a225c7
-    persian_span_hash: a2b66cf50cbfef2a5348d01a7a9d408fdf2cbe761850e36e006bb7a391ba099f
-    mapping_hash: 480d8ff4285d59d9c200763735273bf8cf288a0810f5f7790b3a354535479e20
+    canonical_identity_hash: a68e95fa81ebd99d4a281452f72ffa77ba06a8e54a1608ea4f1f43d67b5fcd64
+    english_span_hash: 6964da1c4f4a7c0429a2b4f882ec5daba75ee0107ac81e0cb4f985c5e88d36ff
+    persian_span_hash: 1b681f646051b58eff444b076d3c4b00a79c4fa5783255cc653d4d20b2c72a80
+    mapping_hash: e84eb033c5223c71a5105dc5cef4fa0e753627682022189df8b408582b177543
   - item_id: rumi-masnavi-0306-whinfield
     poet: rumi
-    canonical_identity_hash: c8aaeae820570692853fba5aac22ce17cc6778d056f5668b6bc38e6cc1f17848
-    english_span_hash: b3cb353a433f94b21364b7c5cf29e45f38f8ae5757aafdbb800da36885ec5e03
-    persian_span_hash: 5ddc49b409682c851ebfccaab714828c1ac7d7ddbec39534b169c5b8fd910ba6
-    mapping_hash: 1fa63d63ebceb29e7e4e1d366158012a2b283553d0b44f7a0b9105a59c3ae23e
+    canonical_identity_hash: 901094be2eaced4211248634c25bff0cb52f97d71666537a7494e951c04ab5b4
+    english_span_hash: 3e339599676c3b35eca3f3ebc36d9aee956802facfd1187094a75997e0558e81
+    persian_span_hash: 7762897c058d50c224926902d47bc4f070200fe878940bf3aa08d3c251d110a9
+    mapping_hash: 8ce4057540ffce6b65b706525d6f1bb759c6a83507c10f860b0bf2af744cc3ac
   - item_id: rumi-masnavi-0342-whinfield
     poet: rumi
     canonical_identity_hash: a8a05bc04bfd38838ecaba5d33cc7e1fdbe9ed7031955a6a132719db8a46c7b7
@@ -464,10 +464,10 @@ records:
     mapping_hash: bdbd1384a9e1b683e727d6552549d69cc69510b0f9cef016401770b37fc66f70
   - item_id: rumi-masnavi-0357-whinfield
     poet: rumi
-    canonical_identity_hash: 0075958395cfe535158a7960dc544ee62d8728b906c4f882250ac5e2ac456a03
-    english_span_hash: d59972d534b17f62c178dd638cb76415df65d0e08996fa47b461f6d600666eb4
-    persian_span_hash: e944eae12ee67f33b2feed8057c80ee41fde82b8932a8cabbb84be1167eea9e9
-    mapping_hash: fd89b253bed255be46e69493273079f7c3b4143832590b1cbec06336229c92e8
+    canonical_identity_hash: 3876b8ffd27d750504e73f4d7f7e462df720532aa9b1c3b7789613f3e04979c1
+    english_span_hash: 0592a33cf5cb05a0656f0b03a6dfa2590e9e15fccb2efa24f227972513084833
+    persian_span_hash: cf0aeaa2613bf919ef99cbb263483a548772fdfea9855138db4b75589f4a1f92
+    mapping_hash: bf693a2f83b1d97034188b15ccccb7ceb1d60c49070d0c061e794fb9e3468788
   - item_id: rumi-masnavi-0359-whinfield
     poet: rumi
     canonical_identity_hash: 84db59430c25729fdac36b3a6c0076e7a53352773a283949a3fb8412be97a305
@@ -482,22 +482,22 @@ records:
     mapping_hash: d20e6eff0f6020bd4c583c08e4763d9ef64182a35118b9e63b78f30fa8faf3a8
   - item_id: rumi-masnavi-0397-whinfield
     poet: rumi
-    canonical_identity_hash: a9661eaf58407fb0f52054bbf3ac5b408e69e60e02d573547e7fffce8255c23c
-    english_span_hash: 6fa1b97ad81f5aa345334ad3dd22adaf49d272a73d83e5158a553c7e80fadf2d
-    persian_span_hash: cc0693d1e6e2ad71b81678f6d81d5893b7fb3349631d7b679feb1f5276bd5460
-    mapping_hash: d2dd36cd95338039e4762a54ad62ef8a0dcecae202a6f5d69e6e18b863dbff37
+    canonical_identity_hash: 7d9b66459ea84a9149430ee4d79aab03d344161eb53be6b886c3464532143c04
+    english_span_hash: 8192a4b71238e74acd923025489941bfd785ab89f8671c21d230ce8cd6638956
+    persian_span_hash: 6e9ac445aa9fdaba57bfbadcc2f60e6aed9ac13f8fa54dd6152716cfe6457037
+    mapping_hash: 1531ef1e4f8846025f93304bfa00c53aea97c449fe3b94f645c491389776a679
   - item_id: rumi-masnavi-0408-whinfield
     poet: rumi
-    canonical_identity_hash: 4c8cb8e4eb764fed215d9809e507ece94e41c6ef79e4aff413ccf8d3144c7fd5
-    english_span_hash: 14ee9b36bd572fa88674ef85bb27fc14ddd07ebf247fc877e8d81ee8e590b707
-    persian_span_hash: f36c9cfc3d18fd4dc2b0b0bf39af90c761af1a4f2485940df58ec0c2cc8272bb
-    mapping_hash: 5abc3f37f5231843729f02e83cd6719fc55da1eae48f78cd2366e3bcc8d7b47d
+    canonical_identity_hash: c19e4c36fd213d1a06c44ec2c684a3ccec2270c80c8931a4f4f73799f1128685
+    english_span_hash: 9ef2f0161f219421e177f4290c265a3a68a5808c5c4940bf3cc534e4254f5cd5
+    persian_span_hash: 7c86abdc401d3b09026c14a438a7b795a0440c3b9087dd3fd82b8d47e4e254df
+    mapping_hash: f6308079fd8da3709a92b91b5c3e78fb3178a86ee08eb4940bea8d0a13201a35
   - item_id: rumi-masnavi-0418-whinfield
     poet: rumi
-    canonical_identity_hash: ecba14f0045903fa4d56c9bbf3031675880f13df02f5cca7a0ed159e8136cc97
-    english_span_hash: 3d43d9dc9a8884d8644810271c6ae67aa5cf9b0e3f4524be2922caddab174b19
-    persian_span_hash: f1033fbdd68655d6ffac14d2cd1a395d3c2346686a707b0d5c941e4a9d620054
-    mapping_hash: 0d6db6ee5ca96602e7a12d9ab6582e05ad0005678293d8e5c0185fb6c0f1a73a
+    canonical_identity_hash: d8e3c6d2d74da46058c0f9f0fba49e028dd23e8f79d964a40e8e3acc70e82a71
+    english_span_hash: 9de8a5c417ab5bd264b950f575a0539194d3c0bd719876cbbd98ea6b2a3492ff
+    persian_span_hash: 774f946f075f98ee0e9a4b119051985725f8320049f5ff776605e5c0078a0c1e
+    mapping_hash: 7cf4787124c267101cf43e3e611a1ddf47ff3b2821c9e481212b15162aa48cc5
   - item_id: rumi-masnavi-0431-whinfield
     poet: rumi
     canonical_identity_hash: 46ad397d2022dff192e7ebac832a4bb48ed75d0e9fbf3f174bef3159a3a10829
@@ -518,10 +518,10 @@ records:
     mapping_hash: 524230070723a7b7efb56f3338d692731763311646fe58154f860143f8a70400
   - item_id: rumi-masnavi-0557-whinfield
     poet: rumi
-    canonical_identity_hash: cdeb5f080444a3b2c0ac76ac0de5a116633e9c56a6ca3d18cf1431483b6fb7cd
-    english_span_hash: 547472aeb2b6addf988a3ce7ef7e5ed1f1830d5d5e0c4d152f6676279a2b34e3
-    persian_span_hash: e207065ea046b26f3bd798c0cade6c910de5e7453a07476f562afc78a6b57286
-    mapping_hash: ba7d9f2fc7b9d47facdae9881375904ea625c32e3d7e97b81fc2ba9aa385088a
+    canonical_identity_hash: 617d1e3f88990df48287f7b7f630a50ce47d1a9ff8affbc726e0010f46b21af9
+    english_span_hash: 02c3472cf18e2690bd8f0e1c8306971b1025aac019298e66239d90ea2aac5310
+    persian_span_hash: 94b0efc2da5d80e76620106eca7463fcea378fd2fc504fbdc3dabaafd941a5db
+    mapping_hash: 80dfc0df0cdef19e9b0cf8374a153d37ba198fea634c579bef25895d4d60be5b
   - item_id: rumi-masnavi-0590-whinfield
     poet: rumi
     canonical_identity_hash: 3641632818894b6786b2c795fc6a764a86e6f2f1796d69d2a502308970f1f072
@@ -536,10 +536,10 @@ records:
     mapping_hash: c27588a60d2b7d6a0e4dfe09cdb1ce2847e8a14447970e35c55102bf0c1d7ad1
   - item_id: rumi-masnavi-0633-whinfield
     poet: rumi
-    canonical_identity_hash: 4d799a8bab80ed5ef01e73fd28146678305fee864f06f325ccc254f901809a0f
-    english_span_hash: b147d7d7ae3873df2ec400ef2901f5aeda9c6f0c469b2a94360db28603ce36d1
-    persian_span_hash: 0338043da5dca95c98f1a057dbb7243d21c2da8c0889b483b9c242be4562d375
-    mapping_hash: dbfdb9cb004dfd459ca8df623d4240bc7943198c455d6a93249cc72894e7af1b
+    canonical_identity_hash: 5dde3153ae7e051c9c9448c7ff6ae3ae073868edad9143cf648151129a749898
+    english_span_hash: 0e4673f3ac511c088b714350afef10dbef530fa0f3bb342d8fdfed7a898edbb1
+    persian_span_hash: 5eca2539751050a5a2391efb08ad1c0cd4b7f701cf7de5eeab4d4fbc60ebd99b
+    mapping_hash: 8e9a9f322d5327a89415d09320e1922386eb75abf781ae2cb4b07bebb5bdaf42
   - item_id: rumi-masnavi-0639-whinfield
     poet: rumi
     canonical_identity_hash: 92568c092af29c0ef94ed81b2d2b3bb166b57f60c9a1fa71fbc2f3570bc975d9
@@ -548,10 +548,10 @@ records:
     mapping_hash: 0d39b8a2e584b4e9b76ef101b06b05027f6b0b16362b0c9e964036a6be642c4e
   - item_id: rumi-masnavi-0643-whinfield
     poet: rumi
-    canonical_identity_hash: 8480419519e7967d54650e733fc1a404f5cb83422bd5dc10d59e6d07f33e9820
-    english_span_hash: bc926b32d1c818b33d9db6970526e6def2ae150e49fab57cdffc54fee78a6196
-    persian_span_hash: a41793c53060b07fca07bd97e1a43259d6c3b0570ef2d2cff1c68ee8057e1d8b
-    mapping_hash: f1fa0f977a256aa6102b0d6fdf339910bf4714f2c04bf3fca7a7c3fd217829cb
+    canonical_identity_hash: d3a1047ab3681a229480a9e1b600e474c219c6a2a50dd2509b7d7578b057df40
+    english_span_hash: 6c81a603efa40686a38aca9433804e50c2963051e9a2bf7a9804723531194165
+    persian_span_hash: 9c3d85e7f7ee5026598f194533ce49802f5565d849c06c5ab5220d4f1a82dea8
+    mapping_hash: d9e6e32a7df02b81e924244fbec314fad864cd566722238ec6bd33a6c352872f
   - item_id: rumi-masnavi-0667-whinfield
     poet: rumi
     canonical_identity_hash: 11996bacb2c35bf8e95fc50da54c93cdb6b1da00a71f3132c261a131d1e06cd0
@@ -566,10 +566,10 @@ records:
     mapping_hash: cd8efc18485e9a63d21cb7ade32fd0ed86f80d863d2867133937ff71bc0e9289
   - item_id: rumi-masnavi-0674-whinfield
     poet: rumi
-    canonical_identity_hash: f63d5624f2e161636a861289475a4c5c058a7f0df7e61c42b4e87d9468124560
-    english_span_hash: 92bb541acf9780775d0e266e4827f739eb9e56ea599d4301b5ceddf3e15696d3
-    persian_span_hash: e9a79f3db5d64d709a753b8319491677715bf63e72904a9c38ef325b9dced1bd
-    mapping_hash: 38395acaaa24a64559c0fd2dc33ed6a7b54a5be2a3f111280ea0b82961445f8c
+    canonical_identity_hash: b634ae797f48bc85d2badea04e1100583e2ae3815a43ce14f8817fbca904bccd
+    english_span_hash: 7ee0893ba10bc007b81a12ff695a4523a5de579463ec249129e80fa53bfa79a0
+    persian_span_hash: 71e0670eedb9b05081583a1193aa81cc16e063301714bb9911e1c58dffd95860
+    mapping_hash: dcc19c04c556edde4dcfc719eb050c5c7de523c6e194eb1150bc1b14c829eac0
   - item_id: rumi-masnavi-0685-whinfield
     poet: rumi
     canonical_identity_hash: 8811dbb91c76afbf8d38a5238a294b143f45cb7631b8b78275cb12ad11e978b4
@@ -578,10 +578,10 @@ records:
     mapping_hash: 2a215c23259a924e3c2c192df785aed2ef143f2f7e485c0a8934e3f5462cbc40
   - item_id: rumi-masnavi-0699-whinfield
     poet: rumi
-    canonical_identity_hash: 0128e7bacf9453a6c4d311fc23f71808137e719fd6d1bc77124e32610478b75e
-    english_span_hash: 4e4b576f2419e0ea9cdc6deced9ac4cd04436064951cf7739510a12bde9c75d4
-    persian_span_hash: 60d86d212cd1c7c8aa3c4b2ebb62df394c8db024d19a0aa97dc080fffea0ff95
-    mapping_hash: 61fbc37233538e1ba0bddb2150bdcfb747718d7189540d561b9efb228ec91be6
+    canonical_identity_hash: 02e1ffcb02f6fe9e44e1d308b0add1d77f2eca16268f1c2cb255fc7bf5dd0784
+    english_span_hash: d8135c6b7ebb1397842c0f3f0a717f249b2d8a343d79d702ac959e598d62b40e
+    persian_span_hash: 125efde7c4ac35e77a77249e08027bda35dee6726db19f64ff9e56c31523d79b
+    mapping_hash: f6ae39d35898480f39564fb9fb580e86cdb226375344e51cef1aaea1a842a5bf
   - item_id: rumi-masnavi-0703-whinfield
     poet: rumi
     canonical_identity_hash: c64ca507262169d59af7e781d63e10099bd25040c2fba9fb990593f54d53d60e
@@ -597,27 +597,27 @@ records:
   - item_id: rumi-masnavi-0718-whinfield
     poet: rumi
     canonical_identity_hash: c453d8e187f632a0891cbb4cf289102c1f410fd3cc9b56a4ed7ede071eaea096
-    english_span_hash: 568958fd0872dfd41024d2172844002b1cc1dffd1a484fd971e3e62be4585106
+    english_span_hash: a7fd2cc42b2461b2d2f51b91367e3670ea438328fd4e17e33966fc178d44fa30
     persian_span_hash: 5e4c91956fb9085d78ec7f3f20120eda8ef7380d77679c9a007997ec8d96b58d
     mapping_hash: a9f17868653b5054ece8abac1c89acf1145532400cf2c25a46daa45c2a1f1f9b
   - item_id: rumi-masnavi-0724-whinfield
     poet: rumi
-    canonical_identity_hash: 4d06d35658e33a41db3cd61e5b8cc8acfcfdbd873f8be746153d342c9f7e2792
-    english_span_hash: 0d1e26d7a4e752f8201fbdd6ac15cfe158eb395e3d94aa6e3ba26579ea0604c6
-    persian_span_hash: 3070855389ee9fd3912baa23c78432f4c4fd28d55fcb289670f0d8f4aa1e669c
-    mapping_hash: ba0e25778ab98e3bf0b3af9b8e1f0263abb3d7718fa72c379f0c9d17d975a4ea
+    canonical_identity_hash: b2e510de8cbfc67fe80fe061146303b2cbb35df7a56371b6c91f47bf09d0148a
+    english_span_hash: 084794de96c1570a107cf5c60a662b2b933c001aa8b5ca626d6f3bc77a6c7ca3
+    persian_span_hash: afb5d1a3654223ee22af1b4158f6b33c95743fb0879f83638f7bb9d9943e11c3
+    mapping_hash: 7467c5b0f812ad56e7edb83c1b00b71c7b01f6e8dc07394ec8e6558d7c938de4
   - item_id: rumi-masnavi-0751-whinfield
     poet: rumi
     canonical_identity_hash: 36eae60ac2d02303894eba1e186e7a716dc765ebae472a909acd10e9f0a319b4
-    english_span_hash: 420986063004e31d28d2dfc6573e3c4494e04264a7d526e4693ef52da57280fc
+    english_span_hash: 103baf0790c1f8d5d668e985e5dc349f3ed26da7c9e44c83f3e3e09531727163
     persian_span_hash: f806e58eb115498bf0cfb091bad0b55723c9fdbd3d60ace687bebdd97d1ba08b
     mapping_hash: 190894ede110ccac5f07d28ae7be133a22f5ba912e0b2ba41fa04a7ad11fc2e3
   - item_id: rumi-masnavi-0759-whinfield
     poet: rumi
-    canonical_identity_hash: 54a556a32c60c46fd77f251be7babb05699f9fcce76cbfee4d237b2a3f05b716
-    english_span_hash: f65240c6b09e20e7210d8f0a0e641e2f6a50f63fccfcb9caab72cb277effba9f
-    persian_span_hash: 58e3c2b0498210c72849e22da1900526f6e149812e63d0f68a067cb9b6fa45a1
-    mapping_hash: 45103cb03c5962d9dbea52533a2e24c85cc8ca579adb74096707d9ac08b39b59
+    canonical_identity_hash: a5e8d023f406526bce3de0e36f4b89a2ca66529a085c3881a3d9acdc3b1d04af
+    english_span_hash: 9d699fc30d53da80b86b1ffb0e4921b117718526d55739c2f70402054ff4b4bc
+    persian_span_hash: 7974723d4fabd5a7096d8ca527004f445d0694cbc4f56d799a3a2fd43f75ff25
+    mapping_hash: 627766004c677e9f25e0c996780fba426f2e12a3e20b483e17ae6cddb0fd873e
   - item_id: rumi-masnavi-0762-whinfield
     poet: rumi
     canonical_identity_hash: 9a2e8789c3de3402189818be589ce43986026846b2f82ce679ed150a03dd680a
@@ -644,21 +644,21 @@ records:
     mapping_hash: 784b71ff76659eee74967ac01fdac69c236fa8b59eb1c755770ca6614cb4d388
   - item_id: rumi-masnavi-0812-whinfield
     poet: rumi
-    canonical_identity_hash: 1a09e83db69cbddb340c78e9f534828f18c59688524bf2b9ede7ff64678f7407
-    english_span_hash: da96f7e1a9ac5aab9e461ffad70d8ac189d5d7987d4bde432423852ebef08da3
-    persian_span_hash: 492eb012b5f20d90122215e52d23fb2c90462956e852e8f29e7f44a288559864
-    mapping_hash: 9389caa3f00a6abfff0da94e116a14d3eacdbd6584773675b3b987351aca5ab1
+    canonical_identity_hash: e2b4670b4afddaf2b78153185d679c6b058fdfb1a65e6bf6c484dfb5f899b8fc
+    english_span_hash: cdd4730fe74dfa574bdbb68828378e48e2dc551b4df8ffe7a987dbe8e3fcc4f9
+    persian_span_hash: 3e5b12be68470423b2fa43d45ea6d211bb4c6b3dfeb84753c38165984ecfe1a3
+    mapping_hash: 4f2e7d2a27604f020669b3a664e7a74b7ce492d2ebf2bbf27c193069bc031b33
   - item_id: rumi-masnavi-0813-whinfield
     poet: rumi
-    canonical_identity_hash: bfa303d5eeccf6a460129f631bb6e8abdb8164cdfd564664b71d8b5ca933abbd
-    english_span_hash: b0a336a688fad05d73dd35394bc8171b3cbcf6a1670fa276b9c139c4d4706ce0
-    persian_span_hash: d31d9cd3dd7fe84bcc8d164721931b3adaa570abc9a10b82584a0489142917fd
-    mapping_hash: 0a78e51853954d60731f6e92639e14ae6031bae4238d2dddd8c805da8974ac16
+    canonical_identity_hash: be3dd24ab501338fb79d54d5e5bb3bffd44d6067434e06381f37f68d024db930
+    english_span_hash: 63c0be17cb50bbc396f9e79145b6b12b678c0826de2343b4b1ae9d5571f71f78
+    persian_span_hash: 7948fae7b065167a9a79d670596289e6fdcd3d15b4536cfc7a9fe5e1b44c631f
+    mapping_hash: e51a72a111918f87c82e65e1f85c730c1f3e4bfb411755447c51c4e3188b57a3
   - item_id: rumi-masnavi-0836-whinfield
     poet: rumi
-    canonical_identity_hash: bc97ed229423b82fe793046c4c16b8bbcf493d50f04efb08540f6d51fcee16fa
+    canonical_identity_hash: f54c229eb5cd9c780fe40e46163d0f40bed6c6b338e65776917330cb4f112a6d
     english_span_hash: effa57ed290340a439a0e4ed3f11c8cbbf7e0058028e69a4bc223029e02265c3
-    persian_span_hash: b4a783d02b3cfa7b0ff753673ccf76521d4bce8ec90d48a961f4a46f74c24df0
+    persian_span_hash: 9f6e2a9572d3bf6a988db6ba65731810ed6dcc2f16ac761c0af7b3aaff1a5786
     mapping_hash: 9a07c799d8ab1356d2f5f8062c3b440157c7cf27722b92d95fa9fb634d0e4f12
   - item_id: rumi-masnavi-0840-whinfield
     poet: rumi
@@ -698,16 +698,16 @@ records:
     mapping_hash: 036ae3568bfef61107da70fa9fbfa1c0d12cf667ded3f0760837465804ed1293
   - item_id: rumi-masnavi-0946-whinfield
     poet: rumi
-    canonical_identity_hash: b96918bddeb0c1f142b35b55b51e4afb5438161b38b47667e41c75dd7acee955
-    english_span_hash: 7a61576fecfc321fc7961428348e81ecde62aae755b67c2d94089936e60b2b8f
-    persian_span_hash: 92d0b7cbfce8295916e36c96be9e01fc880529e55a61bea647006f837f8069c4
-    mapping_hash: 28eead0b39226e281c41f4cf90093771e1631a886aab37e40a847bac9d097e96
+    canonical_identity_hash: 0c5c192569ad677df368a2018024323ab0a17e8f88a13fae0c935804b46fcacb
+    english_span_hash: 5a68aa48ddacba12eadd8ae309efef10cce85fc9f65cd0ed2885a6fe29fb39da
+    persian_span_hash: e611590ca7662b0ff7540f5785334433dd5e380cb183b93eae361c17ced78c6f
+    mapping_hash: 389e0ba274b28acfc0a1683e2c0b0f8ed3fdebaa0972cdccf389307b2b872291
   - item_id: rumi-masnavi-0947-whinfield
     poet: rumi
-    canonical_identity_hash: 8d5a95956677e6fa32e2cd7f26c79c5e6c1afe16c12cdbfeb058bf3f3c6d1fd1
-    english_span_hash: 6cb141b1c4400129f9ff54c6dfeb7781aa0d7ec2eb9a2c0fa0087ffd75cbcba7
-    persian_span_hash: 3a089443ec397f6f1fb1f72522452cfe8a30f67e875fa48af6c1c12d7f9326ea
-    mapping_hash: 8db4e49f28a2480ccdeb0333cb5da450d014742237a44b13e5094a132a1a9df9
+    canonical_identity_hash: 7716d1a4d308da60c8bbb385ae12f82d03824c7bd7c347a464e47469035371dd
+    english_span_hash: 11fa88f2c0fb0c54d8ced2a2395cf726870925ab7ea5b44228e013d6a99ea56b
+    persian_span_hash: 794023e4487789361865067b7a0a728dafe698d90c761842a99716a38688c630
+    mapping_hash: ad269f7e43f316341d91a02271bef28ceb98e9290f7add693b12ef785c0aacf4
   - item_id: rumi-masnavi-0958-whinfield
     poet: rumi
     canonical_identity_hash: 2c39e13266ffbf091b574a7259dc448ea8b41fb2c6fb6d4068264447a4d90589
@@ -716,7 +716,7 @@ records:
     mapping_hash: 3418b9ea1d433b3f8ed33c39fddcdb8a8284876b67ef801fb0794364be336d5c
   - item_id: rumi-masnavi-0959-whinfield
     poet: rumi
-    canonical_identity_hash: f1d234da612dbd9e38a5b0ad3977352f304803abeb1fca0c2fc7b16538418a06
-    english_span_hash: b5f4a457c99f9a32f8dd8aab8004e25d2ca3154b3c7e4e2028a9b28bb02923e6
-    persian_span_hash: 384cc5a2ca6d0b2aad3f22f25bacc9f930655cba25c27442ff040775af80d06a
-    mapping_hash: 6fe82226acbbc6d0f2d150d1c764158037b17f9ed95d4806eef7bf066611b0c6
+    canonical_identity_hash: 29201cd5e11f69d757d5df2d081e0842790bd67cc5306ceb3abf2775d9378297
+    english_span_hash: 65a0b1d2596454424b1c62bec68d4b55145e5a11588019ba8a97783efcdd4eea
+    persian_span_hash: 91a0a18d588ba198a963ad132a10786e547858ed304edb4f4366d85d38916fa4
+    mapping_hash: fb307cfa274360462d8c7761a8b491edf9c464abd2ba9b94fcef910deb3c6c3a

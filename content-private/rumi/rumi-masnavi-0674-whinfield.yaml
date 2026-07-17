@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0145-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0145-s2:lines-2-3
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - آب جو نسبت باشتر هست کم / لیک باشد موش را آن همچو یم
-    - وظیفه چار نان ... اسیر حرص مانند بط است
+    - آب جو نسبت باشتر هست کم
+    - لیک باشد موش را آن همچو یم
   english_lines:
-    - insufficient for a camel / ocean to a mouse
-    - four loaves ... voracious as a duck
+    - The water which is insufficient for a camel
+    - Is like an ocean to a mouse.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,22 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: f63d5624f2e161636a861289475a4c5c058a7f0df7e61c42b4e87d9468124560
-  englishSpanHash: 92bb541acf9780775d0e266e4827f739eb9e56ea599d4301b5ceddf3e15696d3
-  persianSpanHash: e9a79f3db5d64d709a753b8319491677715bf63e72904a9c38ef325b9dced1bd
-  mappingHash: 38395acaaa24a64559c0fd2dc33ed6a7b54a5be2a3f111280ea0b82961445f8c
+  canonicalIdentityHash: b634ae797f48bc85d2badea04e1100583e2ae3815a43ce14f8817fbca904bccd
+  englishSpanHash: 7ee0893ba10bc007b81a12ff695a4523a5de579463ec249129e80fa53bfa79a0
+  persianSpanHash: 71e0670eedb9b05081583a1193aa81cc16e063301714bb9911e1c58dffd95860
+  mappingHash: dcc19c04c556edde4dcfc719eb050c5c7de523c6e194eb1150bc1b14c829eac0
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.975
+  confidence: 0.97
   disclosures:
-    - "This English text is E. H. Whinfield's abridged Victorian translation. It condenses the Persian, omitting several passages, and draws on two Nicholson sections rather than one: the bulk corresponds to \"عذر گفتن فقیر به شیخ\", while the closing lines correspond to the separate section \"بیان دعویی که عین آن دعوی گواه صدق خویش است\". Line-by-line correspondence with the Persian should not be assumed."
-  verifiedAt: 2026-07-16
-  rationale: |-
-    The ranked candidates were all wrong: they match on صوفی/قاضی alone and point to an unrelated judge-and-Sufi story. Searching the index directly located seq 674 (عذر گفتن فقیر به شیخ — the dervish excusing himself to the Shaikh), Whinfield's verse source for Story XVI. Anchors are numerous, rare and order-preserving: camel/mouse water proportion, four loaves with the duck simile, fifty-vs-six loaves, ten-vs-five-hundred prostrations, barefoot to the Ka'ba, the verbatim hadith عینای تنام لا ینام قلبی, Saturn in the seventh sphere, bird-vs-fly. Well beyond three independent anchors.
-
-    Two caveats drive the disclosure. First, composite: the first two subsections render seq 674, but the closing subsection (thirsty man with the cup, mother and babe) renders a separate section, seq 186, which I read and confirmed; Whinfield crosses the seam unmarked. Seq 674 is dominant and is reported. Second, abridged: Whinfield omits the Persian passages on the unbounded mean (seven seas of ink), Ja'far Tayyar, and the shaikh vomiting pearls into the basin.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 2-3 of rumi-whinfield-abridged-en-b0145-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 674 starting at hemistich 12; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (5 ranking votes, 11 anchors). Camel/mouse relativity couplet; avoids a mid-quotation window.

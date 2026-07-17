@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-1, ode 83 (49), scan page 242
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_sha256: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   english_source_reference: Clarke volume-1, ode 83 (49), scan page 242
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,12 +26,15 @@ text:
     - ای غایب از نظر بخدا می‌سپارمت
     - جانم بسوختیّ و بدل دوست دارمت
   english_lines:
-    - O (beloved) hidden from (my) sight! to God, I entrust, —— thee. (In pain of separation), thou consumedest my soul; yet with heart, friend
+    - O (beloved) hidden from (my) sight! to God, I entrust, —— thee.
+    - (In pain of separation), thou consumedest my soul; yet with heart, friend I hold— thee.
   alignment: line
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+    - english_index: 1
+      persian_indices:
         - 1
 translation:
   classification: public_domain_translation
@@ -57,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  englishSourceHash: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 26180ed7c3d6f085e72a2fcc3f44eff2da78b30f9531faf92d5db2e22de48877
-  englishSpanHash: 1b17541fc787e6c1354515c17d350e6a25f4b4ee48a33d1789fa7659860377fc
+  englishSpanHash: c2acf8ed605fcf1050e0aad29a0fddc94459bd2f16af260c0949f7b0858e39df
   persianSpanHash: e06192af4722b2edfa74f25659cea93425a27cf4a59dafa28425a02cb5c3bf92
-  mappingHash: 5cf603aa90a47a9ac9f52281c75de81339b1a00be017bc29112268c32f11478b
+  mappingHash: bd1e9c1bdc270918cd06fe2a73e82eda916fd061a9c97e7eaaf69e202d2b304d
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-1, ode 83 (49), scan page 242 resolves to Qazvini-Ghani ghazal 91 through an exact continuous source span and 3 independent bilingual anchors.
+    - The couplet's two verse lines were previously jammed into one truncated line that dropped the closing words 'I hold— thee.'; both complete lines were recovered from the locked transcript (volume-1, scan page 242) and mapped line-for-line.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-1, ode 83 (49), scan page 242 resolves to Qazvini-Ghani ghazal 91 through an exact continuous source span and 3 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

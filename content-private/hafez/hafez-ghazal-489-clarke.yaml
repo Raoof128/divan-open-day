@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-2, ode 506 (512), scan page 255
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  english_source_sha256: ac0ea92c5f128363b68976af266210f18b34fefc1b81882a20b75e3df86c0399
   english_source_reference: Clarke volume-2, ode 506 (512), scan page 255
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,7 +26,7 @@ text:
     - ای در رخ تو پیدا انوار پادشاهی
     - در فکرت تو پنهان صد حکمت الهی
   english_lines:
-    - O them, in whose face (are) revealed the splendours of sovereignty;
+    - O thou, in whose face (are) revealed the splendours of sovereignty;
     - And, in whose thought, (are) concealed divine philosophies !
   alignment: line
   mapping:
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  englishSourceHash: ac0ea92c5f128363b68976af266210f18b34fefc1b81882a20b75e3df86c0399
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 2f4f2c446d55eca7ae4b558b204e36efc0de84ee66b0b67d6348d379edfceb3a
-  englishSpanHash: 2813e1157743271cc7ee2bf3695b84eebf8c765e9b822298ec8bb89124b86352
+  englishSpanHash: 141ba19b512fd596a251b900a969ac431e61e7ec1fb55ab3444e2cd78bdd2f17
   persianSpanHash: 5a65cc1297b40db1eee1713e066d5e603a1503a1f9720756470580ef86a1fbc2
   mappingHash: d104cd9a08e4f1f55411b2c4895e67b3f2b8d1c35a307e0b79e4f0eb07131d0f
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-2, ode 506 (512), scan page 255 resolves to Qazvini-Ghani ghazal 489 through an exact continuous source span and 2 independent bilingual anchors.
+    - A transcript OCR artefact ("O them" for "O thou") was corrected against the volume-2 scan, page 255.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-2, ode 506 (512), scan page 255 resolves to Qazvini-Ghani ghazal 489 through an exact continuous source span and 2 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

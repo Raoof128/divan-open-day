@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0169-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0169-s2:lines-0-1
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - حکایت مارگیر کی اژدهای فسرده را مرده پنداشت ... آورد به بغداد
-    - نفست اژدرهاست او کی مرده است ... افسرده است
+    - نفست اژدرهاست او کی مرده است
+    - از غم و بی آلتی افسرده است
   english_lines:
-    - snake-catcher ... frozen snake ... took it to Baghdad
-    - Lust is that snake; How say you it is dead? It is only frozen
+    - Lust is that snake; How say you it is dead?
+    - It is only frozen by the pangs of hunger.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: ecba14f0045903fa4d56c9bbf3031675880f13df02f5cca7a0ed159e8136cc97
-  englishSpanHash: 3d43d9dc9a8884d8644810271c6ae67aa5cf9b0e3f4524be2922caddab174b19
-  persianSpanHash: f1033fbdd68655d6ffac14d2cd1a395d3c2346686a707b0d5c941e4a9d620054
-  mappingHash: 0d6db6ee5ca96602e7a12d9ab6582e05ad0005678293d8e5c0185fb6c0f1a73a
+  canonicalIdentityHash: d8e3c6d2d74da46058c0f9f0fba49e028dd23e8f79d964a40e8e3acc70e82a71
+  englishSpanHash: 9de8a5c417ab5bd264b950f575a0539194d3c0bd719876cbbd98ea6b2a3492ff
+  persianSpanHash: 774f946f075f98ee0e9a4b119051985725f8320049f5ff776605e5c0078a0c1e
+  mappingHash: 7cf4787124c267101cf43e3e611a1ddf47ff3b2821c9e481212b15162aa48cc5
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.94
+  confidence: 0.97
   disclosures:
-    - Whinfield's abridgement summarises most of this section in his own English prose and renders only its closing verse passage. The paired verse corresponds closely to the Persian; the preceding narrative summary is the translator's prose, not translated verse.
-  verifiedAt: 2026-07-16
-  rationale: "The ranked candidates (194/297/324/350/351, Pharaoh-answers-Moses sections) were all wrong — they matched only the generic Moses/Pharaoh title words. Searching the index for اژدها/مارگیر found seq 418 (حکایت مارگیر ... آورد به بغداد, 182 lines), which I read in full. Its closing sixteen couplets, from نفست اژدرهاست او کی مرده است, correspond couplet-by-couplet and in the same order to Whinfield's 31 verse lines: frozen-not-dead lust; Pharaoh commanding the river; plundering a hundred Moseses and Aarons; worm under poverty / gnat through wealth; the frost of separation; the sun of Iraq; do-not-pity; the bat of vileness; الله یجزیک الوصال; the warmed snake's destruction; \"twenty times more than I have told\"; and the closing Moses-must-slay-dragons / hundred-thousand-slain pair. Eight independent anchors, several rare. The English block is mixed: Whinfield opens with his own prose précis of the Moses–Pharaoh narrative and a prose summary of the snake-catcher anecdote, then translates only the section's closing verse passage. The verse portion is a genuine close rendering; the surrounding prose is the abridger's connective tissue — hence disclosure rather than plain verification."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 0-1 of rumi-whinfield-abridged-en-b0169-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 418 starting at hemistich 154; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 8 anchors). Lust-is-that-snake couplet; replaces a heading compression with literal ellipses.

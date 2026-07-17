@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - گل در بر و می در کف و معشوق بکامست
+    - سلطان جهانم بچنین روز غلامست
   english_lines:
-    - THE rose has flushed red, the bud has burst,
+    - The rose has flushed red, the bud has burst,
     - And drunk with joy is the nightingale—
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,18 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: c87023abbec41c6e459105218791991a136e9ba7321ab356b80a88671f0659f3
-  englishSpanHash: d2061dadabb4506b33466d9fd032f0c14552af2f35549e93bceeaba0a0718d03
-  persianSpanHash: 62b09bf35efc16bc3a2afcaf22548ea5a6cf33cbaaa49a397150e1c4c017d998
-  mappingHash: 01c5ecd8bdc9376b06d8444220e9dd1693c291ef78828551a1fa3f1573812016
-  verdict: MACHINE_VERIFIED
-  confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem VIII on scan page 79 was aligned to Qazvini-Ghani ghazal 46 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  englishSpanHash: 586a299958a5f010072ab97ad1be02f3e08109330e4e06c8cd68744e376e65b0
+  persianSpanHash: 680dab0a91a850e99a50cfd4d2ed93dd7d91512d74edf73aa75c667b09face44
+  mappingHash: 29e1cf12b1148b7b0e3b2802fd64aaa1cf36d281a979547b630eccc047f76309
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.97
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+    - The small-cap typography of the opening word was normalized against the Bell scan; wording is otherwise verbatim.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem VIII on scan page 79 was aligned to Qazvini-Ghani ghazal 46 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

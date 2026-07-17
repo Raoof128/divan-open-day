@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - نفس باد صبا مشک فشان خواهد شد
+    - عالم پیر دگرباره جوان خواهد شد
   english_lines:
     - The breath of Dawn's musk-strewing wind shall blow,
     - The ancient world shall turn to youth again,
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: f0c481599df20ac6d857f4e2ceb4fa1b580b7f7bb97f72e25094a05495a1b743
   englishSpanHash: 3a6c06928bca55e11ad5c5fbf823d98aab73f13f393f3574f099855e90b8013e
-  persianSpanHash: ee6101c82ca92b3aaeb7a613bfa8b03f1ec871937f94588daf37da80fa0bad3b
-  mappingHash: 9eacb42af4d049f948f9d50f3a4ded5ae90f8136259388b2fa5c25b77c1e5567
+  persianSpanHash: 9088866be547302a0bd511c0cead98ff6f84f8c98d87a26fa66b8f7104c0b889
+  mappingHash: 743a06c54fc7e5a3727a8b58d41cfeb1952d242eb4e7621aeb41fff0c88ee49a
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XXXI on scan page 108 was aligned to Qazvini-Ghani ghazal 164 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XXXI on scan page 108 was aligned to Qazvini-Ghani ghazal 164 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

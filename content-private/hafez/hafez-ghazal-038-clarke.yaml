@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-1, ode 71 (107), scan page 224
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_sha256: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   english_source_reference: Clarke volume-1, ode 71 (107), scan page 224
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,12 +26,15 @@ text:
     - بی مهر رخت روز مرا نور نماندست
     - وز عُمر مرا جز شب دیجور نماندست
   english_lines:
-    - Without the sun of Thy cheek, light for my day, hath remained not And of my life, save the blackest night, aught hath remained not.
+    - Without the sun of Thy cheek, light for my day, hath remained not
+    - And of my life, save the blackest night, aught hath remained not.
   alignment: line
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+    - english_index: 1
+      persian_indices:
         - 1
 translation:
   classification: public_domain_translation
@@ -57,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  englishSourceHash: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 96d648656bfac5b869f5a4fafc75f07d969c64093fc7ba05a71ae29fed5f558d
-  englishSpanHash: 00778d3dca87621f30e220392040432602fba906dad1a306a58dde6a2bfa0ae1
+  englishSpanHash: cebc957bf743b28331bcbddf34776fec3923232a741bdf078492c5a32fcc3adf
   persianSpanHash: ef1a70d09e7d0433cc576339494bdb8608dd313d2d44c6cd1f109d751d31b7b1
-  mappingHash: ba6c319780fe23a34b393c23526d639f0fa54493444efb276db1b7e7cad293ad
+  mappingHash: 2863d2a94055527f74e80706505fede8c3589d19b7eefb7b4407ab052de2e57e
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-1, ode 71 (107), scan page 224 resolves to Qazvini-Ghani ghazal 38 through an exact continuous source span and 2 independent bilingual anchors.
+    - The couplet's two verse lines were previously jammed into one truncated line ending '…save the'; both complete lines were recovered from the locked transcript (volume-1, scan page 224) and mapped line-for-line.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-1, ode 71 (107), scan page 224 resolves to Qazvini-Ghani ghazal 38 through an exact continuous source span and 2 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

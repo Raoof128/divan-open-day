@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - گلعذاری ز گلستان جهان ما را بس
+    - زین چمن سایه آن سرو روان ما را بس
   english_lines:
     - A FLOWER-TINTED cheek, the flowery close
     - Of the fair earth, these are enough for me—
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,18 +62,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 6f2d732de8a5209b0a683a7368bc44a6638c9457979d789b0d5efc9996ed1eaa
   englishSpanHash: 4097eaf36ce2eb9870308b0d5ad35e5a35c32069c65b947df2845cc1e6621558
-  persianSpanHash: 329e40e6b3490b24fd14cffdeb942a5ccd12eb7e85208ac282791c448e340cf0
-  mappingHash: 913dd005b101328b930b57a71c4fa27ec5e08570828e8aab503c1edfeaae635a
-  verdict: MACHINE_VERIFIED
+  persianSpanHash: 3092882abe57bcfa22eb52c29685ebe174f093ebf39a49fed83ae850e2f9d280
+  mappingHash: d8a1ec076f167581db39b67a8fcda43b75dcf1245fc0fdda27341d6737d02aa3
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem VI on scan page 77 was aligned to Qazvini-Ghani ghazal 268 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem VI on scan page 77 was aligned to Qazvini-Ghani ghazal 268 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

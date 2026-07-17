@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - الا یا ایهّا الساقی اَدِر کاَساً و ناوِلها
+    - که عشق آسان نمود اوّل ولی افتاد مشکلها
   english_lines:
     - Arise, oh Cup-bearer, rise! and bring
     - To lips that are thirsting the bowl they praise,
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,18 +62,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: e803b848cf2b3938e7d9b3038ee0f5c0fc663751ef4263b2f80ee3007640fd6c
   englishSpanHash: 7e7239fbfd10aa303570f473d70506872219dc9e9de3efe7ad2c6b44fdf46142
-  persianSpanHash: 7aaea84dcf89148157efc58326cdc5f027ea1dfbc5e221b5c7c35cdc77ec9ee8
-  mappingHash: c25468b3075317e4b83057fa0412a69f436c1559732950e2bfd61d58ad4889a3
-  verdict: MACHINE_VERIFIED
+  persianSpanHash: b39d4f6d39e579bb7b83f3f18d796074fbffe6e0b2fdc30664b000e25999a238
+  mappingHash: 05266823cdf23e8826518a34d0ac8e3c4230e292861b8d85cbcf531edcdcb816
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem I on scan page 71 was aligned to Qazvini-Ghani ghazal 1 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem I on scan page 71 was aligned to Qazvini-Ghani ghazal 1 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

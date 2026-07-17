@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - گل بی رخ یار خوش نباشد
+    - بی باده بهار خوش نباشد
   english_lines:
     - The rose is not fair without the beloved's face,
-    - Nor merry the Spring without the sweet laughter of
-  alignment: line
+    - Nor merry the Spring without the sweet laughter of wine ;
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,19 +62,21 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 5527ced2b83ca4ce62c1b3d08b8019071f2754d8442a193ee79ceef7111594af
-  englishSpanHash: 76f745a242ad0cb14535ace20718fdab5b8025c8baeea1bcd11a54c48473d5fd
-  persianSpanHash: 5053712cfd56a0583536faa515988456523f67b98ef037c724589bb6d7dcfa1f
-  mappingHash: 60e34a22faaeb30a9c89673b126c68d0207b9d04fae298a9af090ab4395b70d8
+  englishSpanHash: 488ce8d411fb9511c764b0a335a6b3fb25e08925e9d399ce484ab7141b194223
+  persianSpanHash: b345118df49fe71c3014b9b53ad8da66050f6dc89c8b8bf7eff38e2873789f17
+  mappingHash: f025cd96edf20c82d6e06e95b579c8d73535cedf2e0f0b17724bf6a353db817e
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XXII on scan page 97 was aligned to Qazvini-Ghani ghazal 163 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+    - The printed page wraps the second verse line; the wrapped tail was rejoined against the Bell scan.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XXII on scan page 97 was aligned to Qazvini-Ghani ghazal 163 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

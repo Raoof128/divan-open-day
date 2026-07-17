@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - ساقی بنور باده برافروز جام ما
+    - مطرب بگو که کار جهان شد بکام ما
   english_lines:
     - Oh Cup-bearer, set my glass afire
     - "With the light of wine! oh minstrel, sing :"
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: fa91475b648f979c5d864e62e68366b19173cad47027cb91a5b8e3e242a49ad0
   englishSpanHash: a067725a32c98ca8060e06be97fca8e60ffd30c025f2a2f281c66ec792a05701
-  persianSpanHash: 3451f3752e348688401849c54365ff9ce65b177bd322824d9916a793fe87ab5f
-  mappingHash: 01cee21ddfa3c3af9ff16d2b1959701bc9046c962d3d81441a3d38a81af9c515
+  persianSpanHash: 91aefb3c5f0e84ff37625c1af0a1d4df4eda6499cf5f3432a0dbadd58bfcaeda
+  mappingHash: 4bb2cea17b099d17f5b00d5fdc96b5e3e2320117d050a3d45b6ba080237d278a
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem IX on scan page 80 was aligned to Qazvini-Ghani ghazal 11 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem IX on scan page 80 was aligned to Qazvini-Ghani ghazal 11 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

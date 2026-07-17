@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0171-s4
+  english_source_reference: rumi-whinfield-abridged-en-b0171-s4:lines-12-13
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - الرضا بالکفر کفر
     - پس قضا را خواجه از مقضی بدان
+    - تا شکالت دفع گردد در زمان
   english_lines:
-    - '"Acquiescence in infidelity is infidelity"'
-    - distinguish the ordinance from the ordained
+    - Therefore distinguish the ordinance from the ordained,
+    - That thy difficulty may be at once removed.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: cbefc7e79b3d3d51ad5b623d6c628986277b82094470e23cca3ac68d3d1ad96e
-  englishSpanHash: 1ff8587cd84e41ff2a8c013829e2bce95bc7b36ea860ffdf4b15122a78a225c7
-  persianSpanHash: a2b66cf50cbfef2a5348d01a7a9d408fdf2cbe761850e36e006bb7a391ba099f
-  mappingHash: 480d8ff4285d59d9c200763735273bf8cf288a0810f5f7790b3a354535479e20
+  canonicalIdentityHash: a68e95fa81ebd99d4a281452f72ffa77ba06a8e54a1608ea4f1f43d67b5fcd64
+  englishSpanHash: 6964da1c4f4a7c0429a2b4f882ec5daba75ee0107ac81e0cb4f985c5e88d36ff
+  persianSpanHash: 1b681f646051b58eff444b076d3c4b00a79c4fa5783255cc653d4d20b2c72a80
+  mappingHash: e84eb033c5223c71a5105dc5cef4fa0e753627682022189df8b408582b177543
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.95
+  confidence: 0.97
   disclosures:
-    - This English segment is a composite. Its first half is a close, line-by-line rendering of the Persian section; its second half (the barber and Zaid anecdotes) belongs to a different Persian section and is not covered by this pairing.
-  verifiedAt: 2026-07-16
-  rationale: "All four ranked candidates are elephant sections and are wrong: they were ranked on پیل, which appears nowhere in s4. (Candidate seq 29 does match sibling segment s2, verified by reading it.) Running the repo's classifier on block 171 shows s4 is a distinct verse run introduced by the heading captured as s3, \"Reconciliation of the two traditions\". Searching the index found seq 300, whose title literally translates that heading, and whose 28 hemistichs correspond one-to-one and in order to s4's first 28 lines — past the three-anchor bar on named-hadith, technical-argument, and rare-analogy grounds that identify nothing else in the Masnavi. Over that span the rendering is direct, not abridged. But s4's remaining 30 lines are the half-gray-beard/barber and Zaid-blow anecdotes, which I traced to a separate section, seq 845 (مثل در بیان آنک حیرت مانع بحث و فکرتست), plus a short tail beyond it. The segment spans multiple Persian sections because the intervening \"Bewilderment\" title had no prose anchor and stayed inside the verse run — the limit documented in splitTitlesAfterProse. Hence composite with disclosure, not direct."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 12-13 of rumi-whinfield-abridged-en-b0171-s4 correspond line-for-line to consecutive hemistichs of Nicholson section 300 starting at hemistich 12; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (5 ranking votes, 6 anchors). Ordinance/ordained couplet; replaces an Arabic-maxim fragment.

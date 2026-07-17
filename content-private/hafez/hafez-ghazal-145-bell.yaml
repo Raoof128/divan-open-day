@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - چه مستیست ندانم که رو بما آورد
+    - که بود ساقی و این باده از کجا آورد
   english_lines:
     - What drunkenness is this that brings me hope—
     - Who was the Cup-bearer, and whence the wine?
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: ea73363b47a5c5ae0af1b717e281d458a9fdfe7302b97487d57f471ef8349d32
   englishSpanHash: 96be5aa7f534f7f337b871a339dc00586c1738220a8e1b7183f31975f6d61079
-  persianSpanHash: cde4bbda753563042857e31c0a735d389943063a076bcdf4145ddf728c842f7f
-  mappingHash: 5112d681ce44e60c2e1bdb79098b9ce148d63fbb591c41bb600508c4b2a77f0e
+  persianSpanHash: 6e774504bc8bba88f82205611aaffaf31848d971097e34ec61e76ec70692d61d
+  mappingHash: 880cb603acf041eba42bb465ae6e7e19151500b0b336f9df13bcbb546e488a30
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XIX on scan page 93 was aligned to Qazvini-Ghani ghazal 145 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XIX on scan page 93 was aligned to Qazvini-Ghani ghazal 145 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

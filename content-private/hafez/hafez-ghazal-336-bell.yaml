@@ -15,26 +15,29 @@ source:
   reference_type: ghazal
   reference_value: Ghazal 336
   opening_hemistich_fa: مژدهٔ وصل تو کو کز سر جان برخیزم
-  page_reference: Bell poem XLII, scan page 122
+  page_reference: Bell poem XLIII, scan page 122
   source_language: fa
   english_source_id: hafez-bell-1897-en
   english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
-  english_source_reference: Bell poem XLII, scan page 122
+  english_source_reference: Bell poem XLIII, scan page 122
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
   persian_lines:
     - مژدهٔ وصل تو کو کز سر جان برخیزم
+    - طایر قدسم و از دام جهان برخیزم
   english_lines:
     - Where are the tidings of union? that I may arise—
     - Forth from the dust I will rise up to welcome thee !
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,18 +62,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 865885a2e703748946d60d280a8d4cfc1806644e328f4b67d820a60bc1efdf26
   englishSpanHash: 5e8c8f8672de1257580a2708b119e37a621d91acf7000898a7e35857af63621a
-  persianSpanHash: a17ca4bac780684b56bf02d25b4d8ca828bc5eeb72e2eae1b8edd07e967636e6
-  mappingHash: 6891eef87a0720ba29546089093adf1a75f11c5748eb3ac2c52fb43371cb1cfc
-  verdict: MACHINE_VERIFIED
+  persianSpanHash: 8f1d088fe3aa3f97dcfd129d6f200bd49baa67aa3cf3d736dd630227cf48461b
+  mappingHash: 3aa74a233836f8453b2b114bd463514fc6a0780facd00a4bd904e277a6c608df
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XLII on scan page 122 was aligned to Qazvini-Ghani ghazal 336 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XLIII on scan page 122 was aligned to Qazvini-Ghani ghazal 336 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The poem numeral was recovered from the locked archive text and the poem sequence (The archive text prints XLIII immediately before "WHERE are the tidings of union"; sequence XLI (p120), XLII (p121) confirms.)

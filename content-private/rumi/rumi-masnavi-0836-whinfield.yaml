@@ -23,8 +23,8 @@ source:
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - خود حسود و دشمن او آن تنست
     - او چو فرعون و تنش موسی او
+    - او به بیرون می‌دود که کو عدو
   english_lines:
     - He is like Pharaoh, and his body is like Moses,
     - He runs abroad crying, "where is my foe?"
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: bc97ed229423b82fe793046c4c16b8bbcf493d50f04efb08540f6d51fcee16fa
+  canonicalIdentityHash: f54c229eb5cd9c780fe40e46163d0f40bed6c6b338e65776917330cb4f112a6d
   englishSpanHash: effa57ed290340a439a0e4ed3f11c8cbbf7e0058028e69a4bc223029e02265c3
-  persianSpanHash: b4a783d02b3cfa7b0ff753673ccf76521d4bce8ec90d48a961f4a46f74c24df0
+  persianSpanHash: 9f6e2a9572d3bf6a988db6ba65731810ed6dcc2f16ac761c0af7b3aaff1a5786
   mappingHash: 9a07c799d8ab1356d2f5f8062c3b440157c7cf27722b92d95fa9fb634d0e4f12
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.807002
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 104 resolve to the continuous Nicholson section 836 span beginning at 69, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: "Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0093-s2:lines-104-105) corresponds line-for-line to consecutive hemistichs of Nicholson section 836; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.807002). Persian corrected one hemistich forward: the published pair was off by one against the English."

@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0043-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0043-s2:lines-0-1
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - در تو نمرودیست آتش در مرو / رفت خواهی اول ابراهیم شو
-    - کاملی گر خاک گیرد زر شود / ناقص ار زر برد خاکستر شود
+    - صاحب دل را ندارد آن زیان
+    - گر خورد او زهر قاتل را عیان
   english_lines:
-    - Within you is a Nimrod ... first become an Abraham
-    - saint handles earth, it becomes gold; sinner handles gold, it turns to dust
+    - As to a "man of heart," he takes no hurt,
+    - Even though he should eat deadly poison.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: cdeb5f080444a3b2c0ac76ac0de5a116633e9c56a6ca3d18cf1431483b6fb7cd
-  englishSpanHash: 547472aeb2b6addf988a3ce7ef7e5ed1f1830d5d5e0c4d152f6676279a2b34e3
-  persianSpanHash: e207065ea046b26f3bd798c0cade6c910de5e7453a07476f562afc78a6b57286
-  mappingHash: ba7d9f2fc7b9d47facdae9881375904ea625c32e3d7e97b81fc2ba9aa385088a
+  canonicalIdentityHash: 617d1e3f88990df48287f7b7f630a50ce47d1a9ff8affbc726e0010f46b21af9
+  englishSpanHash: 02c3472cf18e2690bd8f0e1c8306971b1025aac019298e66239d90ea2aac5310
+  persianSpanHash: 94b0efc2da5d80e76620106eca7463fcea378fd2fc504fbdc3dabaafd941a5db
+  mappingHash: 80dfc0df0cdef19e9b0cf8374a153d37ba198fea634c579bef25895d4d60be5b
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.95
+  confidence: 0.97
   disclosures:
-    - This English passage corresponds line-for-line to the Persian section, but appears under a translator-supplied subheading; the Nicholson edition places these verses under a narrative heading about the merchant and the parrots of Hindustan. One couplet is translated freely, substituting a sea-and-pearls image for the Persian rose-from-fire.
-  verifiedAt: 2026-07-16
-  rationale: "The five ranked candidates were title-matched on طوطی/بازرگان and are all parrot-narrative sections; none contains this discourse. I discarded them and searched the Persian directly for the Nimrod/Abraham couplet, which resolves uniquely to section 557. That section is 24 lines (12 couplets) and maps couplet-for-couplet onto the 24 English lines, in identical order, with no omission — a complete verse rendering, not an abridgement. Anchors are numerous and independent: Nimrod+Abraham; the earth-to-gold/gold-to-dust inversion; صاحب دل eating زهر قاتل; the Prophet's warning against مری; hand-of-God vs hand-of-Satan-and-demons; the closing پیاده با سوار vocative. Well above the three-anchor bar. Two points warrant disclosure rather than a bare verified: (a) Nicholson's heading here is narrative (the merchant seeing the parrots of Hindustan) while the content is entirely discourse — \"Saints are preserved from all harm\" is Whinfield's own subheading, so heading text does not corroborate the pairing; (b) one couplet is rendered freely — او ز آتش ورد احمر آورد (\"brings the red rose out of fire\") becomes \"A swimmer brings pearls from the deep sea\". Neither affects the identification."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 0-1 of rumi-whinfield-abridged-en-b0043-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 557 starting at hemistich 0; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (5 ranking votes, 6 anchors). Man-of-heart/poison couplet at the segment opening.

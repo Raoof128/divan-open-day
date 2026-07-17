@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0209-s2:lines-23-24
+  english_source_reference: rumi-whinfield-abridged-en-b0209-s2:lines-22-23
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
+    - راست‌گو دانیش تو از روی وصف
     - گرچه ماهیت نشد از نوح کشف
-    - ور بگویی من چه دانم نوح را
   english_lines:
+    - You say true, for you know him by report,
     - Though the real nature of Noah is not revealed to you.
-    - On the other hand, if you say, "What know I of Noah
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 0128e7bacf9453a6c4d311fc23f71808137e719fd6d1bc77124e32610478b75e
-  englishSpanHash: 4e4b576f2419e0ea9cdc6deced9ac4cd04436064951cf7739510a12bde9c75d4
-  persianSpanHash: 60d86d212cd1c7c8aa3c4b2ebb62df394c8db024d19a0aa97dc080fffea0ff95
-  mappingHash: 61fbc37233538e1ba0bddb2150bdcfb747718d7189540d561b9efb228ec91be6
+  canonicalIdentityHash: 02e1ffcb02f6fe9e44e1d308b0add1d77f2eca16268f1c2cb255fc7bf5dd0784
+  englishSpanHash: d8135c6b7ebb1397842c0f3f0a717f249b2d8a343d79d702ac959e598d62b40e
+  persianSpanHash: 125efde7c4ac35e77a77249e08027bda35dee6726db19f64ff9e56c31523d79b
+  mappingHash: f6ae39d35898480f39564fb9fb580e86cdb226375344e51cef1aaea1a842a5bf
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.867504
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 23 resolve to the continuous Nicholson section 699 span beginning at 23, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: "Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0209-s2:lines-22-23) corresponds line-for-line to consecutive hemistichs of Nicholson section 699; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.867504). Shifted one line back: complete sentences, no dangling quotation."

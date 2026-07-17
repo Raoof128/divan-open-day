@@ -22,7 +22,7 @@ records:
     required_public_credit: >-
       Persian text: Divan of Hafez, Qazvini–Ghani edition, transcription from
       Persian Wikisource (CC BY-SA).
-    source_lock_reference: null
+    source_lock_reference: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
     rights_reviewer_id: null
     status: pending
 
@@ -40,7 +40,7 @@ records:
     required_public_credit: >-
       English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz,
       1897 (a selection, not a complete translation).
-    source_lock_reference: null
+    source_lock_reference: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
     rights_reviewer_id: null
     status: pending
 
@@ -58,7 +58,7 @@ records:
     required_public_credit: >-
       English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta,
       1891 (a complete literal prose translation with interpolated glosses).
-    source_lock_reference: null
+    source_lock_reference: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
     rights_reviewer_id: null
     status: pending
 
@@ -77,7 +77,7 @@ records:
     required_public_credit: >-
       Persian text: Masnavi, Nicholson edition, transcription from Persian
       Wikisource (CC BY-SA).
-    source_lock_reference: null
+    source_lock_reference: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
     rights_reviewer_id: null
     status: pending
 
@@ -96,6 +96,6 @@ records:
     required_public_credit: >-
       English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged
       translation, not a complete rendering).
-    source_lock_reference: null
+    source_lock_reference: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
     rights_reviewer_id: null
     status: pending

@@ -27,7 +27,7 @@ text:
     - با سلیمان پای در دریا بنه
   english_lines:
     - In Solomon we hold our course to eternity.
-    - Along with Solomon plunge into the ocean, 4
+    - Along with Solomon plunge into the ocean,
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
   canonicalIdentityHash: 36eae60ac2d02303894eba1e186e7a716dc765ebae472a909acd10e9f0a319b4
-  englishSpanHash: 420986063004e31d28d2dfc6573e3c4494e04264a7d526e4693ef52da57280fc
+  englishSpanHash: 103baf0790c1f8d5d668e985e5dc349f3ed26da7c9e44c83f3e3e09531727163
   persianSpanHash: f806e58eb115498bf0cfb091bad0b55723c9fdbd3d60ace687bebdd97d1ba08b
   mappingHash: 190894ede110ccac5f07d28ae7be133a22f5ba912e0b2ba41fa04a7ad11fc2e3
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.877816
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 29 resolve to the continuous Nicholson section 751 span beginning at 29, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+    - A printed footnote marker digit inside the excerpt was removed against the Whinfield source; wording is otherwise verbatim.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0153-s0:lines-29-30) corresponds line-for-line to consecutive hemistichs of Nicholson section 751; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.877816). A printed footnote marker digit was removed from the excerpt against the Whinfield source.

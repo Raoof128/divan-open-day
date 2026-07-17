@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0171-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0171-s2:lines-1-2
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
     - چشم حس همچون کف دستست و بس
-    - چشم دریا دیگرست و کف دگر
+    - نیست کف را بر همه‌ی او دست‌رس
   english_lines:
-    - eye of outward sense is as the palm of a hand
-    - The sea itself is one thing, the foam another
+    - The eye of outward sense is as the palm of a hand,
+    - The whole of the object is not grasped in the palm.
   alignment: line
   mapping:
     - english_index: 0
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: c0d459068ea18a083b656c17fd65ae392312cb28b3ac1c19967efbc0e3e95847
-  englishSpanHash: a984397110f7d5ac46b1add4fdd5166afed12bad1901eb6f11d1d33830851db3
-  persianSpanHash: a899a9505a02c69818136d9c6fa1adc4d905b93a672060ca08a3eb8348f59ff2
-  mappingHash: 5c690f31c5f3a2c5539b112f445bf8fa69fae1ec593c6371e5fa78968d4af42d
+  canonicalIdentityHash: 32eacc400e6d06f0ee4e55fd903efdf5162ba470504b7206a05a2781c5cc70b7
+  englishSpanHash: a2fa5703cdba6317101fc1b0f904d6b73b8b9db9f644f89edad75ed1a12d2bb9
+  persianSpanHash: a78fddae3442b43b34c96a9a3e62d12f2f04eefac9fc2dc2633a65e2adf8c16c
+  mappingHash: 8aeb3a68f0870fb6b8173a6ccd5f4687fb0897b812ffc4e71c22bc9596c3eba1
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.985
+  confidence: 0.97
   disclosures:
-    - This English text is an abridged translation. It corresponds mainly to this Persian section, but omits some couplets within it and also draws on later sections of the Masnavi that are not shown here.
-  verifiedAt: 2026-07-16
-  rationale: "Nicholson section 29 (اختلاف کردن در چگونگی و شکل پیل) contains the segment's verse from its first couplet onward in the same order, with far more than three independent anchors: the palm-of-hand figure, the sea/foam antithesis, the Moses-and-Jesus question, the Adam-and-Eve bowstring, the triple 'dam mazan' imperative, and the full Noah/Canaan exchange down to the wave striking Canaan's head. The candidate list's other entries (97, 402, 312) are hare-and-elephant fables matching only on the word پیل and were discarded on reading. The pairing is not one-to-one, however: Whinfield abridges within section 29 (omitting the world-as-tree / half-ripe fruit passage and the 'تو یکی تو نیستی' sequence), and his segment runs past that section's end into further material — the reconciliation of the two traditions on acquiescence in infidelity, and the half-gray beard / barber and Zaid anecdotes, the latter being Nicholson section 845 (مثل در بیان آنک حیرت مانع بحث و فکرتست). Section 29 is therefore the primary source but not the sole one, so the correspondence is composite and abridged rather than direct."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 1-2 of rumi-whinfield-abridged-en-b0171-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 29 starting at hemistich 20; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (6 ranking votes, 9 anchors). Sense-eye/palm couplet; replaces two non-consecutive anchor fragments.

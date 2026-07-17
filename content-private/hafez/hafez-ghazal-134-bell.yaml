@@ -24,17 +24,20 @@ source:
 text:
   persian_lines:
     - بلبلی خون دلی خورد و گلی حاصل کرد
+    - باد غیرت بصدش خار پریشان دل کرد
   english_lines:
     - The nightingale with drops of his heart's blood
     - Had nourished the red rose, then came a wind,
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 6a6c352ba64be3fb294be2741887858bc50c7af55f9a5a63cb577f9654c7f6f1
   englishSpanHash: fc42a386a54d7f9f7391292f4749806f0e0c63cb8f3ae6ccf32625b4ef30e642
-  persianSpanHash: b02d57d27336e656217f431fbfa9d8e5a4933760a0a17e79a813c86de36201fe
-  mappingHash: cd1fff788fd7a41a0ac660cc1e0a94278228907bcbe19997a035fe52138fac60
+  persianSpanHash: 919226a27203c8fd86e006b4d599914f9ee4648d5e2248eb83825e46bc5ff472
+  mappingHash: 7b0a7e64def296098c1dfc1fec4e5c0d19c26a524e8a8b51376eb199bd563765
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XIV on scan page 87 was aligned to Qazvini-Ghani ghazal 134 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XIV on scan page 87 was aligned to Qazvini-Ghani ghazal 134 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.
