@@ -28,6 +28,19 @@
 
 ## Raouf change log
 
+### 2026-07-17 (Australia/Sydney) — Release v1.0.6: outage fix deployed and verified in a real user agent
+
+**Raouf:**
+
+- **Deployed and verified.** `divan-release-1-v1-0-6`, image `ghcr.io/raoof128/divan-open-day:v1.0.6@sha256:9f22b8979ab5e5b7cf42f81b0f1b998deb4b2f51ab00ab846f74fa20032a4ae3`, `linux/amd64`, Scout `0C/0H/0M/0L` (159 packages), `SOURCE_DATE_EPOCH=1784274224`. `preflight.sh` → `deploy.sh` (exit 0, "Activated immutable image …") → independent `verify.sh`, all passed. Full evidence: `docs/verification/2026-07-17-release-v1-0-6-outage-fix.md`.
+- **Corpus proven unchanged:** compiled content JSON byte-identical to live v1.0.4 (151,029 bytes, all 120 `items` equal); only `releaseId` differs, so the `contentSha256` shift (`a9497e27…` → `f5420697…`) is release metadata only.
+- **`no-transform` is observed working, not merely assumed:** a browser-shaped navigation to `/credits`, `/about`, and `/` now returns **1708 bytes with zero beacon hits** (2212 with injection). `Cache-Control: no-cache, must-revalidate, no-transform`.
+- **Verified in a real Chromium session, closing the method gap that hid the defect:** loading `/credits` and reloading now succeeds where it previously produced `chrome-error://chromewebdata/`; all five context routes return 200 with `beacon=no`; the Cloudflare beacon CSP violation is gone from the console; no `ERR_FAILED` in the network log. **A client still controlled by the old v1.0.4 worker recovered without updating** — once injection stopped, its integrity check passed again, which is why the edge fix rather than the worker fix was the critical path.
+- **The v1.0.5 candidate was correctly rejected and rolled back.** `verify.sh` pins `Cache-Control` exactly and I changed the served value without updating that contract (expected `no-cache, must-revalidate`, served `no-cache, must-revalidate, no-transform`). `deploy.sh` restored v1.0.4 and re-verified it; the site was never left on an unverified release and neighbouring services were untouched. v1.0.5 was never activated. The guarding test was a substring assertion that stayed green while the two files drifted; it is replaced by one that parses both and compares real values, confirmed to fail against the drifted script with the same mismatch the deploy hit.
+- **Origin `ops/` is a copy and is not a git checkout.** `verify.sh` was synced from the tag (not from a worktree) and all six files re-confirmed hash-identical to `v1.0.6` before any script ran.
+- **Neighbouring services:** `persian-society-eoi-*`, `reasoning-engine-mcp`, and `nexus-api` all at 5-day uptimes and healthy; `divan-cloudflared-1` not recreated (21h). Only `divan-divan-web-1` changed. Registry credentials removed from both machines (zero residual `ghcr.io` entries).
+- **Not claimed:** Cloudflare Web Analytics remains **enabled** on the zone — `no-transform` blocks the injection but the product is still configured, and disabling auto-injection stays the correct fix for the "no analytics" invariant and removes the dependency on Cloudflare honouring `no-transform`. The `.env` token is scoped to zone listing only (`Authentication error` on the RUM and zone-settings APIs), so this was not done by agent. Chromium via DevTools is **not** Safari and not a physical device; no branded-Safari, hardware, assistive-tech, print, or field evidence was produced. Provider logging/retention review not performed. Credential rotation from the v1.0.4 session still outstanding.
+
 ### 2026-07-17 (Australia/Sydney) — Live navigation outage: edge HTML injection versus the verified byte ceiling
 
 **Raouf:**
