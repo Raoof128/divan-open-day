@@ -7,7 +7,8 @@
 - Begin now walks the scroll corridor at human walking pace (rAF, 220 px/s, easeInOutSine, 4–9 s clamp) instead of a native smooth scroll that skipped the garden cinematic in under a second; the walk yields to visitor scroll input, Skip, and unmount, and falls back to direct arrival where scrolling is unavailable.
 - Fixed the frozen butterfly (flutter died after 17 iterations): flight hands off to a perpetual gentle hover and slow resting wing beat. Per owner instruction it is now 5× larger and amethyst purple (new tokens), repositioned to stay in the left third behind the reading column; reduced motion still disables it.
 - Book opening polished: rubbery cover bounce removed, shadow synchronised with the cover, softer shadow peak, weightier page rise, illumination waits for the motion to settle. All inside the locked 1.6 s animation ceiling.
-- 720/720 unit tests (Begin suite rewritten RED-first), e2e 5/5, full gate green; corpus, service worker, and ops untouched.
+- Device parity: phones no longer skip the entrance — the rAF walk replaces iOS Safari's instant `scrollIntoView` jump, and a slow first frame no longer permanently demotes idle visitors to poster-only (grace window fails only a pending Begin; 30 s hard cap; errors still demote). Clips verified faststart.
+- 722/722 unit tests (Begin suite rewritten RED-first), e2e 5/5, full gate green; corpus, service worker, and ops untouched.
 
 ## 2026-07-17 — Release v1.0.6: outage fix deployed, verified in a real user agent
 

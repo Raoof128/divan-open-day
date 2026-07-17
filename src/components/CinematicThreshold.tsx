@@ -22,6 +22,11 @@ import {
 } from '../lib/cinematic/scrollScrub';
 
 const FIRST_FRAME_TIMEOUT_MS = 4000;
+// A slow mobile connection can need well over the grace window for its first
+// frame. While the visitor is idle the poster is already showing, so waiting
+// costs nothing — only a pending Begin (which must never trap) or this hard
+// cap gives up on the cinematic.
+const FIRST_FRAME_HARD_CAP_MS = 30_000;
 const FINAL_FRAME_SETTLE_TIMEOUT_MS = 1000;
 
 // The Begin walk paces the corridor like a person strolling into the garden;
@@ -77,6 +82,7 @@ export function CinematicThreshold({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const arrivedRef = useRef(false);
   const pendingBeginRef = useRef(false);
+  const frameOverdueRef = useRef(false);
   const cancelWalkRef = useRef<(() => void) | null>(null);
 
   const scrubbing = plan.shouldLoadVideo && !videoFailed;
@@ -197,6 +203,12 @@ export function CinematicThreshold({
       return;
     }
     if (thresholdState !== 'playing') {
+      // The frame is already overdue: this visitor has waited long enough.
+      // Enter directly instead of asking them to wait a second grace window.
+      if (frameOverdueRef.current) {
+        arrive();
+        return;
+      }
       pendingBeginRef.current = true;
       onAnnounce('Preparing the entrance.');
       // WebKit does not reliably composite seeked frames on a muted inline
@@ -249,6 +261,7 @@ export function CinematicThreshold({
     const presented = () => {
       if (!cancelled) {
         clearFirstFrameTimeout();
+        frameOverdueRef.current = false;
         // The clip is scrub-driven and never intentionally plays; a Begin
         // gesture may have primed it, so settle it back to paused.
         try {
@@ -265,7 +278,27 @@ export function CinematicThreshold({
         setVideoFailed(true);
       }
     };
-    timeout = window.setTimeout(fail, FIRST_FRAME_TIMEOUT_MS);
+    // The grace window only forces direct entry when a Begin is pending —
+    // giving up on an idle visitor's cinematic just because their phone's
+    // connection is slow would hand mobile a permanently poorer entrance.
+    // A late frame re-enables the garden; the hard cap bounds the wait.
+    const overdue = () => {
+      if (cancelled) {
+        return;
+      }
+      // A pending Begin must never trap, and an already-arrived visitor has
+      // no garden left to wait for — both give up on the clip immediately.
+      if (pendingBeginRef.current || arrivedRef.current) {
+        fail();
+        return;
+      }
+      frameOverdueRef.current = true;
+      timeout = window.setTimeout(
+        fail,
+        FIRST_FRAME_HARD_CAP_MS - FIRST_FRAME_TIMEOUT_MS,
+      );
+    };
+    timeout = window.setTimeout(overdue, FIRST_FRAME_TIMEOUT_MS);
     const onLoadedData = () => {
       if (typeof video.requestVideoFrameCallback === 'function') {
         video.requestVideoFrameCallback(presented);

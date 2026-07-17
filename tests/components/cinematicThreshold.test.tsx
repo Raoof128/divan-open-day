@@ -101,7 +101,11 @@ describe('CinematicThreshold', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('demotes to the poster route when no frame arrives within the timeout', () => {
+  it('keeps waiting for a slow first frame while nobody has pressed Begin', () => {
+    // A phone on a slow connection may need more than the grace window for
+    // its first frame. While the visitor is idle the poster is showing and
+    // waiting costs nothing — demoting early would silently take the garden
+    // away from mobile visitors while desktops keep it.
     vi.useFakeTimers();
     renderThreshold();
     expect(document.querySelector('video')).not.toBeNull();
@@ -111,7 +115,37 @@ describe('CinematicThreshold', () => {
     });
 
     expect(thresholdSection().dataset['cinematicState']).toBe('poster');
+    expect(document.querySelector('video')).not.toBeNull();
+
+    const video = document.querySelector('video');
+    fireEvent(video!, new Event('loadeddata'));
+    expect(thresholdSection().dataset['cinematicState']).toBe('playing');
+  });
+
+  it('demotes to the poster route when no frame arrives by the hard cap', () => {
+    vi.useFakeTimers();
+    renderThreshold();
+    expect(document.querySelector('video')).not.toBeNull();
+
+    act(() => {
+      vi.advanceTimersByTime(30_100);
+    });
+
+    expect(thresholdSection().dataset['cinematicState']).toBe('poster');
     expect(document.querySelector('video')).toBeNull();
+  });
+
+  it('enters directly when Begin is pressed after the frame is overdue', () => {
+    vi.useFakeTimers();
+    const { onArrive } = renderThreshold();
+    expect(document.querySelector('video')).not.toBeNull();
+
+    act(() => {
+      vi.advanceTimersByTime(4100);
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    expect(onArrive).toHaveBeenCalledTimes(1);
   });
 
   it('keeps the timeout armed until a requested video frame is presented', () => {
