@@ -4,3 +4,10 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - sharp
+
+# A compromised release of any locked package is installable the instant it is
+# published; pnpm's default cooldown is 0. 24 hours costs this repo nothing at
+# its release cadence and closes the window the well-known npm compromises
+# (event-stream, chalk/debug) actually exploited. `--frozen-lockfile` already
+# pins resolutions, so this only affects a deliberate dependency change.
+minimumReleaseAge: 1440
