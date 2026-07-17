@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -72,5 +72,36 @@ describe('inspectPublicBundle', () => {
     expect(problems.some((p) => p.file.endsWith('hafez-candidates.json'))).toBe(
       true,
     );
+  });
+});
+
+describe('the leak scanner cannot skip an entry class in silence', () => {
+  it('reports a symlink in dist instead of dropping it', async () => {
+    // readdir({ withFileTypes: true }) uses lstat semantics, so a symlink is
+    // neither isFile() nor isDirectory(). It matched no branch and was skipped
+    // entirely — a link to a private source book would have passed this gate.
+    const secret = join(dist, 'decoy.txt');
+    await writeFile(secret, 'not scanned');
+    await symlink(secret, join(dist, 'sneaky.js'));
+
+    const problems = await inspectPublicBundle(dist);
+
+    expect(problems.some((problem) => /symlink/iu.test(problem.reason))).toBe(
+      true,
+    );
+  });
+
+  it('reports a text asset above the scan ceiling rather than passing it', async () => {
+    // "Too big to read" silently became "passes". A large bundle is exactly
+    // where a private path would hide.
+    await writeFile(join(dist, 'huge.js'), 'x'.repeat(5_000_001));
+
+    const problems = await inspectPublicBundle(dist);
+
+    expect(
+      problems.some((problem) =>
+        /scan ceiling|not checked/iu.test(problem.reason),
+      ),
+    ).toBe(true);
   });
 });

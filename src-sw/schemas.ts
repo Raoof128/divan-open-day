@@ -264,7 +264,13 @@ const MIME_TYPES = [
   'video/mp4',
 ] as const;
 
-const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
+/**
+ * The worker-side mirror of `FIXED_BROWSER_ASSETS` in
+ * `src/lib/content/release.ts`. Exported so a test can prove the two stay
+ * identical; they cannot share a module because this file must not pull
+ * `node:crypto` into the worker bundle.
+ */
+export const FIXED_MIME = new Map<string, (typeof MIME_TYPES)[number]>([
   ['icon.svg', 'image/svg+xml'],
   ['index.html', 'text/html'],
   ['manifest.webmanifest', 'application/manifest+json'],
