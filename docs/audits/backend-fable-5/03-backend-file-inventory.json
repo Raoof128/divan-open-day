@@ -1,0 +1,3954 @@
+{
+  "sourceSha": "adde8b4ce2adb5a8c612561601e586fc9232877f",
+  "totalTracked": 462,
+  "inventoried": 392,
+  "byCategory": {
+    "leak-control": 4,
+    "toolchain": 10,
+    "ci": 4,
+    "authority": 3,
+    "doc": 17,
+    "registry": 9,
+    "authoring-record": 120,
+    "evidence": 11,
+    "boundary": 79,
+    "origin": 1,
+    "container": 4,
+    "tunnel": 1,
+    "ops-shell": 6,
+    "test-config": 3,
+    "build": 4,
+    "verify": 7,
+    "pipeline": 19,
+    "qr": 2,
+    "report": 2,
+    "release-coherence": 6,
+    "contract": 3,
+    "content-schema": 14,
+    "test": 54,
+    "test-fixture": 9
+  },
+  "unclassified": [],
+  "rows": [
+    {
+      "id": "B-001",
+      "path": ".dockerignore",
+      "category": "leak-control",
+      "type": "none",
+      "bytes": 145,
+      "lines": 15,
+      "responsibility": "Prevents secret leakage into build context",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-002",
+      "path": ".editorconfig",
+      "category": "toolchain",
+      "type": "none",
+      "bytes": 220,
+      "lines": 16,
+      "responsibility": "Editor contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-003",
+      "path": ".github/CODEOWNERS",
+      "category": "ci",
+      "type": "none",
+      "bytes": 12,
+      "lines": 2,
+      "responsibility": "Review ownership",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-004",
+      "path": ".github/pull_request_template.md",
+      "category": "ci",
+      "type": "md",
+      "bytes": 995,
+      "lines": 26,
+      "responsibility": "Repo automation scaffolding",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-005",
+      "path": ".github/workflows/ci.yml",
+      "category": "ci",
+      "type": "yml",
+      "bytes": 1550,
+      "lines": 68,
+      "responsibility": "CI workflow definition",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-006",
+      "path": ".gitignore",
+      "category": "leak-control",
+      "type": "none",
+      "bytes": 1664,
+      "lines": 55,
+      "responsibility": "Prevents secret/private-source commit",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-007",
+      "path": ".node-version",
+      "category": "toolchain",
+      "type": "none",
+      "bytes": 8,
+      "lines": 2,
+      "responsibility": "Pinned Node runtime",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-008",
+      "path": ".npmrc",
+      "category": "toolchain",
+      "type": "none",
+      "bytes": 65,
+      "lines": 4,
+      "responsibility": "Registry/install policy (supply chain)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-009",
+      "path": ".prettierignore",
+      "category": "toolchain",
+      "type": "none",
+      "bytes": 548,
+      "lines": 29,
+      "responsibility": "Format contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-010",
+      "path": ".prettierrc.json",
+      "category": "toolchain",
+      "type": "json",
+      "bytes": 132,
+      "lines": 9,
+      "responsibility": "Format contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-011",
+      "path": "2026-07-12-divan-open-day-agent-ready-design-v2-audited.md",
+      "category": "authority",
+      "type": "md",
+      "bytes": 82410,
+      "lines": 2928,
+      "responsibility": "Release 1 design authority",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-012",
+      "path": "AGENT.md",
+      "category": "authority",
+      "type": "md",
+      "bytes": 133321,
+      "lines": 833,
+      "responsibility": "Engineering contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-013",
+      "path": "CHANGELOG.md",
+      "category": "authority",
+      "type": "md",
+      "bytes": 106102,
+      "lines": 678,
+      "responsibility": "Change history",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-014",
+      "path": "CONTRIBUTING.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 2266,
+      "lines": 61,
+      "responsibility": "Contributor guidance",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-015",
+      "path": "LICENSE",
+      "category": "doc",
+      "type": "none",
+      "bytes": 1070,
+      "lines": 22,
+      "responsibility": "Licence grant",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-016",
+      "path": "README.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 5568,
+      "lines": 124,
+      "responsibility": "Public orientation + licence grant",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-017",
+      "path": "RESUME.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 4754,
+      "lines": 73,
+      "responsibility": "Session handoff note",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-018",
+      "path": "SECURITY.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 1318,
+      "lines": 30,
+      "responsibility": "Vulnerability reporting",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-019",
+      "path": "THIRD_PARTY_NOTICES.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 5452,
+      "lines": 117,
+      "responsibility": "Font/third-party notices",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-020",
+      "path": "content-private/README.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 1624,
+      "lines": 33,
+      "responsibility": "Authoring workflow doc",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-021",
+      "path": "content-private/approvals.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 32,
+      "lines": 3,
+      "responsibility": "Private registry/selection metadata",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-022",
+      "path": "content-private/assets.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 29,
+      "lines": 3,
+      "responsibility": "Private registry/selection metadata",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-023",
+      "path": "content-private/contributors.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 35,
+      "lines": 3,
+      "responsibility": "Private registry/selection metadata",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-024",
+      "path": "content-private/editions.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 651,
+      "lines": 15,
+      "responsibility": "Private registry/selection metadata",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-025",
+      "path": "content-private/hafez/hafez-ghazal-001-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3114,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-026",
+      "path": "content-private/hafez/hafez-ghazal-002-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3245,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-027",
+      "path": "content-private/hafez/hafez-ghazal-008-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3053,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-028",
+      "path": "content-private/hafez/hafez-ghazal-011-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3277,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-029",
+      "path": "content-private/hafez/hafez-ghazal-017-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3483,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-030",
+      "path": "content-private/hafez/hafez-ghazal-019-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3382,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-031",
+      "path": "content-private/hafez/hafez-ghazal-028-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3453,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-032",
+      "path": "content-private/hafez/hafez-ghazal-034-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3456,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-033",
+      "path": "content-private/hafez/hafez-ghazal-038-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3386,
+      "lines": 76,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-034",
+      "path": "content-private/hafez/hafez-ghazal-043-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3660,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-035",
+      "path": "content-private/hafez/hafez-ghazal-046-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3088,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-036",
+      "path": "content-private/hafez/hafez-ghazal-052-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3438,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-037",
+      "path": "content-private/hafez/hafez-ghazal-056-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3386,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-038",
+      "path": "content-private/hafez/hafez-ghazal-058-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3462,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-039",
+      "path": "content-private/hafez/hafez-ghazal-062-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3490,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-040",
+      "path": "content-private/hafez/hafez-ghazal-065-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3267,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-041",
+      "path": "content-private/hafez/hafez-ghazal-077-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3450,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-042",
+      "path": "content-private/hafez/hafez-ghazal-079-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3093,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-043",
+      "path": "content-private/hafez/hafez-ghazal-086-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3448,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-044",
+      "path": "content-private/hafez/hafez-ghazal-089-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3355,
+      "lines": 76,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-045",
+      "path": "content-private/hafez/hafez-ghazal-090-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3271,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-046",
+      "path": "content-private/hafez/hafez-ghazal-091-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3390,
+      "lines": 76,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-047",
+      "path": "content-private/hafez/hafez-ghazal-094-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3504,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-048",
+      "path": "content-private/hafez/hafez-ghazal-101-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3317,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-049",
+      "path": "content-private/hafez/hafez-ghazal-103-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3285,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-050",
+      "path": "content-private/hafez/hafez-ghazal-119-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3489,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-051",
+      "path": "content-private/hafez/hafez-ghazal-130-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3479,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-052",
+      "path": "content-private/hafez/hafez-ghazal-134-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3308,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-053",
+      "path": "content-private/hafez/hafez-ghazal-135-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3484,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-054",
+      "path": "content-private/hafez/hafez-ghazal-136-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3486,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-055",
+      "path": "content-private/hafez/hafez-ghazal-145-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3297,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-056",
+      "path": "content-private/hafez/hafez-ghazal-161-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3563,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-057",
+      "path": "content-private/hafez/hafez-ghazal-163-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3277,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-058",
+      "path": "content-private/hafez/hafez-ghazal-164-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3303,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-059",
+      "path": "content-private/hafez/hafez-ghazal-166-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3281,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-060",
+      "path": "content-private/hafez/hafez-ghazal-169-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3101,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-061",
+      "path": "content-private/hafez/hafez-ghazal-173-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3464,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-062",
+      "path": "content-private/hafez/hafez-ghazal-180-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3456,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-063",
+      "path": "content-private/hafez/hafez-ghazal-184-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3104,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-064",
+      "path": "content-private/hafez/hafez-ghazal-209-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3492,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-065",
+      "path": "content-private/hafez/hafez-ghazal-233-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3091,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-066",
+      "path": "content-private/hafez/hafez-ghazal-234-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3509,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-067",
+      "path": "content-private/hafez/hafez-ghazal-242-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3454,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-068",
+      "path": "content-private/hafez/hafez-ghazal-254-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3083,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-069",
+      "path": "content-private/hafez/hafez-ghazal-255-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3105,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-070",
+      "path": "content-private/hafez/hafez-ghazal-268-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3075,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-071",
+      "path": "content-private/hafez/hafez-ghazal-278-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3499,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-072",
+      "path": "content-private/hafez/hafez-ghazal-279-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3280,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-073",
+      "path": "content-private/hafez/hafez-ghazal-288-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3104,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-074",
+      "path": "content-private/hafez/hafez-ghazal-336-bell.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3108,
+      "lines": 77,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-075",
+      "path": "content-private/hafez/hafez-ghazal-337-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3463,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-076",
+      "path": "content-private/hafez/hafez-ghazal-342-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3436,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-077",
+      "path": "content-private/hafez/hafez-ghazal-350-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3488,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-078",
+      "path": "content-private/hafez/hafez-ghazal-377-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3458,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-079",
+      "path": "content-private/hafez/hafez-ghazal-412-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3523,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-080",
+      "path": "content-private/hafez/hafez-ghazal-427-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3430,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-081",
+      "path": "content-private/hafez/hafez-ghazal-452-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3448,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-082",
+      "path": "content-private/hafez/hafez-ghazal-465-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3391,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-083",
+      "path": "content-private/hafez/hafez-ghazal-468-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3494,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-084",
+      "path": "content-private/hafez/hafez-ghazal-489-clarke.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3436,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-085",
+      "path": "content-private/permissions.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 81139,
+      "lines": 2043,
+      "responsibility": "Private registry/selection metadata",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-086",
+      "path": "content-private/production-selection.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 48879,
+      "lines": 723,
+      "responsibility": "Private registry/selection metadata",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-087",
+      "path": "content-private/rumi/rumi-masnavi-0000-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3245,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-088",
+      "path": "content-private/rumi/rumi-masnavi-0029-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4239,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-089",
+      "path": "content-private/rumi/rumi-masnavi-0039-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3327,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-090",
+      "path": "content-private/rumi/rumi-masnavi-0083-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3245,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-091",
+      "path": "content-private/rumi/rumi-masnavi-0112-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4284,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-092",
+      "path": "content-private/rumi/rumi-masnavi-0143-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3243,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-093",
+      "path": "content-private/rumi/rumi-masnavi-0166-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3141,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-094",
+      "path": "content-private/rumi/rumi-masnavi-0167-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3192,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-095",
+      "path": "content-private/rumi/rumi-masnavi-0170-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3248,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-096",
+      "path": "content-private/rumi/rumi-masnavi-0188-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3243,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-097",
+      "path": "content-private/rumi/rumi-masnavi-0232-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3246,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-098",
+      "path": "content-private/rumi/rumi-masnavi-0271-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3315,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-099",
+      "path": "content-private/rumi/rumi-masnavi-0282-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3251,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-100",
+      "path": "content-private/rumi/rumi-masnavi-0283-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3230,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-101",
+      "path": "content-private/rumi/rumi-masnavi-0300-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4254,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-102",
+      "path": "content-private/rumi/rumi-masnavi-0306-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4229,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-103",
+      "path": "content-private/rumi/rumi-masnavi-0342-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3233,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-104",
+      "path": "content-private/rumi/rumi-masnavi-0357-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4355,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-105",
+      "path": "content-private/rumi/rumi-masnavi-0359-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3226,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-106",
+      "path": "content-private/rumi/rumi-masnavi-0395-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3253,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-107",
+      "path": "content-private/rumi/rumi-masnavi-0397-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4633,
+      "lines": 84,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-108",
+      "path": "content-private/rumi/rumi-masnavi-0408-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3251,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-109",
+      "path": "content-private/rumi/rumi-masnavi-0418-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4506,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-110",
+      "path": "content-private/rumi/rumi-masnavi-0431-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3242,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-111",
+      "path": "content-private/rumi/rumi-masnavi-0432-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3244,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-112",
+      "path": "content-private/rumi/rumi-masnavi-0544-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3241,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-113",
+      "path": "content-private/rumi/rumi-masnavi-0557-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4587,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-114",
+      "path": "content-private/rumi/rumi-masnavi-0590-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3233,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-115",
+      "path": "content-private/rumi/rumi-masnavi-0612-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3241,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-116",
+      "path": "content-private/rumi/rumi-masnavi-0633-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4386,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-117",
+      "path": "content-private/rumi/rumi-masnavi-0639-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3240,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-118",
+      "path": "content-private/rumi/rumi-masnavi-0643-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4349,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-119",
+      "path": "content-private/rumi/rumi-masnavi-0667-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3600,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-120",
+      "path": "content-private/rumi/rumi-masnavi-0673-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3253,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-121",
+      "path": "content-private/rumi/rumi-masnavi-0674-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4473,
+      "lines": 82,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-122",
+      "path": "content-private/rumi/rumi-masnavi-0685-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3231,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-123",
+      "path": "content-private/rumi/rumi-masnavi-0699-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3253,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-124",
+      "path": "content-private/rumi/rumi-masnavi-0703-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3232,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-125",
+      "path": "content-private/rumi/rumi-masnavi-0708-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3219,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-126",
+      "path": "content-private/rumi/rumi-masnavi-0718-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3238,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-127",
+      "path": "content-private/rumi/rumi-masnavi-0724-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4216,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-128",
+      "path": "content-private/rumi/rumi-masnavi-0751-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3234,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-129",
+      "path": "content-private/rumi/rumi-masnavi-0759-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3243,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-130",
+      "path": "content-private/rumi/rumi-masnavi-0762-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3219,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-131",
+      "path": "content-private/rumi/rumi-masnavi-0800-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3237,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-132",
+      "path": "content-private/rumi/rumi-masnavi-0802-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3235,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-133",
+      "path": "content-private/rumi/rumi-masnavi-0805-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3236,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-134",
+      "path": "content-private/rumi/rumi-masnavi-0812-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4263,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-135",
+      "path": "content-private/rumi/rumi-masnavi-0813-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3207,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-136",
+      "path": "content-private/rumi/rumi-masnavi-0836-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3238,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-137",
+      "path": "content-private/rumi/rumi-masnavi-0840-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3241,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-138",
+      "path": "content-private/rumi/rumi-masnavi-0844-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3255,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-139",
+      "path": "content-private/rumi/rumi-masnavi-0858-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3223,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-140",
+      "path": "content-private/rumi/rumi-masnavi-0860-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3247,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-141",
+      "path": "content-private/rumi/rumi-masnavi-0895-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3237,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-142",
+      "path": "content-private/rumi/rumi-masnavi-0942-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3258,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-143",
+      "path": "content-private/rumi/rumi-masnavi-0946-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4077,
+      "lines": 78,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-144",
+      "path": "content-private/rumi/rumi-masnavi-0947-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4405,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-145",
+      "path": "content-private/rumi/rumi-masnavi-0958-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 3238,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-146",
+      "path": "content-private/rumi/rumi-masnavi-0959-whinfield.yaml",
+      "category": "authoring-record",
+      "type": "yaml",
+      "bytes": 4375,
+      "lines": 79,
+      "responsibility": "Reviewed production authoring record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-147",
+      "path": "docs/asset-register.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 4165,
+      "lines": 85,
+      "responsibility": "Asset register",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-148",
+      "path": "docs/content-style-guide.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 4727,
+      "lines": 108,
+      "responsibility": "Authoring style",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-149",
+      "path": "docs/decisions/poetry-source-integration-baseline.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 9005,
+      "lines": 102,
+      "responsibility": "Decision record",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-150",
+      "path": "docs/deployment-runbook.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 12099,
+      "lines": 195,
+      "responsibility": "Deployment procedure",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-151",
+      "path": "docs/implementation-plan.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 10112,
+      "lines": 229,
+      "responsibility": "Implementation plan",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-152",
+      "path": "docs/phase-0-environment-decisions.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 6113,
+      "lines": 74,
+      "responsibility": "Environment decisions",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-153",
+      "path": "docs/poetry-source-runbook.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 7279,
+      "lines": 115,
+      "responsibility": "Source ingestion runbook",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-154",
+      "path": "docs/rights-register-public.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 2725,
+      "lines": 57,
+      "responsibility": "Public rights register",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-155",
+      "path": "docs/rollback-runbook.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 3974,
+      "lines": 53,
+      "responsibility": "Rollback procedure",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-156",
+      "path": "docs/verification-report.md",
+      "category": "doc",
+      "type": "md",
+      "bytes": 810,
+      "lines": 15,
+      "responsibility": "Acceptance matrix",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-157",
+      "path": "docs/verification/2026-07-16-final-120-corpus-report.json",
+      "category": "evidence",
+      "type": "json",
+      "bytes": 31528,
+      "lines": 905,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-158",
+      "path": "docs/verification/2026-07-16-final-120-corpus-report.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 1227,
+      "lines": 14,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-159",
+      "path": "docs/verification/2026-07-16-final-alignment-evidence.json",
+      "category": "evidence",
+      "type": "json",
+      "bytes": 146793,
+      "lines": 3885,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-160",
+      "path": "docs/verification/2026-07-16-pre-expansion-corpus-inventory.json",
+      "category": "evidence",
+      "type": "json",
+      "bytes": 481449,
+      "lines": 9800,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-161",
+      "path": "docs/verification/2026-07-16-release-1-production-preview.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 14208,
+      "lines": 255,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-162",
+      "path": "docs/verification/2026-07-17-release-v1-0-4-deployment.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 9475,
+      "lines": 137,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-163",
+      "path": "docs/verification/2026-07-17-release-v1-0-6-outage-fix.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 13231,
+      "lines": 198,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-164",
+      "path": "docs/verification/divan-cinematic-assets.json",
+      "category": "evidence",
+      "type": "json",
+      "bytes": 1529,
+      "lines": 49,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-165",
+      "path": "docs/verification/divan-cinematic-enhancement-report.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 9748,
+      "lines": 149,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-166",
+      "path": "docs/verification/divan-cinematic-provenance.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 9276,
+      "lines": 133,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-167",
+      "path": "docs/verification/visible-navigation-and-cinematic-begin.md",
+      "category": "evidence",
+      "type": "md",
+      "bytes": 6674,
+      "lines": 122,
+      "responsibility": "Per-release verification evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-168",
+      "path": "eslint.config.js",
+      "category": "toolchain",
+      "type": "js",
+      "bytes": 1780,
+      "lines": 67,
+      "responsibility": "Lint contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-169",
+      "path": "index.html",
+      "category": "boundary",
+      "type": "html",
+      "bytes": 1451,
+      "lines": 45,
+      "responsibility": "App shell (byte-ceiling verified)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-170",
+      "path": "ops/Caddyfile",
+      "category": "origin",
+      "type": "none",
+      "bytes": 3530,
+      "lines": 94,
+      "responsibility": "Static origin + headers + cache classes",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-171",
+      "path": "ops/Dockerfile",
+      "category": "container",
+      "type": "none",
+      "bytes": 2658,
+      "lines": 67,
+      "responsibility": "Container build input",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-172",
+      "path": "ops/Dockerfile.cloudflared",
+      "category": "container",
+      "type": "cloudflared",
+      "bytes": 676,
+      "lines": 14,
+      "responsibility": "Container build input",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-173",
+      "path": "ops/cloudflared/config.yml.example",
+      "category": "tunnel",
+      "type": "example",
+      "bytes": 281,
+      "lines": 11,
+      "responsibility": "Tunnel ingress template",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-174",
+      "path": "ops/compose.yml",
+      "category": "container",
+      "type": "yml",
+      "bytes": 2242,
+      "lines": 86,
+      "responsibility": "Runtime isolation contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-175",
+      "path": "ops/healthcheck/main.go",
+      "category": "container",
+      "type": "go",
+      "bytes": 4473,
+      "lines": 148,
+      "responsibility": "Compiled 60/60/120 health verifier",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-176",
+      "path": "ops/scripts/deploy.sh",
+      "category": "ops-shell",
+      "type": "sh",
+      "bytes": 2461,
+      "lines": 70,
+      "responsibility": "Deployment/verify/rollback shell",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-177",
+      "path": "ops/scripts/lib.sh",
+      "category": "ops-shell",
+      "type": "sh",
+      "bytes": 11716,
+      "lines": 364,
+      "responsibility": "Deployment/verify/rollback shell",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-178",
+      "path": "ops/scripts/preflight.sh",
+      "category": "ops-shell",
+      "type": "sh",
+      "bytes": 584,
+      "lines": 20,
+      "responsibility": "Deployment/verify/rollback shell",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-179",
+      "path": "ops/scripts/render-tunnel-config.sh",
+      "category": "ops-shell",
+      "type": "sh",
+      "bytes": 2680,
+      "lines": 82,
+      "responsibility": "Deployment/verify/rollback shell",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-180",
+      "path": "ops/scripts/rollback.sh",
+      "category": "ops-shell",
+      "type": "sh",
+      "bytes": 2378,
+      "lines": 63,
+      "responsibility": "Deployment/verify/rollback shell",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-181",
+      "path": "ops/scripts/verify.sh",
+      "category": "ops-shell",
+      "type": "sh",
+      "bytes": 16286,
+      "lines": 314,
+      "responsibility": "Deployment/verify/rollback shell",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-182",
+      "path": "package.json",
+      "category": "toolchain",
+      "type": "json",
+      "bytes": 3820,
+      "lines": 100,
+      "responsibility": "Package manifest, scripts, pinned deps",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-183",
+      "path": "playwright.config.ts",
+      "category": "test-config",
+      "type": "ts",
+      "bytes": 71,
+      "lines": 2,
+      "responsibility": "Playwright config",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-184",
+      "path": "pnpm-lock.yaml",
+      "category": "toolchain",
+      "type": "yaml",
+      "bytes": 128591,
+      "lines": 3913,
+      "responsibility": "Dependency lockfile (supply chain)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-185",
+      "path": "pnpm-workspace.yaml",
+      "category": "toolchain",
+      "type": "yaml",
+      "bytes": 62,
+      "lines": 7,
+      "responsibility": "Workspace config",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-186",
+      "path": "public/icon.svg",
+      "category": "boundary",
+      "type": "svg",
+      "bytes": 685,
+      "lines": 12,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-187",
+      "path": "public/images/divan-alcove-desktop.webp",
+      "category": "boundary",
+      "type": "webp",
+      "bytes": 64474,
+      "lines": 243,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-188",
+      "path": "public/images/divan-alcove-mobile.webp",
+      "category": "boundary",
+      "type": "webp",
+      "bytes": 66134,
+      "lines": 261,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-189",
+      "path": "public/images/divan-poster-desktop.webp",
+      "category": "boundary",
+      "type": "webp",
+      "bytes": 199096,
+      "lines": 850,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-190",
+      "path": "public/images/divan-poster-mobile.webp",
+      "category": "boundary",
+      "type": "webp",
+      "bytes": 202136,
+      "lines": 791,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-191",
+      "path": "public/manifest.webmanifest",
+      "category": "boundary",
+      "type": "webmanifest",
+      "bytes": 479,
+      "lines": 22,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-192",
+      "path": "public/offline.html",
+      "category": "boundary",
+      "type": "html",
+      "bytes": 1293,
+      "lines": 36,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-193",
+      "path": "public/video/divan-cinematic-desktop.mp4",
+      "category": "boundary",
+      "type": "mp4",
+      "bytes": 2700797,
+      "lines": 10577,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-194",
+      "path": "public/video/divan-cinematic-mobile.mp4",
+      "category": "boundary",
+      "type": "mp4",
+      "bytes": 2624919,
+      "lines": 10177,
+      "responsibility": "Fixed browser asset (release contract)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-195",
+      "path": "scripts/build.ts",
+      "category": "build",
+      "type": "ts",
+      "bytes": 35811,
+      "lines": 1177,
+      "responsibility": "Release compiler / dist assembly",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-196",
+      "path": "scripts/check.sh",
+      "category": "ci",
+      "type": "sh",
+      "bytes": 3972,
+      "lines": 127,
+      "responsibility": "Canonical quality gate",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-197",
+      "path": "scripts/content/loadContent.ts",
+      "category": "build",
+      "type": "ts",
+      "bytes": 15693,
+      "lines": 532,
+      "responsibility": "Build-time content loading/assets",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-198",
+      "path": "scripts/content/readAssetFile.ts",
+      "category": "build",
+      "type": "ts",
+      "bytes": 3563,
+      "lines": 115,
+      "responsibility": "Build-time content loading/assets",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-199",
+      "path": "scripts/ops/runOpsCheck.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 832,
+      "lines": 22,
+      "responsibility": "Static ops contract verifier",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-200",
+      "path": "scripts/ops/verify-container.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 305,
+      "lines": 9,
+      "responsibility": "Static ops contract verifier",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-201",
+      "path": "scripts/ops/verify-headers.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 310,
+      "lines": 9,
+      "responsibility": "Static ops contract verifier",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-202",
+      "path": "scripts/ops/verify-origin-isolation.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 326,
+      "lines": 9,
+      "responsibility": "Static ops contract verifier",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-203",
+      "path": "scripts/ops/verify-rollback.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 303,
+      "lines": 9,
+      "responsibility": "Static ops contract verifier",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-204",
+      "path": "scripts/poetry/align-verse-sections.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 7693,
+      "lines": 253,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-205",
+      "path": "scripts/poetry/build-candidate-index.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 12270,
+      "lines": 418,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-206",
+      "path": "scripts/poetry/build-corpus-inventory.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 21887,
+      "lines": 651,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-207",
+      "path": "scripts/poetry/build-final-alignment-evidence.py",
+      "category": "pipeline",
+      "type": "py",
+      "bytes": 18487,
+      "lines": 507,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-208",
+      "path": "scripts/poetry/build-final-corpus-report.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 11341,
+      "lines": 297,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-209",
+      "path": "scripts/poetry/build-production-corpus.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 28064,
+      "lines": 755,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-210",
+      "path": "scripts/poetry/build-verse-candidates.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 7106,
+      "lines": 213,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-211",
+      "path": "scripts/poetry/classify-english-blocks.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 12264,
+      "lines": 373,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-212",
+      "path": "scripts/poetry/extract-epub.py",
+      "category": "pipeline",
+      "type": "py",
+      "bytes": 7711,
+      "lines": 206,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-213",
+      "path": "scripts/poetry/extract-hafez-bell.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 5124,
+      "lines": 168,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-214",
+      "path": "scripts/poetry/extract-hafez-ghazals.py",
+      "category": "pipeline",
+      "type": "py",
+      "bytes": 10436,
+      "lines": 260,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-215",
+      "path": "scripts/poetry/extract-sources.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 3075,
+      "lines": 95,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-216",
+      "path": "scripts/poetry/fetch-masnavi-sections.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 11672,
+      "lines": 358,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-217",
+      "path": "scripts/poetry/fetch-sources.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 13222,
+      "lines": 439,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-218",
+      "path": "scripts/poetry/inspect-public-bundle.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 4621,
+      "lines": 161,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-219",
+      "path": "scripts/poetry/ocr-clarke.sh",
+      "category": "pipeline",
+      "type": "sh",
+      "bytes": 3308,
+      "lines": 71,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-220",
+      "path": "scripts/poetry/parse-clarke-odes.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 10257,
+      "lines": 271,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-221",
+      "path": "scripts/poetry/reconstruct-bell.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 12815,
+      "lines": 349,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-222",
+      "path": "scripts/poetry/verify-source-lock.ts",
+      "category": "pipeline",
+      "type": "ts",
+      "bytes": 3360,
+      "lines": 112,
+      "responsibility": "Poetry ingestion/extraction/alignment/report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-223",
+      "path": "scripts/qr/generate-qr.ts",
+      "category": "qr",
+      "type": "ts",
+      "bytes": 8126,
+      "lines": 299,
+      "responsibility": "QR/PDF deterministic asset tooling",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-224",
+      "path": "scripts/qr/verify-qr.ts",
+      "category": "qr",
+      "type": "ts",
+      "bytes": 3363,
+      "lines": 121,
+      "responsibility": "QR/PDF deterministic asset tooling",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-225",
+      "path": "scripts/verify-dist.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 21646,
+      "lines": 728,
+      "responsibility": "Distribution integrity + leak gate",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-226",
+      "path": "scripts/verify-privacy.ts",
+      "category": "verify",
+      "type": "ts",
+      "bytes": 4360,
+      "lines": 150,
+      "responsibility": "Privacy denylist gate",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-227",
+      "path": "sources-private/poetry/extracted/.gitkeep",
+      "category": "leak-control",
+      "type": "none",
+      "bytes": 0,
+      "lines": 1,
+      "responsibility": "Staging dir placeholder (contents ignored)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-228",
+      "path": "sources-private/poetry/raw/.gitkeep",
+      "category": "leak-control",
+      "type": "none",
+      "bytes": 0,
+      "lines": 1,
+      "responsibility": "Staging dir placeholder (contents ignored)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-229",
+      "path": "sources-private/poetry/registry.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 5729,
+      "lines": 133,
+      "responsibility": "Source registry / rights evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-230",
+      "path": "sources-private/poetry/reports/candidates-summary.json",
+      "category": "report",
+      "type": "json",
+      "bytes": 2036,
+      "lines": 58,
+      "responsibility": "Committed text-free report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-231",
+      "path": "sources-private/poetry/reports/source-rights-report.md",
+      "category": "report",
+      "type": "md",
+      "bytes": 3836,
+      "lines": 75,
+      "responsibility": "Committed text-free report",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-232",
+      "path": "sources-private/poetry/rights-evidence.yaml",
+      "category": "registry",
+      "type": "yaml",
+      "bytes": 4425,
+      "lines": 102,
+      "responsibility": "Source registry / rights evidence",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-233",
+      "path": "sources-private/poetry/source-lock.json",
+      "category": "registry",
+      "type": "json",
+      "bytes": 5173,
+      "lines": 106,
+      "responsibility": "Source hash lock",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-234",
+      "path": "src-sw/cacheTypes.ts",
+      "category": "release-coherence",
+      "type": "ts",
+      "bytes": 469,
+      "lines": 16,
+      "responsibility": "Service worker release integrity",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-235",
+      "path": "src-sw/integrity.ts",
+      "category": "release-coherence",
+      "type": "ts",
+      "bytes": 2512,
+      "lines": 88,
+      "responsibility": "Service worker release integrity",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-236",
+      "path": "src-sw/releaseManager.ts",
+      "category": "release-coherence",
+      "type": "ts",
+      "bytes": 29871,
+      "lines": 906,
+      "responsibility": "Service worker release integrity",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-237",
+      "path": "src-sw/schemas.ts",
+      "category": "release-coherence",
+      "type": "ts",
+      "bytes": 11929,
+      "lines": 389,
+      "responsibility": "Service worker release integrity",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-238",
+      "path": "src-sw/service-worker.ts",
+      "category": "release-coherence",
+      "type": "ts",
+      "bytes": 6524,
+      "lines": 213,
+      "responsibility": "Service worker release integrity",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-239",
+      "path": "src/app/App.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 25940,
+      "lines": 796,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-240",
+      "path": "src/app/ErrorBoundary.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1020,
+      "lines": 41,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-241",
+      "path": "src/app/core.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 3185,
+      "lines": 186,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-242",
+      "path": "src/app/history.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 3514,
+      "lines": 133,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-243",
+      "path": "src/app/runtime.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 12995,
+      "lines": 441,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-244",
+      "path": "src/app/state.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 7956,
+      "lines": 283,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-245",
+      "path": "src/components/BookStage.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1038,
+      "lines": 40,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-246",
+      "path": "src/components/ButterflyField.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1429,
+      "lines": 43,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-247",
+      "path": "src/components/CandleScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 546,
+      "lines": 14,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-248",
+      "path": "src/components/CinematicThreshold.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 10808,
+      "lines": 361,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-249",
+      "path": "src/components/DecorativeGeometry.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 3262,
+      "lines": 96,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-250",
+      "path": "src/components/FlowBackButton.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 289,
+      "lines": 11,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-251",
+      "path": "src/components/IlluminatedFrame.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 394,
+      "lines": 20,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-252",
+      "path": "src/components/LiveRegion.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 285,
+      "lines": 17,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-253",
+      "path": "src/components/ManuscriptPortal.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 443,
+      "lines": 20,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-254",
+      "path": "src/components/MotionControl.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 733,
+      "lines": 26,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-255",
+      "path": "src/components/OfflineBadge.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 98,
+      "lines": 4,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-256",
+      "path": "src/components/PoemResult.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 6311,
+      "lines": 207,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-257",
+      "path": "src/components/PoetryMotes.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 538,
+      "lines": 18,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-258",
+      "path": "src/components/SkipLink.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 398,
+      "lines": 17,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-259",
+      "path": "src/components/SourceCredit.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1495,
+      "lines": 51,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-260",
+      "path": "src/contracts/app.ts",
+      "category": "contract",
+      "type": "ts",
+      "bytes": 795,
+      "lines": 31,
+      "responsibility": "Typed boundary contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-261",
+      "path": "src/contracts/content.ts",
+      "category": "contract",
+      "type": "ts",
+      "bytes": 1876,
+      "lines": 64,
+      "responsibility": "Typed boundary contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-262",
+      "path": "src/contracts/release.ts",
+      "category": "contract",
+      "type": "ts",
+      "bytes": 1074,
+      "lines": 44,
+      "responsibility": "Typed boundary contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-263",
+      "path": "src/lib/accessibility/focus.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 796,
+      "lines": 33,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-264",
+      "path": "src/lib/accessibility/motion.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 1497,
+      "lines": 54,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-265",
+      "path": "src/lib/cinematic/capability.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 1820,
+      "lines": 65,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-266",
+      "path": "src/lib/cinematic/scrollScrub.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 2221,
+      "lines": 91,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-267",
+      "path": "src/lib/content/authoringSchema.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 11356,
+      "lines": 374,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-268",
+      "path": "src/lib/content/canonical.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 2561,
+      "lines": 101,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-269",
+      "path": "src/lib/content/canonicalIdentity.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 742,
+      "lines": 22,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-270",
+      "path": "src/lib/content/compileCorpus.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 14941,
+      "lines": 510,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-271",
+      "path": "src/lib/content/compileItem.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 2827,
+      "lines": 76,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-272",
+      "path": "src/lib/content/productionManifest.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 7284,
+      "lines": 217,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-273",
+      "path": "src/lib/content/productionSelection.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 3689,
+      "lines": 107,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-274",
+      "path": "src/lib/content/publicSchema.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 6895,
+      "lines": 234,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-275",
+      "path": "src/lib/content/registrySchemas.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 11879,
+      "lines": 607,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-276",
+      "path": "src/lib/content/release.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 13979,
+      "lines": 446,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-277",
+      "path": "src/lib/content/remoteResource.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 420,
+      "lines": 12,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-278",
+      "path": "src/lib/content/reviewAuthority.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 5981,
+      "lines": 193,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-279",
+      "path": "src/lib/content/sourceRegistrySchema.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 6389,
+      "lines": 200,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-280",
+      "path": "src/lib/content/sourceRightsSchema.ts",
+      "category": "content-schema",
+      "type": "ts",
+      "bytes": 3502,
+      "lines": 108,
+      "responsibility": "Schema/compiler/canonicalisation",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-281",
+      "path": "src/lib/draw/secureRandom.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 1749,
+      "lines": 68,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-282",
+      "path": "src/lib/draw/shuffleBag.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 3287,
+      "lines": 125,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-283",
+      "path": "src/lib/navigation/flowNavigation.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 1339,
+      "lines": 55,
+      "responsibility": "Frontend navigation helper",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-284",
+      "path": "src/lib/share/shareCard.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 5367,
+      "lines": 120,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-285",
+      "path": "src/lib/share/shareService.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 4217,
+      "lines": 142,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-286",
+      "path": "src/lib/storage/session.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 8046,
+      "lines": 309,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-287",
+      "path": "src/main.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 486,
+      "lines": 21,
+      "responsibility": "Frontend entry",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-288",
+      "path": "src/pages/AboutPage.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 2354,
+      "lines": 58,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-289",
+      "path": "src/pages/AccessibilityPage.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 2059,
+      "lines": 50,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-290",
+      "path": "src/pages/ContextLayout.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 624,
+      "lines": 28,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-291",
+      "path": "src/pages/CreditsPage.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 4009,
+      "lines": 123,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-292",
+      "path": "src/pages/OfflinePage.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1741,
+      "lines": 45,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-293",
+      "path": "src/pages/PrivacyPage.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 2635,
+      "lines": 66,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-294",
+      "path": "src/pages/index.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 777,
+      "lines": 29,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-295",
+      "path": "src/pages/routes.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 321,
+      "lines": 14,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-296",
+      "path": "src/scenes/BlockingErrorScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 717,
+      "lines": 23,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-297",
+      "path": "src/scenes/BootScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 624,
+      "lines": 24,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-298",
+      "path": "src/scenes/ChoosePoetScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1615,
+      "lines": 48,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-299",
+      "path": "src/scenes/IntentionScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1406,
+      "lines": 40,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-300",
+      "path": "src/scenes/RevealScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 2815,
+      "lines": 89,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-301",
+      "path": "src/scenes/WelcomeScene.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 1493,
+      "lines": 50,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-302",
+      "path": "src/styles/flow-navigation.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 969,
+      "lines": 40,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-303",
+      "path": "src/styles/fonts.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 1318,
+      "lines": 54,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-304",
+      "path": "src/styles/index.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 95,
+      "lines": 5,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-305",
+      "path": "src/styles/motion.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 7248,
+      "lines": 352,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-306",
+      "path": "src/styles/tokens.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 1451,
+      "lines": 53,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-307",
+      "path": "src/styles/visual.css",
+      "category": "boundary",
+      "type": "css",
+      "bytes": 23606,
+      "lines": 1072,
+      "responsibility": "Frontend consumer of a release/content contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-308",
+      "path": "src/sw-client/register.ts",
+      "category": "release-coherence",
+      "type": "ts",
+      "bytes": 7585,
+      "lines": 264,
+      "responsibility": "SW registration bridge",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-309",
+      "path": "src/vite-env.d.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 38,
+      "lines": 2,
+      "responsibility": "Frontend entry",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-310",
+      "path": "tests/accessibility/appAccessibility.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 13624,
+      "lines": 415,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-311",
+      "path": "tests/accessibility/styles.test.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 8228,
+      "lines": 195,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-312",
+      "path": "tests/components/appFlow.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 13052,
+      "lines": 409,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-313",
+      "path": "tests/components/cinematicBegin.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 2787,
+      "lines": 88,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-314",
+      "path": "tests/components/cinematicThreshold.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 7264,
+      "lines": 214,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-315",
+      "path": "tests/components/contextRoutes.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 3544,
+      "lines": 97,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-316",
+      "path": "tests/components/document.test.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 1291,
+      "lines": 30,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-317",
+      "path": "tests/components/failures.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 7414,
+      "lines": 253,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-318",
+      "path": "tests/components/fixtures.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 3331,
+      "lines": 96,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-319",
+      "path": "tests/components/offlineIntegration.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 4198,
+      "lines": 150,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-320",
+      "path": "tests/components/poetSelectionNavigation.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 4192,
+      "lines": 147,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-321",
+      "path": "tests/components/runtime.test.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 11334,
+      "lines": 389,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-322",
+      "path": "tests/components/shareAction.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 5949,
+      "lines": 188,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-323",
+      "path": "tests/components/visualLanguage.test.tsx",
+      "category": "boundary",
+      "type": "tsx",
+      "bytes": 2318,
+      "lines": 69,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-324",
+      "path": "tests/content/alignVerseSections.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 4600,
+      "lines": 134,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-325",
+      "path": "tests/content/authoringSchema.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 8396,
+      "lines": 254,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-326",
+      "path": "tests/content/bellOcr.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2603,
+      "lines": 86,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-327",
+      "path": "tests/content/bellReconstruction.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 8008,
+      "lines": 229,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-328",
+      "path": "tests/content/buildRelease.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 46977,
+      "lines": 1369,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-329",
+      "path": "tests/content/candidateIndex.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2428,
+      "lines": 85,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-330",
+      "path": "tests/content/canonical.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 1399,
+      "lines": 49,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-331",
+      "path": "tests/content/clarkeParse.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 5834,
+      "lines": 166,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-332",
+      "path": "tests/content/compileCorpus.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 11021,
+      "lines": 321,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-333",
+      "path": "tests/content/compileItem.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 3390,
+      "lines": 97,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-334",
+      "path": "tests/content/contentLoader.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 7101,
+      "lines": 244,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-335",
+      "path": "tests/content/corpusInventory.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2537,
+      "lines": 84,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-336",
+      "path": "tests/content/englishBlockClassification.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 8417,
+      "lines": 199,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-337",
+      "path": "tests/content/extraction.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 5028,
+      "lines": 145,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-338",
+      "path": "tests/content/finalAlignmentEvidence.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2944,
+      "lines": 104,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-339",
+      "path": "tests/content/fixtures.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 3715,
+      "lines": 105,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-340",
+      "path": "tests/content/hafezGhazalExtraction.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 7661,
+      "lines": 216,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-341",
+      "path": "tests/content/machineAlignment.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2123,
+      "lines": 75,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-342",
+      "path": "tests/content/machineAlignmentGate.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 3771,
+      "lines": 94,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-343",
+      "path": "tests/content/masnaviSections.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 1718,
+      "lines": 45,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-344",
+      "path": "tests/content/poetryRights.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 4550,
+      "lines": 153,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-345",
+      "path": "tests/content/productionCorpus.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2462,
+      "lines": 78,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-346",
+      "path": "tests/content/productionManifest.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 1749,
+      "lines": 62,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-347",
+      "path": "tests/content/productionSelection.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 1607,
+      "lines": 48,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-348",
+      "path": "tests/content/publicBundleLeak.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2983,
+      "lines": 77,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-349",
+      "path": "tests/content/publicSchema.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 6723,
+      "lines": 221,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-350",
+      "path": "tests/content/registrySchemas.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 10512,
+      "lines": 353,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-351",
+      "path": "tests/content/release.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 9905,
+      "lines": 310,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-352",
+      "path": "tests/content/reviewAuthority.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 4805,
+      "lines": 133,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-353",
+      "path": "tests/content/reviewIdentityGate.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2512,
+      "lines": 77,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-354",
+      "path": "tests/content/sourceLock.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 9213,
+      "lines": 310,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-355",
+      "path": "tests/content/sourceRegistry.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 7394,
+      "lines": 263,
+      "responsibility": "Content/schema/compiler test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-356",
+      "path": "tests/e2e/accessibility.playwright.config.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 688,
+      "lines": 25,
+      "responsibility": "E2E spec/server (release+offline boundary)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-357",
+      "path": "tests/e2e/accessibility.spec.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 9594,
+      "lines": 281,
+      "responsibility": "E2E spec/server (release+offline boundary)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-358",
+      "path": "tests/e2e/offline-server.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 9017,
+      "lines": 305,
+      "responsibility": "E2E spec/server (release+offline boundary)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-359",
+      "path": "tests/e2e/offline.spec.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 5913,
+      "lines": 163,
+      "responsibility": "E2E spec/server (release+offline boundary)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-360",
+      "path": "tests/e2e/visual.spec.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 10673,
+      "lines": 347,
+      "responsibility": "E2E spec/server (release+offline boundary)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-361",
+      "path": "tests/fixtures/content/corpus.ts",
+      "category": "test-fixture",
+      "type": "ts",
+      "bytes": 10193,
+      "lines": 294,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-362",
+      "path": "tests/fixtures/ops/README.md",
+      "category": "test-fixture",
+      "type": "md",
+      "bytes": 574,
+      "lines": 12,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-363",
+      "path": "tests/fixtures/ops/immutable-image.txt",
+      "category": "test-fixture",
+      "type": "txt",
+      "bytes": 97,
+      "lines": 2,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-364",
+      "path": "tests/fixtures/ops/mock-bin/docker",
+      "category": "test-fixture",
+      "type": "none",
+      "bytes": 1299,
+      "lines": 55,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-365",
+      "path": "tests/fixtures/ops/mock-bin/stat",
+      "category": "test-fixture",
+      "type": "none",
+      "bytes": 677,
+      "lines": 36,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-366",
+      "path": "tests/fixtures/ops/rendered-config.yml",
+      "category": "test-fixture",
+      "type": "yml",
+      "bytes": 283,
+      "lines": 10,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-367",
+      "path": "tests/fixtures/ops/synthetic-not-a-credential.json",
+      "category": "test-fixture",
+      "type": "json",
+      "bytes": 49,
+      "lines": 2,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-368",
+      "path": "tests/fixtures/poetry/build-fixture-epub.py",
+      "category": "test-fixture",
+      "type": "py",
+      "bytes": 2959,
+      "lines": 86,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-369",
+      "path": "tests/fixtures/poetry/build-ghazal-fixture-epub.py",
+      "category": "test-fixture",
+      "type": "py",
+      "bytes": 5538,
+      "lines": 157,
+      "responsibility": "Test fixture",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-370",
+      "path": "tests/offline/artifacts.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2142,
+      "lines": 62,
+      "responsibility": "Offline/release-coherence test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-371",
+      "path": "tests/offline/client.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 7477,
+      "lines": 238,
+      "responsibility": "Offline/release-coherence test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-372",
+      "path": "tests/offline/helpers.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 10841,
+      "lines": 319,
+      "responsibility": "Offline/release-coherence test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-373",
+      "path": "tests/offline/releaseManager.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 20142,
+      "lines": 571,
+      "responsibility": "Offline/release-coherence test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-374",
+      "path": "tests/offline/runtimeStrategies.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 17606,
+      "lines": 492,
+      "responsibility": "Offline/release-coherence test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-375",
+      "path": "tests/offline/serviceWorker.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 8734,
+      "lines": 288,
+      "responsibility": "Offline/release-coherence test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-376",
+      "path": "tests/performance/visualBudgets.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 5080,
+      "lines": 142,
+      "responsibility": "Budget/perf test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-377",
+      "path": "tests/security/opsConfig.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 39190,
+      "lines": 1089,
+      "responsibility": "Security/ops-config test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-378",
+      "path": "tests/security/publicReadiness.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 9493,
+      "lines": 239,
+      "responsibility": "Security/ops-config test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-379",
+      "path": "tests/security/qrGenerator.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2902,
+      "lines": 89,
+      "responsibility": "Security/ops-config test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-380",
+      "path": "tests/setup/vitest.ts",
+      "category": "test-config",
+      "type": "ts",
+      "bytes": 43,
+      "lines": 2,
+      "responsibility": "Test setup",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-381",
+      "path": "tests/share/shareCard.test.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 6916,
+      "lines": 183,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-382",
+      "path": "tests/share/shareService.test.ts",
+      "category": "boundary",
+      "type": "ts",
+      "bytes": 5650,
+      "lines": 178,
+      "responsibility": "Frontend test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-383",
+      "path": "tests/unit/cinematicCapability.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2252,
+      "lines": 70,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-384",
+      "path": "tests/unit/history.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 3009,
+      "lines": 123,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-385",
+      "path": "tests/unit/scrollScrub.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 3246,
+      "lines": 113,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-386",
+      "path": "tests/unit/secureRandom.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 2434,
+      "lines": 84,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-387",
+      "path": "tests/unit/shuffleBag.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 4328,
+      "lines": 147,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-388",
+      "path": "tests/unit/state.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 4145,
+      "lines": 151,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-389",
+      "path": "tests/unit/storage.test.ts",
+      "category": "test",
+      "type": "ts",
+      "bytes": 7328,
+      "lines": 225,
+      "responsibility": "Domain unit test",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-390",
+      "path": "tsconfig.json",
+      "category": "toolchain",
+      "type": "json",
+      "bytes": 888,
+      "lines": 35,
+      "responsibility": "TypeScript strictness contract",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-391",
+      "path": "vite.config.ts",
+      "category": "build",
+      "type": "ts",
+      "bytes": 1028,
+      "lines": 31,
+      "responsibility": "Vite build config (env/publicDir/bundling)",
+      "auditStatus": "PENDING"
+    },
+    {
+      "id": "B-392",
+      "path": "vitest.config.ts",
+      "category": "test-config",
+      "type": "ts",
+      "bytes": 1062,
+      "lines": 37,
+      "responsibility": "Vitest config + e2e exclusion",
+      "auditStatus": "PENDING"
+    }
+  ]
+}
