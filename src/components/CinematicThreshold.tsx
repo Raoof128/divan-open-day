@@ -189,6 +189,17 @@ export function CinematicThreshold({
   // A dismount mid-walk must not leave a headless scroller running.
   useEffect(() => () => cancelWalkRef.current?.(), []);
 
+  // If the cinematic dies mid-walk (video error, plan change), the corridor
+  // and its scroll-driven arrival machinery collapse with it. The visitor
+  // already asked to enter — finish their journey instead of stranding them
+  // at a poster they left.
+  useEffect(() => {
+    if (!scrubbing && cancelWalkRef.current !== null) {
+      cancelWalkRef.current();
+      arrive();
+    }
+  }, [scrubbing, arrive]);
+
   const requestEntrance = useCallback(() => {
     if (arrivedRef.current) {
       return;

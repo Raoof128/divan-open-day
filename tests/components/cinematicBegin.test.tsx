@@ -136,6 +136,30 @@ describe('cinematic Begin control', () => {
     expect(window.scrollY).toBe(beforeInterrupt);
   });
 
+  it('completes arrival when the video dies mid-walk instead of dropping the Begin intent', () => {
+    const harness = installWalkHarness();
+    const { onArrive } = renderThreshold();
+    prepareCorridor();
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    harness.advance(0);
+    harness.advance(1000);
+    expect(onArrive).not.toHaveBeenCalled();
+
+    // The clip errors while the guided walk is under way. The corridor and
+    // its scroll-driven arrival machinery collapse with it, so the walk must
+    // finish the visitor's journey directly rather than strand them at a
+    // poster they already left.
+    const video = document.querySelector('video');
+    fireEvent(video!, new Event('error'));
+
+    expect(onArrive).toHaveBeenCalledTimes(1);
+    const scrolled = window.scrollY;
+    harness.advance(2000);
+    harness.advance(20_000);
+    expect(window.scrollY).toBe(scrolled);
+  });
+
   it('arrives directly when reduced motion disables the cinematic corridor', () => {
     const { onArrive } = renderThreshold('reduced');
 
