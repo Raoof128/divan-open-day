@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-17 — Release v1.0.6: outage fix deployed, verified in a real user agent
+
+**Raouf:**
+
+- Deployed `divan-release-1-v1-0-6` (`ghcr.io/raoof128/divan-open-day:v1.0.6@sha256:9f22b8979ab5e5b7cf42f81b0f1b998deb4b2f51ab00ab846f74fa20032a4ae3`, `linux/amd64`, Scout `0C/0H/0M/0L`) by digest. `preflight.sh`, `deploy.sh` (exit 0), and an independent `verify.sh` all passed. Evidence: `docs/verification/2026-07-17-release-v1-0-6-outage-fix.md`.
+- The outage is fixed and the fix is **observed**, not assumed: a browser-shaped navigation now returns 1708 bytes with zero beacon hits (2212 with injection), and in a real Chromium session loading `/credits` and reloading succeeds where it previously produced `chrome-error://chromewebdata/`. A client still controlled by the old v1.0.4 worker recovered without updating.
+- Poetry, translations, provenance, rights, and the 120-record count are unchanged: content JSON byte-identical to v1.0.4 (151,029 bytes, all 120 items equal) apart from `releaseId`.
+- The v1.0.5 candidate was **correctly rejected by its own verification and rolled back** — `verify.sh` pins `Cache-Control` exactly and the `no-transform` repair changed the served value without updating that contract. v1.0.5 was never activated; the site stayed on v1.0.4 and neighbouring services were untouched. The substring test that let the two files drift is replaced by one that compares their real values.
+- Neighbouring services (EOI stack, reasoning-engine, nexus-api) at 5-day uptimes and healthy; `divan-cloudflared-1` not recreated. Registry credentials removed from both machines.
+- Not claimed: Cloudflare Web Analytics is still enabled on the zone (disabling auto-injection remains the correct fix for the "no analytics" invariant); Chromium via DevTools is not Safari and not a physical device; provider logging/retention review not performed; credential rotation still outstanding.
+
 ## 2026-07-17 — Fix: edge HTML injection took every controlled client offline
 
 **Raouf:**
