@@ -130,6 +130,47 @@ describe('CSS accessibility guardrails', () => {
     );
   });
 
+  it('keeps Persian result headings on the Persian display stack with Nastaliq-safe leading', async () => {
+    // `.poem-result h2` (0,1,1) outranks `[lang='fa']` (0,1,0), so without an
+    // explicit override the متن فارسی heading falls onto the Latin display
+    // stack and renders via arbitrary system Arabic fallbacks (§8.1 violation).
+    const css = await visualCss();
+    const faHeading = rule(css, ".poem-result [lang='fa'] h2");
+    expect(faHeading).toMatch(/font-family:\s*var\(--font-persian-display\)/u);
+    // Nastaliq needs a tall line box; Cormorant's 1.1 would clip it.
+    expect(faHeading).toMatch(/line-height:\s*2/u);
+    // Nastaliq ships weight 400 only; a heavier weight would synthesize.
+    expect(faHeading).toMatch(/font-weight:\s*400/u);
+    // The override must appear after the generic h2 rule so it wins in source
+    // order as well as specificity.
+    expect(css.indexOf(".poem-result [lang='fa'] h2")).toBeGreaterThan(
+      css.indexOf('.poem-result h2'),
+    );
+  });
+
+  it('hides decorative pseudo-element glyphs from accessible names with a graceful fallback', async () => {
+    // CSS generated content joins accessible-name computation, so ✦/← would
+    // be announced ("black four-pointed star Begin"). The two-value alt-text
+    // form (content: '✦' / '') excludes it; engines that cannot parse the
+    // slash drop only that declaration, so a plain declaration must precede
+    // it to keep the glyph visible there.
+    const visual = await visualCss();
+    const flow = await readFile(
+      resolve(process.cwd(), 'src/styles/flow-navigation.css'),
+      'utf8',
+    );
+    const cases = [
+      [visual, "content: '✦';", "content: '✦' / '';"],
+      [visual, "content: '←';", "content: '←' / '';"],
+      [flow, "content: '←';", "content: '←' / '';"],
+    ] as const;
+    for (const [css, plain, alt] of cases) {
+      expect(css).toContain(plain);
+      expect(css).toContain(alt);
+      expect(css.indexOf(plain)).toBeLessThan(css.indexOf(alt));
+    }
+  });
+
   it('never lets Persian connected script inherit letter tracking', async () => {
     const css = await coreCss();
     const fa = rule(css, "[lang='fa']");

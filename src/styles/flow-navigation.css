@@ -14,7 +14,11 @@
 }
 
 .flow-back::before {
+  /* Plain form first for parsers without alt-text support. */
   content: '←';
+
+  /* Alt-text form keeps the arrow out of the button's accessible name. */
+  content: '←' / '';
   font-size: 1.05em;
 }
 

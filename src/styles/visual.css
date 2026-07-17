@@ -271,7 +271,13 @@ body {
 .primary-action::before,
 .result-actions button:first-child::before {
   margin-inline-end: var(--space-2);
+
+  /* Plain declaration first: parsers without alt-text support drop the
+     two-value form entirely and must keep the glyph from this one. */
   content: '✦';
+
+  /* Alt-text form: keeps the ornament out of the accessible name. */
+  content: '✦' / '';
   color: var(--ornament-bright);
   font-size: 0.72em;
 }
@@ -568,6 +574,16 @@ button:active {
   color: var(--lapis);
 }
 
+/* The Persian heading (متن فارسی) must stay on the curated Persian stack:
+   `.poem-result h2` outranks `[lang='fa']`, which otherwise strands it on the
+   Latin display face and arbitrary system Arabic fallbacks (§8.1). Nastaliq
+   ships weight 400 only and needs a tall line box. */
+.poem-result [lang='fa'] h2 {
+  font-family: var(--font-persian-display);
+  font-weight: 400;
+  line-height: 2;
+}
+
 .poem-result > .illuminated-frame > section {
   margin-block: 2rem;
 }
@@ -677,7 +693,12 @@ button:active {
 
 .return-link::before {
   margin-inline-end: var(--space-2);
+
+  /* Plain form first for parsers without alt-text support. */
   content: '←';
+
+  /* Alt-text form keeps the arrow out of the link's accessible name. */
+  content: '←' / '';
 }
 
 .credits-list {
