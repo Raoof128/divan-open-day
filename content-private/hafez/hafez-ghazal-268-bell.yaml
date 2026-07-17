@@ -26,7 +26,7 @@ text:
     - گلعذاری ز گلستان جهان ما را بس
     - زین چمن سایه آن سرو روان ما را بس
   english_lines:
-    - A FLOWER-TINTED cheek, the flowery close
+    - A flower-tinted cheek, the flowery close
     - Of the fair earth, these are enough for me—
   alignment: stanza
   mapping:
@@ -43,7 +43,7 @@ translation:
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-268-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -69,12 +69,13 @@ review_authority:
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 6f2d732de8a5209b0a683a7368bc44a6638c9457979d789b0d5efc9996ed1eaa
-  englishSpanHash: 4097eaf36ce2eb9870308b0d5ad35e5a35c32069c65b947df2845cc1e6621558
+  englishSpanHash: af2cc8c991e8faac642b672af578be8f34ff5bf31200e37d889ad14d528d918a
   persianSpanHash: 3092882abe57bcfa22eb52c29685ebe174f093ebf39a49fed83ae850e2f9d280
   mappingHash: d8a1ec076f167581db39b67a8fcda43b75dcf1245fc0fdda27341d6737d02aa3
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.99
+  confidence: 0.97
   disclosures:
     - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+    - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
   verifiedAt: 2026-07-17
-  rationale: Bell poem VI on scan page 77 was aligned to Qazvini-Ghani ghazal 268 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.
+  rationale: Bell poem VI on scan page 77 was aligned to Qazvini-Ghani ghazal 268 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

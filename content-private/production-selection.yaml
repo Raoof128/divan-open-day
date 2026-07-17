@@ -273,7 +273,7 @@ records:
   - item_id: hafez-ghazal-268-bell
     poet: hafez
     canonical_identity_hash: 6f2d732de8a5209b0a683a7368bc44a6638c9457979d789b0d5efc9996ed1eaa
-    english_span_hash: 4097eaf36ce2eb9870308b0d5ad35e5a35c32069c65b947df2845cc1e6621558
+    english_span_hash: af2cc8c991e8faac642b672af578be8f34ff5bf31200e37d889ad14d528d918a
     persian_span_hash: 3092882abe57bcfa22eb52c29685ebe174f093ebf39a49fed83ae850e2f9d280
     mapping_hash: d8a1ec076f167581db39b67a8fcda43b75dcf1245fc0fdda27341d6737d02aa3
   - item_id: hafez-ghazal-278-clarke

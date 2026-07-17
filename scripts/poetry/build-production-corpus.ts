@@ -41,6 +41,9 @@ const CONTENT_ROOT = path.join(ROOT, 'content-private');
 
 const SOURCE_HASHES = {
   bell: '99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145',
+  // The archive-OCR reading, one of the two consensus readings behind
+  // bell-poems.json; used to verify every hand-recovered opening at build time.
+  bellText: 'e736637afead8bac3771c06ae04c3852409c58fe9c5749dcb294a64cab468f00',
   clarkeVolume1:
     '8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154',
   clarkeVolume2:
@@ -87,6 +90,9 @@ const OCR_OPENING_CORRECTIONS = new Map<string, string>([
     "The breath of Dawn's musk-strewing wind shall blow,",
   ],
   ['hafez-bell-1897-p113', 'Forget not when dear friend to friend returned,'],
+  // Small-caps continue past the article, so the single-word drop-cap
+  // normaliser cannot reach this one (scan page 77, printed 73, poem VI).
+  ['hafez-bell-1897-p077', 'A flower-tinted cheek, the flowery close'],
 ]);
 
 interface BellLine {
@@ -350,7 +356,18 @@ const ROMAN_NUMERAL_PATTERN = /^[IVXLC]+$/u;
 function makeHafezItems(
   poems: readonly BellPoem[],
   ghazals: readonly HafezGhazal[],
+  compactBellArchiveText: string,
 ) {
+  // Every hand-recovered opening must exist in the locked archive text
+  // (case-insensitive, whitespace-free): a drifted correction table must fail
+  // the build, not ship silently.
+  for (const [poemId, corrected] of OCR_OPENING_CORRECTIONS) {
+    if (!compactBellArchiveText.includes(compact(corrected).toLowerCase())) {
+      throw new Error(
+        `Bell opening correction for ${poemId} is not verbatim (case-insensitive) in the locked archive text; refusing a blind correction.`,
+      );
+    }
+  }
   const poemsById = new Map(poems.map((poem) => [poem.poemId, poem]));
   const ghazalsByNumber = new Map(
     ghazals.map((ghazal) => [ghazal.ghazalNumber, ghazal]),
@@ -503,7 +520,7 @@ function makeHafezItems(
         'Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.',
       permission_record_id: `${id}-translation-permission`,
       public_credit:
-        'English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection).',
+        'English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation).',
       permitted_uses: [...PUBLIC_USES],
       moral_rights_notes: null,
     };
@@ -620,7 +637,7 @@ function makeClarkeHafezItems(
         'H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.',
       permission_record_id: `${id}-translation-permission`,
       public_credit:
-        'English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891).',
+        'English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta, 1891 (a complete literal prose translation with interpolated glosses).',
       permitted_uses: [...PUBLIC_USES],
       moral_rights_notes: null,
     };
@@ -741,7 +758,7 @@ function rumiTranslationFields(id: string) {
       'E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.',
     permission_record_id: `${id}-translation-permission`,
     public_credit:
-      "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged).",
+      "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering).",
     permitted_uses: [...PUBLIC_USES],
     moral_rights_notes: null,
   };
@@ -1009,6 +1026,10 @@ export async function buildProductionCorpus(): Promise<void> {
   await Promise.all([
     assertSourceHash('raw/hafez-bell-1897-en/source.pdf', SOURCE_HASHES.bell),
     assertSourceHash(
+      'raw/hafez-bell-1897-en/source.txt',
+      SOURCE_HASHES.bellText,
+    ),
+    assertSourceHash(
       'raw/hafez-qazvini-ghani-fa-wikisource/source.epub',
       SOURCE_HASHES.hafezPersian,
     ),
@@ -1046,6 +1067,7 @@ export async function buildProductionCorpus(): Promise<void> {
     nicholsonSections,
     clarkeVolume1Text,
     clarkeVolume2Text,
+    bellArchiveText,
   ] = await Promise.all([
     readJson<{ readonly poems: readonly BellPoem[] }>(
       'sources-private/poetry/bell-ocr/bell-poems.json',
@@ -1073,7 +1095,12 @@ export async function buildProductionCorpus(): Promise<void> {
       path.join(POETRY_ROOT, 'raw/hafez-clarke-1891-en/volume-2.txt'),
       'utf8',
     ),
+    readFile(
+      path.join(POETRY_ROOT, 'raw/hafez-bell-1897-en/source.txt'),
+      'utf8',
+    ),
   ]);
+  const compactBellArchive = compact(bellArchiveText).toLowerCase();
 
   const segmentsById = new Map(
     classifyEnglishBlocks(whinfieldBlocks).map((segment) => [
@@ -1086,7 +1113,7 @@ export async function buildProductionCorpus(): Promise<void> {
   );
 
   const hafezItems = [
-    ...makeHafezItems(bell.poems, ghazals),
+    ...makeHafezItems(bell.poems, ghazals, compactBellArchive),
     ...makeClarkeHafezItems(finalEvidence.newHafez, {
       'volume-1': compact(clarkeVolume1Text),
       'volume-2': compact(clarkeVolume2Text),
