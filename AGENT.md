@@ -28,6 +28,18 @@
 
 ## Raouf change log
 
+### 2026-07-18 (Australia/Sydney) — Release v1.0.7: audited corpus repair, motion polish, and society credit deployed and verified
+
+**Raouf:**
+
+- **Deployed and verified.** `divan-release-1-v1-0-7`, image `ghcr.io/raoof128/divan-open-day:v1.0.7@sha256:2f3257a6a1177f69c3116f0db0fda059d466712cd4b0f69092a9510bbc6aa5c0`, `linux/amd64`, Scout `0C/0H/0M/0L`, `SOURCE_DATE_EPOCH` = tag commit time. Preflight → deploy ("Activated immutable image …") → independent verify all passed. Full evidence: `docs/verification/2026-07-18-release-v1-0-7-deployment.md`.
+- **The corpus changed — deliberately, and provably only as audited.** Diff against live v1.0.6: exactly one id replacement (046→025), credit strings on 119, text+disclosures on 56, 12 verification-status flips, one `source` change (ghazal 65) — every delta maps to `docs/audits/corpus-fable-5/`; nothing unexplained.
+- **CI was broken and fixed en route:** every main push after the backend-audit merge failed at workflow startup (caller permissions narrower than the pinned reusable workflow declares — PR #21); the tag was cut only after main CI ran green on the fixed head.
+- **Origin `verify.sh` was stale** (pre-`no-transform` pin, would have wrongly failed the release) and was synced from the tag before any origin script ran — hash-confirmed.
+- Live public bytes verified independently of the scripts: release id in `/release.json` and the service worker, live content JSON byte-identical to the image's, `no-transform` now observed on the immutable class, amethyst tokens + butterfly hover keyframes in live CSS, the Society credit in live JS, ghazal 025 served with no 046.
+- **Operator gate:** EOI stack, reasoning-engine, nexus-api all at unbroken 5-day uptimes; `divan-cloudflared-1` not recreated; only `divan-divan-web-1` changed. Registry credentials removed from both machines.
+- **Not claimed:** provider logging/retention review; physical-iOS/VoiceOver evidence (device-parity walk verified in Chromium + unit tests only); cultural review, QR, University branding stay closed; the 2026-07-17 credential rotation is still outstanding; zone Web Analytics still enabled.
+
 ### 2026-07-18 (Australia/Sydney) — CI restored: reusable-workflow caller permissions
 
 **Raouf:**
