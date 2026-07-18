@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-07-18 — CI restored: reusable-workflow caller permissions
+
+**Raouf:**
+
+- Fixed `startup_failure` on every `main` push since the backend-audit merge: the `osv-scan` caller job granted less than the pinned reusable workflow declares (`actions: read`, `security-events: write`), which GitHub refuses at startup. Grants restored, scoped to the scan job.
+
 ## 2026-07-18 — Society credit on Credits and About pages
 
 **Raouf:**

@@ -19,8 +19,15 @@ concurrency:
 jobs:
   osv-scan:
     name: OSV dependency scan
+    # The pinned reusable workflow declares `actions: read` and
+    # `security-events: write` in its own permissions block; a caller that
+    # grants less makes GitHub refuse the whole run at startup
+    # (startup_failure, no jobs, no signal). These grants are scoped to the
+    # scan job only — the quality gate keeps `contents: read`.
     permissions:
+      actions: read
       contents: read
+      security-events: write
     uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@8dc09193bb540e09b23da07ad7e30bd33bf87018
     with:
       scan-args: |-

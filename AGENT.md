@@ -28,6 +28,13 @@
 
 ## Raouf change log
 
+### 2026-07-18 (Australia/Sydney) — CI restored: reusable-workflow caller permissions
+
+**Raouf:**
+
+- **Every push to `main` after the backend-audit merge failed at workflow startup** (`startup_failure`, zero jobs, zero signal). Root cause: the audit's least-privilege hardening cut the `osv-scan` caller job to `contents: read`, but the pinned `osv-scanner-reusable.yml` declares `actions: read` + `security-events: write` in its own permissions block — GitHub refuses a reusable-workflow call whose caller grants less than the callee declares. Restored exactly those grants, scoped to the scan job; the quality gate keeps `contents: read`.
+- Merged-`main` code itself verified sound before this fix: full local `check.sh --e2e` gate green on `c3adb67` (unit, e2e, verifiers, fixture + production builds).
+
 ### 2026-07-18 (Australia/Sydney) — Society credit on Credits and About pages
 
 **Raouf:**
