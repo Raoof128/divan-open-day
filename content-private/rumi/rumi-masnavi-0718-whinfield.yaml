@@ -27,7 +27,7 @@ text:
     - آهن اندر دست‌بافش نرم شد
   english_lines:
     - The soul of David was warmed by its heat,
-    - Iron became pliable by the force of his weaving. 4
+    - Iron became pliable by the force of his weaving.
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0718-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
   canonicalIdentityHash: c453d8e187f632a0891cbb4cf289102c1f410fd3cc9b56a4ed7ede071eaea096
-  englishSpanHash: 568958fd0872dfd41024d2172844002b1cc1dffd1a484fd971e3e62be4585106
+  englishSpanHash: a7fd2cc42b2461b2d2f51b91367e3670ea438328fd4e17e33966fc178d44fa30
   persianSpanHash: 5e4c91956fb9085d78ec7f3f20120eda8ef7380d77679c9a007997ec8d96b58d
   mappingHash: a9f17868653b5054ece8abac1c89acf1145532400cf2c25a46daa45c2a1f1f9b
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.846257
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 10 resolve to the continuous Nicholson section 718 span beginning at 20, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+    - A printed footnote marker digit inside the excerpt was removed against the Whinfield source; wording is otherwise verbatim.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0097-s2:lines-10-11) corresponds line-for-line to consecutive hemistichs of Nicholson section 718; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.846257). A printed footnote marker digit was removed from the excerpt against the Whinfield source.

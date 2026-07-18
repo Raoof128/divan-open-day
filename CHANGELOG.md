@@ -11,6 +11,28 @@
 - Device parity: phones no longer skip the entrance — the rAF walk replaces iOS Safari's instant `scrollIntoView` jump, and a slow first frame no longer permanently demotes idle visitors to poster-only (grace window fails only a pending Begin; 30 s hard cap; errors still demote). Clips verified faststart.
 - 722/722 unit tests (Begin suite rewritten RED-first), e2e 5/5, full gate green; corpus, service worker, and ops untouched.
 
+## 2026-07-18 — Full corpus and translation repair (branch `repair/fable-5-full-corpus`, PR only)
+
+**Raouf:**
+
+- Repaired the complete 120-record corpus (60 Hafez + 60 Rumi) against the locked sources: every Persian and English span verbatim-verified, 83 records re-authorised under `source-bound-alignment-v3-fable5-repair`, 37 carried byte-identical under v2. Evidence: `docs/audits/corpus-fable-5/`.
+- Replaced one wrong-poem pairing: Bell poem VIII is ghazal **25**, not 46; `hafez-ghazal-046-bell` → `hafez-ghazal-025-bell` with the verbatim ghazal-25 opening couplet.
+- Fixed the Persian extractor's footnote-truncation bug (162/494 ghazals re-extracted; ghazal 65's published hemistich recovered) with a RED-first regression test.
+- 31 disclosed OCR/typography recoveries across Bell, Clarke, and Whinfield records, each verified against scan or transcript and premise-asserted at build time; zero project translations — every English line is the registered historical translator's.
+- Rights records stay honest (`pending`, no reviewer claimed) and are now coupled to their locked artifact hashes.
+- Four adversarial reviewers over nine dimensions, two fix rounds, 13 findings — 8 fixed, 1 refuted with scan evidence, 4 recorded as residual risks. 732 tests green, full gate green, two-build byte reproducibility, deterministic regeneration, independent leak scan clean.
+- Not merged, not deployed, no live-site mutation; branch pushed and PR opened against `main`.
+
+## 2026-07-17 — Backend audit: four fail-open gaps closed, seven escalated
+
+**Raouf:**
+
+- Complete backend/release-integrity audit on `audit/fable-5-exhaustive-backend` off `origin/main` @ `adde8b4`. **No poetry, translation, provenance, rights record, corpus selection, or the 120-record count changed; no live infrastructure was touched and `.env` was never read.**
+- **Repaired (TDD, RED first):** `no-transform` now covers `@immutable` — the content-addressed class holding `/content/<sha256>.json` and every hashed asset, the exact bytes the service worker verifies by SHA-256, and the only cache class that lacked it (`immutable` per RFC 8246 constrains client revalidation; only RFC 9111 `no-transform` forbids intermediary rewriting — the failure mode that caused the v1.0.6 outage on HTML). `verify.sh` moved in lockstep and the drift test now binds `assets` as well as `content`. `@health` switched to `path_regexp ^/healthz$`: Caddy's `path` is case-insensitive while the tunnel denies with a case-sensitive Go regexp, so `/HEALTHZ` was publicly answered `ok` 200 against the design authority's `must return 404` — **proven 200→404 in a disposable container**. `.gitignore` now ignores every private poetry report by default (two reviewed text-free reports re-included by negation) — the old shape-specific rule left a complete 494-matla' reference unignored. `ci.yml` no longer sets `DIVAN_OSV_SCAN_COMPLETED`, restoring `pnpm audit --prod` (**verified working, exit 0 — not the HTTP 410 recorded here previously**) as a fail-closed backstop under a fail-open OSV job.
+- **Verification:** format/lint/typecheck clean; vitest **721/721** across 62 files (+3 net-new, none weakened); `caddy validate` passes; `verify:qr` still fail-closed.
+- **Verdict: FAIL WITH BLOCKERS.** Open Highs this audit was forbidden to repair: a **truncated Persian hemistich with a stray `[`** shipping in `hafez-ghazal-065-bell.yaml`; all 60 Rumi records binding `persian_source_sha256` to a table-of-contents file containing **none** of their verse; 120 `active` permissions resting on `pending` rights evidence with a null reviewer; 12 hand-typed English lines bypassing the corroboration gate; ~222 unpublished source verse lines in a tracked evidence file; a vacuous raster-zero budget; and `FIXED_BROWSER_ASSETS`↔`FIXED_MIME` unbound by any test. Each is escalated with evidence, an owner, and a next safe action in `docs/audits/backend-fable-5/`.
+- **Not claimed:** the lead did not read all 392 inventoried files personally; Phases 6 and 10 (adversarial matrix, nine-dimension re-audit) were **not completed** and no PASS is claimed for them; no two-build reproducibility, SBOM, image scan, or live-infrastructure evidence was produced.
+
 ## 2026-07-17 — Release v1.0.6: outage fix deployed, verified in a real user agent
 
 **Raouf:**

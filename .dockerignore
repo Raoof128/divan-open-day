@@ -12,3 +12,13 @@ test-results
 *.log
 .DS_Store
 docs/evidence/runtime
+# Raw source books and per-page OCR of two complete translations: ~149 MB that
+# .gitignore names as "the whole book … Never commit them". The production
+# compiler reads content-private/, never sources-private/, so excluding this
+# keeps it out of the build layer and the build cache. The final image is
+# scratch and copies only /app/dist, so it never reached the published image.
+sources-private
+# Local agent tooling. CLAUDE.md carries the origin SSH host and deploy root.
+CLAUDE.md
+.claude
+New_Frontend

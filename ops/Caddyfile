@@ -28,7 +28,12 @@
 		-Server
 	}
 
-	@health path /healthz
+	# `path_regexp`, not `path`: Caddy's `path` matcher is case-insensitive, but
+	# the tunnel denies this route with a case-sensitive Go regexp (`^/healthz$`).
+	# `/HEALTHZ` therefore misses the tunnel's deny rule and reaches the origin,
+	# which would answer it "ok" — defeating the design authority's requirement
+	# that public /healthz return 404. Both layers must be case-exact.
+	@health path_regexp health ^/healthz$
 	handle @health {
 		header Cache-Control "no-store"
 		respond "ok" 200
@@ -38,7 +43,12 @@
 		path_regexp immutable ^(?:/(?:content|assets)/[a-f0-9]{64}\.json|/assets/[A-Za-z0-9][A-Za-z0-9._-]*-[a-f0-9]{16}\.(?:css|js|woff2|avif|png|svg|webp)|/audio/(?:[A-Za-z0-9_-][A-Za-z0-9._-]*/)*(?:[a-f0-9]{8}[A-Za-z0-9._-]*|[A-Za-z0-9_-][A-Za-z0-9._-]*[a-f0-9]{8}[A-Za-z0-9._-]*)\.(?:mp3|ogg)|/fonts/(?:[A-Za-z0-9_-][A-Za-z0-9._-]*/)*(?:[a-f0-9]{8}[A-Za-z0-9._-]*|[A-Za-z0-9_-][A-Za-z0-9._-]*[a-f0-9]{8}[A-Za-z0-9._-]*)\.woff2|/icons/(?:[A-Za-z0-9_-][A-Za-z0-9._-]*/)*(?:[a-f0-9]{8}[A-Za-z0-9._-]*|[A-Za-z0-9_-][A-Za-z0-9._-]*[a-f0-9]{8}[A-Za-z0-9._-]*)\.svg|/images/(?:[A-Za-z0-9_-][A-Za-z0-9._-]*/)*(?:[a-f0-9]{8}[A-Za-z0-9._-]*|[A-Za-z0-9_-][A-Za-z0-9._-]*[a-f0-9]{8}[A-Za-z0-9._-]*)\.(?:avif|webp|png))$
 		file
 	}
-	header @immutable Cache-Control "public, max-age=31536000, immutable"
+	# `no-transform` belongs here most of all: this matcher carries the
+	# content-addressed corpus and every hashed asset — the exact bytes the
+	# service worker verifies by SHA-256 before staging a release. `immutable`
+	# (RFC 8246) only tells clients not to revalidate; it does not forbid an
+	# intermediary from rewriting content. Only RFC 9111 `no-transform` does.
+	header @immutable Cache-Control "public, max-age=31536000, immutable, no-transform"
 
 	@manifest {
 		path /manifest.webmanifest

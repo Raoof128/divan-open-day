@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-1, ode 84 (88), scan page 243
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_sha256: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   english_source_reference: Clarke volume-1, ode 84 (88), scan page 243
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,19 +26,22 @@ text:
     - یا رب سببی ساز که یارم بسلامت
     - باز آید و برهاندم از بند ملامت
   english_lines:
-    - O Lord! devise a means, whereby in safety my Beloved May come back, and release me from the claw of reproach.
+    - O Lord! devise a means, whereby in safety my Beloved
+    - May come back, and release me from the claw of reproach.
   alignment: line
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+    - english_index: 1
+      persian_indices:
         - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-089-clarke-translation-permission
-  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta, 1891 (a complete literal prose translation with interpolated glosses)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -57,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  englishSourceHash: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: df7c1573ae8eedfc4e631a68c5fafa9e621aca5abf6ee0d25ef075ac9bb10706
-  englishSpanHash: a8a312813ba725145e733b28268a91ebecdc77a2bc38ad99832438ce5f3c9854
+  englishSpanHash: 2f91893750784aa12cc5a4ee054c486fbc62a7973e7c22ed7bf41cacd6c285a2
   persianSpanHash: a994046cac4053e33dd3d6fa027d59f362fd0eb70f9393881e647398e0ffb183
-  mappingHash: f503f9177dba2d96842004c1b61703a0f447ed4ebe0cfbe1b3d6a3cfafa12794
+  mappingHash: 2e40137d9a8e85672a960915d19a98fa06a34e2b90e272c4e95b8589d9d086dc
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-1, ode 84 (88), scan page 243 resolves to Qazvini-Ghani ghazal 89 through an exact continuous source span and 3 independent bilingual anchors.
+    - The couplet's two verse lines were previously jammed into one truncated line ending '…from th'; both complete lines were recovered from the locked transcript (volume-1, scan page 243) and mapped line-for-line.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-1, ode 84 (88), scan page 243 resolves to Qazvini-Ghani ghazal 89 through an exact continuous source span and 3 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

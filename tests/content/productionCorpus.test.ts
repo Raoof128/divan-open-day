@@ -16,7 +16,7 @@ describe('canonical production corpus', () => {
       profile: 'production',
       items: loaded.items,
       registries: loaded.registries,
-      buildDate: '2026-07-16',
+      buildDate: '2026-07-17',
       selectionManifest: loaded.selectionManifest,
     });
 
@@ -58,7 +58,7 @@ describe('canonical production corpus', () => {
       profile: 'production',
       items: loaded.items,
       registries: loaded.registries,
-      buildDate: '2026-07-16',
+      buildDate: '2026-07-17',
       selectionManifest: loaded.selectionManifest,
     });
     const serialized = JSON.stringify(compiled.items);

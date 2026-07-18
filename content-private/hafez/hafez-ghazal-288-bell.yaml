@@ -24,23 +24,26 @@ source:
 text:
   persian_lines:
     - کنار آب و پای بید و طبع شعر و یاری خوش
+    - معاشر دلبری شیرین و ساقی گلعذاری خوش
   english_lines:
-    - THE margin of a stream, the willow’s shade,
+    - The margin of a stream, the willow’s shade,
     - A mind inclined to song, a mistress sweet,
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-288-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -59,18 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 6fa77682959098f9d71f5bc1217c4eacb600afdcab7bc5b3fe0f3685d82a2bd7
-  englishSpanHash: f76fa11a33729c08569ad2f45de18add8829a69570718aa9cf0cf76df15d4d9a
-  persianSpanHash: 78749b2264dc88fa5d19146fa7b0a07d016b1addbf848a7c412a1ec6ff7ed415
-  mappingHash: 6b8e70b055fca2f8fd979b5559d5904751c12f26310905dd5d7067abc78e3bda
-  verdict: MACHINE_VERIFIED
-  confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XL on scan page 119 was aligned to Qazvini-Ghani ghazal 288 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  englishSpanHash: 0a6d2046df272299104d5b38eb4f7b23877166e57fea0b582e0fed04f476088e
+  persianSpanHash: 3a4f6b192f90fa82d14f6962820fcbf24641be58e921d7576a4b56b4ab296915
+  mappingHash: 0bf974564fb935327d7a58f23dbe835414f9c9dee271f38c0d04a33310760bcd
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
+  confidence: 0.97
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+    - The small-cap typography of the opening word was normalized against the Bell scan; wording is otherwise verbatim.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XL on scan page 119 was aligned to Qazvini-Ghani ghazal 288 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

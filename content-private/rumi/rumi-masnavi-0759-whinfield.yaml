@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0193-s2:lines-6-7
+  english_source_reference: rumi-whinfield-abridged-en-b0193-s2:lines-4-5
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - گفت در یک خانه گر باشم دو روز
-    - عشق آن مسکن کند در من فروز
+    - در مقامی مسکنی کم ساختی
+    - کم دو روز اندر دهی انداختی
   english_lines:
-    - He said, "If I tarry in one house two days,
-    - Attachment to that house becomes a passion with me.
+    - He rarely tarried in one place,
+    - And seldom stayed two days in one village.
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0759-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 54a556a32c60c46fd77f251be7babb05699f9fcce76cbfee4d237b2a3f05b716
-  englishSpanHash: f65240c6b09e20e7210d8f0a0e641e2f6a50f63fccfcb9caab72cb277effba9f
-  persianSpanHash: 58e3c2b0498210c72849e22da1900526f6e149812e63d0f68a067cb9b6fa45a1
-  mappingHash: 45103cb03c5962d9dbea52533a2e24c85cc8ca579adb74096707d9ac08b39b59
+  canonicalIdentityHash: a5e8d023f406526bce3de0e36f4b89a2ca66529a085c3881a3d9acdc3b1d04af
+  englishSpanHash: 9d699fc30d53da80b86b1ffb0e4921b117718526d55739c2f70402054ff4b4bc
+  persianSpanHash: 7974723d4fabd5a7096d8ca527004f445d0694cbc4f56d799a3a2fd43f75ff25
+  mappingHash: 627766004c677e9f25e0c996780fba426f2e12a3e20b483e17ae6cddb0fd873e
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.83609
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 6 resolve to the continuous Nicholson section 759 span beginning at 6, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0193-s2:lines-4-5) corresponds line-for-line to consecutive hemistichs of Nicholson section 759; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.83609). Shifted outside the quotation; exact couplet correspondence retained.

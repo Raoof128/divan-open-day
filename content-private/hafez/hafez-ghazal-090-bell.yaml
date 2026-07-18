@@ -15,32 +15,35 @@ source:
   reference_type: ghazal
   reference_value: Ghazal 90
   opening_hemistich_fa: ای هدهد صبا بسبا می‌فرستمت
-  page_reference: Bell poem Ul, scan page 73
+  page_reference: Bell poem III, scan page 73
   source_language: fa
   english_source_id: hafez-bell-1897-en
   english_source_sha256: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
-  english_source_reference: Bell poem Ul, scan page 73
+  english_source_reference: Bell poem III, scan page 73
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
   persian_lines:
     - ای هدهد صبا بسبا می‌فرستمت
+    - بنگر که از کجا بکجا می‌فرستمت
   english_lines:
     - Wind from the east, oh Lapwing of the day,
     - I send thee to my Lady, though the way
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-090-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: a9798be60a74eb1856e802c8d20ba0548b5220f019aeff344305b08ecfb0c9de
   englishSpanHash: 56b58a6a46320c84231dc8ab3f268ea2e70902cd59863ccf41c358c564154685
-  persianSpanHash: ea71d83dc66b1da4fe78376da29ff1851c5b7645d07fc29f8cbb8700a28c3dd7
-  mappingHash: 650c481e0fbcf651a9112c7f61f064f38740b27934c393429b924b388b97ae2f
+  persianSpanHash: 5e1c65a808c5b00f6c45b8a7922cbb16d7cd1d39271da136a2735f9702bcf0ca
+  mappingHash: f782dcb4d16ee8155a2ab688d26f41164198a3c7ed7d0abed2f3ee9f0efc3b17
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem Ul on scan page 73 was aligned to Qazvini-Ghani ghazal 90 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem III on scan page 73 was aligned to Qazvini-Ghani ghazal 90 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed. The poem numeral was recovered from the locked archive text and the poem sequence (Sequence I (p71), II (p72) … VI (p77) places pages 73–76 as III–V; both OCR readings ("Ul", "in") are misreads of III.)
