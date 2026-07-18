@@ -22,7 +22,32 @@ import {
 } from '../lib/cinematic/scrollScrub';
 
 const FIRST_FRAME_TIMEOUT_MS = 4000;
+// A slow mobile connection can need well over the grace window for its first
+// frame. While the visitor is idle the poster is already showing, so waiting
+// costs nothing — only a pending Begin (which must never trap) or this hard
+// cap gives up on the cinematic.
+const FIRST_FRAME_HARD_CAP_MS = 30_000;
 const FINAL_FRAME_SETTLE_TIMEOUT_MS = 1000;
+
+// The Begin walk paces the corridor like a person strolling into the garden;
+// a native smooth scroll finishes in a few hundred milliseconds and skips the
+// whole cinematic. Distance-proportional, clamped so short corridors still
+// breathe and tall ones never feel like a forced march.
+const WALK_PACE_PX_PER_SECOND = 220;
+const WALK_MIN_DURATION_MS = 4000;
+const WALK_MAX_DURATION_MS = 9000;
+
+// Keys that express scroll intent hand the corridor back to the visitor;
+// focus-only keys (Tab) must not cancel the entrance.
+const WALK_INTERRUPT_KEYS = new Set([
+  ' ',
+  'ArrowDown',
+  'ArrowUp',
+  'End',
+  'Home',
+  'PageDown',
+  'PageUp',
+]);
 
 type ThresholdState = 'poster' | 'playing' | 'arrived';
 
@@ -57,10 +82,13 @@ export function CinematicThreshold({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const arrivedRef = useRef(false);
   const pendingBeginRef = useRef(false);
+  const frameOverdueRef = useRef(false);
+  const cancelWalkRef = useRef<(() => void) | null>(null);
 
   const scrubbing = plan.shouldLoadVideo && !videoFailed;
 
   const arrive = useCallback(() => {
+    cancelWalkRef.current?.();
     if (arrivedRef.current) {
       return;
     }
@@ -72,24 +100,112 @@ export function CinematicThreshold({
 
   const traverseCorridor = useCallback(() => {
     const section = sectionRef.current;
-    if (
-      section === null ||
-      section.offsetHeight <= window.innerHeight ||
-      typeof section.scrollIntoView !== 'function'
-    ) {
+    if (section === null || section.offsetHeight <= window.innerHeight) {
       arrive();
+      return;
+    }
+
+    // A walk is already carrying the visitor — a second Begin press must not
+    // restart the journey or repeat the announcement.
+    if (cancelWalkRef.current !== null) {
       return;
     }
 
     try {
       onAnnounce('Entering the reading alcove.');
-      section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      const target = section.offsetHeight - window.innerHeight;
+      const start = window.scrollY;
+      const distance = target - start;
+      if (distance <= 0) {
+        arrive();
+        return;
+      }
+      const duration = Math.min(
+        WALK_MAX_DURATION_MS,
+        Math.max(
+          WALK_MIN_DURATION_MS,
+          (distance / WALK_PACE_PX_PER_SECOND) * 1000,
+        ),
+      );
+
+      let stopped = false;
+      let frame: number | null = null;
+      let startTime: number | null = null;
+      const stop = () => {
+        if (stopped) {
+          return;
+        }
+        stopped = true;
+        if (frame !== null) {
+          window.cancelAnimationFrame(frame);
+          frame = null;
+        }
+        window.removeEventListener('wheel', interrupt);
+        window.removeEventListener('touchmove', interrupt);
+        window.removeEventListener('keydown', onKeydown);
+        if (cancelWalkRef.current === stop) {
+          cancelWalkRef.current = null;
+        }
+      };
+      // The visitor's own scroll intent always outranks the guided walk; the
+      // scrub keeps following wherever they take the corridor.
+      const interrupt = () => {
+        stop();
+      };
+      const onKeydown = (event: KeyboardEvent) => {
+        if (WALK_INTERRUPT_KEYS.has(event.key)) {
+          stop();
+        }
+      };
+      const step = (now: number) => {
+        if (stopped) {
+          return;
+        }
+        startTime ??= now;
+        const progress = Math.min(1, (now - startTime) / duration);
+        // easeInOutSine: a walk gathers pace gently and settles gently.
+        const eased = 0.5 - Math.cos(Math.PI * progress) / 2;
+        try {
+          window.scrollTo(0, start + distance * eased);
+        } catch {
+          // Programmatic scrolling is an enhancement. A constrained or
+          // unusual browser must still reach the core poetry experience.
+          stop();
+          arrive();
+          return;
+        }
+        if (progress < 1) {
+          frame = window.requestAnimationFrame(step);
+        } else {
+          stop();
+        }
+      };
+      cancelWalkRef.current = stop;
+      window.addEventListener('wheel', interrupt, { passive: true });
+      window.addEventListener('touchmove', interrupt, { passive: true });
+      window.addEventListener('keydown', onKeydown);
+      frame = window.requestAnimationFrame(step);
     } catch {
-      // Programmatic scrolling is an enhancement. A constrained or unusual
-      // browser must still be able to enter the core poetry experience.
+      // Same fallback as above for environments without rAF or listeners.
       arrive();
     }
   }, [arrive, onAnnounce]);
+
+  // A dismount mid-walk must not leave a headless scroller running.
+  useEffect(() => () => cancelWalkRef.current?.(), []);
+
+  // If the cinematic dies while the corridor is live (video error, plan
+  // change), its scroll-driven arrival machinery collapses with it — during
+  // a guided walk AND during the visitor's own hand-driven scrubbing. The
+  // threshold contract is explicit: on media failure, continue directly into
+  // the live book. Poster-phase failures keep the welcome card and the
+  // visitor's Begin choice instead.
+  useEffect(() => {
+    if (!scrubbing && thresholdState === 'playing' && !arrivedRef.current) {
+      cancelWalkRef.current?.();
+      arrive();
+    }
+  }, [scrubbing, thresholdState, arrive]);
 
   const requestEntrance = useCallback(() => {
     if (arrivedRef.current) {
@@ -105,6 +221,17 @@ export function CinematicThreshold({
       return;
     }
     if (thresholdState !== 'playing') {
+      // The frame is already overdue: this visitor has waited long enough.
+      // Enter directly instead of asking them to wait a second grace window.
+      if (frameOverdueRef.current) {
+        arrive();
+        return;
+      }
+      // A Begin is already pending — don't repeat the announcement or
+      // re-prime while the first frame is still decoding.
+      if (pendingBeginRef.current) {
+        return;
+      }
       pendingBeginRef.current = true;
       onAnnounce('Preparing the entrance.');
       // WebKit does not reliably composite seeked frames on a muted inline
@@ -157,6 +284,8 @@ export function CinematicThreshold({
     const presented = () => {
       if (!cancelled) {
         clearFirstFrameTimeout();
+        removeOverdueScroll();
+        frameOverdueRef.current = false;
         // The clip is scrub-driven and never intentionally plays; a Begin
         // gesture may have primed it, so settle it back to paused.
         try {
@@ -167,13 +296,47 @@ export function CinematicThreshold({
         setThresholdState((state) => (state === 'poster' ? 'playing' : state));
       }
     };
+    const removeOverdueScroll = () => {
+      window.removeEventListener('scroll', onOverdueScroll);
+    };
     const fail = () => {
       if (!cancelled) {
         clearFirstFrameTimeout();
+        removeOverdueScroll();
         setVideoFailed(true);
       }
     };
-    timeout = window.setTimeout(fail, FIRST_FRAME_TIMEOUT_MS);
+    // Scrolling the corridor while the frame is overdue is inert (the scrub
+    // only runs once 'playing'). A visitor who scrolls anyway has stopped
+    // waiting — collapse to the poster path immediately so the welcome card
+    // and Begin are back within reach instead of a dead 260vh corridor.
+    const onOverdueScroll = () => {
+      if (!cancelled && window.scrollY > window.innerHeight / 2) {
+        fail();
+      }
+    };
+    // The grace window only forces direct entry when a Begin is pending —
+    // giving up on an idle visitor's cinematic just because their phone's
+    // connection is slow would hand mobile a permanently poorer entrance.
+    // A late frame re-enables the garden; the hard cap bounds the wait.
+    const overdue = () => {
+      if (cancelled) {
+        return;
+      }
+      // A pending Begin must never trap, and an already-arrived visitor has
+      // no garden left to wait for — both give up on the clip immediately.
+      if (pendingBeginRef.current || arrivedRef.current) {
+        fail();
+        return;
+      }
+      frameOverdueRef.current = true;
+      window.addEventListener('scroll', onOverdueScroll, { passive: true });
+      timeout = window.setTimeout(
+        fail,
+        FIRST_FRAME_HARD_CAP_MS - FIRST_FRAME_TIMEOUT_MS,
+      );
+    };
+    timeout = window.setTimeout(overdue, FIRST_FRAME_TIMEOUT_MS);
     const onLoadedData = () => {
       if (typeof video.requestVideoFrameCallback === 'function') {
         video.requestVideoFrameCallback(presented);
@@ -189,6 +352,7 @@ export function CinematicThreshold({
     return () => {
       cancelled = true;
       clearFirstFrameTimeout();
+      removeOverdueScroll();
       video.removeEventListener('loadeddata', onLoadedData);
       video.removeEventListener('error', fail);
     };
@@ -276,6 +440,14 @@ export function CinematicThreshold({
         window.innerHeight,
       );
       section.style.setProperty('--cinematic-progress', String(progress));
+      // The welcome card fades out as the corridor is travelled; once it is
+      // effectively invisible its controls must leave the tab order too, so
+      // a keyboard user never focuses an invisible button (WCAG 2.4.7).
+      if (progress > 0.42) {
+        section.setAttribute('data-cinematic-card-hidden', 'true');
+      } else {
+        section.removeAttribute('data-cinematic-card-hidden');
+      }
       if (isArrival(progress)) {
         if (!Number.isFinite(video.duration) || video.duration <= 0) {
           completeArrival();
