@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-07-18 — Release v1.0.7: audited corpus repair, motion polish, society credit — deployed and verified
+
+**Raouf:**
+
+- Deployed `divan-release-1-v1-0-7` (`ghcr.io/raoof128/divan-open-day:v1.0.7@sha256:2f3257a6…`, `linux/amd64`, Scout `0C/0H/0M/0L`) by digest; preflight, deploy, and independent verify all passed. Evidence: `docs/verification/2026-07-18-release-v1-0-7-deployment.md`.
+- The corpus changed deliberately and provably only as audited: 046→025 replacement, credits on 119, text+disclosures on 56, 12 status flips, ghazal 65's recovered hemistich — every delta maps to `docs/audits/corpus-fable-5/`.
+- Cinematic entrance now walks at human pace on every device, the amethyst butterfly lives perpetually, the book settle is polished, and the Macquarie Persian Society credit appears on Credits, About, and the share card.
+- CI startup failure (reusable-workflow caller permissions) found and fixed en route (PR #21); tag cut only after green main CI. Stale origin `verify.sh` synced from the tag before deploying.
+- Neighbouring services untouched (5-day uptimes); cloudflared not recreated; registry credentials removed from both machines.
+
 ## 2026-07-18 — CI restored: reusable-workflow caller permissions
 
 **Raouf:**
