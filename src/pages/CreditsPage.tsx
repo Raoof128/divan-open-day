@@ -102,6 +102,14 @@ export function CreditsPage({
         </ul>
       </section>
 
+      <section aria-labelledby="society-credit">
+        <h2 id="society-credit">Made by</h2>
+        <p>
+          This project is made by the Macquarie Persian Society — with love, for
+          everyone.
+        </p>
+      </section>
+
       <section aria-labelledby="design-credit">
         <h2 id="design-credit">Design and development</h2>
         <p>

@@ -94,3 +94,31 @@ it('derives fixture release metadata and public credits without presenting them 
   expect(screen.getByText(/non-production fixture release/i)).toBeVisible();
   expect(document.body).not.toHaveTextContent('Macquarie University');
 });
+
+it('credits the Macquarie Persian Society without using a University mark', async () => {
+  window.history.replaceState(null, '', '/credits');
+  render(<App services={{ loadRelease }} />);
+
+  await screen.findByRole('heading', { level: 1, name: 'Credits and sources' });
+  expect(
+    screen.getByText(/made by the Macquarie Persian Society/iu),
+  ).toBeVisible();
+  expect(screen.getByText(/with love, for everyone/iu)).toBeVisible();
+  // The society's own name is attribution; the unapproved University mark
+  // (the exact phrase and any endorsement claim) must stay absent.
+  expect(document.body).not.toHaveTextContent('Macquarie University');
+});
+
+it('carries the society credit on the About page as well', async () => {
+  window.history.replaceState(null, '', '/about');
+  render(<App services={{ loadRelease }} />);
+
+  await screen.findByRole('heading', {
+    level: 1,
+    name: 'About this experience',
+  });
+  expect(
+    screen.getByText(/made by the Macquarie Persian Society/iu),
+  ).toBeVisible();
+  expect(document.body).not.toHaveTextContent('Macquarie University');
+});
