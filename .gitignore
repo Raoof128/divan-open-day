@@ -37,7 +37,14 @@ sources-private/poetry/bell-ocr/**
 sources-private/poetry/clarke-ocr/**
 # Candidate reports carry verse excerpts — keep them out of Git; the text-free
 # candidates-summary.json is committed instead.
-sources-private/poetry/reports/*-candidates.json
+# Ignore every report by default and re-include the reviewed, text-free ones by
+# negation. Naming one filename shape here was the bug: a report called anything
+# other than `*-candidates.json` (e.g. a complete 494-matla' reference carrying
+# "no prefilter, no exclusion") stayed unignored and one `git add -A` from
+# public history. This mirrors the content-private/ pattern above.
+sources-private/poetry/reports/*
+!sources-private/poetry/reports/candidates-summary.json
+!sources-private/poetry/reports/source-rights-report.md
 ops/cloudflared/*.json
 ops/cloudflared/config.yml
 coverage/

@@ -307,3 +307,51 @@ describe('verifyLock', () => {
     expect(problems[0]?.reason).toMatch(/mismatch/i);
   });
 });
+
+describe('source-lock verification cannot pass vacuously', () => {
+  const hashOf = (): Promise<string> => Promise.resolve('a'.repeat(64));
+
+  it('refuses an emptied lock instead of reporting 0 artefacts intact', async () => {
+    // verifyLock iterates lock.entries, so an emptied lock produced zero
+    // problems and the CLI printed "Source-lock verification passed: 0
+    // artefacts intact" and exited 0. A lock that records nothing proves
+    // nothing; deleting every entry must not be a way to pass the gate.
+    const problems = await verifyLock(
+      {
+        schema_version: 1,
+        generated_at: '2026-07-16T00:00:00.000Z',
+        entries: [],
+      },
+      { fileExists: () => true, hashOf },
+    );
+
+    expect(problems).not.toHaveLength(0);
+    expect(problems[0]?.reason).toMatch(/no artefacts|empty/iu);
+  });
+
+  it('rejects a lock entry whose path escapes the poetry root', async () => {
+    // entry.file is data. It reaches resolve(poetryRoot, file) with no
+    // containment check, so a hand-edited lock could point the verifier at any
+    // readable file and report its digest.
+    const problems = await verifyLock(
+      {
+        schema_version: 1,
+        generated_at: '2026-07-16T00:00:00.000Z',
+        entries: [
+          {
+            source_id: 'hafez-bell-1897-en',
+            file: '../../../etc/passwd',
+            kind: 'text',
+            sha256: 'b'.repeat(64),
+            bytes: 1,
+            acquired_at: '2026-07-16T00:00:00.000Z',
+          } as never,
+        ],
+      },
+      { fileExists: () => true, hashOf },
+    );
+
+    expect(problems).toHaveLength(1);
+    expect(problems[0]?.reason).toMatch(/escapes|outside|not a safe/iu);
+  });
+});

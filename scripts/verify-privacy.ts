@@ -10,7 +10,7 @@
  *
  * Exits non-zero on any violation. Run after `pnpm build:fixture`.
  */
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { lstatSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
@@ -76,9 +76,15 @@ const FORBIDDEN_SOURCE: readonly Rule[] = [
   },
 ];
 
-const SOURCE_DIRS = ['src', 'src-sw'];
+const SOURCE_DIRS = ['src', 'src-sw', 'public'];
+// index.html is the app shell and lives at the repository root, outside every
+// SOURCE_DIR — a remote <script> added there was previously only ever caught
+// via dist/, i.e. only when a build happened to have run first.
+const SOURCE_FILES = ['index.html'];
 const DIST_DIR = 'dist';
-const CODE_EXT = /\.(ts|tsx|css|js|html|webmanifest|json)$/u;
+// `svg` is included deliberately: an SVG can carry <script> and remote
+// <image href>, and icon.svg ships to every visitor.
+const CODE_EXT = /\.(ts|tsx|css|js|html|svg|webmanifest|json)$/u;
 
 function walk(dir: string): string[] {
   const abs = resolve(ROOT, dir);
@@ -91,9 +97,16 @@ function walk(dir: string): string[] {
   const files: string[] = [];
   for (const entry of entries) {
     const full = resolve(abs, entry);
-    if (statSync(full).isDirectory()) {
+    // lstat, not stat: statSync follows symlinks, so a link cycle recursed to a
+    // stack overflow and a broken link threw ENOENT uncaught at module scope.
+    const stat = lstatSync(full);
+    if (stat.isSymbolicLink()) {
+      violations.push(
+        `${full.replace(`${ROOT}/`, '')}: symlink is not scannable and is not permitted here`,
+      );
+    } else if (stat.isDirectory()) {
       files.push(...walk(resolve(dir, entry)));
-    } else if (CODE_EXT.test(entry)) {
+    } else if (stat.isFile() && CODE_EXT.test(entry)) {
       files.push(full);
     }
   }
@@ -102,23 +115,46 @@ function walk(dir: string): string[] {
 
 const violations: string[] = [];
 
+function scanFile(file: string, rules: readonly Rule[]): void {
+  let text: string;
+  try {
+    text = readFileSync(file, 'utf8');
+  } catch {
+    violations.push(`${file.replace(`${ROOT}/`, '')}: expected file not found`);
+    return;
+  }
+  for (const rule of rules) {
+    if (rule.pattern.test(text)) {
+      violations.push(
+        `${file.replace(`${ROOT}/`, '')}: ${rule.id} — ${rule.reason}`,
+      );
+    }
+  }
+}
+
 function scan(dir: string, rules: readonly Rule[]): void {
   for (const file of walk(dir)) {
-    const text = readFileSync(file, 'utf8');
-    for (const rule of rules) {
-      if (rule.pattern.test(text)) {
-        violations.push(
-          `${file.replace(`${ROOT}/`, '')}: ${rule.id} — ${rule.reason}`,
-        );
-      }
-    }
+    scanFile(file, rules);
   }
 }
 
 for (const dir of SOURCE_DIRS) {
   scan(dir, [...FORBIDDEN_EVERYWHERE, ...FORBIDDEN_SOURCE]);
 }
+for (const file of SOURCE_FILES) {
+  scanFile(resolve(ROOT, file), [...FORBIDDEN_EVERYWHERE, ...FORBIDDEN_SOURCE]);
+}
 scan(DIST_DIR, FORBIDDEN_EVERYWHERE);
+
+// walk() returns [] for a directory that does not exist, so scanning an absent
+// dist/ previously reported "passed ... in source or dist" having read nothing.
+// The success message makes a claim about dist; refuse to make it unbacked.
+if (walk(DIST_DIR).length === 0) {
+  violations.push(
+    `${DIST_DIR}/: no built output to scan — run \`pnpm build:fixture\` first; ` +
+      'a privacy pass cannot be claimed for a distribution that does not exist',
+  );
+}
 
 // Positive assertion: the app uses session-scoped storage for draw/session state.
 const appFile = resolve(ROOT, 'src/app/App.tsx');

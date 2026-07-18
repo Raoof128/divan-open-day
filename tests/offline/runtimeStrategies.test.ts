@@ -224,6 +224,29 @@ describe('release-coherent runtime strategies', () => {
     ).toMatchObject({ redirect: 'error' });
   });
 
+  it('serves the precached manifest icon from the active release when offline', async () => {
+    // icon.svg is the PWA manifest icon. Both schemas force requiredOffline on
+    // it, so it is fetched, digest-verified, charged against the 8 MB ceiling
+    // and written into the release cache — but `/icons/` (plural) does not
+    // prefix-match `/icon.svg`, so the router must name it explicitly or the
+    // bytes are precached and then unreachable: an installed PWA loses its icon
+    // offline while still paying for it against the ceiling.
+    const { caches } = await activeManager();
+    const offline = new OfflineReleaseManager({
+      caches,
+      fetch: () => Promise.reject(new TypeError('offline')),
+      crypto: webcrypto,
+      origin: 'https://divan.test',
+    });
+
+    const icon = await offline.respond(
+      new Request('https://divan.test/icon.svg'),
+    );
+
+    expect(icon.status).toBe(200);
+    await expect(icon.text()).resolves.toContain('<svg');
+  });
+
   it('returns a graceful 504 only when both the cache and the network cannot answer', async () => {
     const { subject, caches } = await activeManager();
     await caches.delete(`${RELEASE_CACHE_PREFIX}release-one`);

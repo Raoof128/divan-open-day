@@ -56,13 +56,37 @@ const TEXT_SCAN_EXTENSIONS = new Set([
   '.map',
 ]);
 
-async function* walk(dir: string): AsyncGenerator<string> {
+/**
+ * Yields every regular file, and reports anything that is neither a file nor a
+ * directory. `readdir({ withFileTypes: true })` uses lstat semantics, so a
+ * symlink answers false to BOTH isFile() and isDirectory() — it previously
+ * matched no branch and was dropped in silence. A leak scanner that skips an
+ * entire entry class is not defence in depth.
+ */
+const MAX_SCANNED_BYTES = 5_000_000;
+
+async function* walk(
+  dir: string,
+  problems: BundleProblem[],
+  root: string,
+): AsyncGenerator<string> {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      yield* walk(full);
+    if (entry.isSymbolicLink()) {
+      problems.push({
+        file: relative(root, full),
+        reason:
+          'symlink in dist: its target is not scannable and may point outside the distribution',
+      });
+    } else if (entry.isDirectory()) {
+      yield* walk(full, problems, root);
     } else if (entry.isFile()) {
       yield full;
+    } else {
+      problems.push({
+        file: relative(root, full),
+        reason: 'irregular distribution entry is not scannable',
+      });
     }
   }
 }
@@ -76,7 +100,7 @@ export async function inspectPublicBundle(
     return problems;
   }
 
-  for await (const file of walk(distDir)) {
+  for await (const file of walk(distDir, problems, distDir)) {
     const rel = relative(distDir, file);
     const base = rel.split(/[/\\]/u).pop() ?? rel;
     const ext = extname(base).toLowerCase();
@@ -105,7 +129,14 @@ export async function inspectPublicBundle(
 
     if (TEXT_SCAN_EXTENSIONS.has(ext)) {
       const info = await stat(file);
-      if (info.size <= 5_000_000) {
+      if (info.size > MAX_SCANNED_BYTES) {
+        // "Too big to read" must not silently become "passes". A large bundle
+        // or map is exactly where a private path would hide.
+        problems.push({
+          file: rel,
+          reason: `text asset is ${String(info.size)} bytes, above the ${String(MAX_SCANNED_BYTES)}-byte scan ceiling, so it was not checked for private fragments`,
+        });
+      } else {
         const contents = await readFile(file, 'utf8');
         for (const fragment of FORBIDDEN_CONTENT_FRAGMENTS) {
           if (contents.includes(fragment)) {

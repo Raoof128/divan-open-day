@@ -15,6 +15,26 @@ import {
   type SourceLockEntry,
 } from './fetch-sources';
 
+/**
+ * Lock paths are data. They must stay relative to the poetry root: no absolute
+ * path, no traversal, no empty or dot segment, no backslash.
+ */
+function isContainedRelativePath(value: string): boolean {
+  if (
+    value === '' ||
+    value.startsWith('/') ||
+    value.includes('\\') ||
+    /^[A-Za-z]:/u.test(value)
+  ) {
+    return false;
+  }
+  return value
+    .split('/')
+    .every(
+      (segment) => segment.length > 0 && segment !== '.' && segment !== '..',
+    );
+}
+
 export interface LockProblem {
   readonly file: string;
   readonly reason: string;
@@ -33,7 +53,28 @@ export async function verifyLock(
   },
 ): Promise<LockProblem[]> {
   const problems: LockProblem[] = [];
+  // A lock that records nothing proves nothing. Without this, deleting every
+  // entry made the CLI print "passed: 0 artefacts intact" and exit 0 — the gate
+  // reporting success for an absence of evidence.
+  if (lock.entries.length === 0) {
+    problems.push({
+      file: 'source-lock.json',
+      reason: 'lock records no artefacts; an empty lock cannot verify anything',
+    });
+    return problems;
+  }
   for (const entry of lock.entries) {
+    // entry.file is data, and it reaches resolve(poetryRoot, file) downstream.
+    // Keep it a contained relative path so a hand-edited lock cannot aim the
+    // verifier at an arbitrary readable file and report its digest.
+    if (!isContainedRelativePath(entry.file)) {
+      problems.push({
+        file: entry.file,
+        reason:
+          'escapes the poetry root; lock paths must be relative and contained',
+      });
+      continue;
+    }
     if (!options.fileExists(entry.file)) {
       problems.push({ file: entry.file, reason: 'missing on disk' });
       continue;

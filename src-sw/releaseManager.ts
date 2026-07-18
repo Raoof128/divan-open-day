@@ -208,6 +208,12 @@ export class OfflineReleaseManager {
       url.pathname.startsWith('/fonts/') ||
       url.pathname.startsWith('/images/') ||
       url.pathname.startsWith('/icons/') ||
+      // `/icons/` does not prefix-match `/icon.svg`. Both schemas force
+      // requiredOffline on the manifest icon, so it is staged, digest-verified
+      // and charged against the byte ceiling; without this arm those bytes are
+      // precached and then unreachable, and the installed PWA loses its icon
+      // offline while still paying for it.
+      url.pathname === '/icon.svg' ||
       url.pathname === '/manifest.webmanifest' ||
       url.pathname === '/offline.html'
     ) {
