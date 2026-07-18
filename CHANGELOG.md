@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-07-18 — Docs: professional README rewrite to reflect the live v1.0.7 release
+
+**Raouf:**
+
+- Rewrote `README.md`, which still described the project as an undeployed "Work in progress". Verified against `https://divan.raoufabedini.dev/release.json` (`buildProfile: production`, `productionEligible: true`, `releaseId divan-release-1-v1-0-7`, `itemCount 120`, `hafezCount 60`, `rumiCount 60`) before changing the status framing to live.
+- New structure: one-line summary, live link + release, Highlights, Tech stack table, Quick start, Quality gate, Architecture (with a source-tree map), Privacy, Content and rights, an explicit **Scope and status** section, Security, and Licence — plus the Macquarie Persian Society maker credit.
+- Boundaries preserved: the README claims none of the closed gates. Cultural-review sign-off, manual assistive-tech evidence (VoiceOver/TalkBack/branded Safari — Playwright WebKit is not Safari), University-mark approval, provider logging/retention review, and the physical QR deliverable are all listed as **not claimed**; branding described as **society only**; MIT covers repo code only, not poetry/translations/Society or University marks; no host address or tunnel identity added.
+- Docs-only change: no source, corpus, service worker, or ops files touched. Prettier verified clean on `README.md` (`pnpm prettier --check README.md` → "All matched files use Prettier code style!").
+
 ## 2026-07-18 — Release v1.0.7: audited corpus repair, motion polish, society credit — deployed and verified
 
 **Raouf:**

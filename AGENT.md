@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-07-18 (Australia/Sydney) — Docs: professional README rewrite to reflect the live v1.0.7 release
+
+**Raouf:**
+
+- **Scope:** documentation only. Rewrote `README.md`; no source, corpus, service worker, ops, or CI files touched.
+- **Why:** the README still framed the project as an undeployed "Work in progress" with "no public launch … claimed", which had already misled at least one session. The site is live (`divan-release-1-v1-0-7`).
+- **Verification before claiming live:** `curl https://divan.raoufabedini.dev/release.json` returned `buildProfile production`, `productionEligible true`, `releaseId divan-release-1-v1-0-7`, `itemCount 120`, `hafezCount 60`, `rumiCount 60`.
+- **Boundaries held:** the rewrite claims none of the closed gates. A dedicated "Scope and status" section lists cultural review, manual assistive-tech evidence (real-device VoiceOver/TalkBack/branded Safari — Playwright WebKit ≠ Safari), University-mark approval, provider logging/retention review, and the physical QR deliverable as **not claimed**; branding stays **society only**; MIT is scoped to repo code only (poetry, translations, and Society/University marks excluded); no host address or tunnel identity added.
+- **Gate:** `pnpm prettier --check README.md` → clean.
+
 ### 2026-07-18 (Australia/Sydney) — Release v1.0.7: audited corpus repair, motion polish, and society credit deployed and verified
 
 **Raouf:**
