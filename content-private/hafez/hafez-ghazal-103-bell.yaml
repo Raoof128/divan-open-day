@@ -24,23 +24,26 @@ source:
 text:
   persian_lines:
     - روز وصل دوستداران یاد باد
+    - یاد باد آن روزگاران یاد باد
   english_lines:
     - Forget not when dear friend to friend returned,
     - Forget not days gone by, forget them not !
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-103-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 0fb96f434be6ac6a1c199ede506b96274927615ed015ea1eec42210756f9cf91
   englishSpanHash: 2be33625f5d89d391abaac61dd5e41abb24f7e3857989cf628e7be3f80b583c1
-  persianSpanHash: ba8d774d9163ae3b164381fe47991265d3d35efc86c056a383ec79339d30cc9b
-  mappingHash: 3be937f334cef0b4b92b4c68a9453bff396eaaa92114413dfceb8e503da53d4a
+  persianSpanHash: 39fab3592f593895ac99bef25f43c9073324c3e0115eec6219747dc808244afb
+  mappingHash: 1ece9349c01a2cd20bb5b7cae155124d9624838a1e10ecfb95e75d1d3ba87331
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XXXV on scan page 113 was aligned to Qazvini-Ghani ghazal 103 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XXXV on scan page 113 was aligned to Qazvini-Ghani ghazal 103 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

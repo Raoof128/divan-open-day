@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-2, ode 381 (384), scan page 81
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  english_source_sha256: ac0ea92c5f128363b68976af266210f18b34fefc1b81882a20b75e3df86c0399
   english_source_reference: Clarke volume-2, ode 381 (384), scan page 81
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,7 +26,7 @@ text:
     - چرا نه در پی عزم دیار خود باشم
     - چرا نه خاک سر کوی یار خود باشم
   english_lines:
-    - In the pursuit of the desire of visiting my own (native) Land,- why should I not be ?
+    - In the pursuit of the desire of visiting my own (native) Land,— why should I not be ?
     - The dust of the head of my (true) Beloved's street, why should I not be ?
   alignment: line
   mapping:
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-337-clarke-translation-permission
-  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta, 1891 (a complete literal prose translation with interpolated glosses)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: f754625ad11de7f566fc10fd5a49667a29dd6f3a88f6700d2bdb6035c6ba2e6f
+  englishSourceHash: ac0ea92c5f128363b68976af266210f18b34fefc1b81882a20b75e3df86c0399
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 17b2fb6fea46b182d2d07c52f3e3b366c42d4c762978ac52b5fe6d1037cafa96
-  englishSpanHash: 47a13616845b7b300b95d9e2aa3c1363a37b8887a8c33915baf5e10c89e41d36
+  englishSpanHash: aa0bae623c077546621d8032ac2ff8983bec2e3c6f37e8c1265ceb551cfa0172
   persianSpanHash: 0c4b124d5f1cac9ab91f3c93a8612ba8f463ecd5a1ff375ba26e055e10712a58
   mappingHash: f71b44188c1a22870b91b504b6e3669b8f52ff0b88b1429124839778c337435b
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-2, ode 381 (384), scan page 81 resolves to Qazvini-Ghani ghazal 337 through an exact continuous source span and 2 independent bilingual anchors.
+    - A garbled radif dash in the transcript ('Land,-') was normalised against the volume-2 scan, page 81.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-2, ode 381 (384), scan page 81 resolves to Qazvini-Ghani ghazal 337 through an exact continuous source span and 2 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

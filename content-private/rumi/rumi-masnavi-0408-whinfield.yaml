@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0335-s11:lines-6-7
+  english_source_reference: rumi-whinfield-abridged-en-b0335-s11:lines-8-9
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - گفت و هو معکم این شاه بود
-    - فعل ما می‌دید و سرمان می‌شنود
+    - چشم من ره برد شب شه را شناخت
+    - جمله شب با روی ماهش عشق باخت
   english_lines:
-    - He added, "'Yea, he was with you,' 9 this great king;
-    - He beheld our actions and heard our secrets.
+    - My eyes guided me to recognize that king at night,
+    - And dwelt lovingly on his face, like the moon at night.
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0408-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 4c8cb8e4eb764fed215d9809e507ece94e41c6ef79e4aff413ccf8d3144c7fd5
-  englishSpanHash: 14ee9b36bd572fa88674ef85bb27fc14ddd07ebf247fc877e8d81ee8e590b707
-  persianSpanHash: f36c9cfc3d18fd4dc2b0b0bf39af90c761af1a4f2485940df58ec0c2cc8272bb
-  mappingHash: 5abc3f37f5231843729f02e83cd6719fc55da1eae48f78cd2366e3bcc8d7b47d
+  canonicalIdentityHash: c19e4c36fd213d1a06c44ec2c684a3ccec2270c80c8931a4f4f73799f1128685
+  englishSpanHash: 9ef2f0161f219421e177f4290c265a3a68a5808c5c4940bf3cc534e4254f5cd5
+  persianSpanHash: 7c86abdc401d3b09026c14a438a7b795a0440c3b9087dd3fd82b8d47e4e254df
+  mappingHash: f6308079fd8da3709a92b91b5c3e78fb3178a86ee08eb4940bea8d0a13201a35
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.820883
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 6 resolve to the continuous Nicholson section 408 span beginning at 80, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: "Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0335-s11:lines-8-9) corresponds line-for-line to consecutive hemistichs of Nicholson section 408; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.820883). Shifted two lines forward: removes both the footnote digit 9 and the unclosed quotation."

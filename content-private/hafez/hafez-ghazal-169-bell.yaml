@@ -24,23 +24,26 @@ source:
 text:
   persian_lines:
     - یاری اندر کس نمی‌بینیم یارانرا چه شد
+    - دوستی کی آخر آمد دوستدارانرا چه شد
   english_lines:
     - True love has vanished from every heart ;
     - What has befallen all lovers fair ?
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-169-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -59,18 +62,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 291035fb4b701eaf798abb683ce86e7f2337d98b1b2df2ee9a0003e32f6e745e
   englishSpanHash: 2202ca88df434c33025f10e34dcc7aa4a81e18e30f2c10568e6e2d3dcbb41482
-  persianSpanHash: 32df3e0f67e27ce8f13b14e00c03d14499ecd34edb5e9c40a4471969826cdf76
-  mappingHash: 02ddb4bed6ecdbfed7468021f43e1e45e21fc96dae37a73b243892afef51b029
-  verdict: MACHINE_VERIFIED
+  persianSpanHash: c1f09997d717a8faf8e39ebb84229ba42c3d04c2f07fa2db31988855fa5017ec
+  mappingHash: 28444416a42d7888ce242d4844dc50d032b72bada1228e7e3d014b45a1a1446a
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XLII on scan page 121 was aligned to Qazvini-Ghani ghazal 169 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XLII on scan page 121 was aligned to Qazvini-Ghani ghazal 169 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

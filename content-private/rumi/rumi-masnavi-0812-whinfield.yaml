@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0061-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0061-s2:lines-1-2
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
     - آینه بیرون کشید او از بغل
-    - سوخته هم آینه‌ی آتش‌زنه‌ست
+    - خوب را آیینه باشد مشتغل
   english_lines:
     - He drew forth a mirror from his side
-    - The tinder is the mirror of the flint and steel
+    - A mirror is what Beauty busies itself with.
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0812-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 1a09e83db69cbddb340c78e9f534828f18c59688524bf2b9ede7ff64678f7407
-  englishSpanHash: da96f7e1a9ac5aab9e461ffad70d8ac189d5d7987d4bde432423852ebef08da3
-  persianSpanHash: 492eb012b5f20d90122215e52d23fb2c90462956e852e8f29e7f44a288559864
-  mappingHash: 9389caa3f00a6abfff0da94e116a14d3eacdbd6584773675b3b987351aca5ab1
+  canonicalIdentityHash: e2b4670b4afddaf2b78153185d679c6b058fdfb1a65e6bf6c484dfb5f899b8fc
+  englishSpanHash: cdd4730fe74dfa574bdbb68828378e48e2dc551b4df8ffe7a987dbe8e3fcc4f9
+  persianSpanHash: 3e5b12be68470423b2fa43d45ea6d211bb4c6b3dfeb84753c38165984ecfe1a3
+  mappingHash: 4f2e7d2a27604f020669b3a664e7a74b7ce492d2ebf2bbf27c193069bc031b33
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.9349999999999999
+  confidence: 0.97
   disclosures:
-    - "This English text is E. H. Whinfield's abridged translation. It renders a continuous run of verses from the middle of the Persian section: the section's opening lines are condensed into Whinfield's prose summary rather than translated, and the closing third of the Persian section is omitted."
-  verifiedAt: 2026-07-16
-  rationale: "The English verse portion is a close, largely line-by-line rendering of Nicholson section 812. Seven independent identifying anchors align, including the opening hemistich (mirror drawn from the side), the tinder/flint-and-steel image, the bone-setter with the broken leg, the vinegar/honey contrast, the Iblis \"ana khayr\" quotation, and the identical ordering of the tailor/carpenter/bone-setter/alchemist craft analogies. Candidate 21 (the guest's arrival at Joseph's) is the antecedent narrative section but contains none of the mirror-and-not-being verses; candidates 395, 823 and 853 match on the name Joseph only and were discarded on reading. The pairing is nonetheless abridged at both ends: Whinfield begins at \"He drew forth a mirror from his side\", compressing the Persian opening (Joseph demanding the gift, the guest's shame, \"carrying cumin to Kerman\", \"a grain to the mine\") into his English prose headnote, and he stops at the Iblis line, omitting roughly the last third of section 812 (the dung beneath the clear stream, the physician and the wound, the flies on the sore)."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 1-2 of rumi-whinfield-abridged-en-b0061-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 812 starting at hemistich 16; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 7 anchors). Mirror couplet; avoids the transcription typo 'tho' in the following line.

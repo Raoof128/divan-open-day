@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0055-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0055-s2:lines-2-3
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - گفت پیغامبر علی را کای علی / شیر حقی
-    - ظل او اندر زمین چون کوه قاف
+    - لیک بر شیری مکن هم اعتماد
+    - اندر آ در سایه‌ی نخل امید
   english_lines:
-    - The Prophet said to 'Ali, "O 'Ali, Thou art the Lion of God"
-    - His shadow on earth is as that of Mount Qaf
+    - Yet confide not in thy lion-like valour,
+    - But seek refuge under the palm-trees of the 'Truth.'
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0959-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: f1d234da612dbd9e38a5b0ad3977352f304803abeb1fca0c2fc7b16538418a06
-  englishSpanHash: b5f4a457c99f9a32f8dd8aab8004e25d2ca3154b3c7e4e2028a9b28bb02923e6
-  persianSpanHash: 384cc5a2ca6d0b2aad3f22f25bacc9f930655cba25c27442ff040775af80d06a
-  mappingHash: 6fe82226acbbc6d0f2d150d1c764158037b17f9ed95d4806eef7bf066611b0c6
+  canonicalIdentityHash: 29201cd5e11f69d757d5df2d081e0842790bd67cc5306ceb3abf2775d9378297
+  englishSpanHash: 65a0b1d2596454424b1c62bec68d4b55145e5a11588019ba8a97783efcdd4eea
+  persianSpanHash: 91a0a18d588ba198a963ad132a10786e547858ed304edb4f4366d85d38916fa4
+  mappingHash: fb307cfa274360462d8c7761a8b491edf9c464abd2ba9b94fcef910deb3c6c3a
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.945
+  confidence: 0.97
   disclosures:
-    - English text is E. H. Whinfield's abridged Victorian translation. It follows this Persian section couplet-for-couplet and in order, but includes several additional couplets that fall outside the bounds of this section. The tattoo story named in the English heading is narrated separately as prose and belongs to a different Persian section.
-  verifiedAt: 2026-07-16
-  rationale: "Whinfield's block 55 contains two distinct units: a prose retelling of the Qazwini tattoo story (which corresponds to Persian seq 785, کبودی زدن قزوینی) and then a discrete verse discourse under the heading \"The Prophet's counsels to 'Ali\". Segment s2 is that verse discourse, and it maps to Persian seq 959 (وصیت کردن رسول ... مر علی را) essentially couplet-for-couplet in unbroken order. Anchors are numerous, specific and non-generic: the Lion-of-God address to Ali, Mount Qaf paired with the Simurgh, Moses under Khizr with the staved boat and the slain child, the Qur'anic \"yad Allah fawqa aydihim\", the absent-versus-present saints argument, and the closing polished-mirror question. This far exceeds the three-anchor threshold. The one caveat requiring disclosure: Whinfield's English runs roughly 31 couplets against 22 bayts in this Nicholson section, so several English couplets (e.g. \"palm-trees of the Truth\", \"thorn a bed of roses\", \"sun of the spirit\") have no counterpart within seq 959 itself and likely reflect adjacent lines or a fuller recension. The verified core is not in doubt."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+    - Whinfield renders the closing image as “the palm-trees of the 'Truth'” where the Nicholson transcription reads نخل امید (“the palm of hope”); the divergence reflects the translator's underlying edition, not an alteration by this project.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 2-3 of rumi-whinfield-abridged-en-b0055-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 959 starting at hemistich 2; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 9 anchors). Lion-valour counsel couplet; avoids a mid-quotation window.

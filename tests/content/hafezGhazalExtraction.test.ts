@@ -181,6 +181,24 @@ describe('extract-hafez-ghazals.py', () => {
     expect(allVerse).not.toContain('سطر آزمایشی نهم');
   });
 
+  it('suppresses a mid-hemistich footnote reference instead of truncating', async () => {
+    // The real ghazal 65 shipped as `…باغ[` because the footnote bracket is a
+    // nested <span class="cite-bracket"> inside <sup class="mw-ref">, and the
+    // reader closed the hemistich at the first nested </span>. The full line
+    // must survive with the whole reference apparatus (brackets and marker
+    // digit) suppressed.
+    runExtractor(epub, out);
+    const ghazals = await readGhazals(out);
+    const footnoted = ghazals.find((g) => g.documentPath.endsWith('g5.xhtml'));
+    expect(footnoted?.hemistichs[0]).toBe(
+      'سطر آزمایشی یازدهم دنباله NOT POETRY',
+    );
+    const allVerse = ghazals.flatMap((g) => g.hemistichs).join('\n');
+    expect(allVerse).not.toContain('[');
+    expect(allVerse).not.toContain(']');
+    expect(allVerse).not.toContain('۱]');
+  });
+
   it('preserves ZWNJ and Arabic Yeh in raw text but folds them for search', async () => {
     runExtractor(epub, out);
     const ghazals = await readGhazals(out);

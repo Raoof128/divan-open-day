@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-07-18 — Full corpus and translation repair (branch `repair/fable-5-full-corpus`, PR only)
+
+**Raouf:**
+
+- Repaired the complete 120-record corpus (60 Hafez + 60 Rumi) against the locked sources: every Persian and English span verbatim-verified, 83 records re-authorised under `source-bound-alignment-v3-fable5-repair`, 37 carried byte-identical under v2. Evidence: `docs/audits/corpus-fable-5/`.
+- Replaced one wrong-poem pairing: Bell poem VIII is ghazal **25**, not 46; `hafez-ghazal-046-bell` → `hafez-ghazal-025-bell` with the verbatim ghazal-25 opening couplet.
+- Fixed the Persian extractor's footnote-truncation bug (162/494 ghazals re-extracted; ghazal 65's published hemistich recovered) with a RED-first regression test.
+- 31 disclosed OCR/typography recoveries across Bell, Clarke, and Whinfield records, each verified against scan or transcript and premise-asserted at build time; zero project translations — every English line is the registered historical translator's.
+- Rights records stay honest (`pending`, no reviewer claimed) and are now coupled to their locked artifact hashes.
+- Four adversarial reviewers over nine dimensions, two fix rounds, 13 findings — 8 fixed, 1 refuted with scan evidence, 4 recorded as residual risks. 732 tests green, full gate green, two-build byte reproducibility, deterministic regeneration, independent leak scan clean.
+- Not merged, not deployed, no live-site mutation; branch pushed and PR opened against `main`.
+
 ## 2026-07-17 — Backend audit: four fail-open gaps closed, seven escalated
 
 **Raouf:**

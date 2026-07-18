@@ -615,7 +615,7 @@ async function main(): Promise<void> {
   });
   const inventory = buildCorpusInventory({
     items: loaded.items,
-    buildDate: '2026-07-16',
+    buildDate: '2026-07-17',
     targetPerPoet: 60,
   });
   const candidates = await loadCandidateInventory(root);
