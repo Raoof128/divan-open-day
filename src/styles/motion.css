@@ -342,18 +342,21 @@
     divan-butterfly-hover 9s ease-in-out 6.2s infinite;
 }
 
-/* Wings beat fast during flight (17 × 340ms = 5.78s), then hand off to a
-   slow perpetual resting beat instead of stopping dead. */
+/* Wings beat fast during flight (18 × 340ms = 6.12s), then hand off to a
+   slow perpetual resting beat instead of stopping dead. The iteration count
+   must stay EVEN: an even alternate run ends back at its starting keyframe,
+   which is exactly where the delayed resting beat begins — an odd count
+   ends at the far keyframe and snaps 46° in one frame at the handoff. */
 .app-shell[data-motion='full'] .butterfly__wing--left {
   animation:
-    divan-wing-flutter 340ms ease-in-out 17 alternate,
-    divan-wing-flutter 1.8s ease-in-out 5.78s infinite alternate;
+    divan-wing-flutter 340ms ease-in-out 18 alternate,
+    divan-wing-flutter 1.8s ease-in-out 6.12s infinite alternate;
 }
 
 .app-shell[data-motion='full'] .butterfly__wing--right {
   animation:
-    divan-wing-flutter 340ms ease-in-out 17 alternate-reverse,
-    divan-wing-flutter 1.8s ease-in-out 5.78s infinite alternate-reverse;
+    divan-wing-flutter 340ms ease-in-out 18 alternate-reverse,
+    divan-wing-flutter 1.8s ease-in-out 6.12s infinite alternate-reverse;
 }
 
 .app-shell[data-motion='full'] .poetry-mote {

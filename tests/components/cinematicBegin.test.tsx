@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { CinematicThreshold } from '../../src/components/CinematicThreshold';
@@ -181,6 +187,88 @@ describe('cinematic Begin control', () => {
     harness.advance(2000);
     harness.advance(20_000);
     expect(window.scrollY).toBe(scrolled);
+  });
+
+  it('completes arrival when the video dies during a hand-driven scroll', () => {
+    // The visitor swipes the corridor themselves — no Begin, no guided walk.
+    // A media death mid-scroll must still land them in the live book (the
+    // threshold contract: on media failure, continue directly).
+    installWalkHarness();
+    const { onArrive } = renderThreshold();
+    prepareCorridor();
+
+    const video = document.querySelector('video');
+    fireEvent(video!, new Event('error'));
+
+    expect(onArrive).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not auto-arrive when the video fails before the corridor ever played', () => {
+    const { onArrive } = renderThreshold();
+    const video = document.querySelector('video');
+    // Error in the poster phase: the welcome card is still on screen, so the
+    // visitor keeps their Begin choice instead of being teleported.
+    fireEvent(video!, new Event('error'));
+
+    expect(onArrive).not.toHaveBeenCalled();
+  });
+
+  it('lets Tab pass through without cancelling the walk', () => {
+    const harness = installWalkHarness();
+    renderThreshold();
+    prepareCorridor();
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    harness.advance(0);
+    harness.advance(1000);
+    const beforeTab = window.scrollY;
+    // Tab expresses focus movement, not scroll intent — a keyboard user must
+    // be able to reach Skip mid-walk without stopping the journey.
+    fireEvent.keyDown(window, { key: 'Tab' });
+    harness.advance(2000);
+    expect(window.scrollY).toBeGreaterThan(beforeTab);
+  });
+
+  it('hands the corridor back when a scroll-intent key is pressed', () => {
+    const harness = installWalkHarness();
+    renderThreshold();
+    prepareCorridor();
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    harness.advance(0);
+    harness.advance(1000);
+    const beforeKey = window.scrollY;
+    fireEvent.keyDown(window, { key: 'ArrowDown' });
+    harness.advance(2000);
+    harness.advance(20_000);
+    expect(window.scrollY).toBe(beforeKey);
+  });
+
+  it('collapses to the poster path when an overdue-frame corridor is scrolled', () => {
+    vi.useFakeTimers();
+    renderThreshold();
+    const section = document.querySelector('.cinematic-threshold');
+    Object.defineProperty(section!, 'offsetHeight', { value: 2600 });
+    Object.defineProperty(window, 'innerHeight', {
+      value: 800,
+      configurable: true,
+    });
+    expect(document.querySelector('video')).not.toBeNull();
+
+    act(() => {
+      vi.advanceTimersByTime(4100);
+    });
+    // Still waiting silently for the slow frame — the corridor is inert, so
+    // a visitor who scrolls it anyway has stopped waiting.
+    expect(document.querySelector('video')).not.toBeNull();
+    Object.defineProperty(window, 'scrollY', {
+      value: 800,
+      configurable: true,
+    });
+    fireEvent.scroll(window);
+
+    expect(document.querySelector('video')).toBeNull();
+    vi.useRealTimers();
   });
 
   it('arrives directly when reduced motion disables the cinematic corridor', () => {

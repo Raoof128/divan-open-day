@@ -194,16 +194,18 @@ export function CinematicThreshold({
   // A dismount mid-walk must not leave a headless scroller running.
   useEffect(() => () => cancelWalkRef.current?.(), []);
 
-  // If the cinematic dies mid-walk (video error, plan change), the corridor
-  // and its scroll-driven arrival machinery collapse with it. The visitor
-  // already asked to enter — finish their journey instead of stranding them
-  // at a poster they left.
+  // If the cinematic dies while the corridor is live (video error, plan
+  // change), its scroll-driven arrival machinery collapses with it — during
+  // a guided walk AND during the visitor's own hand-driven scrubbing. The
+  // threshold contract is explicit: on media failure, continue directly into
+  // the live book. Poster-phase failures keep the welcome card and the
+  // visitor's Begin choice instead.
   useEffect(() => {
-    if (!scrubbing && cancelWalkRef.current !== null) {
-      cancelWalkRef.current();
+    if (!scrubbing && thresholdState === 'playing' && !arrivedRef.current) {
+      cancelWalkRef.current?.();
       arrive();
     }
-  }, [scrubbing, arrive]);
+  }, [scrubbing, thresholdState, arrive]);
 
   const requestEntrance = useCallback(() => {
     if (arrivedRef.current) {
@@ -223,6 +225,11 @@ export function CinematicThreshold({
       // Enter directly instead of asking them to wait a second grace window.
       if (frameOverdueRef.current) {
         arrive();
+        return;
+      }
+      // A Begin is already pending — don't repeat the announcement or
+      // re-prime while the first frame is still decoding.
+      if (pendingBeginRef.current) {
         return;
       }
       pendingBeginRef.current = true;
@@ -277,6 +284,7 @@ export function CinematicThreshold({
     const presented = () => {
       if (!cancelled) {
         clearFirstFrameTimeout();
+        removeOverdueScroll();
         frameOverdueRef.current = false;
         // The clip is scrub-driven and never intentionally plays; a Begin
         // gesture may have primed it, so settle it back to paused.
@@ -288,10 +296,23 @@ export function CinematicThreshold({
         setThresholdState((state) => (state === 'poster' ? 'playing' : state));
       }
     };
+    const removeOverdueScroll = () => {
+      window.removeEventListener('scroll', onOverdueScroll);
+    };
     const fail = () => {
       if (!cancelled) {
         clearFirstFrameTimeout();
+        removeOverdueScroll();
         setVideoFailed(true);
+      }
+    };
+    // Scrolling the corridor while the frame is overdue is inert (the scrub
+    // only runs once 'playing'). A visitor who scrolls anyway has stopped
+    // waiting — collapse to the poster path immediately so the welcome card
+    // and Begin are back within reach instead of a dead 260vh corridor.
+    const onOverdueScroll = () => {
+      if (!cancelled && window.scrollY > window.innerHeight / 2) {
+        fail();
       }
     };
     // The grace window only forces direct entry when a Begin is pending —
@@ -309,6 +330,7 @@ export function CinematicThreshold({
         return;
       }
       frameOverdueRef.current = true;
+      window.addEventListener('scroll', onOverdueScroll, { passive: true });
       timeout = window.setTimeout(
         fail,
         FIRST_FRAME_HARD_CAP_MS - FIRST_FRAME_TIMEOUT_MS,
@@ -330,6 +352,7 @@ export function CinematicThreshold({
     return () => {
       cancelled = true;
       clearFirstFrameTimeout();
+      removeOverdueScroll();
       video.removeEventListener('loadeddata', onLoadedData);
       video.removeEventListener('error', fail);
     };
@@ -417,6 +440,14 @@ export function CinematicThreshold({
         window.innerHeight,
       );
       section.style.setProperty('--cinematic-progress', String(progress));
+      // The welcome card fades out as the corridor is travelled; once it is
+      // effectively invisible its controls must leave the tab order too, so
+      // a keyboard user never focuses an invisible button (WCAG 2.4.7).
+      if (progress > 0.42) {
+        section.setAttribute('data-cinematic-card-hidden', 'true');
+      } else {
+        section.removeAttribute('data-cinematic-card-hidden');
+      }
       if (isArrival(progress)) {
         if (!Number.isFinite(video.duration) || video.duration <= 0) {
           completeArrival();
