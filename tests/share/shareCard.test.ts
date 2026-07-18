@@ -66,11 +66,16 @@ describe('buildShareText', () => {
     expect(buildShareText(rumi, config)).toContain('Rumi');
   });
 
-  it('provides a default config that is a conspicuous non-production placeholder', () => {
-    expect(DEFAULT_SHARE_CONFIG.society.length).toBeGreaterThan(0);
-    // Must not fabricate approved University branding before the launch gate.
+  it('carries the owner-approved society identity without a University mark', () => {
+    // The owner approved the maker wording on 2026-07-18; the share output
+    // must match the Credits/About pages instead of shipping a placeholder.
+    expect(DEFAULT_SHARE_CONFIG.society).toBe(
+      'Made by the Macquarie Persian Society — with love, for everyone',
+    );
+    expect(DEFAULT_SHARE_CONFIG.society).not.toContain('placeholder');
+    // The University mark itself stays behind the launch gate.
     expect(DEFAULT_SHARE_CONFIG.society.toLowerCase()).not.toContain(
-      'macquarie',
+      'macquarie university',
     );
   });
 });

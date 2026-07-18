@@ -10,19 +10,15 @@ export interface ShareConfig {
   /** Short site URL. Resolved from the live origin at runtime; the final
    *  approved short URL is a §31.2 launch gate, never fabricated here. */
   readonly siteUrl: string;
-  /** Society identity. The final approved Society wording and any University
-   *  mark are a §31.2 launch gate; this default is a conspicuous placeholder. */
+  /** Society identity. The maker wording below was approved by the owner on
+   *  2026-07-18 and matches the Credits/About pages; any University mark
+   *  remains a §31.2 launch gate and must not appear here. */
   readonly society: string;
 }
 
-/**
- * Conspicuous non-production placeholder. The real approved Society identity,
- * University mark, and short URL are supplied at deploy time behind the launch
- * gate; this must not fabricate approved institutional branding.
- */
 export const DEFAULT_SHARE_CONFIG: ShareConfig = {
   siteUrl: '',
-  society: 'Persian Society Open Day (placeholder — pending approved wording)',
+  society: 'Made by the Macquarie Persian Society — with love, for everyone',
 };
 
 const POET_LABELS = { hafez: 'Hafez', rumi: 'Rumi' } as const;
