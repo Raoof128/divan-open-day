@@ -24,23 +24,26 @@ source:
 text:
   persian_lines:
     - روز هجران و شب فرقت یار آخر شد
+    - زدم این فال و گذشت اختر و کار آخر شد
   english_lines:
     - The days of absence and the bitter nights
     - Of separation, all are at an end!
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-166-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -59,19 +62,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: a02e0dfb1035c692561af49358ea98a9b3440503115bfb80e1037f0e7e9f4772
   englishSpanHash: 3c96ae9ce6022c0802508f565af3bf7eaa58592bdac2acb8baca90f53c557fff
-  persianSpanHash: 85ecc9367b67a07d4ea0ec2670c7e35d3826c05c4310379e36b64b68cbc5acca
-  mappingHash: 4b4a7ee2d77af4b784ed379d6eba3873c4879987364549540a7b7963ca0cd22d
+  persianSpanHash: 3044da2381b0f74a9fb0181456bc78ff5a20f1b499ba1f49a27f04b737e7bb2b
+  mappingHash: da28b1ee5c70ed06bf24ee4f364287ed3d55815734fe95d20e373e78d99d62ce
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.97
   disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
     - An obvious small-cap OCR error in the opening word was normalized against the Bell scan; wording and punctuation otherwise follow the selected source span.
-  verifiedAt: 2026-07-16
-  rationale: Bell poem XXV on scan page 101 was aligned to Qazvini-Ghani ghazal 166 by its opening imagery, wording, and poem-level sequence; the opening small-cap OCR form was normalized against the scan and disclosed, while the second selected line is corroborated.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem XXV on scan page 101 was aligned to Qazvini-Ghani ghazal 166 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole. The opening small-cap OCR form was normalized against the scan and disclosed.

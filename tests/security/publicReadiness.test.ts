@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
@@ -234,5 +235,105 @@ describe('public operational evidence boundary', () => {
       'osv-scanner-reusable.yml@8dc09193bb540e09b23da07ad7e30bd33bf87018',
     );
     expect(workflow).toContain('needs: osv-scan');
+  });
+
+  test('pins every CI action to an immutable commit SHA', () => {
+    // A tag is a mutable pointer. Repointing any of these runs arbitrary code
+    // in a job on a repo whose main branch gates a live public site. The
+    // osv-scanner workflow was already SHA-pinned; the four first-party actions
+    // were not, which is the inconsistency this pins shut. These are the SHAs
+    // of the v4 majors already in use -- pinning is not a version bump.
+    const workflow = readProjectFile('.github/workflows/ci.yml');
+    const uses = [...workflow.matchAll(/^\s*uses:\s*(\S+)/gmu)].map(
+      (match) => match[1] ?? '',
+    );
+
+    expect(uses.length).toBeGreaterThanOrEqual(5);
+    for (const reference of uses) {
+      expect(reference).toMatch(/@[0-9a-f]{40}$/u);
+    }
+    // CI never pushes, so the checkout must not leave the job token in
+    // .git/config where any later step can read it.
+    expect(workflow).toContain('persist-credentials: false');
+    // A cancelled main run leaves a commit a release tag could still be cut
+    // from with no CI result.
+    expect(workflow).toContain(
+      "cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}",
+    );
+  });
+
+  test('delays newly published dependencies so a compromised release is not installed instantly', () => {
+    // pnpm's minimumReleaseAge default is 0: a compromised version of any of
+    // the 429 locked packages is installable the moment it is published, which
+    // is the window the well-known npm compromises exploited.
+    const workspace = readProjectFile('pnpm-workspace.yaml');
+
+    expect(workspace).toMatch(/^minimumReleaseAge:\s*\d+/mu);
+    const minutes = Number(
+      /^minimumReleaseAge:\s*(\d+)/mu.exec(workspace)?.[1] ?? '0',
+    );
+    expect(minutes).toBeGreaterThanOrEqual(1440);
+  });
+
+  test('proves the QR launch gate is closed by the QR contract, not by a usage error', () => {
+    // `gate_closed` treats ANY non-zero exit as a healthy closed gate. verify-qr
+    // exits 1 both when it passes-but-is-humanly-blocked and when it dies on
+    // argv, so wiring it without `--pack` made the gate report "fail-closed (as
+    // intended)" for `Usage: verify-qr.ts --pack <directory>` — it never reached
+    // a single manifest, checksum, vector or PDF check, and would report the
+    // same if the script were deleted. The gate must prove the verifier ran.
+    const check = readProjectFile('scripts/check.sh');
+    const packageJson = JSON.parse(readProjectFile('package.json')) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(packageJson.scripts['verify:qr']).toContain(
+      'scripts/qr/verify-qr.ts',
+    );
+    // The gate must hand the verifier a pack to verify.
+    expect(check).toMatch(/gate_closed 'verify:qr'[^\n]*--pack /u);
+    // And it must assert the verifier's own marker, so a usage error, a deleted
+    // script, or a missing tsx cannot masquerade as a closed launch gate.
+    expect(check).toMatch(/gate_closed\(\)[\s\S]*expected_reason/u);
+    expect(check).toContain("gate_closed 'verify:qr' 'Digital QR pack:'");
+  });
+
+  test('ignores every private poetry report, not only the -candidates shape', () => {
+    // These reports carry verse excerpts. The rule used to name one filename
+    // shape (`*-candidates.json`), so a report named anything else — e.g. a
+    // complete 494-matla' reference with "no prefilter, no exclusion" — was
+    // left unignored and one `git add -A` away from public history. The two
+    // reviewed, text-free reports stay tracked by explicit negation.
+    const ignore = readProjectFile('.gitignore');
+
+    expect(ignore).toContain('sources-private/poetry/reports/*');
+    expect(ignore).toContain(
+      '!sources-private/poetry/reports/candidates-summary.json',
+    );
+    expect(ignore).toContain(
+      '!sources-private/poetry/reports/source-rights-report.md',
+    );
+
+    const ignored = (path: string): boolean =>
+      spawnSync('git', ['check-ignore', '-q', path], { cwd: projectRoot })
+        .status === 0;
+
+    expect(
+      ignored('sources-private/poetry/reports/hafez-ghazal-matlas.json'),
+    ).toBe(true);
+    expect(ignored('sources-private/poetry/reports/anything-new.json')).toBe(
+      true,
+    );
+    // The reviewed text-free reports must stay committable.
+    expect(
+      ignored('sources-private/poetry/reports/candidates-summary.json'),
+    ).toBe(false);
+    expect(
+      ignored('sources-private/poetry/reports/source-rights-report.md'),
+    ).toBe(false);
+    // The approved corpus must stay tracked — the negation pattern this mirrors.
+    expect(ignored('content-private/hafez/hafez-ghazal-001-bell.yaml')).toBe(
+      false,
+    );
   });
 });

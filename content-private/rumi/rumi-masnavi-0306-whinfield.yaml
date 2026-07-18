@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0161-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0161-s2:lines-0-1
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
     - صومعه‌ی عیسیست خوان اهل دل
-    - سگ کهف
+    - هان و هان ای مبتلا این در مهل
   english_lines:
-    - house of 'Isa was the banquet of men of heart
-    - the Seven Sleepers' dog
+    - The house of 'Isa was the banquet of men of heart,
+    - Ho! afflicted one, quit not this door!
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0306-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: c8aaeae820570692853fba5aac22ce17cc6778d056f5668b6bc38e6cc1f17848
-  englishSpanHash: b3cb353a433f94b21364b7c5cf29e45f38f8ae5757aafdbb800da36885ec5e03
-  persianSpanHash: 5ddc49b409682c851ebfccaab714828c1ac7d7ddbec39534b169c5b8fd910ba6
-  mappingHash: 1fa63d63ebceb29e7e4e1d366158012a2b283553d0b44f7a0b9105a59c3ae23e
+  canonicalIdentityHash: 901094be2eaced4211248634c25bff0cb52f97d71666537a7494e951c04ab5b4
+  englishSpanHash: 3e339599676c3b35eca3f3ebc36d9aee956802facfd1187094a75997e0558e81
+  persianSpanHash: 7762897c058d50c224926902d47bc4f070200fe878940bf3aa08d3c251d110a9
+  mappingHash: 8ce4057540ffce6b65b706525d6f1bb759c6a83507c10f860b0bf2af744cc3ac
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.975
+  confidence: 0.97
   disclosures:
-    - Abridged translation. The bulk of this passage corresponds to the Persian section on the afflicted gathering at Jesus's cloister; Whinfield condenses it and omits the Noah's-ark passage. The closing verses on false claims to sanctity are drawn from a different section of the Persian text.
-  verifiedAt: 2026-07-16
-  rationale: "The English segment's verse portion opens with the cloister-of-Jesus healing passage and tracks Nicholson section 306 (جمع آمدن اهل آفت ... بر در صومعه‌ی عیسی) hemistich-for-hemistich through the ingratitude reproach, the dog-of-the-Cave, the fidelity argument, the mother's claims versus God's, the evil-doubt passage, and the Jesus/Korah contrast. The correspondence is dense and identifying, not generic. Two qualifications. First, Whinfield abridges: he drops the Noah's-ark remembrance (یاد کن ... کشتی نوح) and compresses the expanded dogs-counselling-dogs lines. Second, the segment is not coextensive with section 306. English lines 2–78 correspond to 306; from the subheading \"How false pretensions to sanctity...\" onward (the tailor's test, Rustam, Junaid and Bayazid, David's iron, the sun on gold and the dry branch) the text corresponds instead to section 586 (رسیدن خواجه و قومش به ده ...). Section 306 is the dominant and unambiguous source for the majority of the segment, so I anchor there and disclose the tail rather than force a single-section claim."
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 0-1 of rumi-whinfield-abridged-en-b0161-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 306 starting at hemistich 0; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (6 ranking votes, 7 anchors). House-of-'Isa couplet; replaces the two-word سگ کهف fragment.

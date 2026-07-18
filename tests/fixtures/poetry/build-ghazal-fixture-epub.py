@@ -107,16 +107,38 @@ UNNUMBERED = ghazal_document(
     ],
 )
 
+# Defect 4: a Wikisource footnote reference sits mid-hemistich. The bracket
+# glyphs are their own nested <span class="cite-bracket"> elements inside
+# <sup class="mw-ref"> — the shape that truncated the real ghazal 65 to
+# `…باغ[`. The whole apparatus must be suppressed and the hemistich must come
+# through complete.
+FOOTNOTE_REF = (
+    '<sup about="#t1" class="mw-ref reference" id="c1" rel="dc:references"'
+    ' typeof="mw:Extension/ref"><a href="#n1" epub:type="noteref">'
+    '<span class="cite-bracket">[</span>۱'
+    '<span class="cite-bracket">]</span></a></sup>'
+)
+GHAZAL_FOOTNOTED = ghazal_document(
+    "آزمایش پانوشت — TEST ONLY",
+    "۵",
+    "۱۶",
+    [
+        f"سطر آزمایشی یازدهم{FOOTNOTE_REF} دنباله NOT POETRY",
+        "سطر آزمایشی دوازدهم NOT POETRY",
+    ],
+)
+
 DOCUMENTS = {
     "OPS/g1.xhtml": GHAZAL_ONE,
     "OPS/g2.xhtml": GHAZAL_TWO,
     "OPS/g3.xhtml": GHAZAL_COLLIDES,
     "OPS/g4.xhtml": UNNUMBERED,
+    "OPS/g5.xhtml": GHAZAL_FOOTNOTED,
 }
 
 # Defect 3: this EPUB's spine lists g1 twice. Reading per spine entry would emit
 # duplicate records under one ghazal number.
-SPINE = ["g1", "g2", "g1", "g3", "g4"]
+SPINE = ["g1", "g2", "g1", "g3", "g4", "g5"]
 
 OPF = (
     '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -127,7 +149,7 @@ OPF = (
     "<manifest>"
     + "".join(
         f'<item id="{name}" href="{name}.xhtml" media-type="application/xhtml+xml"/>'
-        for name in ["g1", "g2", "g3", "g4"]
+        for name in ["g1", "g2", "g3", "g4", "g5"]
     )
     + "</manifest><spine>"
     + "".join(f'<itemref idref="{ref}"/>' for ref in SPINE)

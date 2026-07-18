@@ -19,15 +19,15 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0137-s2
+  english_source_reference: rumi-whinfield-abridged-en-b0137-s2:lines-0-1
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
-    - شکایت گفتن پیرمردی به طبیب
-    - ابلهان تعظیم مسجد می‌کنند / در جفای اهل دل جد می‌کنند
+    - ابلهان تعظیم مسجد می‌کنند
+    - در جفای اهل دل جد می‌کنند
   english_lines:
-    - The Old Man and the Physician
-    - Fools laud and magnify the mosque, while they strive to oppress holy men of heart
+    - Fools laud and magnify the mosque,
+    - While they strive to oppress holy men of heart.
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0643-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: 8480419519e7967d54650e733fc1a404f5cb83422bd5dc10d59e6d07f33e9820
-  englishSpanHash: bc926b32d1c818b33d9db6970526e6def2ae150e49fab57cdffc54fee78a6196
-  persianSpanHash: a41793c53060b07fca07bd97e1a43259d6c3b0570ef2d2cff1c68ee8057e1d8b
-  mappingHash: f1fa0f977a256aa6102b0d6fdf339910bf4714f2c04bf3fca7a7c3fd217829cb
+  canonicalIdentityHash: d3a1047ab3681a229480a9e1b600e474c219c6a2a50dd2509b7d7578b057df40
+  englishSpanHash: 6c81a603efa40686a38aca9433804e50c2963051e9a2bf7a9804723531194165
+  persianSpanHash: 9c3d85e7f7ee5026598f194533ce49802f5565d849c06c5ab5220d4f1a82dea8
+  mappingHash: d9e6e32a7df02b81e924244fbec314fad864cd566722238ec6bd33a6c352872f
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.9299999999999999
+  confidence: 0.97
   disclosures:
-    - Abridged translation. E. H. Whinfield renders the closing verses of this section but omits roughly fourteen intervening couplets, and one line (the proverb about the urn and the well) has no counterpart in the Persian. The opening sentence is the translator's own summary heading rather than translated verse.
-  verifiedAt: 2026-07-16
-  rationale: Segment s2 is the verse tail of Whinfield's STORY XIII. It aligns to Nicholson section 643 (شکایت گفتن پیرمردی به طبیب از رنجوریها و جواب گفتن طبیب او را), which contains both the old-man/physician dialogue and the closing polemic. Six independent identifying anchors match, four of them couplet-for-couplet; probe strings for all four appear in seq 643 and nowhere else in the corpus. Both ranked candidates (268, 731) were false positives matching on حکیم alone and were discarded after reading; 643 was located by searching the index directly. Disclosure is required because Whinfield omits roughly fourteen intervening couplets between the physician's rebuke and the mosque passage (the saint drunk with God, hell and heaven as his parts, "what comes not into thought, that is God"), and because one English line, the urn-and-well proverb, has no counterpart in the Persian and appears to be the translator's interpolation. The leading sentence "Bad principles always produce bad acts" is Whinfield's editorial gloss, not translated verse.
+    - Whinfield is an abridged edition. This record publishes one continuous 2-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield lines 0-1 of rumi-whinfield-abridged-en-b0137-s2 correspond line-for-line to consecutive hemistichs of Nicholson section 643 starting at hemistich 42; both sides are verbatim slices of the locked source derivations. Section identity carried from the v2 alignment (4 ranking votes, 6 anchors). Fools-laud-the-mosque couplet; drops the translator's summary heading previously shipped as verse.

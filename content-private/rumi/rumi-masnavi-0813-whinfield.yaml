@@ -19,15 +19,17 @@ source:
   source_language: fa
   english_source_id: rumi-whinfield-abridged-en
   english_source_sha256: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
-  english_source_reference: rumi-whinfield-abridged-en-b0117-s2:lines-50-51
+  english_source_reference: rumi-whinfield-abridged-en-b0117-s2:lines-50-52
   persian_source_sha256: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
 text:
   persian_lines:
     - گاو سوی شیر نر کی رو نهد
     - گرگ بر یوسف کجا عشق آورد
+    - جز مگر از مکر تا او را خورد
   english_lines:
     - Does a cow ever seek the lion?
-    - Did the wolf show love to Joseph, 5
+    - Did the wolf show love to Joseph,
+    - Or only fraud upon fraud with a view to devour him?
   alignment: line
   mapping:
     - english_index: 0
@@ -36,12 +38,15 @@ text:
     - english_index: 1
       persian_indices:
         - 1
+    - english_index: 2
+      persian_indices:
+        - 2
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: E. H. Whinfield abridged translation, public domain; Wikisource transcription terms apply.
   permission_record_id: rumi-masnavi-0813-whinfield-translation-permission
-  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (abridged)."
+  public_credit: "English translation: E. H. Whinfield, Masnavi I Ma'navi (an abridged translation, not a complete rendering)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +65,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: rumi-whinfield-abridged-en
   englishSourceHash: d629e8abbd40ff5cfe5ec24dc4fa3733a4400714695aaf9bf59a4c9d01e9d38d
   persianSourceId: rumi-nicholson-fa-wikisource
   persianSourceHash: 04a80365a6c4938fc8208fa501ead01a6eede8883f68c7cf588a9ca33f0814d7
-  canonicalIdentityHash: bfa303d5eeccf6a460129f631bb6e8abdb8164cdfd564664b71d8b5ca933abbd
-  englishSpanHash: b0a336a688fad05d73dd35394bc8171b3cbcf6a1670fa276b9c139c4d4706ce0
-  persianSpanHash: d31d9cd3dd7fe84bcc8d164721931b3adaa570abc9a10b82584a0489142917fd
-  mappingHash: 0a78e51853954d60731f6e92639e14ae6031bae4238d2dddd8c805da8974ac16
+  canonicalIdentityHash: be3dd24ab501338fb79d54d5e5bb3bffd44d6067434e06381f37f68d024db930
+  englishSpanHash: 63c0be17cb50bbc396f9e79145b6b12b678c0826de2343b4b1ae9d5571f71f78
+  persianSpanHash: 7948fae7b065167a9a79d670596289e6fdcd3d15b4536cfc7a9fe5e1b44c631f
+  mappingHash: e51a72a111918f87c82e65e1f85c730c1f3e4bfb411755447c51c4e3188b57a3
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
-  confidence: 0.823866
+  confidence: 0.97
   disclosures:
-    - Whinfield is an abridged edition. This record publishes one continuous two-line English excerpt aligned to one continuous Nicholson couplet; the wider verse segment may omit surrounding Persian material.
-  verifiedAt: 2026-07-16
-  rationale: The continuous Whinfield lines beginning at 50 resolve to the continuous Nicholson section 813 span beginning at 41, supported by 3 independent same-context anchors.
+    - Whinfield is an abridged edition. This record publishes one continuous 3-line English excerpt aligned line-for-line to consecutive hemistichs of the Nicholson section; surrounding source material is omitted.
+  verifiedAt: 2026-07-17
+  rationale: Continuous Whinfield excerpt (rumi-whinfield-abridged-en-b0117-s2:lines-50-52) corresponds line-for-line to consecutive hemistichs of Nicholson section 813; both sides verified verbatim against the locked source derivations. Section identity carried from source-bound-alignment-v2 (3 anchors, retrieval score 0.823866). Extended to three lines to complete the wolf/Joseph question; strips the footnote marker 5.

@@ -67,6 +67,14 @@ class GhazalExtractor(HTMLParser):
         self._in_beyt = False
         self._in_small = False
         self._in_title = False
+        # Wikisource renders a footnote reference as nested elements inside the
+        # hemistich: <sup class="mw-ref"><a><span class="cite-bracket">[</span>
+        # ۱<span class="cite-bracket">]</span></a></sup>. Closing the hemistich
+        # at the first nested </span> truncated ghazal 65 to `…باغ[` in
+        # production. Track span depth so only the beyt's own </span> closes it,
+        # and suppress everything inside the reference apparatus.
+        self._beyt_span_depth = 0
+        self._ref_depth = 0
         self._buffer: list[str] = []
 
     def handle_starttag(self, tag: str, attrs) -> None:  # noqa: ANN001
@@ -75,10 +83,19 @@ class GhazalExtractor(HTMLParser):
             self._in_title = True
             self._buffer = []
             return
+        if tag == "sup":
+            classes = (attributes.get("class") or "").split()
+            if self._ref_depth > 0 or "mw-ref" in classes:
+                self._ref_depth += 1
+            return
         if tag == "span":
+            if self._in_beyt:
+                self._beyt_span_depth += 1
+                return
             classes = (attributes.get("class") or "").split()
             if "beyt" in classes:
                 self._in_beyt = True
+                self._beyt_span_depth = 0
                 self._buffer = []
                 return
             # The edition number is styled, not classed; match the style the
@@ -93,10 +110,17 @@ class GhazalExtractor(HTMLParser):
             self._in_title = False
             self._buffer = []
             return
+        if tag == "sup":
+            if self._ref_depth > 0:
+                self._ref_depth -= 1
+            return
         if tag != "span":
             return
         if self._in_beyt:
-            text = "".join(self._buffer).strip()
+            if self._beyt_span_depth > 0:
+                self._beyt_span_depth -= 1
+                return
+            text = " ".join("".join(self._buffer).split())
             if text:
                 self.hemistichs.append(text)
             self._in_beyt = False
@@ -112,6 +136,8 @@ class GhazalExtractor(HTMLParser):
             self._buffer = []
 
     def handle_data(self, data: str) -> None:
+        if self._ref_depth > 0:
+            return
         if self._in_beyt or self._in_small or self._in_title:
             self._buffer.append(data)
 

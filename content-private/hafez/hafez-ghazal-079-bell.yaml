@@ -24,23 +24,26 @@ source:
 text:
   persian_lines:
     - کنون که میدمد از بوستان نسیم بهشت
+    - من و شراب فرح‌بخش و یار حورسرشت
   english_lines:
     - From the garden of Heaven a western breeze
     - Blows through the leaves of my garden of earth ;
-  alignment: line
+  alignment: stanza
   mapping:
     - english_index: 0
       persian_indices:
         - 0
+        - 1
     - english_index: 1
       persian_indices:
         - 0
+        - 1
 translation:
   classification: public_domain_translation
   translator_ids: []
   rights_owner: Gertrude Lowthian Bell translation (1897), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-079-bell-translation-permission
-  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection)."
+  public_credit: "English translation: Gertrude Lowthian Bell, Poems from the Divan of Hafiz, 1897 (a selection, not a complete translation)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -59,18 +62,19 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.5-codex
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-bell-1897-en
   englishSourceHash: 99d9a385326982b4cbf63aeb90cf257d6e162f3f7534378857a21c8e85902145
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 7d16bda614ce994c1be24364345cc34db9793c0a57d225b5ef619ef148c4cdc9
   englishSpanHash: 5d0412d5ad1ed2638f3ef19268d67ac95c20a4c009f6817e2a8f15565d4ff637
-  persianSpanHash: 1c6b4ed5a25a3ed7f09f57f90432a57f52971aa0d4b491efb1ee3a8c5ad05959
-  mappingHash: ffc23b2415e4f7130e271ca6aae1e7269399cac00e1f7c4ddceb27da122efec9
-  verdict: MACHINE_VERIFIED
+  persianSpanHash: 47aacddb0142bc74ee6a4a90df9f4c4b9934438e7951ea99614a361853fab176
+  mappingHash: 93ee8058f13327e43ddc35f66fd3c2e6d3d82b89122cc39aef1b2d91dddf3f49
+  verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.99
-  disclosures: []
-  verifiedAt: 2026-07-16
-  rationale: Bell poem VII on scan page 78 was aligned to Qazvini-Ghani ghazal 79 by its opening imagery, wording, and poem-level sequence; both selected English lines were independently corroborated in the Bell reconstruction.
+  disclosures:
+    - Bell's verse paragraph renders the ghazal's opening couplet freely; the English lines correspond to the couplet as a stanza, not hemistich by hemistich.
+  verifiedAt: 2026-07-17
+  rationale: Bell poem VII on scan page 78 was aligned to Qazvini-Ghani ghazal 79 by its opening imagery, wording, and poem-level sequence; the full opening couplet is published and Bell's stanza is mapped to it whole.

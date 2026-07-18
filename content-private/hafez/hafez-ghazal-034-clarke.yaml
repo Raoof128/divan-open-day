@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-1, ode 21 (102), scan page 125
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_sha256: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   english_source_reference: Clarke volume-1, ode 21 (102), scan page 125
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -26,7 +26,7 @@ text:
     - رواق منظر چشم من آشیانهٔ تست
     - کرم نما و فرود‌آ که خانه خانهٔ تُست
   english_lines:
-    - "(0 true Beloved!) the chamber of vision of my eye is the dwelling of—- Thine :"
+    - "(O true Beloved!) the chamber of vision of my eye is the dwelling of— Thine :"
     - Show courtesy, and alight, for this house is the House of Thine.
   alignment: line
   mapping:
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-034-clarke-translation-permission
-  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta, 1891 (a complete literal prose translation with interpolated glosses)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  englishSourceHash: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: c651e040e1fb6009b74108ea15f7dd8405e6d0a452e8358376ceb6a781f5e14a
-  englishSpanHash: 9ad518c42579e7628a025700bdf7592689ca21b32bfccc7a817f3fda6ca141d1
+  englishSpanHash: cd094fb43a9a9983d76a1f8f4d60cb58811b32ae42be787a6c5446fb47f19277
   persianSpanHash: 7be902cb4c6ab93f3fb9b0f7231907d16fafb40dc1d4e6a00f117eee95e39238
   mappingHash: 9194cefad4fa3cca913dda3e1660bb07555fa95642c09fd2aa7985fcc8fba4e5
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-1, ode 21 (102), scan page 125 resolves to Qazvini-Ghani ghazal 34 through an exact continuous source span and 2 independent bilingual anchors.
+    - Two transcript OCR artefacts in the opening line (digit 0 for the vocative O, and a garbled radif dash) were corrected against the volume-1 scan, page 125.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-1, ode 21 (102), scan page 125 resolves to Qazvini-Ghani ghazal 34 through an exact continuous source span and 2 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.

@@ -97,7 +97,7 @@ async function main(): Promise<void> {
     items: loaded.items,
     registries: loaded.registries,
     selectionManifest: loaded.selectionManifest,
-    buildDate: '2026-07-16',
+    buildDate: '2026-07-17',
   });
   const publicCorpus = await readJson<PublicCorpus>(
     path.join(ROOT, 'dist', release.contentPath),

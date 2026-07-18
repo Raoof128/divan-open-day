@@ -1,12 +1,12 @@
-// One golden butterfly with a deterministic entrance path that settles on
-// the table left of the book and rests while reading. The contract allows at
-// most two decorative butterflies; this field ships exactly one. It never
-// enters the central reading column (the path stays in the left third).
+// One large amethyst butterfly with a deterministic entrance path that
+// settles left of the book and keeps a gentle perpetual hover while reading.
+// The contract allows at most two decorative butterflies; this field ships
+// exactly one. It stays in the left third, behind the reading column.
 export function ButterflyField() {
   return (
     <div className="butterfly-field" aria-hidden="true">
       <svg
-        className="butterfly butterfly--gold"
+        className="butterfly butterfly--amethyst"
         viewBox="0 0 32 24"
         role="presentation"
         focusable="false"

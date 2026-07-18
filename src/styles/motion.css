@@ -31,12 +31,14 @@
     transform: rotateY(-7deg) translate3d(-0.05rem, 0, 0.35rem);
   }
 
+  /* A heavy cover eases past its rest point by a few degrees and settles
+     once — a wide swing-back reads as rubber, not paper over board. */
   68% {
-    transform: rotateY(-134deg) translate3d(-0.85rem, 0, 2.1rem);
+    transform: rotateY(-133deg) translate3d(-0.84rem, 0, 2.08rem);
   }
 
-  85% {
-    transform: rotateY(-125deg) translate3d(-0.78rem, 0, 1.9rem);
+  86% {
+    transform: rotateY(-127deg) translate3d(-0.79rem, 0, 1.94rem);
   }
 
   100% {
@@ -94,7 +96,7 @@
 }
 
 .app-shell[data-motion='full'] .reveal-cover {
-  animation: divan-cover-open 1.5s cubic-bezier(0.33, 0.05, 0.16, 1) both;
+  animation: divan-cover-open 1.6s cubic-bezier(0.33, 0.05, 0.16, 1) both;
 }
 
 .app-shell[data-motion='full'] .reveal-paper:not(.reveal-paper--back) {
@@ -103,7 +105,7 @@
 }
 
 .app-shell[data-motion='full'] .reveal-paper--back {
-  animation: divan-paper-rise 1.2s 180ms ease-out both;
+  animation: divan-paper-rise 1.3s 240ms ease-out both;
 }
 
 .app-shell[data-motion='full'] .reveal-ornament path {
@@ -194,8 +196,8 @@
   }
 
   55% {
-    opacity: 0.52;
-    transform: scale3d(1.06, 1, 1);
+    opacity: 0.46;
+    transform: scale3d(1.05, 1, 1);
   }
 
   100% {
@@ -238,12 +240,14 @@
   animation-delay: 680ms;
 }
 
+/* The shadow tracks the cover's full 1.6s travel; illumination waits for
+   the last trailing leaf (680ms + 850ms) and the cover to settle first. */
 .app-shell[data-motion='full'] .book-contact-shadow {
   animation: divan-contact-shadow 1.6s ease-out both;
 }
 
 .app-shell[data-motion='full'] .book-illumination {
-  animation: divan-illumination-settle 380ms ease-out 1.5s both;
+  animation: divan-illumination-settle 380ms ease-out 1.7s both;
 }
 
 @keyframes divan-glow-breathe {
@@ -288,6 +292,23 @@
   }
 }
 
+/* Perpetual resting hover: starts exactly where the arrival path lands and
+   returns there, so the handoff between the two transforms is seamless. */
+@keyframes divan-butterfly-hover {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  30% {
+    transform: translate3d(0.5vw, -1.6vh, 0) rotate(2.5deg);
+  }
+
+  62% {
+    transform: translate3d(-0.4vw, -0.7vh, 0) rotate(-2deg);
+  }
+}
+
 @keyframes divan-mote-drift {
   0% {
     opacity: 0;
@@ -312,16 +333,30 @@
   animation: divan-glow-breathe 4.6s ease-in-out infinite alternate;
 }
 
+/* The arrival path runs once; the hover then owns the transform forever, so
+   the butterfly never freezes into a decal. Its delay equals the arrival
+   duration and both keyframe sets meet at translate3d(0, 0, 0). */
 .app-shell[data-motion='full'] .butterfly {
-  animation: divan-butterfly-arrive 6.2s cubic-bezier(0.36, 0.2, 0.22, 1) both;
+  animation:
+    divan-butterfly-arrive 6.2s cubic-bezier(0.36, 0.2, 0.22, 1) both,
+    divan-butterfly-hover 9s ease-in-out 6.2s infinite;
 }
 
+/* Wings beat fast during flight (18 × 340ms = 6.12s), then hand off to a
+   slow perpetual resting beat instead of stopping dead. The iteration count
+   must stay EVEN: an even alternate run ends back at its starting keyframe,
+   which is exactly where the delayed resting beat begins — an odd count
+   ends at the far keyframe and snaps 46° in one frame at the handoff. */
 .app-shell[data-motion='full'] .butterfly__wing--left {
-  animation: divan-wing-flutter 340ms ease-in-out 17 alternate;
+  animation:
+    divan-wing-flutter 340ms ease-in-out 18 alternate,
+    divan-wing-flutter 1.8s ease-in-out 6.12s infinite alternate;
 }
 
 .app-shell[data-motion='full'] .butterfly__wing--right {
-  animation: divan-wing-flutter 340ms ease-in-out 17 alternate-reverse;
+  animation:
+    divan-wing-flutter 340ms ease-in-out 18 alternate-reverse,
+    divan-wing-flutter 1.8s ease-in-out 6.12s infinite alternate-reverse;
 }
 
 .app-shell[data-motion='full'] .poetry-mote {

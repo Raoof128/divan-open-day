@@ -269,7 +269,7 @@ item_count=$(extract_json_integer "$work_dir/release.json" itemCount)
 
 fetch_public "$content_path" "$work_dir/content.headers" "$work_dir/content.json"
 require_global_headers "$work_dir/content.headers"
-require_header_exact "$work_dir/content.headers" 'Cache-Control' 'public, max-age=31536000, immutable'
+require_header_exact "$work_dir/content.headers" 'Cache-Control' 'public, max-age=31536000, immutable, no-transform'
 [[ "$(sha256_file "$work_dir/content.json")" == "$content_sha" ]] \
   || die 'Public content bytes do not match release.json contentSha256.'
 corpus_release_id=$(extract_json_string "$work_dir/content.json" releaseId)
@@ -284,7 +284,7 @@ actual_items=$(awk '{ count += gsub(/"contentHash":/, "&") } END { print count +
 
 fetch_public "$asset_manifest_path" "$work_dir/assets.headers" "$work_dir/assets.json"
 require_global_headers "$work_dir/assets.headers"
-require_header_exact "$work_dir/assets.headers" 'Cache-Control' 'public, max-age=31536000, immutable'
+require_header_exact "$work_dir/assets.headers" 'Cache-Control' 'public, max-age=31536000, immutable, no-transform'
 [[ "$(sha256_file "$work_dir/assets.json")" == "$asset_manifest_sha" ]] \
   || die 'Public asset manifest bytes do not match release.json assetManifestSha256.'
 [[ "$(extract_json_string "$work_dir/assets.json" releaseId)" == "$release_id" ]] \

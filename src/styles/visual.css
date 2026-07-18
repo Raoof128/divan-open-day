@@ -874,6 +874,12 @@ button:active {
   backdrop-filter: blur(6px);
 }
 
+/* The faded card's controls leave the tab order with it; the scrub handler
+   stamps this attribute past the opacity-zero point of the fade. */
+.cinematic-threshold[data-cinematic-card-hidden='true'] .cinematic-card {
+  visibility: hidden;
+}
+
 .cinematic-threshold .cinematic-skip {
   position: fixed;
   inset-block-end: max(var(--space-4), env(safe-area-inset-bottom));
@@ -1006,10 +1012,13 @@ button:active {
 
 .butterfly {
   position: absolute;
-  inset-block-start: 64%;
-  inset-inline-start: 24%;
-  inline-size: clamp(1.4rem, 3vw, 2rem);
-  color: var(--gold);
+  inset-block-start: 58%;
+  inset-inline-start: 8%;
+  inline-size: clamp(7rem, 15vw, 10rem);
+  color: var(--amethyst);
+  filter: drop-shadow(
+    0 0.4rem 1.2rem color-mix(in srgb, var(--amethyst-deep) 35%, transparent)
+  );
 }
 
 .butterfly__wing {

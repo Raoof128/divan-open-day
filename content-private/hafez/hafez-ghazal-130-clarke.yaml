@@ -18,7 +18,7 @@ source:
   page_reference: Clarke volume-1, ode 116 (211), scan page 294
   source_language: fa
   english_source_id: hafez-clarke-1891-en
-  english_source_sha256: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  english_source_sha256: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   english_source_reference: Clarke volume-1, ode 116 (211), scan page 294
   persian_source_sha256: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
 text:
@@ -27,7 +27,7 @@ text:
     - که عشق روی گل با ما چها کرد
   english_lines:
     - In the morning, the bulbul (Hafiz) told a tale to the east wind (the Murshid),
-    - "Saying : — (0 wind thou sawest) for us what (calamities) love for the face of the rose (the true Beloved) made."
+    - "Saying : — (O wind thou sawest) for us what (calamities) love for the face of the rose (the true Beloved) made."
   alignment: line
   mapping:
     - english_index: 0
@@ -41,7 +41,7 @@ translation:
   translator_ids: []
   rights_owner: H. Wilberforce Clarke translation (1891), public domain; Persian Wikisource transcription is CC BY-SA.
   permission_record_id: hafez-ghazal-130-clarke-translation-permission
-  public_credit: "English translation: H. Wilberforce Clarke, The Divan of Hafiz (1891)."
+  public_credit: "English translation: H. Wilberforce Clarke, The Divan-i-Hafiz, Calcutta, 1891 (a complete literal prose translation with interpolated glosses)."
   permitted_uses:
     - website_display
     - downloadable_share_card
@@ -60,19 +60,20 @@ audio:
 review: null
 review_authority:
   kind: machine_alignment
-  model: gpt-5.6-sol
-  methodVersion: source-bound-alignment-v2
+  model: claude-fable-5
+  methodVersion: source-bound-alignment-v3-fable5-repair
   englishSourceId: hafez-clarke-1891-en
-  englishSourceHash: 8656a50af1b0c67738e3aa736a9a15db6deb57d232b5194b434d823016dcc154
+  englishSourceHash: ff0642a51eb193c474965f9929faf8d60e0c419648eaab9a0ce5e65c9dba00f8
   persianSourceId: hafez-qazvini-ghani-fa-wikisource
   persianSourceHash: a968d2f88feca9476da21b830fe3cdf2b22daca7dd6364c8c46600293cb7515b
   canonicalIdentityHash: 3b581f7b8690f5c2aec2e7041eb83fd49d73d490641a33cf9ffc5afa5fd5e25d
-  englishSpanHash: 618b8a084b6a24c105ae15b252f68973bd325610c583d3854d54569989ed8ab5
+  englishSpanHash: 61b48237d7ea38d02fc2b85759002e856c86db4bb2e8e644cad31acca55b313d
   persianSpanHash: 4c9c5750f07ec8da8218f61ad209fe52743cd9694e55a1f287f8857b5385212d
   mappingHash: 6a5af204ff61dd7ea29fe3d0187e36c3fbff778278f3e14ebc4e5ed8b3b9dae8
   verdict: MACHINE_VERIFIED_WITH_DISCLOSURE
   confidence: 0.8
   disclosures:
     - Clarke's parenthetical interpretive glosses are retained verbatim. Whitespace and line-wrap hyphenation were normalized deterministically from the locked Internet Archive transcript.
-  verifiedAt: 2026-07-16
-  rationale: The selected Clarke opening at Clarke volume-1, ode 116 (211), scan page 294 resolves to Qazvini-Ghani ghazal 130 through an exact continuous source span and 2 independent bilingual anchors.
+    - A transcript OCR artefact (digit 0 for the vocative O) was corrected against the volume-1 scan, page 294.
+  verifiedAt: 2026-07-17
+  rationale: The selected Clarke opening at Clarke volume-1, ode 116 (211), scan page 294 resolves to Qazvini-Ghani ghazal 130 through an exact continuous source span and 2 independent bilingual anchors (alignment carried from source-bound-alignment-v2). Provenance is bound to the locked transcript the text was read from; the PDF scan remains in the source lock as acquisition and visual-verification evidence.
