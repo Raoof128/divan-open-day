@@ -105,9 +105,14 @@ export function CinematicThreshold({
       return;
     }
 
+    // A walk is already carrying the visitor — a second Begin press must not
+    // restart the journey or repeat the announcement.
+    if (cancelWalkRef.current !== null) {
+      return;
+    }
+
     try {
       onAnnounce('Entering the reading alcove.');
-      cancelWalkRef.current?.();
       const target = section.offsetHeight - window.innerHeight;
       const start = window.scrollY;
       const distance = target - start;

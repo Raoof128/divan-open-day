@@ -136,6 +136,29 @@ describe('cinematic Begin control', () => {
     expect(window.scrollY).toBe(beforeInterrupt);
   });
 
+  it('ignores a second Begin press while a walk is already under way', () => {
+    const harness = installWalkHarness();
+    const { onAnnounce } = renderThreshold();
+    prepareCorridor();
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+
+    harness.advance(0);
+    harness.advance(1000);
+    const midWalk = window.scrollY;
+    expect(midWalk).toBeGreaterThan(0);
+
+    // A second press must not restart the walk from scratch or repeat the
+    // announcement — the journey is already in progress.
+    fireEvent.click(screen.getByRole('button', { name: 'Begin' }));
+    harness.advance(1100);
+    expect(window.scrollY).toBeGreaterThanOrEqual(midWalk);
+    expect(
+      onAnnounce.mock.calls.filter(
+        ([message]) => message === 'Entering the reading alcove.',
+      ),
+    ).toHaveLength(1);
+  });
+
   it('completes arrival when the video dies mid-walk instead of dropping the Begin intent', () => {
     const harness = installWalkHarness();
     const { onArrive } = renderThreshold();
