@@ -36,14 +36,14 @@ Tag `v1.0.7` on `d908de34cd6a48738d4a629c55c8db1bdbe1e69e` (main, CI green), the
 
 Diff of the image's content JSON against the live v1.0.6 corpus (`f5420697…`):
 
-| Delta | Count | Audited cause |
-| --- | --- | --- |
-| id removed / added | `hafez-ghazal-046-bell` → `hafez-ghazal-025-bell` | wrong-poem pairing replacement (Bell VIII = ghazal 25) |
-| `translationCredit` | 119/119 | credit strings aligned to `rights-evidence.yaml` `required_public_credit` |
-| `text` + `disclosures` | 56 | OCR/typography recoveries + disclosure additions |
-| `verificationStatus` | 12 | documented `MACHINE_VERIFIED` → `…_WITH_DISCLOSURE` flips (13 audited − the replaced record) |
-| `source` | 1 | ghazal 65's recovered opening hemistich |
-| `contentHash` | 119 | follows from the above |
+| Delta                  | Count                                             | Audited cause                                                                                |
+| ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| id removed / added     | `hafez-ghazal-046-bell` → `hafez-ghazal-025-bell` | wrong-poem pairing replacement (Bell VIII = ghazal 25)                                       |
+| `translationCredit`    | 119/119                                           | credit strings aligned to `rights-evidence.yaml` `required_public_credit`                    |
+| `text` + `disclosures` | 56                                                | OCR/typography recoveries + disclosure additions                                             |
+| `verificationStatus`   | 12                                                | documented `MACHINE_VERIFIED` → `…_WITH_DISCLOSURE` flips (13 audited − the replaced record) |
+| `source`               | 1                                                 | ghazal 65's recovered opening hemistich                                                      |
+| `contentHash`          | 119                                               | follows from the above                                                                       |
 
 No unexplained field changed on any record.
 
@@ -66,7 +66,7 @@ No unexplained field changed on any record.
 - Live content JSON **byte-identical** to the one extracted from the image (`cmp` clean).
 - `/service-worker.js` carries `divan-release-1-v1-0-7`.
 - Immutable content header now observed live: `cache-control: public, max-age=31536000,
-  immutable, no-transform` (the #17 fix, previously unobservable pre-deploy).
+immutable, no-transform` (the #17 fix, previously unobservable pre-deploy).
 - Live CSS carries the `--amethyst` tokens and `divan-butterfly-hover` keyframes; live JS
   carries the walk announcement and 3 occurrences of "Macquarie Persian Society"; live
   corpus serves `hafez-ghazal-025-bell` with the Bell credit and no `046`.
