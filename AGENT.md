@@ -28,6 +28,15 @@
 
 ## Raouf change log
 
+### 2026-10-27 (Australia/Sydney) — Security: cloudflared 2026.10.4 tunnel runtime (eMudhra advisory)
+
+**Raouf:**
+
+- **Why:** Cloudflare's 2026-10-26 advisory — cloudflared before 2026.10.2 still trusts eight eMudhra (emSign) intermediates with weak private keys. The tunnel ran 2026.7.2.
+- **Change:** `ops/Dockerfile.cloudflared` now copies from `cloudflare/cloudflared:2026.10.4@sha256:c6c7ae1d…0515` (index digest re-resolved from Docker Hub; linux/amd64 manifest `sha256:4c72c1af…61b4`). The runtime is `ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.2@sha256:e8d6859c…e190`, a single-platform OCI manifest built without provenance/SBOM attestations. `ops/compose.yml`, `ops/scripts/lib.sh`, both security tests and the phase-0 table name the new pins.
+- **Delivery:** the GHCR package is private and the Droplet holds no registry credential, so the exact pushed bytes were exported once (`buildx` with simultaneous registry and OCI outputs) and `docker load`ed over SSH; the containerd image store kept image ID = manifest digest = the GHCR digest. Only `cloudflared` was recreated (`--no-deps --no-build`), with the same config and credentials mounts.
+- **Verification:** `tests/security/opsConfig.test.ts` passes; `publicReadiness.test.ts` keeps its two pre-existing README failures (identical on unmodified `main`, from the 2026-07-18 README rewrite). Ingress origin is `http://divan-web:8080`, so the stricter trust store cannot reject an origin certificate.
+
 ### 2026-07-18 (Australia/Sydney) — Docs: professional README rewrite to reflect the live v1.0.7 release
 
 **Raouf:**

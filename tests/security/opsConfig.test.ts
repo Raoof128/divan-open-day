@@ -154,7 +154,7 @@ describe('production image contract', () => {
     const dockerfile = readProjectFile('ops/Dockerfile.cloudflared');
 
     expect(dockerfile).toContain(
-      'cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d',
+      'cloudflare/cloudflared:2026.10.4@sha256:c6c7ae1d5dfdcb094ad344ed68ccffc26635c9c6be80965664c33baf064b0515',
     );
     expect(dockerfile).toContain('FROM scratch');
     expect(dockerfile).toContain(
@@ -399,7 +399,7 @@ describe('Compose and tunnel isolation', () => {
       immutableImagePattern.test(compose.services['cloudflared']!.image),
     ).toBe(true);
     expect(compose.services['cloudflared']!.image).toBe(
-      'ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.1@sha256:80c6b602be5657a9af7843736137099f1e7f23ad1de1c00855c539c41bcc9460',
+      'ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.2@sha256:e8d6859ca76b350ff34de13a029a09a58b60a42a74293acf944a35583aa5e190',
     );
     expect(compose.services['divan-web']!.ports).toBeUndefined();
     expect(compose.services['cloudflared']!.ports).toBeUndefined();

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-27 — Security: tunnel runtime on cloudflared 2026.10.4
+
+**Raouf:**
+
+- Rebuilt the scratch tunnel image on official cloudflared 2026.10.4 (`ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.2@sha256:e8d6859c…`) after Cloudflare's eMudhra certificate advisory; 2026.7.2 trusted the compromised intermediates.
+- Compose, deployment validation (`lib.sh`), security tests and the phase-0 provenance table pin the new source and runtime digests. Deployed by recreating only `cloudflared`; the web container was not restarted.
+
 ## 2026-07-18 — Docs: professional README rewrite to reflect the live v1.0.7 release
 
 **Raouf:**
