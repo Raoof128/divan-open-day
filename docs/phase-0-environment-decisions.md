@@ -36,8 +36,8 @@ deployment architecture in private evidence.
 | Build stage       | `node:22.16.0-alpine3.21@sha256:9f3ae04faa4d2188825803bf890792f33cc39033c9241fc6bb201149470436ca`                            | `sha256:4437d7c27c4b9306c577caa17577dc7b367fc320fb7469dbe2c994e23b11d11c` |
 | Caddy toolchain   | `golang:1.26.5-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc`                           | `sha256:73f9732658b30852522ee5ebe698daa27e1829add9a70ff4f4a828409f8d0a99` |
 | Static runtime    | final empty `scratch` runtime; no registry parent                                                                            | Not applicable                                                            |
-| Tunnel source     | `cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d`                    | `sha256:18626b1baac4450214535cd5bc40ef44c0635244d585ebf707749c22b6f3408f` |
-| Tunnel runtime    | `ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.1@sha256:80c6b602be5657a9af7843736137099f1e7f23ad1de1c00855c539c41bcc9460` | Linux x86_64 single-platform image                                        |
+| Tunnel source     | `cloudflare/cloudflared:2026.10.4@sha256:c6c7ae1d5dfdcb094ad344ed68ccffc26635c9c6be80965664c33baf064b0515`                   | `sha256:4c72c1af2984a66a255efd20fc4ec73fe0f7267384b55315ad953b354b3361b4` |
+| Tunnel runtime    | `ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.2@sha256:e8d6859ca76b350ff34de13a029a09a58b60a42a74293acf944a35583aa5e190` | Linux x86_64 single-platform image                                        |
 
 Verification commands:
 
@@ -48,8 +48,8 @@ docker buildx imagetools inspect node:22.16.0-alpine3.21
 docker buildx imagetools inspect node:22.16.0-alpine3.21@sha256:9f3ae04faa4d2188825803bf890792f33cc39033c9241fc6bb201149470436ca
 docker buildx imagetools inspect golang:1.26.5-alpine3.23
 docker buildx imagetools inspect golang:1.26.5-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc
-docker buildx imagetools inspect cloudflare/cloudflared:2026.7.2
-docker buildx imagetools inspect cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d
+docker buildx imagetools inspect cloudflare/cloudflared:2026.10.4
+docker buildx imagetools inspect cloudflare/cloudflared:2026.10.4@sha256:c6c7ae1d5dfdcb094ad344ed68ccffc26635c9c6be80965664c33baf064b0515
 ```
 
 The reviewed tunnel runtime copies the exact statically linked binary and CA roots from the pinned official cloudflared source into `scratch`; unused source-image glibc and zlib packages do not enter the final image. It runs as `65532:65532`. Root must provision its fixed config and credential bind mounts as UID/GID `65532:65532`, mode `0400`; deployment preflight rejects operator-owned or more permissive files, and runtime verification requires both exact read-only mounts on a running container with that identity. Caddy 2.11.4 is rebuilt from its authenticated Go module with Go 1.26.5 because its published image embeds an older standard library with a fixed High-severity CVE. The same toolchain compiles the release-integrity health verifier. The final empty `scratch` runtime switches to the reviewed dedicated UID/GID `10001:10001`, serves on unprivileged port 8080, and receives only those two binaries, verified `dist/`, and the Caddy configuration; it contains no shell, package manager, or OS library set.

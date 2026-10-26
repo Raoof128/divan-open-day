@@ -29,7 +29,7 @@ services:
     pids_limit: 128
 
   cloudflared:
-    image: ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.1@sha256:80c6b602be5657a9af7843736137099f1e7f23ad1de1c00855c539c41bcc9460
+    image: ghcr.io/raoof128/divan-open-day-cloudflared:v1.0.2@sha256:e8d6859ca76b350ff34de13a029a09a58b60a42a74293acf944a35583aa5e190
     restart: unless-stopped
     read_only: true
     user: '65532:65532'
