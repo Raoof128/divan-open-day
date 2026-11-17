@@ -28,6 +28,13 @@
 
 ## Raouf change log
 
+### 2026-11-17 (Australia/Sydney) — Docs: machine paths removed from audit records
+
+**Raouf:**
+
+- **Scope:** documentation only. Audit records under `docs/` (and any other tracked text file that carried them) had the author's machine paths; they now read `<repo>` and `~`. No source, corpus, service worker, ops or CI files touched.
+- **Verification:** `prettier --check` on the changed files; the pull request's quality gate.
+
 ### 2026-11-17 (Australia/Sydney) — Test: README readiness assertions follow the live-release README
 
 **Raouf:**
