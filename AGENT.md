@@ -28,6 +28,16 @@
 
 ## Raouf change log
 
+### 2026-11-17 (Australia/Sydney) — Test: README readiness assertions follow the live-release README
+
+**Raouf:**
+
+- **Scope:** `tests/security/publicReadiness.test.ts` only. No source, corpus, service worker, ops or CI files touched.
+- **Why:** `main` has failed its quality gate since the 2026-07-18 README rewrite. The first readiness test still required the old work-in-progress wording ("Work in progress", "not deployed") and a `[LICENSE](LICENSE)` link without the backticks the README now uses, so the gate failed on documentation that was correct.
+- **Change:** the test now pins the live-release README: the deployment URL, the 60 + 60 = 120 corpus, the pinned Node and pnpm versions, the local preview command and the security and third-party links, and it asserts that the work-in-progress wording is gone. The licence assertions are unchanged apart from the link form.
+- **Verification:** under Node 22.16.0, `pnpm exec vitest run` passed 772 tests in 64 files; `prettier --check` and `eslint` clean on the changed file; the pull request's quality gate.
+- **Open point, not changed:** `docs/rights-register-public.md` still says that no production content or rights record has been approved and that the public-launch gates remain closed, while the README says those gates are open and the site is live. One of the two needs updating by someone who holds the rights evidence.
+
 ### 2026-07-18 (Australia/Sydney) — Docs: professional README rewrite to reflect the live v1.0.7 release
 
 **Raouf:**

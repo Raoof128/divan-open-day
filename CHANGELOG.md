@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-17 — Test: README readiness assertions follow the live-release README
+
+**Raouf:**
+
+- `main` has failed its quality gate since the 2026-07-18 README rewrite, because `tests/security/publicReadiness.test.ts` still required the old work-in-progress wording and a `[LICENSE](LICENSE)` link without backticks. The test now pins the live-release README (deployment URL, the 60 + 60 = 120 corpus, pinned Node and pnpm versions, preview command, security and third-party links) and asserts the work-in-progress wording is gone.
+- Test-only change. Under Node 22.16.0, `pnpm exec vitest run` passed 772 tests in 64 files.
+- Not changed: `docs/rights-register-public.md` still says the public-launch gates are closed, which the README contradicts.
+
 ## 2026-07-18 — Docs: professional README rewrite to reflect the live v1.0.7 release
 
 **Raouf:**
