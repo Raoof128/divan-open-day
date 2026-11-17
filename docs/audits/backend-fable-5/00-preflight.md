@@ -35,7 +35,7 @@ sources-private/poetry/reports/hafez-ghazal-matlas.json
 | File | Lines | Role |
 | ---- | ----- | ---- |
 | `AGENT.md` | 833 | **Binding engineering contract** (lines 1–28) + full `Raouf:` change log |
-| `/Users/raoof.r12/.claude/CLAUDE.md` | — | Global Zurvan recall instructions |
+| `~/.claude/CLAUDE.md` | — | Global Zurvan recall instructions |
 | `CLAUDE.md` (project, git-ignored) | — | Operational detail; explicitly subordinate to `AGENT.md` + design authority |
 | `package.json` | 99 | Scripts, engines, pinned dependency set |
 

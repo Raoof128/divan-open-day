@@ -1,6 +1,6 @@
 # DIVAN Cinematic Enhancement — Evidence Ledger
 
-Started 2026-07-16 (Australia/Sydney). Task worktree: `/Users/raoof.r12/Desktop/Raouf/OpemDay-cinematic`.
+Started 2026-07-16 (Australia/Sydney). Task worktree: `<repo>`.
 Every architectural claim in this ledger is verified against the repository or a live command; adaptations
 from the v3 gauntlet-final package are recorded in §9.
 

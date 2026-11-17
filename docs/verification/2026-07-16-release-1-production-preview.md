@@ -64,7 +64,7 @@ handoff after those commits exist.
 Node 22.16.0 and pnpm 10.33.0 were used. The final focused command set was:
 
 ```bash
-export PATH=/Users/raoof.r12/.nvm/versions/node/v22.16.0/bin:$PATH
+export PATH=~/.nvm/versions/node/v22.16.0/bin:$PATH
 pnpm format:check
 pnpm lint
 pnpm typecheck

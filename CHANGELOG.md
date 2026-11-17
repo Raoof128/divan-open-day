@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-17 — Docs: machine paths removed from audit records
+
+**Raouf:**
+
+- Audit records under `docs/` carried the author's machine paths. They now read `<repo>` and `~`. Documentation only.
+
 ## 2026-11-17 — Test: README readiness assertions follow the live-release README
 
 **Raouf:**

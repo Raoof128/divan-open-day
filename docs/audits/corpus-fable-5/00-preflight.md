@@ -8,7 +8,7 @@ Date: 2026-07-17. Lead: Claude Fable 5 (`claude-fable-5`).
 | | |
 | --- | --- |
 | Repository | `Raoof128/divan-open-day` (`https://github.com/Raoof128/divan-open-day.git`) |
-| Working tree | `/Users/raoof.r12/Desktop/Raouf/OpemDay` |
+| Working tree | `<repo>` |
 | Starting point | `origin/main` @ `adde8b4ce2adb5a8c612561601e586fc9232877f` (v1.0.6 line) |
 | Repair branch | `repair/fable-5-full-corpus`, created from `origin/main` |
 | Untracked items preserved | `New_Frontend/`, `docs/audits/frontend-opus-4-8/`, `scripts/poetry/build-hafez-align-tasks.ts`, 3 private report JSONs under `sources-private/poetry/reports/` (never staged) |

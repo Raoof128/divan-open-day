@@ -7,8 +7,8 @@ Lead: Claude Fable 5 (model ID `claude-fable-5`)
 
 | Item | Value |
 | --- | --- |
-| Working directory | `/Users/raoof.r12/Desktop/Raouf/OpemDay` |
-| Git toplevel | `/Users/raoof.r12/Desktop/Raouf/OpemDay` |
+| Working directory | `<repo>` |
+| Git toplevel | `<repo>` |
 | Remote | `origin https://github.com/Raoof128/divan-open-day.git` (fetch+push) |
 | Source `main` SHA | `e3480481d09474849449cb504c9c2424e49e4fd3` (local `main` == `origin/main`) |
 | Audit branch | `audit/fable-5-exhaustive-frontend` created from `origin/main` @ `e348048` |

@@ -4,10 +4,10 @@ Discovery method: the environment's own skill roots and plugin registry, bounded
 crawl). Roots inspected:
 
 ```
-/Users/raoof.r12/Desktop/Raouf/OpemDay/.claude/skills   → 8 project skills
-/Users/raoof.r12/.claude/skills                          → 100 user skills
-/Users/raoof.r12/.claude/plugins/cache/**/SKILL.md       → 2,395 plugin skills
-/Users/raoof.r12/.claude/plugins/installed_plugins.json  → plugin registry
+<repo>/.claude/skills   → 8 project skills
+~/.claude/skills                          → 100 user skills
+~/.claude/plugins/cache/**/SKILL.md       → 2,395 plugin skills
+~/.claude/plugins/installed_plugins.json  → plugin registry
 .agents/skills                                           → symlinked subset of user skills (not double-counted)
 ```
 
