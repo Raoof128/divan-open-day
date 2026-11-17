@@ -21,26 +21,30 @@ function readmeProse(): string {
 }
 
 describe('public repository status and ownership', () => {
-  test('publishes a WIP README that licenses the code and withholds the rest', () => {
+  // The README described an undeployed work in progress until the v1.0.7
+  // release went live on 2026-07-18. These assertions pin the live-release
+  // README: what is deployed, the corpus size, the pinned toolchain, the local
+  // preview command, and the links a reader needs.
+  test('publishes a live-release README that names the deployment, corpus and toolchain', () => {
     const readme = readmeProse();
     const packageJson = JSON.parse(readProjectFile('package.json')) as Record<
       string,
       unknown
     >;
 
-    expect(readme).toContain('Work in progress');
-    expect(readme).toContain('not deployed');
-    expect(readme).toContain('exactly 60 Hafez and 60 Rumi');
-    expect(readme).toContain('source-bound production corpus');
+    expect(readme).not.toContain('Work in progress');
+    expect(readme).not.toContain('not deployed');
+    expect(readme).toContain('https://divan.raoufabedini.dev/');
+    expect(readme).toContain('60 Hafez + 60 Rumi = 120');
+    expect(readme).toContain('source-bound');
     expect(readme).toContain('productionEligible: false');
-    expect(readme).toContain('Node.js 22.16.0');
-    expect(readme).toContain('pnpm 10.33.0');
+    expect(readme).toContain('Node `22.16.0`');
+    expect(readme).toContain('pnpm `10.33.0`');
     expect(readme).toContain(
       'pnpm exec vite preview --host 127.0.0.1 --port 4173',
     );
-    expect(readme).toContain('fail-closed release error');
-    expect(readme).toContain('[Security policy](SECURITY.md)');
-    expect(readme).toContain('[Third-party notices](THIRD_PARTY_NOTICES.md)');
+    expect(readme).toContain('[security policy](SECURITY.md)');
+    expect(readme).toContain('[third-party notices](THIRD_PARTY_NOTICES.md)');
     expect(readProjectFile('.node-version')).toBe('22.16.0\n');
     expect(packageJson).toMatchObject({
       private: true,
@@ -70,7 +74,7 @@ describe('public repository status and ownership', () => {
     expect(packageJson).toHaveProperty('license', 'MIT');
 
     expect(readme).toContain('MIT Licence');
-    expect(readme).toContain('[LICENSE](LICENSE)');
+    expect(readme).toContain('[`LICENSE`](LICENSE)');
     expect(readme).toContain("this repository's own code only");
 
     // The old all-rights-reserved wording must not survive alongside the grant.
