@@ -11,3 +11,9 @@ onlyBuiltDependencies:
 # (event-stream, chalk/debug) actually exploited. `--frozen-lockfile` already
 # pins resolutions, so this only affects a deliberate dependency change.
 minimumReleaseAge: 1440
+
+# @typescript-eslint/typescript-estree still asks for minimatch 10, whose
+# newest release carries GHSA-g3hv-75wg-m249 (fixed in 11.0.1). ESLint itself
+# already resolves 11.x. Remove this once typescript-eslint moves to 11.
+overrides:
+  '@typescript-eslint/typescript-estree>minimatch': 11.0.8
